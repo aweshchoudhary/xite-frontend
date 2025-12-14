@@ -2,7 +2,7 @@
 
 import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
-import { getLoggedInUser } from "@/modules/user/utils";
+import { getUser } from "@/modules/common/authentication/firebase/action";
 
 export async function handleUpdateSectionPositions() {
   const cohorts = await primaryDB.cohort.findMany({
@@ -21,10 +21,10 @@ export async function handleUpdateSectionPositions() {
   });
 
   for (const cohort of cohorts) {
-    const user = await getLoggedInUser();
+    const session = await getUser();
     const commonObject = {
       cohort_id: cohort.id,
-      updated_by_id: user.id,
+      updated_by_id: session?.dbUser?.id,
     };
 
     await primaryDB.cohortSectionOrder.createMany({

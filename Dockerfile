@@ -17,7 +17,7 @@ ENV EMAIL_FROM=${EMAIL_FROM}
 ENV DATABASE_URL=${DATABASE_URL}
 
 COPY app/ .
-RUN npm run prisma:generate
+RUN npx prisma generate
 RUN npm run build
 
 # Step 2: Production image

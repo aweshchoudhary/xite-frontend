@@ -7,6 +7,7 @@ import { primaryDB } from "../../database/prisma/connection";
 import { UserRole } from "../../database/prisma/generated/prisma";
 import { User } from "firebase/auth";
 import { getCache, setCache } from "../../services/redis/controllers";
+import { User as DbUser } from "../../database/prisma/generated/prisma";
 
 export async function loginAction(idToken: string) {
   // 1. Verify the token with Firebase Admin
@@ -70,6 +71,7 @@ export async function logoutAction() {
 }
 
 export async function getUser(): Promise<{
+  dbUser: DbUser;
   user: User;
   roles: UserRole[];
 } | null> {
@@ -89,6 +91,7 @@ export async function getUser(): Promise<{
   const cached = await getCache<{
     user: User;
     roles: UserRole[];
+    dbUser: DbUser;
   }>(cacheKey);
 
   if (cached) {
@@ -101,7 +104,7 @@ export async function getUser(): Promise<{
   // 5️⃣ Fetch roles from DB
   const dbUser = await primaryDB.user.findUnique({
     where: { email: user.email },
-    select: { roles: true },
+    include: { roles: true },
   });
 
   if (!dbUser || !dbUser.roles) return null;
@@ -109,6 +112,7 @@ export async function getUser(): Promise<{
   const payload = {
     user: user.toJSON() as User,
     roles: dbUser.roles,
+    dbUser: dbUser,
   };
 
   // 6️⃣ Cache (short TTL is enough)

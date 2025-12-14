@@ -1,5 +1,4 @@
 "use client";
-import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
 import { createAction } from "./action";
@@ -22,12 +21,12 @@ import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generat
 import { cn } from "@/modules/common/lib/utils";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/modules/common/components/ui/field";
+import { Controller, Form, useForm } from "react-hook-form";
 
-interface CreateFormProps extends FormBaseProps<CreateSchema> {}
+type CreateFormProps = FormBaseProps<CreateSchema>;
 
 export default function CreateForm({
   cancelRedirectPath,
@@ -83,16 +82,17 @@ export default function CreateForm({
                       }}
                     />
                     <Avatar className="size-20 border">
-                      {form.watch("logo_file") && (
+                      {form.getValues("logo_file") && (
                         <AvatarImage
                           src={
-                            generatePreviewUrl(form.watch("logo_file")!) ?? ""
+                            generatePreviewUrl(form.getValues("logo_file")!) ??
+                            ""
                           }
                         />
                       )}
                       <AvatarFallback className="uppercase">
-                        {form.watch("name")
-                          ? form.watch("name")?.slice(0, 2)
+                        {form.getValues("name")
+                          ? form.getValues("name")?.slice(0, 2)
                           : ""}
                       </AvatarFallback>
                     </Avatar>
