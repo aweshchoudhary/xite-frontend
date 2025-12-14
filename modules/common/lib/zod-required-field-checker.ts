@@ -1,12 +1,22 @@
-import { ZodObject, ZodRawShape, ZodEffects, ZodTypeAny } from "zod";
+import { ZodObject, ZodRawShape, ZodTypeAny } from "zod";
+
+function isZodEffects(
+  schema: unknown
+): schema is { innerType: () => ZodObject<ZodRawShape> } {
+  return (
+    typeof schema === "object" &&
+    schema !== null &&
+    "innerType" in schema &&
+    typeof (schema as { innerType?: unknown }).innerType === "function"
+  );
+}
 
 export function getRequiredFields<T extends ZodRawShape>(
-  schema: ZodObject<T> | ZodEffects<ZodObject<T>>
+  schema: ZodObject<T> | { innerType: () => ZodObject<T> }
 ) {
-  const shape =
-    schema instanceof ZodEffects
-      ? (schema.innerType() as ZodObject<ZodRawShape>).shape
-      : schema.shape;
+  const shape = isZodEffects(schema)
+    ? (schema.innerType() as ZodObject<ZodRawShape>).shape
+    : schema.shape;
 
   const requiredFields: string[] = [];
 
