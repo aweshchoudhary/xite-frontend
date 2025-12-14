@@ -22,7 +22,7 @@ export default function UserProfileDropdown() {
 }
 
 export const UserProfileAvatar = () => {
-  const user = useAuth();
+  const { user } = useAuth();
   return (
     <div>
       <Avatar className="size-8">
@@ -37,7 +37,7 @@ export const UserProfileAvatar = () => {
 };
 
 const UserProfileDropdownMenu = () => {
-  const user = useAuth();
+  const { user } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
