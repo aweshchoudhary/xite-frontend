@@ -1,0 +1,131 @@
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/modules/common/components/ui/select";
+import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
+import { toast } from "sonner";
+import { updateCohortStatusAction } from "../action";
+import { enumDisplay } from "@/modules/common/lib/enum-display";
+import { Badge } from "@/modules/common/components/ui/badge";
+import { isSectionsCompleted } from "@/modules/cohort/modules/cohort-content/cohort-content-container";
+
+export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
+  const [status, setStatus] = useState(cohort.status);
+
+  const validateCohort = useCallback(() => {
+    const {
+      max_cohort_size,
+      fees,
+      start_date,
+      end_date,
+      format,
+      duration,
+      location,
+    } = cohort;
+
+    const errors: string[] = [];
+
+    if (max_cohort_size === undefined) errors.push("Cohort: Max Cohort Size");
+    if (!start_date) errors.push("Cohort: Start Date");
+    if (!end_date) errors.push("Cohort: End Date");
+    if (!format) errors.push("Cohort: Format");
+    if (!duration) errors.push("Cohort: Duration");
+    if (!location) errors.push("Cohort: Location");
+    if (!fees || fees.length === 0) errors.push("Cohort: Fees");
+
+    const {
+      certification,
+      experts,
+      statistics,
+      testimonials,
+      media,
+      faculty,
+      microsite,
+      overview,
+    } = isSectionsCompleted(cohort);
+
+    if (!overview) errors.push("Overview Section");
+    if (!certification) errors.push("Certification Section");
+    if (!experts) errors.push("Experts Section");
+    if (!statistics) errors.push("Statistics Section");
+    if (!testimonials) errors.push("Testimonials Section");
+    if (!media) errors.push("Media Section");
+    if (!faculty) errors.push("Faculty Section");
+    if (!microsite) errors.push("Microsite Section");
+
+    return errors;
+  }, [cohort]);
+
+  useEffect(() => {
+    if (status === cohort.status) return;
+
+    if (status == WorkStatus.PLANNING) {
+      const dcs = cohort.design_curriculum_section;
+      const isDesignCurriculumCompleted = dcs?.title && dcs?.items.length > 0;
+
+      if (!isDesignCurriculumCompleted) {
+        toast.error("Curriculum Section is not complete.");
+        setStatus(cohort.status);
+        return;
+      }
+    }
+
+    if (status !== WorkStatus.DRAFT && status !== WorkStatus.PLANNING) {
+      const errors = validateCohort();
+      if (errors.length > 0) {
+        toast.error(
+          "Cohort Details are not complete. Please complete the following sections:",
+          {
+            description: (
+              <ul className="list-disc text-base list-inside">
+                {errors.map((err, i) => (
+                  <li key={i}>{err}</li>
+                ))}
+              </ul>
+            ),
+            classNames: {
+              title: "text-base font-semibold",
+            },
+          }
+        );
+        setStatus(cohort.status);
+        return;
+      }
+    }
+
+    updateCohortStatusAction(cohort.id, status);
+    toast.success(`Status updated to ${enumDisplay(status)}`);
+  }, [status, cohort, validateCohort]);
+
+  return (
+    <Select
+      onValueChange={(value) => setStatus(value as WorkStatus)}
+      value={status}
+    >
+      <SelectTrigger className="capitalize">
+        <SelectValue placeholder="Select a status" />
+      </SelectTrigger>
+      <SelectContent>
+        {/* disable previous status */}
+        {Object.values(WorkStatus).map((val, index) => (
+          <SelectItem
+            disabled={index < Object.values(WorkStatus).indexOf(cohort.status)}
+            key={val}
+            value={val}
+            className="capitalize"
+          >
+            <Badge variant={val === "ACTIVE" ? "success" : "outline"}>
+              {enumDisplay(val)}
+            </Badge>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
