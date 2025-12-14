@@ -23,7 +23,7 @@ export const updateAction = async ({
       where: { id },
       data: {
         ...rest,
-        updated_by: { connect: { id: currentUser.id } },
+        updated_by: { connect: { id: currentUser?.dbUser?.id } },
       },
     });
 

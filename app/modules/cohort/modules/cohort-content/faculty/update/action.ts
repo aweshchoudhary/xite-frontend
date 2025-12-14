@@ -41,7 +41,7 @@ export async function addFacultyItemToSection({
           position: {
             increment: 1,
           },
-          updated_by_id: currentUser.id,
+          updated_by_id: currentUser?.dbUser?.id,
         },
       });
 
@@ -51,7 +51,7 @@ export async function addFacultyItemToSection({
           facultyId,
           position: finalPosition,
           parent_section_id: sectionId,
-          updated_by_id: currentUser.id,
+          updated_by_id: currentUser?.dbUser?.id,
         },
       });
 
@@ -102,7 +102,7 @@ export async function updateCardOrder(items: Item[]) {
             position: item.position,
             updated_by: {
               connect: {
-                id: currentUser.id,
+                id: currentUser?.dbUser?.id,
               },
             },
           },

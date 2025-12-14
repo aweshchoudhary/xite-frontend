@@ -65,7 +65,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
               <Link
                 href={`/cohorts/${cohort.id}/edit`}
                 className={cn(
-                  buttonVariants({ variant: "outline", size: "iconSm" }),
+                  buttonVariants({ variant: "outline", size: "icon" }),
                   "gap-2"
                 )}
               >
@@ -80,7 +80,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
                   <Button
                     variant="outline"
                     className="text-destructive"
-                    size="iconSm"
+                    size="icon"
                   >
                     <TrashIcon className="size-3.5" />
                   </Button>

@@ -27,7 +27,7 @@ export async function updateBannerAction(cohortId: string, banner: File) {
         },
         updated_by: {
           connect: {
-            id: currentUser.id,
+            id: currentUser?.dbUser?.id,
           },
         },
       },

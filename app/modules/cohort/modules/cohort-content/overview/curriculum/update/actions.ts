@@ -34,7 +34,7 @@ export const updateAction = async ({
         },
         updated_by: {
           connect: {
-            id: currentUser.id,
+            id: currentUser?.dbUser?.id,
           },
         },
       },
@@ -52,7 +52,7 @@ export const updateAction = async ({
             title: item.title,
             overview: item.overview,
             parent_section_id: upsertedData.id,
-            updated_by_id: currentUser.id,
+            updated_by_id: currentUser?.dbUser?.id,
           },
         });
 
@@ -67,7 +67,7 @@ export const updateAction = async ({
               position: objective.position,
               description: objective.description!,
               parent_section_id: createdItem.id,
-              updated_by_id: currentUser.id,
+              updated_by_id: currentUser?.dbUser?.id,
             })),
           });
         }
@@ -81,7 +81,7 @@ export const updateAction = async ({
               title: session.title,
               overview: session.overview,
               parent_section_id: createdItem.id,
-              updated_by_id: currentUser.id,
+              updated_by_id: currentUser?.dbUser?.id,
             },
           });
 
@@ -96,7 +96,7 @@ export const updateAction = async ({
                 position: objective.position,
                 description: objective.description!,
                 designCohortCurriculumSessionId: createdSession.id,
-                updated_by_id: currentUser.id,
+                updated_by_id: currentUser?.dbUser?.id,
               })),
             });
           }

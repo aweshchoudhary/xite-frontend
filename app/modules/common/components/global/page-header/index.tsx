@@ -23,7 +23,7 @@ export default function PageHeader() {
       <div className="flex items-center gap-2">
         <Link
           href="/settings"
-          className={cn(buttonVariants({ size: "iconSm", variant: "outline" }))}
+          className={cn(buttonVariants({ size: "icon", variant: "outline" }))}
         >
           <Settings />
         </Link>

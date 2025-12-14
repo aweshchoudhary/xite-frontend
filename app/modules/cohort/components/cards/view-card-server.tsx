@@ -41,7 +41,7 @@ export default async function ViewCohortCardServer({
               <Link
                 href={`/cohorts/${cohort.id}/edit`}
                 className={cn(
-                  buttonVariants({ variant: "outline", size: "iconSm" }),
+                  buttonVariants({ variant: "outline", size: "icon" }),
                   "gap-2"
                 )}
               >

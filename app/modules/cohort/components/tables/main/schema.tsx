@@ -48,7 +48,6 @@ export const columns: ColumnDef<GetCohortForTable>[] = [
         variant={
           row.original.status === WorkStatus.ACTIVE ? "success" : "secondary"
         }
-        size={"sm"}
         className="capitalize border"
       >
         {enumDisplay(row.original.status)}

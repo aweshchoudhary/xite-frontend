@@ -75,7 +75,7 @@ export function SortableItem({ item, selectedFacultyIds }: SortableItemProps) {
         </div>
       )}
       <div className="absolute top-0 right-0">
-        <Button variant="secondary" size="iconSm">
+        <Button variant="secondary" size="icon">
           <Move className="size-4" />
         </Button>
       </div>
@@ -89,7 +89,7 @@ export function SortableItem({ item, selectedFacultyIds }: SortableItemProps) {
             selectedFacultyIds={selectedFacultyIds}
           >
             <Button
-              size="iconSm"
+              size="icon"
               variant="secondary"
               className="rounded-full size-7!"
             >

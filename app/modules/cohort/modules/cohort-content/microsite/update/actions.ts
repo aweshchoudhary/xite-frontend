@@ -37,7 +37,7 @@ export const updateAction = async ({
         },
         updated_by: {
           connect: {
-            id: currentUser.id,
+            id: currentUser?.dbUser?.id,
           },
         },
       },

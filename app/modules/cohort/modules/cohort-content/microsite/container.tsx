@@ -23,20 +23,21 @@ type ContainerProps = {
 
 export function Container({ data, previewDomain }: ContainerProps) {
   const [isUpdating, setIsUpdating] = useState(false);
-  if (!data) return null;
 
-  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
+  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id || "");
   const [sectionOrder, setSectionOrder] = useState<CohortSectionWithData[]>([]);
 
   const isCompleted = data?.microsite_section?.custom_domain;
 
   useEffect(() => {
     const fetchSectionOrder = async () => {
-      const sectionOrder = await getCohortSections(data?.id);
+      const sectionOrder = await getCohortSections(data?.id || "");
       setSectionOrder(sectionOrder);
     };
     fetchSectionOrder();
   }, [data?.id]);
+
+  if (!data) return null;
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -81,6 +82,7 @@ export function Container({ data, previewDomain }: ContainerProps) {
                   section_id: section.section_id,
                   section_title: section.data.title,
                   section_data: section.data,
+                  data: section.data,
                 })),
               }}
               onCancel={() => setIsUpdating(false)}

@@ -75,7 +75,7 @@ export const updateAction = async ({
                 },
               }
             : undefined,
-          updated_by: { connect: { id: currentUser.id } },
+          updated_by: { connect: { id: currentUser?.dbUser?.id } },
           cohort: { connect: { id: cohort_id } },
         },
       });

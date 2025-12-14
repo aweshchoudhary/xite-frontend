@@ -165,7 +165,7 @@ export default function TableView<TData>({
         <div className="space-x-2 flex gap-2 items-center">
           <Button
             variant="outline"
-            size="iconSm"
+            size="icon"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -178,7 +178,7 @@ export default function TableView<TData>({
           </div>
           <Button
             variant="outline"
-            size="iconSm"
+            size="icon"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >

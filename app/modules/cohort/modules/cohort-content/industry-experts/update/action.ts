@@ -41,7 +41,7 @@ export async function addExpertItemToSection({
           position: {
             increment: 1,
           },
-          updated_by_id: currentUser.id,
+          updated_by_id: currentUser?.dbUser?.id,
         },
       });
 
@@ -51,7 +51,7 @@ export async function addExpertItemToSection({
           facultyId: expertId,
           position: finalPosition,
           parent_section_id: sectionId,
-          updated_by_id: currentUser.id,
+          updated_by_id: currentUser?.dbUser?.id,
         },
       });
 
@@ -100,7 +100,7 @@ export async function updateCardOrder(items: Item[]) {
           },
           data: {
             position: item.position,
-            updated_by_id: currentUser.id,
+            updated_by_id: currentUser?.dbUser?.id,
           },
         });
       })

@@ -85,7 +85,7 @@ export default function TextEditor({
         <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
             type="button"
             disabled={!editor.can().undo()}
@@ -96,7 +96,7 @@ export default function TextEditor({
           <Button
             variant="outline"
             type="button"
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
             disabled={!editor.can().redo()}
             onClick={() => editor.chain().focus().redo().run()}
@@ -135,7 +135,7 @@ export default function TextEditor({
             type="button"
             variant={editor.isActive("bold") ? "outline" : "ghost"}
             onClick={() => editor.chain().focus().toggleBold().run()}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             B
@@ -146,7 +146,7 @@ export default function TextEditor({
             type="button"
             variant={editor.isActive("italic") ? "outline" : "ghost"}
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             I
@@ -157,7 +157,7 @@ export default function TextEditor({
             type="button"
             variant={editor.isActive("underline") ? "outline" : "ghost"}
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full underline"
           >
             U
@@ -178,7 +178,7 @@ export default function TextEditor({
                 editor.chain().focus().setTextAlign("left").run();
               }
             }}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             {editor.isActive({ textAlign: "left" }) ? (
@@ -211,7 +211,7 @@ export default function TextEditor({
                 .setLink({ href: url })
                 .run();
             }}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             <Link className="size-4" />
@@ -222,7 +222,7 @@ export default function TextEditor({
             type="button"
             variant={editor.isActive("bulletList") ? "outline" : "ghost"}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             <List className="size-4" />
@@ -232,7 +232,7 @@ export default function TextEditor({
             type="button"
             variant={editor.isActive("orderedList") ? "outline" : "ghost"}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            size="iconSm"
+            size="icon"
             className="size-6 text-sm rounded-full"
           >
             <ListOrdered className="size-4" />

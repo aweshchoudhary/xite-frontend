@@ -147,7 +147,7 @@ export default function CreateForm({
                     <div className="shrink-0">
                       <Button
                         variant="ghost"
-                        size="iconSm"
+                        size="icon"
                         className="text-destructive hover:bg-destructive/10"
                         onClick={() => benefitsItems.remove(index)}
                         type="button"

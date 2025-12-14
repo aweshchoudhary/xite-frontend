@@ -194,7 +194,7 @@ export default function CreateForm({
                   <div>
                     <Button
                       variant="ghost"
-                      size="iconSm"
+                      size="icon"
                       className="text-destructive"
                       onClick={() => industryItems.remove(index)}
                     >
@@ -273,7 +273,7 @@ export default function CreateForm({
                   <div>
                     <Button
                       variant="ghost"
-                      size="iconSm"
+                      size="icon"
                       className="text-destructive"
                       onClick={() => designationItems.remove(index)}
                     >

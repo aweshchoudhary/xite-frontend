@@ -17,7 +17,7 @@ export async function updateSectionVisibilityAction({
       is_section_visible: isVisible,
       updated_by: {
         connect: {
-          id: currentUser.id,
+          id: currentUser?.dbUser?.id,
         },
       },
     },

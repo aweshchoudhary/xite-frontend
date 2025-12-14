@@ -23,7 +23,6 @@ import {
   MessageCircle,
   GraduationCap,
   Check,
-  X,
   TriangleAlert,
   TableOfContentsIcon,
 } from "lucide-react";
@@ -97,7 +96,7 @@ export default function CohortContent({ data }: Props) {
         <Link
           href={`${process.env.NEXT_PUBLIC_MICROSITE_PREVIEW_DOMAIN}/preview/${data.cohort_key}`}
           target="_blank"
-          className={buttonVariants({ variant: "outlineAccent" })}
+          className={buttonVariants({ variant: "outline" })}
         >
           Preview Microsite
         </Link>
@@ -200,11 +199,6 @@ type CohortCompletionStatus = {
 export const isSectionsCompleted = (
   data: GetCohort
 ): CohortCompletionStatus => {
-  const isDesignOverviewSectionCompleted =
-    !!data.overview_section &&
-    !!data.overview_section.title &&
-    !!data.overview_section.description;
-
   const isMediaSectionCompleted =
     !!data.media_section &&
     !!data.media_section.university_logo_url &&

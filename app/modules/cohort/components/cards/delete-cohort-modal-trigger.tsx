@@ -16,7 +16,7 @@ export default function DeleteCohortModalTrigger({
     <DeleteCohortModal
       recordId={cohortId}
       trigger={
-        <Button variant="destructive" size="iconSm">
+        <Button variant="destructive" size="icon">
           <TrashIcon className="size-4" />
         </Button>
       }

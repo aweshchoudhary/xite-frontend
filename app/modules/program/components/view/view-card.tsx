@@ -45,7 +45,7 @@ export default function ViewCard({ program }: { program: GetOne }) {
               <Link
                 href={`/programs/${program.id}/edit`}
                 className={cn(
-                  buttonVariants({ variant: "outline", size: "iconSm" }),
+                  buttonVariants({ variant: "outline", size: "icon" }),
                   "gap-2"
                 )}
               >
@@ -70,7 +70,7 @@ export default function ViewCard({ program }: { program: GetOne }) {
                   <Button
                     variant="outline"
                     className="text-destructive"
-                    size="iconSm"
+                    size="icon"
                   >
                     <TrashIcon className="size-3.5" />
                   </Button>
