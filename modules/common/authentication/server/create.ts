@@ -1,5 +1,5 @@
 import { PrimaryDB } from "@/modules/common/database";
-import { prisma } from "@/modules/common/database/prisma/connection";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export type CreateUserRole = PrimaryDB.UserRoleGetPayload<object>;
 
@@ -16,14 +16,14 @@ export async function upsertUserRole({
   data,
 }: CreateUserRoleInput): Promise<CreateUserRoleOutput> {
   try {
-    const existingRole = await prisma.userRole.findFirst({
+    const existingRole = await primaryDB.userRole.findFirst({
       where: {
         role: data.role,
       },
     });
 
     if (existingRole) {
-      const updatedData = await prisma.userRole.update({
+      const updatedData = await primaryDB.userRole.update({
         where: {
           id: existingRole.id,
         },
@@ -34,7 +34,7 @@ export async function upsertUserRole({
       };
     }
 
-    const newData = await prisma.userRole.create({
+    const newData = await primaryDB.userRole.create({
       data,
     });
 

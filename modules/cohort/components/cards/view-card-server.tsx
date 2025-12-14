@@ -1,9 +1,6 @@
 import { Badge } from "@/modules/common/components/ui/badge";
 import { buttonVariants } from "@/modules/common/components/ui/button";
-import {
-  Cohort,
-  WorkStatus,
-} from "@/modules/common/database/prisma/generated/prisma";
+import { Cohort, WorkStatus } from "@/modules/common/database";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/modules/common/lib/utils";
 import { format } from "date-fns";

@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
+import { ProgramType } from "@/modules/common/database";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";

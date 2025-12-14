@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
 import { redirect } from "next/navigation";
-import { prisma } from "../../database/prisma/connection";
+import { primaryDB } from "../../database/prisma/connection";
 import { UserRole } from "../../database";
 import { User } from "firebase/auth";
 
@@ -18,13 +18,13 @@ export async function loginAction(idToken: string) {
   }
 
   // 2.2 create user in prisma database if not exists
-  const user = await prisma.user.findUnique({
+  const user = await primaryDB.user.findUnique({
     where: {
       email: email,
     },
   });
   if (!user) {
-    await prisma.user.create({
+    await primaryDB.user.create({
       data: {
         email: email,
         name: decodedToken.name,
@@ -78,7 +78,7 @@ export async function getUser(): Promise<{
   const decodedToken = await adminAuth.verifySessionCookie(session.value);
 
   const user = await adminAuth.getUser(decodedToken.uid);
-  const dbUser = await prisma.user.findUnique({
+  const dbUser = await primaryDB.user.findUnique({
     where: {
       email: user.email,
     },

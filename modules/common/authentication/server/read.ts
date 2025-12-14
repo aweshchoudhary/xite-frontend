@@ -1,5 +1,5 @@
 import { PrimaryDB } from "@/modules/common/database";
-import { prisma } from "@/modules/common/database/prisma/connection";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export type GetUserRoles = PrimaryDB.UserRoleGetPayload<object>[];
 
@@ -16,7 +16,7 @@ export async function getUserRoles({
   userId,
 }: GetUserRolesInput): Promise<GetUserRolesOutput> {
   try {
-    const newData = await prisma.userRole.findMany({
+    const newData = await primaryDB.userRole.findMany({
       where: {
         users: {
           some: { id: userId },

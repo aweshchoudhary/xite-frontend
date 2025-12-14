@@ -1,7 +1,7 @@
 "use server";
 import { PrimaryDB, primaryDB } from "@/modules/common/database";
 import { MODULE_NAME } from "../contants";
-import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
+import { ProgramStatus } from "@/modules/common/database";
 import { getLoggedInUser, isUserAdmin } from "@/modules/user/utils";
 
 export type GetAllOutput = {

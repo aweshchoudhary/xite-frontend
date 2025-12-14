@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProgramType } from "@/modules/common/database/prisma/generated/prisma/client";
+import { ProgramType } from "@/modules/common/database";
 
 // Base schema (pure and extendable)
 export const programBaseSchema = z.object({

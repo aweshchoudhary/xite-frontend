@@ -1,5 +1,5 @@
 import { PrimaryDB } from "@/modules/common/database";
-import { prisma } from "@/modules/common/database/prisma/connection";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "../contants";
 import { getLoggedInUser } from "@/modules/user/utils";
@@ -11,7 +11,7 @@ export async function createOne(
 ): Promise<CreateOneOutput> {
   try {
     const user = await getLoggedInUser();
-    const newData = await prisma.enterprise.create({
+    const newData = await primaryDB.enterprise.create({
       data: {
         ...data,
         updated_by: {

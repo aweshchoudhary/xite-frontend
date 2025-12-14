@@ -7,7 +7,7 @@ import Link from "next/link";
 import { GetCohortForTable } from "@/modules/cohort/server/cohort/read";
 import { Badge } from "@/modules/common/components/ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
+import { WorkStatus } from "@/modules/common/database";
 import { format } from "date-fns";
 
 export const columns: ColumnDef<GetCohortForTable>[] = [

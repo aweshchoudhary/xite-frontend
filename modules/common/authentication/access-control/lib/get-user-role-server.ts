@@ -1,5 +1,5 @@
 "use server";
-import { UserRole } from "@/modules/common/database/prisma/generated/prisma";
+import { UserRole } from "@/modules/common/database";
 import { getUserRoles } from "../../firebase/action";
 
 export async function getUserRole(): Promise<UserRole[]> {

@@ -6,7 +6,7 @@ import {
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
-import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
+import { WorkStatus } from "@/modules/common/database";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";

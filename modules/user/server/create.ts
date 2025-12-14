@@ -1,5 +1,5 @@
 import { PrimaryDB } from "@/modules/common/database";
-import { prisma } from "@/modules/common/database/prisma/connection";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "../contants";
 
@@ -9,7 +9,7 @@ export async function createOne(
   data: PrimaryDB.UserCreateInput
 ): Promise<CreateOneOutput> {
   try {
-    const newData = await prisma.user.create({
+    const newData = await primaryDB.user.create({
       data,
     });
     if (!newData) {

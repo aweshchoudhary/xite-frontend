@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { FacultyType } from "@/modules/common/database/prisma/generated/prisma";
+import { FacultyType } from "@/modules/common/database";
 import { useEffect, useState } from "react";
 import {
   FacultyCode,
