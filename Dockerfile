@@ -1,0 +1,39 @@
+# Step 1: Build the app
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+RUN apk update && apk add --no-cache openssl
+
+COPY app/package*.json ./
+RUN npm install --force
+
+ARG EMAIL_SERVER
+ARG EMAIL_FROM
+ARG DATABASE_URL
+
+ENV EMAIL_SERVER=${EMAIL_SERVER}
+ENV EMAIL_FROM=${EMAIL_FROM}
+ENV DATABASE_URL=${DATABASE_URL}
+
+COPY app/ .
+RUN npm run prisma:generate
+RUN npm run build
+
+# Step 2: Production image
+FROM node:22-alpine
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=builder /app/package*.json ./
+RUN npm install --force --omit=dev
+
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/modules/common/database ./modules/common/database
+COPY --from=builder /app/start.sh ./start.sh
+
+CMD ["sh", "start.sh"]

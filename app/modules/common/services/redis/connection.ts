@@ -7,8 +7,8 @@ const globalForRedis = global as unknown as {
 export const redis =
   globalForRedis.redis ??
   new Redis({
-    host: process.env.REDIS_HOST,
-    port: Number(process.env.REDIS_PORT),
+    host: process.env.REDIS_SERVER_HOST,
+    port: Number(process.env.REDIS_SERVER_PORT),
     maxRetriesPerRequest: null,
   });
 
