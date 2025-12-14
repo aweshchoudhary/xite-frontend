@@ -3,9 +3,9 @@
 import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
 import { redirect } from "next/navigation";
-import { UserRecord } from "firebase-admin/auth";
 import { prisma } from "../../database/prisma/connection";
 import { UserRole } from "../../database";
+import { User } from "firebase/auth";
 
 export async function loginAction(idToken: string) {
   // 1. Verify the token with Firebase Admin
@@ -69,7 +69,7 @@ export async function logoutAction() {
 }
 
 export async function getUser(): Promise<{
-  user: UserRecord;
+  user: User;
   roles: UserRole[];
 } | null> {
   const cookieStore = await cookies();
@@ -89,7 +89,7 @@ export async function getUser(): Promise<{
 
   if (!dbUser || !dbUser.roles) return null;
 
-  return { user, roles: dbUser?.roles };
+  return { user: user.toJSON() as User, roles: dbUser?.roles };
 }
 
 export async function getUserRoles(): Promise<UserRole[]> {

@@ -13,9 +13,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../dropdown-menu";
-import { signOut } from "firebase/auth";
-import { auth } from "@/modules/common/authentication/firebase/client";
 import { useAuth } from "@/modules/common/authentication/firebase/use-auth-hook";
+import { logoutAction } from "@/modules/common/authentication/firebase/action";
 
 export default function UserProfileDropdown() {
   return <UserProfileDropdownMenu />;
@@ -43,7 +42,7 @@ const UserProfileDropdownMenu = () => {
       <DropdownMenuTrigger>
         <UserProfileAvatar />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-fit">
         <DropdownMenuLabel>
           <div>
             <h3 className="text-base font-semibold capitalize">
@@ -53,7 +52,7 @@ const UserProfileDropdownMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => signOut(auth)}
+          onClick={() => logoutAction()}
           className="bg-destructive/5"
           variant="destructive"
         >
