@@ -1,18 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "../schema";
 import { updateAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { useEffect } from "react";
@@ -20,6 +12,12 @@ import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/enterprise/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 
@@ -66,47 +64,47 @@ export default function UpdateForm({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input autoComplete="off" placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Name</FieldLabel>
+                  <Input autoComplete="off" placeholder="Name" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <TextEditor placeholder="Address" formField={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Address</FieldLabel>
+                  <TextEditor placeholder="Address" formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="note"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Note</FormLabel>
-                  <FormControl>
-                    <TextEditor placeholder="Note" formField={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Note</FieldLabel>
+                  <TextEditor placeholder="Note" formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>

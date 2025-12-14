@@ -1,15 +1,8 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -17,6 +10,12 @@ import { FormBaseProps } from "@/modules/common/components/global/form/types/for
 import { updateAction } from "./actions";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -54,41 +53,41 @@ export default function CreateForm({
       >
         <div className="space-y-2">
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Section Title: Program Overview"
-                      {...field}
-                      className="text-lg font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input
+                    placeholder="Section Title: Program Overview"
+                    {...field}
+                    className="text-lg font-medium"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
 
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div>
-                      <TextEditor
-                        placeholder="Add a comprehensive overview of your program..."
-                        defaultValue={field.value}
-                        formField={field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <div>
+                    <TextEditor
+                      placeholder="Add a comprehensive overview of your program..."
+                      defaultValue={field.value}
+                      formField={field}
+                    />
+                  </div>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>

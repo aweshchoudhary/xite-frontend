@@ -1,22 +1,20 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
 import { DatePickerField } from "@/modules/common/components/global/form/date-form-field";
 import DraggableList from "./sort-sections";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -53,55 +51,56 @@ export default function CreateForm({
       >
         <div className="grid xl:grid-cols-2 gap-6">
           <div>
-            <FormLabel className="mb-3">Visibility</FormLabel>
+            <FieldLabel className="mb-3">Visibility</FieldLabel>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <FormField
+                <Controller
                   control={form.control}
                   name="visibility_start_date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <DatePickerField formField={field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <DatePickerField formField={field} />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div>:</div>
 
               <div className="flex-1">
-                <FormField
+                <Controller
                   control={form.control}
                   name="visibility_end_date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <DatePickerField formField={field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <DatePickerField formField={field} />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
             </div>
           </div>
           <div>
-            <FormLabel className="mb-3">Custom Domain</FormLabel>
-            <FormField
+            <Controller
               control={form.control}
               name="custom_domain"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="mb-3">Custom Domain</FieldLabel>
+                  <Input
+                    placeholder="https://example.com"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>

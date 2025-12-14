@@ -1,15 +1,8 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -17,6 +10,12 @@ import { FormBaseProps } from "@/modules/common/components/global/form/types/for
 import { updateAction } from "./actions";
 import ImageSelectorField from "@/modules/common/components/global/form/image-selector-field";
 import { Separator } from "@/modules/common/components/ui/separator";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -50,45 +49,45 @@ export default function CreateForm({
       <form autoComplete="off" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex items-center gap-2">
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="university_logo_file"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <ImageSelectorField
-                      form={form}
-                      field={field}
-                      imageUrlFieldName="university_logo_url"
-                      imageFileFieldName="university_logo_file"
-                      className="size-30 mb-5 rounded-md"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <ImageSelectorField
+                    form={form}
+                    field={field}
+                    imageUrlFieldName="university_logo_url"
+                    imageFileFieldName="university_logo_file"
+                    className="size-30 mb-5 rounded-md"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="university_logo_width"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="University Logo Width"
-                      type="number"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(Number(e.target.value));
-                      }}
-                      className="w-fit text-sm"
-                      value={field?.value?.toString() ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input
+                    placeholder="University Logo Width"
+                    type="number"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value));
+                    }}
+                    className="w-fit text-sm"
+                    value={field?.value?.toString() ?? ""}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>

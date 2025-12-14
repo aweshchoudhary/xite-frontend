@@ -1,6 +1,8 @@
 "use client";
 import {
+  Controller,
   FieldArrayWithId,
+  Form,
   useForm,
   UseFormReturn,
   useFieldArray,
@@ -9,13 +11,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
@@ -24,6 +19,12 @@ import TextEditor from "@/modules/common/components/global/rich-editor/text-edit
 import { Plus } from "lucide-react";
 import { Trash } from "lucide-react";
 import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -147,40 +148,38 @@ const Item = ({ form, field, index, items }: ItemProps) => {
       </div>
 
       <div>
-        <FormField
+        <Controller
           control={form.control}
           name={`items.${index}.title`}
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Module Title"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <Input
+                placeholder="Module Title"
+                {...field}
+                value={field.value || ""}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
       </div>
       <div className="space-y-2 grid grid-cols-2 mt-5 gap-5">
         <div>
           <h2>Overview</h2>
-          <FormField
+          <Controller
             control={form.control}
             name={`items.${index}.overview`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <TextEditor
-                    placeholder="Overview"
-                    defaultValue={field.value}
-                    formField={field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <TextEditor
+                  placeholder="Overview"
+                  defaultValue={field.value}
+                  formField={field}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
         </div>
@@ -190,33 +189,33 @@ const Item = ({ form, field, index, items }: ItemProps) => {
             {curriculumObjectives.fields.map(
               (objectiveField, objectiveIndex) => (
                 <div key={objectiveField.id}>
-                  <FormField
+                  <Controller
                     control={form.control}
                     name={`items.${index}.objectives.${objectiveIndex}.description`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="flex items-center gap-2">
-                            <Input
-                              placeholder="Objective"
-                              {...field}
-                              value={field.value || ""}
-                            />
-                            <Button
-                              variant="ghost"
-                              className="text-destructive hover:text-destructive/80"
-                              type="button"
-                              size="icon"
-                              onClick={() =>
-                                curriculumObjectives.remove(objectiveIndex)
-                              }
-                            >
-                              <Trash className="size-4" />
-                            </Button>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            placeholder="Objective"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                          <Button
+                            variant="ghost"
+                            className="text-destructive hover:text-destructive/80"
+                            type="button"
+                            size="icon"
+                            onClick={() =>
+                              curriculumObjectives.remove(objectiveIndex)
+                            }
+                          >
+                            <Trash className="size-4" />
+                          </Button>
+                        </div>
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
                     )}
                   />
                 </div>
@@ -324,20 +323,18 @@ const Session = ({
       </div>
 
       <div>
-        <FormField
+        <Controller
           control={form.control}
           name={`items.${itemIndex}.sessions.${sessionIndex}.title`}
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Session Title"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <Input
+                placeholder="Session Title"
+                {...field}
+                value={field.value || ""}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
       </div>
@@ -345,20 +342,20 @@ const Session = ({
       <div className="grid grid-cols-2 gap-10">
         <div>
           <h4 className="border-b my-5 pb-3">Session Overview</h4>
-          <FormField
+          <Controller
             control={form.control}
             name={`items.${itemIndex}.sessions.${sessionIndex}.overview`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <TextEditor
-                    placeholder="Overview"
-                    defaultValue={field.value}
-                    formField={field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <TextEditor
+                  placeholder="Overview"
+                  defaultValue={field.value}
+                  formField={field}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
         </div>
@@ -366,33 +363,31 @@ const Session = ({
           <h4 className="border-b my-5 pb-3">Session Objectives</h4>
           {sessionObjectives.fields.map((objectiveField, objectiveIndex) => (
             <div key={objectiveField.id}>
-              <FormField
+              <Controller
                 control={form.control}
                 name={`items.${itemIndex}.sessions.${sessionIndex}.objectives.${objectiveIndex}.description`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          placeholder="Objective"
-                          {...field}
-                          value={field.value || ""}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            sessionObjectives.remove(objectiveIndex)
-                          }
-                          className="text-destructive hover:text-destructive/80"
-                          type="button"
-                        >
-                          <Trash className="size-4" />
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder="Objective"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => sessionObjectives.remove(objectiveIndex)}
+                        className="text-destructive hover:text-destructive/80"
+                        type="button"
+                      >
+                        <Trash className="size-4" />
+                      </Button>
+                    </div>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>

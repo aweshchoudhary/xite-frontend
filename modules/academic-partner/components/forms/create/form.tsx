@@ -1,18 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
 import { createAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Textarea } from "@/modules/common/components/ui/textarea";
 import { Button, buttonVariants } from "@/modules/common/components/ui/button";
@@ -28,6 +20,12 @@ import {
 } from "@/modules/common/components/ui/avatar";
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import { cn } from "@/modules/common/lib/utils";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<CreateSchema> {}
 
@@ -72,113 +70,113 @@ export default function CreateForm({
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="logo_file"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Logo</FormLabel>
-                  <FormControl>
-                    <Label htmlFor="image-selector">
-                      <ImageSelector
-                        setSelectedImage={(image) => {
-                          field.onChange(image);
-                        }}
-                      />
-                      <Avatar className="size-20 border">
-                        {form.watch("logo_file") && (
-                          <AvatarImage
-                            src={
-                              generatePreviewUrl(form.watch("logo_file")!) ?? ""
-                            }
-                          />
-                        )}
-                        <AvatarFallback className="uppercase">
-                          {form.watch("name")
-                            ? form.watch("name")?.slice(0, 2)
-                            : ""}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div
-                        className={cn(
-                          buttonVariants({ variant: "outline" }),
-                          "mt-2 text-xs"
-                        )}
-                      >
-                        Upload
-                      </div>
-                    </Label>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Logo</FieldLabel>
+                  <Label htmlFor="image-selector">
+                    <ImageSelector
+                      setSelectedImage={(image) => {
+                        field.onChange(image);
+                      }}
+                    />
+                    <Avatar className="size-20 border">
+                      {form.watch("logo_file") && (
+                        <AvatarImage
+                          src={
+                            generatePreviewUrl(form.watch("logo_file")!) ?? ""
+                          }
+                        />
+                      )}
+                      <AvatarFallback className="uppercase">
+                        {form.watch("name")
+                          ? form.watch("name")?.slice(0, 2)
+                          : ""}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div
+                      className={cn(
+                        buttonVariants({ variant: "outline" }),
+                        "mt-2 text-xs"
+                      )}
+                    >
+                      Upload
+                    </div>
+                  </Label>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Name</FieldLabel>
+                  <Input placeholder="Name" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="display_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Display Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Display Name"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Display Name</FieldLabel>
+                  <Input
+                    placeholder="Display Name"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           {/* <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <TextEditor formField={field} placeholder="Description" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Description</FieldLabel>
+                  <TextEditor formField={field} placeholder="Description" />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div> */}
           <div className="col-span-2">
-            <FormField
+            <Controller
               control={form.control}
               name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Address"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Address</FieldLabel>
+                  <Textarea
+                    placeholder="Address"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>

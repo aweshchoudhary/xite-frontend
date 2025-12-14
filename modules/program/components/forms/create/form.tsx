@@ -1,18 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { programCreateSchema, ProgramCreateSchema } from "../schema";
 import { createProgramAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import {
@@ -29,6 +21,12 @@ import EnterpriseSelect from "@/modules/enterprise/components/select-list";
 import { useEffect } from "react";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<ProgramCreateSchema> {}
 
@@ -85,110 +83,110 @@ export default function CreateForm({
       >
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Name</FieldLabel>
+                  <Input placeholder="Name" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="short_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Program Short Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g. Oxford SELP, MR Ross"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.setValue(
-                          "program_key",
-                          e.target.value.toLowerCase().replace(/ /g, "-")
-                        );
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Program Short Name</FieldLabel>
+                  <Input
+                    placeholder="e.g. Oxford SELP, MR Ross"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      form.setValue(
+                        "program_key",
+                        e.target.value.toLowerCase().replace(/ /g, "-")
+                      );
+                    }}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
 
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                      }}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full capitalize">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        {Object.values(ProgramType).map((type) => (
-                          <SelectItem
-                            key={type}
-                            value={type}
-                            className="capitalize"
-                          >
-                            {enumDisplay(type)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Type</FieldLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full capitalize">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      {Object.values(ProgramType).map((type) => (
+                        <SelectItem
+                          key={type}
+                          value={type}
+                          className="capitalize"
+                        >
+                          {enumDisplay(type)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
 
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="academic_partner_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Academic Partner</FormLabel>
-                  <FormControl>
-                    <AcademicPartnerSelect formField={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Academic Partner</FieldLabel>
+                  <AcademicPartnerSelect formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           {form.watch("type") === ProgramType.CUSTOM && (
             <div className="col-span-2">
-              <FormField
+              <Controller
                 control={form.control}
                 name="enterprise_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enterprise</FormLabel>
-                    <FormControl>
-                      <EnterpriseSelect formField={field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Enterprise</FieldLabel>
+                    <EnterpriseSelect formField={field} />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>

@@ -1,16 +1,8 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button, buttonVariants } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -24,6 +16,12 @@ import { Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { cn, getImageUrl } from "@/modules/common/lib/utils";
 import MicrositeAdditionalFields from "../../common/components/microsite-additional-fields-update";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -63,73 +61,70 @@ export default function CreateForm({
       >
         <div className="space-y-5">
           <h3 className="h3 font-semibold">
-            <FormField
+            <Controller
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input placeholder="Title" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </h3>
           <div className="lg:w-1/2 mx-auto">
             <div className="col-span-2 cursor-pointer!">
-              <FormField
+              <Controller
                 control={form.control}
                 name="certificate_image_file"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <FormLabel htmlFor="image-selector">
-                        <ImageSelector
-                          setSelectedImage={(image) => {
-                            setSelectedImage(image);
-                            field.onChange(image);
-                          }}
-                        />
-                        {field.value ||
-                        form.getValues("certificate_image_url") ? (
-                          <div className="w-full h-auto relative">
-                            <Image
-                              src={
-                                field.value
-                                  ? generatePreviewUrl(field.value) ?? ""
-                                  : getImageUrl(
-                                      form.getValues("certificate_image_url") ??
-                                        ""
-                                    )
-                              }
-                              alt="Certificate Image"
-                              width={500}
-                              height={500}
-                              className="w-full h-auto object-contain"
-                            />
-                            <div
-                              className={cn(
-                                buttonVariants({ variant: "default" }),
-                                "absolute bottom-2 right-2 z-40 cursor-pointer"
-                              )}
-                            >
-                              Change
-                            </div>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="image-selector">
+                      <ImageSelector
+                        setSelectedImage={(image) => {
+                          setSelectedImage(image);
+                          field.onChange(image);
+                        }}
+                      />
+                      {field.value ||
+                      form.getValues("certificate_image_url") ? (
+                        <div className="w-full h-auto relative">
+                          <Image
+                            src={
+                              field.value
+                                ? generatePreviewUrl(field.value) ?? ""
+                                : getImageUrl(
+                                    form.getValues("certificate_image_url") ??
+                                      ""
+                                  )
+                            }
+                            alt="Certificate Image"
+                            width={500}
+                            height={500}
+                            className="w-full h-auto object-contain"
+                          />
+                          <div
+                            className={cn(
+                              buttonVariants({ variant: "default" }),
+                              "absolute bottom-2 right-2 z-40 cursor-pointer"
+                            )}
+                          >
+                            Change
                           </div>
-                        ) : (
-                          <div className="aspect-video rounded-lg w-full bg-accent flex flex-col items-center justify-center">
-                            <ImageIcon className="size-14 text-muted-foreground" />
-                            <p className="text-muted-foreground">
-                              {" "}
-                              Select Image
-                            </p>
-                          </div>
-                        )}
-                      </FormLabel>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                        </div>
+                      ) : (
+                        <div className="aspect-video rounded-lg w-full bg-accent flex flex-col items-center justify-center">
+                          <ImageIcon className="size-14 text-muted-foreground" />
+                          <p className="text-muted-foreground"> Select Image</p>
+                        </div>
+                      )}
+                    </FieldLabel>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>

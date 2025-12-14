@@ -1,16 +1,8 @@
 "use client";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-  FormLabel,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -19,6 +11,12 @@ import { updateAction } from "./actions";
 import { Plus, Trash, Gift } from "lucide-react";
 import ImageSelectorField from "@/modules/common/components/global/form/image-selector-field";
 import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -61,27 +59,27 @@ export default function CreateForm({
       >
         <div className="space-y-6">
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Program Benefits"
-                      {...field}
-                      className="text-lg font-medium"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input
+                    placeholder="Program Benefits"
+                    {...field}
+                    className="text-lg font-medium"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <FormLabel>Benefits List</FormLabel>
+              <FieldLabel>Benefits List</FieldLabel>
               <Button
                 variant="outline"
                 type="button"
@@ -108,40 +106,40 @@ export default function CreateForm({
                 >
                   <div className="flex gap-4 items-center">
                     <div className="shrink-0">
-                      <FormField
+                      <Controller
                         control={form.control}
                         name={`benefits_items.${index}.icon_image_file`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <ImageSelectorField
-                                form={form}
-                                field={field}
-                                imageUrlFieldName={`benefits_items.${index}.icon_image_url`}
-                                imageFileFieldName={`benefits_items.${index}.icon_image_file`}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid}>
+                            <ImageSelectorField
+                              form={form}
+                              field={field}
+                              imageUrlFieldName={`benefits_items.${index}.icon_image_url`}
+                              imageFileFieldName={`benefits_items.${index}.icon_image_file`}
+                            />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </Field>
                         )}
                       />
                     </div>
 
                     <div className="flex-1 space-y-3">
-                      <FormField
+                      <Controller
                         control={form.control}
                         name={`benefits_items.${index}.title`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Benefit Title"
-                                value={field.value || ""}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid}>
+                            <Input
+                              {...field}
+                              placeholder="Benefit Title"
+                              value={field.value || ""}
+                            />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </Field>
                         )}
                       />
                     </div>

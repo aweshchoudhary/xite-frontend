@@ -1,15 +1,8 @@
 "use client";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -20,6 +13,12 @@ import { Plus } from "lucide-react";
 import { Trash } from "lucide-react";
 import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
 import ImageSelectorField from "@/modules/common/components/global/form/image-selector-field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -62,16 +61,16 @@ export default function CreateForm({
       >
         <div>
           <h3 className="h3 font-semibold mb-5">
-            <FormField
+            <Controller
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Program Testimonials" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input placeholder="Program Testimonials" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </h3>
@@ -86,98 +85,97 @@ export default function CreateForm({
                 >
                   <h5>Testimonial #{index + 1}</h5>
                   <div className="flex-1">
-                    <FormField
+                    <Controller
                       control={form.control}
                       name={`items.${index}.quote`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <TextEditor
-                              formField={field}
-                              placeholder="Add the best quote here"
-                              defaultValue={
-                                field.value ||
-                                '<p>"Add the best quote here"</p>'
-                              }
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <TextEditor
+                            formField={field}
+                            placeholder="Add the best quote here"
+                            defaultValue={
+                              field.value || '<p>"Add the best quote here"</p>'
+                            }
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
                       )}
                     />
                   </div>
                   <div className="flex gap-4">
                     <div>
-                      <FormField
+                      <Controller
                         control={form.control}
                         name={`items.${index}.user_image_file`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <ImageSelectorField
-                                form={form}
-                                field={field}
-                                imageUrlFieldName={`items.${index}.user_image_url`}
-                                imageFileFieldName={`items.${index}.user_image_file`}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid}>
+                            <ImageSelectorField
+                              form={form}
+                              field={field}
+                              imageUrlFieldName={`items.${index}.user_image_url`}
+                              imageFileFieldName={`items.${index}.user_image_file`}
+                            />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </Field>
                         )}
                       />
                     </div>
                     <div className="flex-1 flex gap-5 items-center">
                       <div className="flex-1">
-                        <FormField
+                        <Controller
                           control={form.control}
                           name={`items.${index}.user_name`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  placeholder="User Name"
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
+                          render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                              <Input
+                                {...field}
+                                placeholder="User Name"
+                                value={field.value || ""}
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
                           )}
                         />
                       </div>
                       <div className="flex-1">
-                        <FormField
+                        <Controller
                           control={form.control}
                           name={`items.${index}.user_designation`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  placeholder="User Designation"
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
+                          render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                              <Input
+                                {...field}
+                                placeholder="User Designation"
+                                value={field.value || ""}
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
                           )}
                         />
                       </div>
                       <div className="flex-1">
-                        <FormField
+                        <Controller
                           control={form.control}
                           name={`items.${index}.user_company`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  placeholder="User Company"
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
+                          render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                              <Input
+                                {...field}
+                                placeholder="User Company"
+                                value={field.value || ""}
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
                           )}
                         />
                       </div>

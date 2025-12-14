@@ -1,16 +1,8 @@
 "use client";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
@@ -21,6 +13,12 @@ import { Plus, Trash } from "lucide-react";
 import { Separator } from "@/modules/common/components/ui/separator";
 import ImageSelectorField from "@/modules/common/components/global/form/image-selector-field";
 import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -68,16 +66,16 @@ export default function CreateForm({
       >
         <div>
           <h3 className="text-lg font-semibold">
-            <FormField
+            <Controller
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input placeholder="Title" {...field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </h3>
@@ -86,110 +84,110 @@ export default function CreateForm({
         <div className="space-y-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
           <div className="space-y-3 p-3 border rounded-lg">
             <h3 className="text-lg font-semibold">
-              <FormField
+              <Controller
                 control={form.control}
                 name="work_experience_item.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Input placeholder="Title" {...field} />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </h3>
             <div>
               <div className="col-span-2 cursor-pointer!">
-                <FormField
+                <Controller
                   control={form.control}
                   name="work_experience_item.chart_image_file"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div>
-                          <ImageSelectorField
-                            form={form}
-                            field={field}
-                            imageUrlFieldName="work_experience_item.chart_image_url"
-                            imageFileFieldName="work_experience_item.chart_image_file"
-                            className="h-auto! aspect-video w-full rounded-lg! overflow-hidden"
-                            imageClassName="size-full object-cover rounded-none!"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div>
+                        <ImageSelectorField
+                          form={form}
+                          field={field}
+                          imageUrlFieldName="work_experience_item.chart_image_url"
+                          imageFileFieldName="work_experience_item.chart_image_file"
+                          className="h-auto! aspect-video w-full rounded-lg! overflow-hidden"
+                          imageClassName="size-full object-cover rounded-none!"
+                        />
+                      </div>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
             </div>
             <div>
-              <FormField
+              <Controller
                 control={form.control}
                 name="work_experience_item.description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <TextEditor
-                        placeholder="Description"
-                        defaultValue={field.value}
-                        formField={field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <TextEditor
+                      placeholder="Description"
+                      defaultValue={field.value}
+                      formField={field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>
           </div>
           <div className="space-y-3 p-3 border rounded-lg">
             <h3 className="text-lg font-semibold">
-              <FormField
+              <Controller
                 control={form.control}
                 name="industry_item.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Title"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          form.setValue(
-                            "industry_item.data_list.title",
-                            e.target.value
-                          );
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Input
+                      placeholder="Title"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.setValue(
+                          "industry_item.data_list.title",
+                          e.target.value
+                        );
+                      }}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </h3>
             <Separator />
             <div className="space-y-2">
               <div>
-                <FormLabel>Industries List</FormLabel>
+                <FieldLabel>Industries List</FieldLabel>
               </div>
               {industryItems.fields.map((field, index) => (
                 <div key={field.id} className="flex gap-2 items-center">
                   <div className="flex-1">
-                    <FormField
+                    <Controller
                       control={form.control}
                       name={`industry_item.data_list.items.${index}.title`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              placeholder="Industry Title"
-                              value={field.value || ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <Input
+                            {...field}
+                            placeholder="Industry Title"
+                            value={field.value || ""}
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
                       )}
                     />
                   </div>
@@ -224,51 +222,51 @@ export default function CreateForm({
           </div>
           <div className="space-y-3 p-3 border rounded-lg">
             <h3 className="text-lg font-semibold">
-              <FormField
+              <Controller
                 control={form.control}
                 name="designation_item.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Title"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          form.setValue(
-                            "designation_item.data_list.title",
-                            e.target.value
-                          );
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Input
+                      placeholder="Title"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.setValue(
+                          "designation_item.data_list.title",
+                          e.target.value
+                        );
+                      }}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </h3>
             <Separator />
             <div className="space-y-2">
               <div>
-                <FormLabel>Designations List</FormLabel>
+                <FieldLabel>Designations List</FieldLabel>
               </div>
               {designationItems.fields.map((field, index) => (
                 <div key={field.id} className="flex gap-2 items-center">
                   <div className="flex-1">
-                    <FormField
+                    <Controller
                       control={form.control}
                       name={`designation_item.data_list.items.${index}.title`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              placeholder="Designation Title"
-                              value={field.value || ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <Input
+                            {...field}
+                            placeholder="Designation Title"
+                            value={field.value || ""}
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
                       )}
                     />
                   </div>
@@ -303,40 +301,40 @@ export default function CreateForm({
           </div>
           <div className="space-y-3 p-3 border rounded-lg">
             <h3 className="text-lg font-semibold">
-              <FormField
+              <Controller
                 control={form.control}
                 name="company_item.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <Input placeholder="Title" {...field} />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </h3>
             <div>
               <div className="col-span-2 cursor-pointer!">
-                <FormField
+                <Controller
                   control={form.control}
                   name="company_item.image_file"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="relative">
-                          <ImageSelectorField
-                            form={form}
-                            field={field}
-                            imageUrlFieldName="company_item.image_url"
-                            imageFileFieldName="company_item.image_file"
-                            className="h-auto! aspect-video w-full rounded-lg! overflow-hidden"
-                            imageClassName="size-full object-cover rounded-none!"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="relative">
+                        <ImageSelectorField
+                          form={form}
+                          field={field}
+                          imageUrlFieldName="company_item.image_url"
+                          imageFileFieldName="company_item.image_file"
+                          className="h-auto! aspect-video w-full rounded-lg! overflow-hidden"
+                          imageClassName="size-full object-cover rounded-none!"
+                        />
+                      </div>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>

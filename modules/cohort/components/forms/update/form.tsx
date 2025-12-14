@@ -1,18 +1,10 @@
 "use client";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "../schema";
 import { updateCohortAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { useEffect, useState } from "react";
@@ -24,6 +16,12 @@ import { FormUpdateBaseProps } from "@/modules/common/components/global/form/typ
 import ProgramSelect from "@/modules/program/components/program-select-list";
 import { GetOne } from "@/modules/program/server/read";
 import { getOne } from "@/modules/program/server/read";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 
@@ -106,25 +104,25 @@ export default function UpdateForm({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         {!form.watch("program_id") ? (
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="program_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Program</FormLabel>
-                  <FormControl>
-                    <ProgramSelect
-                      onChange={(value) => {
-                        field.onChange(value);
-                        setProgramId(value);
-                      }}
-                      onObjectChange={(value) => {
-                        setProgramId(value.id);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Program</FieldLabel>
+                  <ProgramSelect
+                    onChange={(value) => {
+                      field.onChange(value);
+                      setProgramId(value);
+                    }}
+                    onObjectChange={(value) => {
+                      setProgramId(value.id);
+                    }}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
@@ -133,7 +131,7 @@ export default function UpdateForm({
         {form.watch("program_id") ? (
           <div>
             <div className="mb-10">
-              <FormLabel className="mb-2">Selected Program</FormLabel>
+              <FieldLabel className="mb-2">Selected Program</FieldLabel>
               <Input
                 value={program?.name}
                 readOnly
@@ -142,167 +140,163 @@ export default function UpdateForm({
             </div>
             <div className="grid lg:grid-cols-3 grid-cols-2 gap-x-4 gap-y-7">
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Name"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Name</FieldLabel>
+                      <Input
+                        type="text"
+                        placeholder="Name"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="format"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Format</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Online, In-Class, Hybrid"
-                          {...field}
-                          value={field.value ?? ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Format</FieldLabel>
+                      <Input
+                        type="text"
+                        placeholder="Online, In-Class, Hybrid"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="duration"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Duration</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="2 weeks, 6 months, etc."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Duration</FieldLabel>
+                      <Input
+                        type="text"
+                        placeholder="2 weeks, 6 months, etc."
+                        {...field}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Location</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Oxford, Dubai, New York, etc."
-                          {...field}
-                          value={field?.value ?? ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Location</FieldLabel>
+                      <Input
+                        type="text"
+                        placeholder="Oxford, Dubai, New York, etc."
+                        {...field}
+                        value={field?.value ?? ""}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
 
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="start_date"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>Cohort Dates (Start and End)</FormLabel>
-                      <FormControl>
-                        <DateRangePickerField form={form} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field>
+                      <FieldLabel>Cohort Dates (Start and End)</FieldLabel>
+                      <DateRangePickerField form={form} />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div>
-                <FormField
+                <Controller
                   control={form.control}
                   name="max_cohort_size"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Max Cohort Size (Optional)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min={0}
-                          {...field}
-                          value={field?.value?.toString() || ""}
-                          placeholder="Max Cohort Size"
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <Field>
+                      <FieldLabel>Max Cohort Size (Optional)</FieldLabel>
+                      <Input
+                        type="number"
+                        min={0}
+                        {...field}
+                        value={field?.value?.toString() || ""}
+                        placeholder="Max Cohort Size"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
                   )}
                 />
               </div>
               <div className="col-span-2">
-                <FormLabel className="mb-3">
-                  Max Cohort Size (Optional)
-                </FormLabel>
-                <div className="space-y-2">
+                <FieldLabel className="mb-2">Fees</FieldLabel>
+                <div className="space-y-2 p-5 rounded-lg border-2 border-dashed bg-background">
                   {feeArray.fields.map((field, index) => (
                     <div key={field.id} className="flex gap-2 items-end">
                       <div className="flex-1">
-                        <FormField
+                        <Controller
                           control={form.control}
                           name={`fees.${index}.amount`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Fee</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  {...field}
-                                  placeholder="Fee"
-                                  value={field.value?.toString() || ""}
-                                  onChange={(e) =>
-                                    field.onChange(Number(e.target.value))
-                                  }
-                                  min={0}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
+                          render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                              <FieldLabel>Fee</FieldLabel>
+                              <Input
+                                type="number"
+                                {...field}
+                                placeholder="Fee"
+                                value={field.value?.toString() || ""}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
+                                min={0}
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
                           )}
                         />
                       </div>
                       <div className="flex-1">
-                        <FormField
+                        <Controller
                           control={form.control}
                           name={`fees.${index}.currency_code`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Currency</FormLabel>
-                              <FormControl>
-                                <CurrencySelect formField={field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
+                          render={({ field, fieldState }) => (
+                            <Field>
+                              <FieldLabel>Currency</FieldLabel>
+                              <CurrencySelect formField={field} />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
                           )}
                         />
                       </div>

@@ -1,16 +1,8 @@
 "use client";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { Controller, Form, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
@@ -23,6 +15,12 @@ import {
 import { HexColorPicker } from "react-colorful";
 import { readableColor } from "polished";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -59,50 +57,50 @@ export default function CreateForm({
       >
         <div className="grid xl:grid-cols-1 gap-4">
           <div>
-            <FormLabel className="mb-3">Font Name</FormLabel>
-            <FormField
+            <Controller
               control={form.control}
               name="font_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Arial, Helvetica, sans-serif"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="mb-3">Font Name</FieldLabel>
+                  <Input
+                    placeholder="Arial, Helvetica, sans-serif"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormLabel className="mb-3">Border Radius (px)</FormLabel>
-            <FormField
+            <Controller
               control={form.control}
               name="default_border_radius"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="0"
-                      {...field}
-                      value={field.value ?? ""}
-                      onChange={(e) => {
-                        field.onChange(Number(e.target.value) || 0);
-                      }}
-                      min={0}
-                      type="number"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="mb-3">Border Radius (px)</FieldLabel>
+                  <Input
+                    placeholder="0"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value) || 0);
+                    }}
+                    min={0}
+                    type="number"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormLabel className="mb-3">Colors</FormLabel>
+            <FieldLabel className="mb-3">Colors</FieldLabel>
             <div className="flex flex-wrap gap-4">
               <FormColorPicker
                 form={form}

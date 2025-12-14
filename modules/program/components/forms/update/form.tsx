@@ -1,18 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { programUpdateSchema, ProgramUpdateSchema } from "../schema";
 import { updateProgramAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { useEffect } from "react";
@@ -30,6 +22,12 @@ import AcademicPartnerSelect from "../../academic-partner-list";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import EnterpriseSelect from "@/modules/enterprise/components/select-list";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<ProgramUpdateSchema> {}
 
@@ -74,132 +72,132 @@ export default function UpdateForm({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <div className="grid xl:grid-cols-3 grid-cols-2 gap-4">
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      autoComplete="off"
-                      placeholder="Course Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Name</FieldLabel>
+                  <Input
+                    autoComplete="off"
+                    placeholder="Course Name"
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="short_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Short Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      autoComplete="off"
-                      placeholder="Short Name"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.setValue(
-                          "program_key",
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Short Name</FieldLabel>
+                  <Input
+                    autoComplete="off"
+                    placeholder="Short Name"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      form.setValue(
+                        "program_key",
 
-                          // remove special characters except space and hyphen
-                          e.target.value
-                            .toLowerCase()
-                            .replace(/ /g, "-")
-                            .replace(/[^a-z0-9\s-]/g, "")
-                        );
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                        // remove special characters except space and hyphen
+                        e.target.value
+                          .toLowerCase()
+                          .replace(/ /g, "-")
+                          .replace(/[^a-z0-9\s-]/g, "")
+                      );
+                    }}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="program_key"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Program Key</FormLabel>
-                  <FormControl>
-                    <Input
-                      autoComplete="off"
-                      placeholder="Program Key"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Program Key</FieldLabel>
+                  <Input
+                    autoComplete="off"
+                    placeholder="Program Key"
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Program Type</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="capitalize w-full">
-                        <SelectValue placeholder="Select Program Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.values(ProgramType).map((type) => (
-                          <SelectItem
-                            className="capitalize w-full"
-                            key={type}
-                            value={type}
-                          >
-                            {enumDisplay(type)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Program Type</FieldLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="capitalize w-full">
+                      <SelectValue placeholder="Select Program Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.values(ProgramType).map((type) => (
+                        <SelectItem
+                          className="capitalize w-full"
+                          key={type}
+                          value={type}
+                        >
+                          {enumDisplay(type)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <div>
-            <FormField
+            <Controller
               control={form.control}
               name="academic_partner_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Academic Partner</FormLabel>
-                  <FormControl>
-                    <AcademicPartnerSelect formField={field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Academic Partner</FieldLabel>
+                  <AcademicPartnerSelect formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           {form.watch("type") === ProgramType.CUSTOM && (
             <div>
-              <FormField
+              <Controller
                 control={form.control}
                 name="enterprise_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enterprise</FormLabel>
-                    <FormControl>
-                      <EnterpriseSelect formField={field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Enterprise</FieldLabel>
+                    <EnterpriseSelect formField={field} />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>

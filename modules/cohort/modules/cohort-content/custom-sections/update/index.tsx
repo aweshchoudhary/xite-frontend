@@ -1,15 +1,14 @@
 "use client";
-import { UseFormReturn, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  Form,
+  UseFormReturn,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/modules/common/components/ui/form";
 import { Input } from "@/modules/common/components/ui/input";
 import { Button } from "@/modules/common/components/ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
@@ -34,6 +33,12 @@ import {
 } from "@/modules/cohort/server/cohort/read";
 import { useEffect, useState } from "react";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {
   cohortData: GetCohort;
@@ -247,59 +252,55 @@ export const SectionFormField = ({
       <div className="flex flex-col md:flex-row gap-4">
         {/* Banner image */}
         <div className="shrink-0 md:w-1/4 w-full">
-          <FormField
+          <Controller
             control={form.control}
             name={`sections.${index}.banner_image_file`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="relative">
-                    <ImageSelectorField
-                      form={form}
-                      field={field}
-                      imageUrlFieldName={`sections.${index}.banner_image_url`}
-                      imageFileFieldName={`sections.${index}.banner_image_file`}
-                      className="size-full aspect-square rounded-md"
-                      imageClassName="size-full object-contain rounded-none"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <div className="relative">
+                  <ImageSelectorField
+                    form={form}
+                    field={field}
+                    imageUrlFieldName={`sections.${index}.banner_image_url`}
+                    imageFileFieldName={`sections.${index}.banner_image_file`}
+                    className="size-full aspect-square rounded-md"
+                    imageClassName="size-full object-contain rounded-none"
+                  />
+                  <div className="absolute bottom-0 right-0 p-2">
+                    <Controller
+                      control={form.control}
+                      name={`sections.${index}.banner_image_position`}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <Select
+                            value={field.value || ""}
+                            onValueChange={(value) => field.onChange(value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Position" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["left", "right", "center", "top", "bottom"].map(
+                                (pos) => (
+                                  <SelectItem key={pos} value={pos}>
+                                    {pos[0].toUpperCase() + pos.slice(1)}
+                                  </SelectItem>
+                                )
+                              )}
+                            </SelectContent>
+                          </Select>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
                     />
-                    <div className="absolute bottom-0 right-0 p-2">
-                      <FormField
-                        control={form.control}
-                        name={`sections.${index}.banner_image_position`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Select
-                                value={field.value || ""}
-                                onValueChange={(value) => field.onChange(value)}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Position" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {[
-                                    "left",
-                                    "right",
-                                    "center",
-                                    "top",
-                                    "bottom",
-                                  ].map((pos) => (
-                                    <SelectItem key={pos} value={pos}>
-                                      {pos[0].toUpperCase() + pos.slice(1)}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                </div>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
         </div>
@@ -308,101 +309,99 @@ export const SectionFormField = ({
         <div className="space-y-3 flex-1">
           <div className="flex gap-5">
             {/* Position (After section) */}
-            <FormField
+            <Controller
               control={form.control}
               name={`sections.${index}.after_section_id`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select
-                      value={afterSectionId || field.value || ""}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setAfterSectionId(value);
-                      }}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Section Position" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="first">First Section</SelectItem>
-                        {cohortSections
-                          .sort(
-                            (a, b) => a.section_position - b.section_position
-                          )
-                          .map((section) =>
-                            section.section_id !==
-                            currentSectionOrder?.section_id ? (
-                              <SelectItem
-                                key={section.section_id}
-                                value={section.section_id}
-                              >
-                                After - {section?.data?.title}
-                              </SelectItem>
-                            ) : null
-                          )}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Select
+                    value={afterSectionId || field.value || ""}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setAfterSectionId(value);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Section Position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="first">First Section</SelectItem>
+                      {cohortSections
+                        .sort((a, b) => a.section_position - b.section_position)
+                        .map((section) =>
+                          section.section_id !==
+                          currentSectionOrder?.section_id ? (
+                            <SelectItem
+                              key={section.section_id}
+                              value={section.section_id}
+                            >
+                              After - {section?.data?.title}
+                            </SelectItem>
+                          ) : null
+                        )}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
 
             {/* Position (After section) */}
-            <FormField
+            <Controller
               control={form.control}
               name={`sections.${index}.background`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FormColorPicker
-                      form={form}
-                      textColorName={`sections.${index}.background.text_color`}
-                      backgroundColorName={`sections.${index}.background.background_color`}
-                      label="Section Color Scheme"
-                      isBackground={true}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FormColorPicker
+                    form={form}
+                    textColorName={`sections.${index}.background.text_color`}
+                    backgroundColorName={`sections.${index}.background.background_color`}
+                    label="Section Color Scheme"
+                    isBackground={true}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
 
           {/* Title */}
-          <FormField
+          <Controller
             control={form.control}
             name={`sections.${index}.title`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder="Section Title: Program Overview"
-                    {...field}
-                    className="text-lg font-medium"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <Input
+                  placeholder="Section Title: Program Overview"
+                  {...field}
+                  className="text-lg font-medium"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
 
           {/* Description */}
-          <FormField
+          <Controller
             control={form.control}
             name={`sections.${index}.description`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <TextEditor
-                    placeholder="Add a comprehensive overview of your program..."
-                    defaultValue={field.value}
-                    formField={field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <TextEditor
+                  placeholder="Add a comprehensive overview of your program..."
+                  defaultValue={field.value}
+                  formField={field}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
 

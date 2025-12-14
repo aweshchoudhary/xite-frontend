@@ -1,14 +1,14 @@
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { Button } from "@/modules/common/components/ui/button";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/modules/common/components/ui/form";
 import { Label } from "@/modules/common/components/ui/label";
 import { useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/ui/field";
 
 type Props = {
   form: UseFormReturn<any>;
@@ -76,46 +76,46 @@ export default function MicrositeAdditionalFields({
       </div>
       {showAdditionalFields.top_desc && (
         <div className="mb-6">
-          <Label className="mb-2">Top Description</Label>
-          <FormField
+          <Controller
             control={form.control}
             name={top_desc_field_name}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div>
-                    <TextEditor
-                      placeholder="Add a top description"
-                      defaultValue={field.value}
-                      formField={field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel className="mb-2">Top Description</FieldLabel>
+                <div>
+                  <TextEditor
+                    placeholder="Add a top description"
+                    defaultValue={field.value}
+                    formField={field}
+                  />
+                </div>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
         </div>
       )}
       {showAdditionalFields.bottom_desc && (
         <div>
-          <Label className="mb-2">Bottom Description</Label>
-          <FormField
+          <Controller
             control={form.control}
             name={bottom_desc_field_name}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div>
-                    <TextEditor
-                      placeholder="Add a bottom description"
-                      defaultValue={field.value}
-                      formField={field}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel className="mb-2">Bottom Description</FieldLabel>
+                <div>
+                  <TextEditor
+                    placeholder="Add a bottom description"
+                    defaultValue={field.value}
+                    formField={field}
+                  />
+                </div>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
         </div>

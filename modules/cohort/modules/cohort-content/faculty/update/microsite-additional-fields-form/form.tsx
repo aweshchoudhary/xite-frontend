@@ -1,9 +1,8 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import { Form } from "@/modules/common/components/ui/form";
 import { Button } from "@/modules/common/components/ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";

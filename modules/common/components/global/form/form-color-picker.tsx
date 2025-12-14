@@ -3,18 +3,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { Button } from "../../ui/button";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
 import { HexColorPicker } from "react-colorful";
 import { readableColor } from "polished";
 import { Input } from "../../ui/input";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "../../ui/field";
 
 // Common Form Color Picker Field
 const FormColorPicker = ({
@@ -48,57 +47,19 @@ const FormColorPicker = ({
           <div className="grid lg:grid-cols-2 gap-10">
             {isBackground && (
               <div>
-                <FormLabel className="mb-5">Background Color</FormLabel>
-                <FormField
+                <FieldLabel className="mb-5">Background Color</FieldLabel>
+                <Controller
                   control={form.control}
                   name={backgroundColorName}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div>
-                          <HexColorPicker
-                            color={field.value}
-                            onChange={(value) => {
-                              field.onChange(value);
-                              form.setValue(
-                                textColorName,
-                                readableColor(value)
-                              );
-                            }}
-                            className="w-full"
-                          />
-                          <Input
-                            placeholder="Hex Code"
-                            value={field.value}
-                            onChange={(e) => {
-                              field.onChange(e.target.value);
-                              form.setValue(
-                                textColorName,
-                                readableColor(e.target.value)
-                              );
-                            }}
-                            className="mt-2 w-full"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-            <div>
-              <FormLabel className="mb-5">Text Color</FormLabel>
-              <FormField
-                control={form.control}
-                name={textColorName}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
                       <div>
                         <HexColorPicker
                           color={field.value}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            form.setValue(textColorName, readableColor(value));
+                          }}
                           className="w-full"
                         />
                         <Input
@@ -106,13 +67,48 @@ const FormColorPicker = ({
                           value={field.value}
                           onChange={(e) => {
                             field.onChange(e.target.value);
+                            form.setValue(
+                              textColorName,
+                              readableColor(e.target.value)
+                            );
                           }}
                           className="mt-2 w-full"
                         />
                       </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </div>
+            )}
+            <div>
+              <FieldLabel className="mb-5">Text Color</FieldLabel>
+              <Controller
+                control={form.control}
+                name={textColorName}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <div>
+                      <HexColorPicker
+                        color={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                      />
+                      <Input
+                        placeholder="Hex Code"
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.value);
+                        }}
+                        className="mt-2 w-full"
+                      />
+                    </div>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
             </div>
