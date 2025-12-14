@@ -5,9 +5,9 @@ import { adminAuth } from "./auth";
 import { redirect } from "next/navigation";
 import { primaryDB } from "../../database/prisma/connection";
 import { UserRole } from "../../database/prisma/generated/prisma";
-import { User } from "firebase/auth";
 import { getCache, setCache } from "../../services/redis/controllers";
 import { User as DbUser } from "../../database/prisma/generated/prisma";
+import { UserRecord } from "firebase-admin/auth";
 
 export async function loginAction(idToken: string) {
   // 1. Verify the token with Firebase Admin
@@ -72,7 +72,7 @@ export async function logoutAction() {
 
 export async function getUser(): Promise<{
   dbUser: DbUser;
-  user: User;
+  user: UserRecord;
   roles: UserRole[];
 } | null> {
   const cookieStore = await cookies();
@@ -89,7 +89,7 @@ export async function getUser(): Promise<{
 
   // 3️⃣ Check Redis
   const cached = await getCache<{
-    user: User;
+    user: UserRecord;
     roles: UserRole[];
     dbUser: DbUser;
   }>(cacheKey);
@@ -110,7 +110,7 @@ export async function getUser(): Promise<{
   if (!dbUser || !dbUser.roles) return null;
 
   const payload = {
-    user: user.toJSON() as User,
+    user: user.toJSON() as UserRecord,
     roles: dbUser.roles,
     dbUser: dbUser,
   };

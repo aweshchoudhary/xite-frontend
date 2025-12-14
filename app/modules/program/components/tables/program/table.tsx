@@ -40,7 +40,7 @@ export default async function ProgramTable({
       {statuses.map((value) => (
         <Badge
           key={value}
-          variant={value === status ? "primaryAccent" : "border"}
+          variant={value === status ? "success" : "outline"}
           className="capitalize cursor-pointer"
         >
           <Link href={`/programs?status=${value}`}>

@@ -1,18 +1,11 @@
 "use client";
 
-import { Plus, Settings } from "lucide-react";
-import { Button, buttonVariants } from "../../ui/button";
-import UserProfileDropdown from "../../ui/user-profile-dropdown";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import Link from "next/link";
-import { links } from "../sidebar/links";
 import { cn } from "@/modules/common/lib/utils";
 import MainBanner from "@/modules/dashboard/components/banners/main-banner";
+import Link from "next/link";
+import { buttonVariants } from "../../ui/button";
+import { Settings } from "lucide-react";
+import UserProfileDropdown from "../../ui/user-profile-dropdown";
 
 export default function PageHeader() {
   return (
@@ -32,23 +25,3 @@ export default function PageHeader() {
     </div>
   );
 }
-const CreateDropdown = () => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outlineAccent" size="sm">
-          <Plus className="size-5" /> New
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {links.map((link) => (
-          <DropdownMenuItem asChild key={link.title}>
-            <Link className="flex items-center gap-2" href={`${link.url}/new`}>
-              <link.icon className="h-4 w-4" /> <span>{link.title}</span>
-            </Link>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};

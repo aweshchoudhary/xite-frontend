@@ -1,5 +1,5 @@
 "use server";
-import { primaryDB } from "../database";
+import { primaryDB } from "../database/prisma/connection";
 
 type ReadProps = {
   query: string;

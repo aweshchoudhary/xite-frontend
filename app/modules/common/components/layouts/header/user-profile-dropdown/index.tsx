@@ -12,24 +12,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/modules/common/components/ui/dropdown-menu";
-import { useSession } from "next-auth/react";
 import { getImageUrl } from "@/modules/common/lib/utils";
+import { useAuth } from "@/modules/common/authentication/firebase/use-auth-hook";
 
 export default function UserProfileDropdown() {
   return <UserProfileDropdownMenu />;
 }
 
 export const UserProfileAvatar = () => {
-  const session = useSession();
+  const session = useAuth();
   return (
     <div>
       <Avatar>
-        {session.data?.user?.image && (
-          <AvatarImage src={getImageUrl(session.data?.user?.image)} />
+        {session.user?.photoURL && (
+          <AvatarImage src={getImageUrl(session.user?.photoURL)} />
         )}
         <AvatarFallback>
-          {session.data?.user?.name?.split(" ")[0]?.charAt(0)}
-          {session.data?.user?.name?.split(" ")[1]?.charAt(0)}
+          {session.user?.displayName?.split(" ")[0]?.charAt(0)}
+          {session.user?.displayName?.split(" ")[1]?.charAt(0)}
         </AvatarFallback>
       </Avatar>
     </div>
@@ -37,7 +37,7 @@ export const UserProfileAvatar = () => {
 };
 
 const UserProfileDropdownMenu = () => {
-  const session = useSession();
+  const session = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -47,9 +47,9 @@ const UserProfileDropdownMenu = () => {
         <DropdownMenuLabel>
           <div>
             <h3 className="text-base font-semibold capitalize">
-              {session.data?.user?.name}
+              {session.user?.displayName}
             </h3>
-            <p className="mb-2">{session.data?.user?.email}</p>
+            <p className="mb-2">{session.user?.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuItem className="bg-destructive/5" variant="destructive">

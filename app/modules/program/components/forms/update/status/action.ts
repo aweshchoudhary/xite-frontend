@@ -2,7 +2,7 @@
 import { createCohort } from "@/modules/cohort/server/cohort/create";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/program/contants";
 import { updateOne } from "@/modules/program/server/update";
-import { revalidatePath, unstable_expireTag as expireTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function updateStatusAction(id: string) {
   try {
@@ -31,7 +31,7 @@ export async function updateStatusAction(id: string) {
     revalidatePath(MODULE_PATH);
 
     // remove next cache
-    expireTag("program-single", "programs-list");
+    revalidateTag("program-single", "programs-list");
 
     return { data };
   } catch (error) {

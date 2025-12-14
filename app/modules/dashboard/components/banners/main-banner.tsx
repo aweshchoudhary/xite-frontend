@@ -1,5 +1,6 @@
 "use client";
-import OptimizedImage from "@/modules/common/components/ui/optimized-image";
+
+import Image from "next/image";
 
 export default function MainBanner() {
   return (
@@ -7,7 +8,7 @@ export default function MainBanner() {
       <div className="relative overflow-hidden rounded-lg px-6 py-3 bg-sidebar shadow">
         {/* Foreground content */}
         <div className="relative z-10 flex items-end gap-3 banner-fade-in-up">
-          <OptimizedImage
+          <Image
             src="/logo.png"
             alt="XED logo"
             className="w-[90px] dark:brightness-150 h-auto"
@@ -15,8 +16,6 @@ export default function MainBanner() {
             height={120}
             priority
             quality={90}
-            sizes="120px"
-            placeholder="blur"
           />
           <h2 className="h3 leading-none tracking-tight text-foreground text-balance">
             XED Integrated Transformation Engine
@@ -25,15 +24,13 @@ export default function MainBanner() {
 
         {/* Decorative X on the right */}
         <div className="absolute top-1/2 right-2 -translate-y-1/2 z-0">
-          <OptimizedImage
+          <Image
             src="/x-logo.png"
             alt="decorative x"
             className="w-[80px] h-auto opacity-50 dark:brightness-150"
             width={120}
             height={120}
-            sizes="120px"
             quality={75}
-            placeholder="blur"
           />
         </div>
 

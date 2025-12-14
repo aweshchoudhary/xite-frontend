@@ -1,5 +1,4 @@
 "use client";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
@@ -36,7 +35,6 @@ export const columns: ColumnDef<GetOne>[] = [
       return (
         <Badge
           className="capitalize"
-          size="sm"
           variant={row.original.status === "ACTIVE" ? "success" : "outline"}
         >
           {enumDisplay(row.original.status)}
@@ -96,7 +94,7 @@ export const columns: ColumnDef<GetOne>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Badge size="sm" className="capitalize" variant="outline">
+        <Badge className="capitalize" variant="outline">
           {enumDisplay(row.original.type)}
         </Badge>
       );

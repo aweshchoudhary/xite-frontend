@@ -41,7 +41,7 @@ const validateProgramTypeFields = (
 export const programCreateSchema = programBaseSchema.superRefine(
   (data, ctx) => {
     const issues = validateProgramTypeFields(data);
-    issues.forEach((issue) => ctx.addIssue(issue));
+    issues.forEach((issue) => ctx.addIssue(issue as any));
   }
 );
 
@@ -55,7 +55,7 @@ export const programUpdateBaseSchema = programBaseSchema
 export const programUpdateSchema = programUpdateBaseSchema.superRefine(
   (data, ctx) => {
     const issues = validateProgramTypeFields(data);
-    issues.forEach((issue) => ctx.addIssue(issue));
+    issues.forEach((issue) => ctx.addIssue(issue as any));
   }
 );
 

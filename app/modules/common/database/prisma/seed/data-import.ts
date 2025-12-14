@@ -3,7 +3,8 @@ import academicPartnersData from "./data-academic-partners.json";
 import facultyData from "./data-faculty.json";
 import programsData from "./data-programs.json";
 import cohortsData from "./data-cohorts.json";
-import { primaryDB, ProgramStatus, ProgramType, WorkStatus } from "../..";
+import { primaryDB } from "../connection";
+import { ProgramStatus, ProgramType, WorkStatus } from "../generated/prisma";
 import { main as importSubjectsCodes } from "./import-subjects-codes";
 // currency json
 import currencyData from "@/modules/common/lib/currencies.json";
