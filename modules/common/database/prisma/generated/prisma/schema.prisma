@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum WorkStatus {
@@ -761,7 +760,7 @@ enum Role {
 
 model UserRole {
   id         String   @id @default(uuid())
-  role       Role     @default(User)
+  role       String   @unique @default("User")
   users      User[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

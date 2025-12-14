@@ -1,9 +1,8 @@
 "use server";
 import { UserRole } from "@/modules/common/database/prisma/generated/prisma";
-import { auth } from "../../authjs/connection";
+import { getUserRoles } from "../../firebase/action";
 
 export async function getUserRole(): Promise<UserRole[]> {
-  return [
-    { role: "Admin", id: "1", created_at: new Date(), updated_at: new Date() },
-  ];
+  const roles = await getUserRoles();
+  return roles ?? [];
 }

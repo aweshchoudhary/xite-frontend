@@ -1,20 +1,23 @@
 "use server";
-import { auth } from "@/modules/common/authentication";
+import {
+  getUser,
+  getUserRoles,
+} from "@/modules/common/authentication/firebase/action";
 import { primaryDB } from "@/modules/common/database";
 
 export const isUserAdmin = async () => {
-  const session = await auth();
-  return session?.user?.roles?.some((role) => role.role === "Admin");
+  const session = await getUserRoles();
+  return session?.some((role) => role.role === "Admin");
 };
 
 export const getLoggedInUser = async () => {
-  const session = await auth();
+  const user = await getUser();
 
-  if (!session?.user) {
+  if (!user?.user) {
     throw new Error("Unauthorized: No user found");
   }
 
-  return session?.user;
+  return user;
 };
 
 export const checkUserOwnsCohort = async (cohortId: string) => {
@@ -28,5 +31,5 @@ export const checkUserOwnsCohort = async (cohortId: string) => {
       ownerId: true,
     },
   });
-  return cohort?.ownerId === user.id;
+  return cohort?.ownerId === user?.user?.uid;
 };

@@ -11,16 +11,11 @@ interface Props {
 }
 
 export default function PermissionGate({ resource, action, children }: Props) {
-  const user = useAuth();
+  const { user, roles } = useAuth();
 
-  if (!user) return null;
+  if (!user || roles.length === 0) return null;
 
-  // const roles = user?.roles;
-
-  // if (roles?.length === 0) return null;
-
-  // const allowed = hasPermission(roles, resource, action);
-  const allowed = true;
+  const allowed = hasPermission(roles, resource, action);
 
   return allowed ? <>{children}</> : null;
 }
