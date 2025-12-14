@@ -14,7 +14,7 @@ export async function createOne(
         ...data,
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },

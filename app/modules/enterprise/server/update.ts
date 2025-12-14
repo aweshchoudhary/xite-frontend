@@ -21,7 +21,7 @@ export async function updateOne({
         ...data,
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },

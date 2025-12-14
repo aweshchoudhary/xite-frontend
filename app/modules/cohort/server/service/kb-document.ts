@@ -3,13 +3,6 @@ import { GetCohort, getLatestCohortByProgramId } from "../cohort/read";
 import { jsonToPlainText } from "json-to-plain-text";
 import { uploadFile } from "@/modules/common/services/file-system/controllers/upload";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-import {
-  createDocument,
-  deleteDocument,
-  getDocumentsByName,
-  getPersonas,
-  updatePersonaDocument,
-} from "./tavus-apis";
 
 type mainProps = {
   cohort: GetCohort;
@@ -46,12 +39,6 @@ export async function main({ cohort }: mainProps) {
     // upload the kb document to the elevenlabs bucket
     await updateElevenLabsKBDocument({
       textContent,
-      cohortId: cohort.cohort_key,
-    });
-
-    // update the kb document in tavus
-    await updateTavusKBDocument({
-      documentUrl: process.env.NEXTAUTH_URL + "/api/knowledge-base/" + filename,
       cohortId: cohort.cohort_key,
     });
 
@@ -201,51 +188,6 @@ export async function uploadKBDocumentToElevenLabs({
     );
 
     return document;
-  } catch (error) {
-    throw error;
-  }
-}
-
-type UpdateTavusKBDocumentProps = {
-  documentUrl: string;
-  cohortId: string;
-};
-export async function updateTavusKBDocument({
-  documentUrl,
-  cohortId,
-}: UpdateTavusKBDocumentProps) {
-  try {
-    const documents = await getDocumentsByName({
-      documentName: `${cohortId}.txt`,
-    });
-
-    const document = await createDocument({
-      documentUrl,
-      documentName: `${cohortId}.txt`,
-      tags: [`${cohortId}`],
-    });
-
-    const personas = await getPersonas({});
-
-    const documentIds = documents.map((doc: any) => doc.document_id);
-
-    personas.forEach(async (persona: any) => {
-      // persona.document_ids is array of strings
-
-      if (!persona.document_ids.includes(document.uuid)) return;
-
-      await updatePersonaDocument({
-        personaId: persona.persona_id,
-        documentIdToAdd: document.uuid,
-        documentIdToRemove: documentIds.join(","),
-      });
-    });
-
-    documents.forEach(async (doc: any) => {
-      await deleteDocument({
-        documentId: doc.document_id,
-      });
-    });
   } catch (error) {
     throw error;
   }

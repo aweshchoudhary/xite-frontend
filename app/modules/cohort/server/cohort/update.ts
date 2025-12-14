@@ -35,7 +35,7 @@ export async function updateCohort({
         ...data,
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -91,7 +91,7 @@ export async function updateCohortFacultyList({
         },
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -136,7 +136,7 @@ export async function updateCohortIndustryExpertsList({
         },
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -218,7 +218,7 @@ export async function upsertSectionPosition({
         where: { id: sectionExists.id },
         data: {
           section_position: newPosition,
-          updated_by_id: user.id,
+          updated_by_id: user.dbUser?.id,
         },
       });
     }
@@ -239,7 +239,7 @@ export async function upsertSectionPosition({
         section_type,
         section_id,
         section_position: newPosition,
-        updated_by_id: user.id,
+        updated_by_id: user.dbUser?.id,
       },
     });
   }

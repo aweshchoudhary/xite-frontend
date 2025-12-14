@@ -15,12 +15,12 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         ...data,
         owner: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -36,7 +36,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         title: "Program Overview",
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -55,7 +55,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         },
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -72,7 +72,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
           title: "Curriculum",
           updated_by: {
             connect: {
-              id: user.id,
+              id: user.dbUser?.id,
             },
           },
         },
@@ -91,7 +91,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         },
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -108,7 +108,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
           title: "Industry Experts",
           updated_by: {
             connect: {
-              id: user.id,
+              id: user.dbUser?.id,
             },
           },
         },
@@ -124,7 +124,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         title: "Cohort Statistics",
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -141,7 +141,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
           title: "Certification",
           updated_by: {
             connect: {
-              id: user.id,
+              id: user.dbUser?.id,
             },
           },
         },
@@ -157,7 +157,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         title: "Testimonials",
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -174,7 +174,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
           title: "Who Should Apply",
           updated_by: {
             connect: {
-              id: user.id,
+              id: user.dbUser?.id,
             },
           },
         },
@@ -190,7 +190,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         title: "Media",
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -206,7 +206,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
         title: "Microsite",
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },
@@ -214,7 +214,7 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
 
     const commonObject = {
       cohort_id: cohort.id,
-      updated_by_id: user.id,
+      updated_by_id: user.dbUser?.id,
     };
 
     await primaryDB.cohortSectionOrder.createMany({

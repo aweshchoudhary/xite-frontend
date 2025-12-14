@@ -23,7 +23,7 @@ export async function createCurrency({
 
         updated_by: {
           connect: {
-            id: user.id,
+            id: user.dbUser?.id,
           },
         },
       },

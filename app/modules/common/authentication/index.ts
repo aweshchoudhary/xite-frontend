@@ -1,1 +1,1 @@
-export * from "./authjs/connection";
+export * from "./firebase/auth";
