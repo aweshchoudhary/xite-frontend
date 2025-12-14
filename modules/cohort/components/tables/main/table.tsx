@@ -7,7 +7,7 @@ import {
   getAllByStatus,
   GetCohortForTable,
 } from "@/modules/cohort/server/cohort/read";
-import { WorkStatus } from "@/modules/common/database";
+import { WorkStatus } from "@/modules/common/database/prisma";
 import Link from "next/link";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { Badge } from "@/modules/common/components/ui/badge";

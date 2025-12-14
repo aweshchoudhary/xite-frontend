@@ -23,7 +23,6 @@ import {
 } from "@/modules/common/components/ui/avatar";
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import { cn } from "@/modules/common/lib/utils";
-import { enumDisplay } from "@/modules/common/lib/enum-display";
 import {
   Select,
   SelectContent,
@@ -31,26 +30,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { FacultyType } from "@/modules/common/database";
 import { useEffect, useState } from "react";
-import {
-  FacultyCode,
-  getFacultyCodes,
-  getSubjects,
-  getSubSubjectAreas,
-  Subject,
-  SubSubjectArea,
-} from "./server";
+import { FacultyCode, getFacultyCodes, getSubjects, Subject } from "./server";
 import SubjectAreaSelectList from "./subject-area-select-list";
 import { Plus, X } from "lucide-react";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/modules/common/components/ui/field";
 
-interface CreateFormProps extends FormBaseProps<CreateSchema> {}
+type CreateFormProps = FormBaseProps<CreateSchema>;
 
 export default function CreateForm({
   cancelRedirectPath,

@@ -1,9 +1,7 @@
 "use server";
-import {
-  CohortSectionType,
-  PrimaryDB,
-  primaryDB,
-} from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { CohortSectionType } from "@/modules/common/database/prisma";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { GetCohortInclude } from "./read-schema";
 import { getLoggedInUser, checkUserOwnsCohort } from "@/modules/user/utils";

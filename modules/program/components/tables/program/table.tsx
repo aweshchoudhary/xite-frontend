@@ -4,7 +4,7 @@ import DataTableView from "@/modules/common/components/global/data-table/data-ta
 import { columns } from "./schema";
 import { getAll } from "@/modules/program/server/read";
 import { Badge } from "@/modules/common/components/ui/badge";
-import { ProgramStatus } from "@/modules/common/database";
+import { ProgramStatus } from "@/modules/common/database/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import Link from "next/link";
 

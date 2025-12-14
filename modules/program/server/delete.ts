@@ -1,5 +1,6 @@
 "use server";
-import { PrimaryDB, primaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
 
 export type DeleteOne = PrimaryDB.ProgramGetPayload<object>;

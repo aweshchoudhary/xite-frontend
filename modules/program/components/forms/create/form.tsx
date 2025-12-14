@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { ProgramType } from "@/modules/common/database";
+import { ProgramType } from "@/modules/common/database/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import EnterpriseSelect from "@/modules/enterprise/components/select-list";
@@ -23,12 +23,11 @@ import { FormBaseProps } from "@/modules/common/components/global/form/types/for
 import { useRouter } from "next/navigation";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/modules/common/components/ui/field";
 
-interface CreateFormProps extends FormBaseProps<ProgramCreateSchema> {}
+type CreateFormProps = FormBaseProps<ProgramCreateSchema>;
 
 export default function CreateForm({
   cancelRedirectPath,

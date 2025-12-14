@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import MicrositeAdditionalFieldsView from "../../common/components/microsite-additional-fields-view";
 import { ImageIcon, TableOfContentsIcon } from "lucide-react";
 import Image from "next/image";

@@ -1,8 +1,5 @@
-import { PrimaryDB } from "@/modules/common/database";
-import Image from "next/image";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
-import { getImageUrl } from "@/modules/common/lib/utils";
-import { Label } from "@/modules/common/components/ui/label";
 import FacultyCard from "../faculty-card";
 import Link from "next/link";
 import MicrositeAdditionalFieldsView from "../../common/components/microsite-additional-fields-view";

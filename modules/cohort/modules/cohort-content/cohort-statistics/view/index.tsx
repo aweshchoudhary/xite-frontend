@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { Check, ImageIcon, Building, UserCheck, BarChart3 } from "lucide-react";
 import Image from "next/image";

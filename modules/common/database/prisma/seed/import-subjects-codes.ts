@@ -1,4 +1,4 @@
-import { primaryDB } from "../..";
+import { primaryDB } from "../connection";
 import subjectsData from "./subjects-data.json";
 import facultyCodesData from "./faculty-codes.json";
 

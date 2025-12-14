@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { Label } from "@/modules/common/components/ui/label";
 import { format } from "date-fns";
 import { cn } from "@/modules/common/lib/utils";

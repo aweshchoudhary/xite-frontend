@@ -1,6 +1,6 @@
 import { Avatar, AvatarImage } from "@/modules/common/components/ui/avatar";
 import { AvatarFallback } from "@/modules/common/components/ui/avatar";
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { MessageCircle } from "lucide-react";
 import MicrositeAdditionalFieldsView from "../../common/components/microsite-additional-fields-view";

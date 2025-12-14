@@ -1,4 +1,4 @@
-import { CohortSectionType } from "@/modules/common/database";
+import { CohortSectionType } from "@/modules/common/database/prisma";
 import { z } from "zod";
 
 export const baseSchema = z.object({

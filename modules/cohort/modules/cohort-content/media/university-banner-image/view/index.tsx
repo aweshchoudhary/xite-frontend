@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/modules/common/components/ui/button";
-import { PrimaryDB, WorkStatus } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { WorkStatus } from "@/modules/common/database/prisma";
 import { ImageIcon, Upload } from "lucide-react";
 import Image from "next/image";
 import BannerUpdate from "../upload";

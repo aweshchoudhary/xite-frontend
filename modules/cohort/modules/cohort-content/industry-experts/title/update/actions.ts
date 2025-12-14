@@ -1,5 +1,6 @@
 "use server";
-import { primaryDB, PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 

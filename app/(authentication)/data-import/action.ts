@@ -1,6 +1,6 @@
 "use server";
 
-import { CohortSectionType } from "@/modules/common/database";
+import { CohortSectionType } from "@/modules/common/database/prisma";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";
 

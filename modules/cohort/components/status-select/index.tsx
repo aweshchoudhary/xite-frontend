@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectItem,
 } from "@/modules/common/components/ui/select";
-import { WorkStatus } from "@/modules/common/database";
+import { WorkStatus } from "@/modules/common/database/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";

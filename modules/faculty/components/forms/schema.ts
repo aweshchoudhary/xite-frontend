@@ -1,4 +1,3 @@
-import { FacultyType } from "@/modules/common/database";
 import { z } from "zod";
 
 export const baseSchema = z.object({

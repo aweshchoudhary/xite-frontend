@@ -3,7 +3,7 @@ import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { GetOne } from "../../server/read";
 import { Badge } from "@/modules/common/components/ui/badge";
 import Link from "next/link";
-import { ProgramStatus } from "@/modules/common/database";
+import { ProgramStatus } from "@/modules/common/database/prisma";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
 import { buttonVariants } from "@/modules/common/components/ui/button";
 import { Loader, PencilIcon, School, TrashIcon } from "lucide-react";

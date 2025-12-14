@@ -1,8 +1,8 @@
 "use server";
-import { PrimaryDB, primaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
-import { ProgramStatus } from "@/modules/common/database";
-import { getLoggedInUser, isUserAdmin } from "@/modules/user/utils";
+import { ProgramStatus } from "@/modules/common/database/prisma";
 
 export type GetAllOutput = {
   data?: GetOne[];

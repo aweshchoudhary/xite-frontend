@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 type Props = {

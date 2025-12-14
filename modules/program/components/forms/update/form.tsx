@@ -16,20 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { ProgramType } from "@/modules/common/database";
+import { ProgramType } from "@/modules/common/database/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
-import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import EnterpriseSelect from "@/modules/enterprise/components/select-list";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/modules/common/components/ui/field";
 
-interface UpdateFormProps extends FormUpdateBaseProps<ProgramUpdateSchema> {}
+type UpdateFormProps = FormUpdateBaseProps<ProgramUpdateSchema>;
 
 export default function UpdateForm({
   currentData,

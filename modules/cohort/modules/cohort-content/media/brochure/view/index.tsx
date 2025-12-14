@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/modules/common/components/ui/button";
 import { Label } from "@/modules/common/components/ui/label";
-import { PrimaryDB, WorkStatus } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { WorkStatus } from "@/modules/common/database/prisma";
 import { File, FileText, Upload } from "lucide-react";
 import BrochureUpdate from "../upload";
 import { getImageUrl } from "@/modules/common/lib/utils";

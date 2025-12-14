@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import ExpertCard from "../expert-card";
 import Link from "next/link";

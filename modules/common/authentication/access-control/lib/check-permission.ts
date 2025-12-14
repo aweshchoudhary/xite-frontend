@@ -1,5 +1,5 @@
 import { Action, permissions, Resource } from "../index";
-import { UserRole } from "@/modules/common/database";
+import { UserRole } from "@/modules/common/database/prisma";
 
 export function hasPermission(
   userRoles: UserRole[] | undefined,

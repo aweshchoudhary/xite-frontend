@@ -1,6 +1,10 @@
 "use server";
-import { PrimaryDB, primaryDB } from "@/modules/common/database";
-import { CohortSectionType, WorkStatus } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
+import {
+  CohortSectionType,
+  WorkStatus,
+} from "@/modules/common/database/prisma";
 import { GetCohortInclude } from "./read-schema";
 
 export type GetCohort = PrimaryDB.CohortGetPayload<{

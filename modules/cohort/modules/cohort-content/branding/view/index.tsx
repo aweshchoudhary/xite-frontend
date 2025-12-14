@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { Label } from "@/modules/common/components/ui/label";
 import { Button } from "@/modules/common/components/ui/button";
 type Props = {
