@@ -1,5 +1,5 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { CohortSectionType } from "@/modules/common/database/prisma";
+import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
 
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";

@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getUser } from "./action";
-import { UserRecord } from "firebase-admin/auth";
-import { UserRole } from "../../database";
+import { User, UserRole } from "../../database/prisma/generated/prisma";
 
 export const useAuth = () => {
-  const [user, setUser] = useState<UserRecord | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [roles, setRoles] = useState<UserRole[]>([]);
 
   useEffect(() => {

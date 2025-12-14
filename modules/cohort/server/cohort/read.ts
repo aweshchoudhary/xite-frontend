@@ -4,7 +4,7 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import {
   CohortSectionType,
   WorkStatus,
-} from "@/modules/common/database/prisma";
+} from "@/modules/common/database/prisma/generated/prisma";
 import { GetCohortInclude } from "./read-schema";
 
 export type GetCohort = PrimaryDB.CohortGetPayload<{

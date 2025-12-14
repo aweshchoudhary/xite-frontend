@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { WorkStatus } from "@/modules/common/database/prisma";
+import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { toast } from "sonner";
 import { updateCohortStatusAction } from "../action";
 import { enumDisplay } from "@/modules/common/lib/enum-display";

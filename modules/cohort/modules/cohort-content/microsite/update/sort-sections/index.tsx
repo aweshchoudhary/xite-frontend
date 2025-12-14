@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ChevronsUpDown } from "lucide-react";
-import { CohortSectionType } from "@/modules/common/database/prisma";
+import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
 
 function SortableItem({
   id,

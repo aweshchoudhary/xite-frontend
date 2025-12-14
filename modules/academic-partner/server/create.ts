@@ -1,4 +1,4 @@
-import { PrimaryDB } from "@/modules/common/database/prisma";
+import { PrimaryDB } from "@/modules/common/database/prisma/generated/prisma";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "../contants";

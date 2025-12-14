@@ -2,7 +2,7 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
-import { ProgramStatus } from "@/modules/common/database/prisma";
+import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 
 export type GetAllOutput = {
   data?: GetOne[];
