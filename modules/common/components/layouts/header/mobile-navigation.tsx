@@ -8,7 +8,7 @@ import { Link as LinkType } from "../../global/sidebar/links";
 
 export default function MobileNavigation() {
   return (
-    <div className="flex items-center justify-center px-5 border-b border-sidebar-border">
+    <div className="flex items-center justify-center px-5 bg-primary text-primary-foreground">
       <ul className="flex items-center gap-4 py-3">
         {links.map((link) => (
           <LinkItem key={link.url} link={link} />
@@ -34,7 +34,7 @@ const LinkItem = ({ link }: { link: LinkType }) => {
           className={cn(
             "px-3 py-1.5 rounded-md",
             isActive(link.url, link.exact) &&
-              "bg-sidebar-accent border-sidebar-border border"
+              "bg-primary-foreground text-foreground"
           )}
           href={link.url}
         >

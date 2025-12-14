@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -54,10 +56,10 @@
   --card-foreground: oklch(0.13 0.028 261.692);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: oklch(0.488 0.243 264.376);
+  --primary: oklch(0.4517 0.1196 249.56);
   --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --secondary:oklch(0.8982 0.0504 253.9);
+  --secondary-foreground: oklch(0.42 0.18 266);
   --muted: oklch(0.967 0.003 264.542);
   --muted-foreground: oklch(0.551 0.027 264.364);
   --accent: oklch(0.967 0.003 264.542);
@@ -69,7 +71,7 @@
   --chart-1: oklch(0.809 0.105 251.813);
   --chart-2: oklch(0.623 0.214 259.815);
   --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-4: oklch(0.4517 0.1196 249.56);
   --chart-5: oklch(0.424 0.199 265.638);
   --radius: 0;
   --sidebar: oklch(0.985 0.002 247.839);
@@ -91,8 +93,8 @@
   --popover-foreground: oklch(0.985 0.002 247.839);
   --primary: oklch(0.42 0.18 266);
   --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.7675 0.1188 244.91);
+  --secondary-foreground: oklch(0.42 0.18 266);
   --muted: oklch(0.278 0.033 256.848);
   --muted-foreground: oklch(0.707 0.022 261.325);
   --accent: oklch(0.278 0.033 256.848);
@@ -104,7 +106,7 @@
   --chart-1: oklch(0.809 0.105 251.813);
   --chart-2: oklch(0.623 0.214 259.815);
   --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-4: oklch(0.4517 0.1196 249.56);
   --chart-5: oklch(0.424 0.199 265.638);
   --sidebar: oklch(0.21 0.034 264.665);
   --sidebar-foreground: oklch(0.985 0.002 247.839);
@@ -122,5 +124,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  h1 {
+    @apply xl:text-3xl font-semibold text-2xl;
   }
 }

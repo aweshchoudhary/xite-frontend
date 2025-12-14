@@ -41,8 +41,8 @@ export default async function CohortTable({
       {statuses.map((value) => (
         <Badge
           key={value}
-          variant={value === status ? "primaryAccent" : "border"}
-          className="capitalize cursor-pointer"
+          variant={value === status ? "secondary" : "outline"}
+          className="capitalize cursor-pointer border"
         >
           <Link href={`/cohorts?status=${value}`}>
             {enumDisplay(value)} ({statusCounts[value]})

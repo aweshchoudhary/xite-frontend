@@ -1,4 +1,4 @@
-import { WorkStatus } from "@/modules/common/database";
+import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { z } from "zod";
 
 export const feeSchema = z.object({

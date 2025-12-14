@@ -3,7 +3,7 @@ import TopBar from "./top-bar";
 
 export default function Header() {
   return (
-    <header className="bg-sidebar">
+    <header className="bg-background">
       <TopBar />
       <MobileNavigation />
     </header>

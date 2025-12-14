@@ -4,8 +4,9 @@ import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
 import { redirect } from "next/navigation";
 import { primaryDB } from "../../database/prisma/connection";
-import { UserRole } from "../../database";
+import { UserRole } from "../../database/prisma/generated/prisma";
 import { User } from "firebase/auth";
+import { getCache, setCache } from "../../services/redis/controllers";
 
 export async function loginAction(idToken: string) {
   // 1. Verify the token with Firebase Admin
@@ -59,7 +60,7 @@ export async function loginAction(idToken: string) {
   });
 
   // 5. Redirect
-  redirect("/dashboard");
+  redirect("/");
 }
 
 export async function logoutAction() {
@@ -74,26 +75,49 @@ export async function getUser(): Promise<{
 } | null> {
   const cookieStore = await cookies();
   const session = cookieStore.get("session");
-  if (!session) return null;
-  const decodedToken = await adminAuth.verifySessionCookie(session.value);
 
-  const user = await adminAuth.getUser(decodedToken.uid);
+  if (!session) return null;
+
+  // 1️⃣ Verify session
+  const decodedToken = await adminAuth.verifySessionCookie(session.value);
+  const uid = decodedToken.uid;
+
+  // 2️⃣ Session-aware cache key
+  const cacheKey = `auth:user:${uid}`;
+
+  // 3️⃣ Check Redis
+  const cached = await getCache<{
+    user: User;
+    roles: UserRole[];
+  }>(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  // 4️⃣ Fetch from Firebase
+  const user = await adminAuth.getUser(uid);
+
+  // 5️⃣ Fetch roles from DB
   const dbUser = await primaryDB.user.findUnique({
-    where: {
-      email: user.email,
-    },
-    select: {
-      roles: true,
-    },
+    where: { email: user.email },
+    select: { roles: true },
   });
 
   if (!dbUser || !dbUser.roles) return null;
 
-  return { user: user.toJSON() as User, roles: dbUser?.roles };
+  const payload = {
+    user: user.toJSON() as User,
+    roles: dbUser.roles,
+  };
+
+  // 6️⃣ Cache (short TTL is enough)
+  await setCache(cacheKey, payload, 300); // 5 minutes
+
+  return payload;
 }
 
 export async function getUserRoles(): Promise<UserRole[]> {
-  const user = await getUser();
-  if (!user || !user.roles) return [];
-  return user.roles;
+  const data = await getUser();
+  return data?.roles ?? [];
 }
