@@ -1,5 +1,5 @@
 import { unstable_cache as nextCache } from "next/cache";
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { cacheConfig, CacheTag, cacheKeys } from "./cache-config";
 
 /**

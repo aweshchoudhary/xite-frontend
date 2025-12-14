@@ -9,7 +9,7 @@ import {
 import DataTable from "@/modules/cohort/components/tables/main/table";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
-import { WorkStatus } from "@/modules/common/database";
+import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { buttonVariants } from "@/modules/common/components/ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";

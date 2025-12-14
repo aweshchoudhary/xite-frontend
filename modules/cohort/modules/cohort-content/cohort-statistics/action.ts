@@ -1,5 +1,5 @@
 "use server";
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";
 import { revalidatePath } from "next/cache";
 

@@ -1,4 +1,4 @@
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function deleteCohort({ cohortId }: { cohortId: string }) {
   try {

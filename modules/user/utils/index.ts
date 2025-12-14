@@ -3,7 +3,7 @@ import {
   getUser,
   getUserRoles,
 } from "@/modules/common/authentication/firebase/action";
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export const isUserAdmin = async () => {
   const session = await getUserRoles();

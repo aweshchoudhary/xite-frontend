@@ -1,5 +1,5 @@
 import { auth } from "@/modules/common/authentication/authjs/connection";
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function authCallbackAction() {
   try {

@@ -1,6 +1,7 @@
 "use server";
 
-import { CohortSectionType, primaryDB } from "@/modules/common/database";
+import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";
 
 export async function handleUpdateSectionPositions() {

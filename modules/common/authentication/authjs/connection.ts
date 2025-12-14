@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { createTransport } from "nodemailer";
-import { primaryDB } from "@/modules/common/database";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getUserRoles } from "../server/read";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

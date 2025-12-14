@@ -17,7 +17,7 @@ import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/program/contants";
 
 // Force dynamic rendering since we use searchParams and auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   searchParams: Promise<{
