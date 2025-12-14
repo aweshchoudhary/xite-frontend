@@ -43,3 +43,15 @@ next-env.d.ts
 /app/generated/prisma
 
 secret-*
+
+/app/node_modules
+/app/.next
+
+**/.next/**
+
+**/generated/**
+
+**/generated/*
+
+app/modules/common/database/prisma/generated
+app/modules/common/database/prisma/generated/*
