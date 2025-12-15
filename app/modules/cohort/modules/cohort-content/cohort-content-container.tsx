@@ -112,33 +112,6 @@ export default function CohortContent({ data }: Props) {
               <TabsContent value="media" className="mt-0">
                 <CohortContentMedia data={data} />
               </TabsContent>
-              <TabsContent value="faculty" className="mt-0">
-                <CohortContentFaculty data={data} />
-              </TabsContent>
-              <TabsContent value="experts" className="mt-0">
-                <CohortContentIndustryExperts data={data} />
-              </TabsContent>
-              <TabsContent value="certification" className="mt-0">
-                <CohortCertification data={data} />
-              </TabsContent>
-              <TabsContent value="statistics" className="mt-0">
-                <CohortStatistics data={data} />
-              </TabsContent>
-              <TabsContent value="testimonials" className="mt-0">
-                <CohortContentTestimonials data={data} />
-              </TabsContent>
-              <TabsContent value="custom" className="mt-0">
-                <CohortContentCustomSections data={data} />
-              </TabsContent>
-
-              <TabsContent value="microsite" className="mt-0">
-                <CohortContentMicrosite
-                  data={data}
-                  previewDomain={
-                    process.env.NEXT_PUBLIC_MICROSITE_PREVIEW_DOMAIN || ""
-                  }
-                />
-              </TabsContent>
             </>
           ) : null}
         </div>
