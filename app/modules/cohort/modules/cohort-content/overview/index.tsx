@@ -10,7 +10,7 @@ type Props = {
 
 export default function CohortDetails({ data }: Props) {
   return (
-    <div className="grid grid-cols-1 items-start lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 items-start lg:grid-cols-1 gap-6">
       <div className="space-y-6">
         <div className="p-6 border rounded-lg bg-background">
           <OverviewContainer data={data} />

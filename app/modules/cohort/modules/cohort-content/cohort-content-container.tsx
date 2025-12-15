@@ -38,51 +38,14 @@ type Props = {
 
 const tabs = [
   {
-    value: "overview",
-    label: "Overview",
+    value: "content",
+    label: "Content",
     icon: FileText,
     showCompleteStatus: true,
   },
-  { value: "media", label: "Media", icon: Image, showCompleteStatus: true },
   {
-    value: "faculty",
-    label: "Faculty",
-    icon: GraduationCap,
-    showCompleteStatus: true,
-  },
-  {
-    value: "experts",
-    label: "Experts",
-    icon: Users,
-    showCompleteStatus: true,
-  },
-  {
-    value: "certification",
-    label: "Certification",
-    icon: Trophy,
-    showCompleteStatus: true,
-  },
-  {
-    value: "statistics",
-    label: "Cohort Statistics",
-    icon: BarChart3,
-    showCompleteStatus: true,
-  },
-  {
-    value: "testimonials",
-    label: "Testimonials",
-    icon: MessageCircle,
-    showCompleteStatus: true,
-  },
-  {
-    value: "custom",
-    label: "Custom Sections",
-    icon: TableOfContentsIcon,
-    showCompleteStatus: false,
-  },
-  {
-    value: "microsite",
-    label: "Microsite & Branding",
+    value: "microsite-cms",
+    label: "Microsite CMS",
     icon: Globe,
     showCompleteStatus: true,
   },
@@ -101,15 +64,15 @@ export default function CohortContent({ data }: Props) {
           Preview Microsite
         </Link>
       </div>
-      <Tabs defaultValue={"overview"} className="w-full">
+      <Tabs defaultValue={"content"} className="w-full">
         <div className="bg-background rounded-lg px-4 border py-3">
-          <TabsList className="w-full grid grid-cols-9 gap-1 bg-transparent h-auto p-0">
+          <TabsList className="w-full grid grid-cols-2 gap-1 bg-transparent h-auto p-0">
             {tabs.map((tab) => (
               <TabsTrigger
                 disabled={data.status === "DRAFT" && tab.value !== "overview"}
                 key={tab.value}
                 value={tab.value}
-                className="flex flex-col items-center gap-2 py-3 px-2 data-[state=active]:bg-sidebar-accent/40 data-[state=active]:text-primary relative hover:bg-accent text-muted-foreground transition-all duration-200 rounded-md"
+                className="py-3 px-2 data-[state=active]:bg-sidebar-accent/40 data-[state=active]:text-primary relative hover:bg-accent text-muted-foreground transition-all duration-200 rounded-md"
               >
                 {data?.status !== "ACTIVE" && tab.showCompleteStatus ? (
                   <Badge
@@ -141,7 +104,7 @@ export default function CohortContent({ data }: Props) {
         </div>
 
         <div className="mt-6">
-          <TabsContent value="overview" className={`mt-0`}>
+          <TabsContent value="content" className={`mt-0`}>
             <CohortOverview data={data} />
           </TabsContent>
           {data.status !== "DRAFT" ? (

@@ -14,7 +14,7 @@ export const useAuth = () => {
     const fetchUser = async () => {
       const user = await getUser();
       if (user) {
-        setUser(user.user.toJSON() as UserRecord);
+        setUser(user.user);
         setRoles(user.roles);
         setDbUser(user.dbUser);
       }

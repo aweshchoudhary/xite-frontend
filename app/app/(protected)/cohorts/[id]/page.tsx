@@ -31,11 +31,11 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-8">
+    <div className="spacing space-y-8 max-w-5xl mx-auto">
       <PageHeader data={data} />
-      <section>
-        <div className="py-5 mb-10 px-10 space-y-6 bg-background rounded-md border">
-          <div className="grid xl:grid-cols-5 lg:grid-cols-4 grid-cols-2 items-start gap-x-10 gap-y-5">
+      <section className="flex items-start lg:gap-10 gap-5">
+        <div className="py-5 mb-10 px-8 space-y-6 w-fit! shrink-0 bg-background rounded-md border">
+          <div className="grid xl:grid-cols-1 lg:grid-cols-1 grid-cols-1 items-start gap-x-10 gap-y-5">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Loader className="size-4" strokeWidth={1.5} /> Status
@@ -130,7 +130,7 @@ export default async function Page({
             </div>
           </div>
         </div>
-        <div className="flex items-start lg:gap-10 gap-5">
+        <div className="flex-1 flex items-start lg:gap-10 gap-5">
           <CohortContent data={data} />
         </div>
       </section>
