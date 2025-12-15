@@ -13,34 +13,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/modules/common/components/ui/popover";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { GetCohortByProgramId } from "@/modules/cohort/server/cohort/read";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@/modules/common/components/ui/button";
 import { useEffect, useState } from "react";
 import { getCohortListAction } from "./action";
-import CreateModal from "../forms/create/modal";
 
 export default function CohortSelectList({
   onChange,
-  programId,
   defaultValue,
 }: {
   onChange: (value: string) => void;
-  programId: string;
   defaultValue?: string;
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [cohortList, setCohortList] = useState<GetCohortByProgramId[]>([]);
   const [open, setOpen] = useState(false);
 
-  const fetchCohortList = async () => {
-    const cohorts = await getCohortListAction({ programId });
-    setCohortList(cohorts ?? []);
-  };
   useEffect(() => {
+    const fetchCohortList = async () => {
+      const cohorts = await getCohortListAction();
+      setCohortList(cohorts);
+    };
     fetchCohortList();
-  }, [programId]);
+  }, []);
 
   return (
     <div>
@@ -56,7 +52,7 @@ export default function CohortSelectList({
               <>
                 {cohortList.map(
                   (cohort) =>
-                    cohort.id === defaultValue && (
+                    cohort.cohort_key === defaultValue && (
                       <div
                         key={defaultValue}
                         className="flex items-center gap-2"
@@ -81,7 +77,7 @@ export default function CohortSelectList({
                 {cohortList.map((cohort) => (
                   <CommandItem
                     key={cohort.id}
-                    value={cohort.id}
+                    value={cohort.cohort_key}
                     keywords={[cohort.name ?? ""]}
                     onSelect={(currentValue) => {
                       setOpen(false);
@@ -102,12 +98,6 @@ export default function CohortSelectList({
           </Command>
         </PopoverContent>
       </Popover>
-      <CreateModal
-        onSuccess={() => fetchCohortList()}
-        noTrigger
-        open={isModalOpen}
-        setOpen={setIsModalOpen}
-      />
     </div>
   );
 }

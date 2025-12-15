@@ -17,9 +17,8 @@ export function Container({ data }: ContainerProps) {
   const isCompleted =
     data?.overview_section?.title && data?.overview_section?.description;
 
+  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id || "");
   if (!data) return null;
-
-  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
 
   return (
     <div className="group relative bg-card rounded-xl transition-all duration-200">

@@ -35,6 +35,7 @@ export const PageSchema = z.object({
 
 export const TemplateFormSchema = z.object({
   name: z.string().min(1),
+  cohortId: z.string().min(1),
   status: z.enum(["draft", "active", "archived"]).optional(),
   description: z.string().optional(),
   pages: z.array(PageSchema).min(1, "At least one page is required"),

@@ -22,10 +22,9 @@ export function Container({ data }: ContainerProps) {
     data?.testimonial_section?.title &&
     data?.testimonial_section?.items.length > 0;
 
+  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id || "");
+
   if (!data) return null;
-
-  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
-
   return (
     <div className="group relative bg-background p-5 rounded-xl transition-all duration-200">
       <div className="flex items-center justify-between mb-5">

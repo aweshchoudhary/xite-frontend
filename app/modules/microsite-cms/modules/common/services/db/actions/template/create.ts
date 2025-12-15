@@ -7,6 +7,7 @@ import { writeFile } from "fs/promises";
 
 export async function createTemplate(data: ITemplate) {
   await connectDB();
+
   const template = await TemplateModal.create({ ...data, status: "draft" });
   return JSON.parse(JSON.stringify(template)) as ITemplate;
 }

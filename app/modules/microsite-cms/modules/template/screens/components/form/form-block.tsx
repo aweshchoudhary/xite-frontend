@@ -12,7 +12,7 @@ import {
   UseFormReturn,
   useFieldArray,
 } from "react-hook-form";
-import { TemplateFormInput } from "@/modules/common/services/db/actions/template/schema";
+import { TemplateFormInput } from "@/modules/microsite-cms/modules/common/services/db/actions/template/schema";
 import { Button } from "@/modules/common/components/ui/button";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { Checkbox } from "@/modules/common/components/ui/checkbox";
@@ -89,8 +89,6 @@ const FormBlockItem = ({
 }: FormBlockItemProps) => {
   const blockType = form.watch(`${fieldArrayName}.${index}.type`);
   const isRepeatable = form.watch(`${fieldArrayName}.${index}.repeatable`);
-
-  console.log({ blockFields });
 
   return (
     <div>

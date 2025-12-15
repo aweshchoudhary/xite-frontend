@@ -10,14 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TemplateFormInput,
   TemplateFormSchema,
-} from "@/modules/common/services/db/actions/template/schema";
+} from "@/modules/microsite-cms/modules/common/services/db/actions/template/schema";
 import { Input } from "@/modules/common/components/ui/input";
-import FormPage from "@/modules/template/screens/components/form/form-page";
+import FormPage from "@/modules/microsite-cms/modules/template/screens/components/form/form-page";
 import { Button } from "@/modules/common/components/ui/button";
 import { AlertCircle } from "lucide-react";
-import FormSection from "@/modules/template/screens/components/form/form-section";
+import FormSection from "@/modules/microsite-cms/modules/template/screens/components/form/form-section";
 import { toast } from "sonner";
-import { createTemplate } from "@/modules/common/services/db/actions/template/create";
+import { createTemplate } from "@/modules/microsite-cms/modules/common/services/db/actions/template/create";
 import {
   Tabs,
   TabsContent,
@@ -25,6 +25,7 @@ import {
   TabsTrigger,
 } from "@/modules/common/components/ui/tabs";
 import { useRouter } from "next/navigation";
+import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 
 export default function CreateForm() {
   const router = useRouter();
@@ -70,25 +71,45 @@ export default function CreateForm() {
           </div>
         )}
 
-        <FieldGroup>
-          <Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="form-rhf-demo-name">Name</FieldLabel>
-                <Input
-                  {...field}
-                  id="form-rhf-demo-title"
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+        <div className="grid grid-cols-2 gap-5">
+          <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-name">Name</FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-rhf-demo-title"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+          <FieldGroup>
+            <Controller
+              name="cohortId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-name">Cohort</FieldLabel>
+                  <CohortSelectList
+                    onChange={(value) => field.onChange(value)}
+                    defaultValue={field.value}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
 
         <Tabs defaultValue="common" className="w-full space-y-3">
           <TabsList>

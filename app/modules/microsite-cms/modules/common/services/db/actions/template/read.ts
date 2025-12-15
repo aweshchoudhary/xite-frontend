@@ -10,6 +10,14 @@ export async function getTemplates(): Promise<ITemplate[]> {
   return JSON.parse(JSON.stringify(items));
 }
 
+export async function getTemplatesByCohortId(
+  cohortId: string
+): Promise<ITemplate[]> {
+  await connectDB();
+  const templates = await TemplateModal.find({ cohortId });
+  return JSON.parse(JSON.stringify(templates));
+}
+
 export async function getTemplateById(id: string): Promise<ITemplate | null> {
   await connectDB();
   const template = await TemplateModal.findById(id);

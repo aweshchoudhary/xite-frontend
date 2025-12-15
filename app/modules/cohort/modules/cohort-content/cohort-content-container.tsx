@@ -6,31 +6,12 @@ import {
   TabsContent,
 } from "@/modules/common/components/ui/tabs";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import { Container as CohortContentFaculty } from "./faculty/container";
-import { Container as CohortCertification } from "./certification/container";
-import { Container as CohortStatistics } from "./cohort-statistics/container";
-import { Container as CohortContentMicrosite } from "./microsite/container";
-import { Container as CohortContentIndustryExperts } from "./industry-experts/container";
-import CohortContentMedia from "./media/index";
-import { Container as CohortContentTestimonials } from "./testimonials/container";
-import {
-  FileText,
-  Image,
-  Users,
-  Trophy,
-  BarChart3,
-  Globe,
-  MessageCircle,
-  GraduationCap,
-  Check,
-  TriangleAlert,
-  TableOfContentsIcon,
-} from "lucide-react";
+import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
 import { Badge } from "@/modules/common/components/ui/badge";
 import CohortOverview from "./overview";
 import Link from "next/link";
 import { buttonVariants } from "@/modules/common/components/ui/button";
-import { Container as CohortContentCustomSections } from "./custom-sections/container";
+import TemplatesContainer from "./microsite-cms/templates/container";
 
 type Props = {
   data: GetCohort;
@@ -109,8 +90,8 @@ export default function CohortContent({ data }: Props) {
           </TabsContent>
           {data.status !== "DRAFT" ? (
             <>
-              <TabsContent value="media" className="mt-0">
-                <CohortContentMedia data={data} />
+              <TabsContent value="microsite-cms" className="mt-0">
+                <TemplatesContainer data={data} />
               </TabsContent>
             </>
           ) : null}
