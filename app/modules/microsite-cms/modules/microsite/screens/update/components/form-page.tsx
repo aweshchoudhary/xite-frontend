@@ -2,10 +2,10 @@
 import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
 import { Controller, UseFormReturn, useFieldArray } from "react-hook-form";
-import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
+import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
 import { FileText, Lock } from "lucide-react";
 import FormSection from "./form-section";
-import { ITemplate } from "@/modules/common/services/db/types/interfaces";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import { Textarea } from "@ui/textarea";
 
 interface FormPageProps {

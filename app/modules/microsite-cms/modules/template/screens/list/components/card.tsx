@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@ui/badge";
 import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
-import { ITemplate } from "@/modules/common/services/db/types/interfaces";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import { CalendarIcon, Copy, Dot } from "lucide-react";
 import Link from "next/link";
 import { DateTime } from "luxon";

@@ -3,7 +3,7 @@ import { Input } from "@ui/input";
 import {
   IMicrosite,
   ITemplate,
-} from "@/modules/common/services/db/types/interfaces";
+} from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
 import Link from "next/link";

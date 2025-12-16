@@ -1,5 +1,5 @@
 import mongoose, { models } from "mongoose";
-import { IMicrosite } from "@/modules/common/services/db/types/interfaces";
+import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
 
 const RepeaterItemSchema = new mongoose.Schema(
   {

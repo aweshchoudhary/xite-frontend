@@ -6,9 +6,9 @@ import {
   UseFormReturn,
   useFieldArray,
 } from "react-hook-form";
-import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
+import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
 import FormBlock from "./form-block";
-import { ITemplateSection } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateSection } from "@microsite-cms/common/services/db/types/interfaces";
 import { Layers, Lock } from "lucide-react";
 
 type FieldArrayName = `pages.${number}.sections` | `globalSections`;

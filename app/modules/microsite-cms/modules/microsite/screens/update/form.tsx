@@ -2,13 +2,13 @@
 import {
   IMicrosite,
   ITemplate,
-} from "@/modules/common/services/db/types/interfaces";
+} from "@microsite-cms/common/services/db/types/interfaces";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   MicrositeFormInput,
   MicrositeSchema,
-} from "@/modules/common/services/db/actions/microsite/schema";
+} from "@microsite-cms/common/services/db/actions/microsite/schema";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
@@ -16,7 +16,7 @@ import { AlertCircle } from "lucide-react";
 import FormPage from "./components/form-page";
 import FormSection from "./components/form-section";
 import { toast } from "sonner";
-import { updateMicrosite } from "@/modules/common/services/db/actions/microsite/update";
+import { updateMicrosite } from "@microsite-cms/common/services/db/actions/microsite/update";
 import {
   Select,
   SelectContent,

@@ -1,4 +1,4 @@
-import { IMicrosite } from "@/modules/common/services/db/types/interfaces";
+import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
 import Card from "./card";
 
 type CardListProps = {
@@ -14,4 +14,3 @@ export default function CardList({ microsites }: CardListProps) {
     </div>
   );
 }
-

@@ -1,4 +1,4 @@
-import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
 import { Textarea } from "@ui/textarea";
 
 interface TextareaElementProps {

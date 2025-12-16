@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@ui/table";
-import { ITemplate } from "@/modules/common/services/db/types/interfaces";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import Link from "next/link";
 import DataTableActions from "./data-table-actions";
 

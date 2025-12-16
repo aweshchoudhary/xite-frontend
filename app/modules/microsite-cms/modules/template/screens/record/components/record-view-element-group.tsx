@@ -1,6 +1,6 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
-import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewElement from "./record-view-element";
 
 interface RecordViewElementGroupProps {

@@ -1,4 +1,4 @@
-import { getMicrosites } from "@/modules/common/services/db/actions/microsite/read";
+import { getMicrosites } from "@microsite-cms/common/services/db/actions/microsite/read";
 
 export async function fetchMicrosites() {
   const microsites = await getMicrosites();

@@ -1,5 +1,5 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
-import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
 
 interface RecordViewElementSingleProps {
   element: ITemplateElement;

@@ -1,7 +1,7 @@
 import { Field, FieldError, FieldLabel, FieldGroup } from "@ui/field";
-import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
+import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
 import { Controller, FieldArrayPath, UseFormReturn } from "react-hook-form";
-import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
 import TextElement from "./text";
 import TextareaElement from "./textarea";
 import ImageElement from "./image";

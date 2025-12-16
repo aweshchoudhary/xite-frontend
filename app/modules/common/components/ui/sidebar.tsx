@@ -17,7 +17,7 @@ import {
 } from "@ui/sheet";
 import { Skeleton } from "@ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
-import { useIsMobile } from "@microsite-cms/common/hooks/use-mobile";
+import { useIsMobile } from "@common-hooks/use-mobile";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
 

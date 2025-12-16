@@ -1,7 +1,7 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
 import { Textarea } from "@ui/textarea";
-import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewValueRichtext from "./record-view-value-richtext";
 import Image from "next/image";
 import { Button } from "@tiptap-ui/components/tiptap-ui-primitive/button";

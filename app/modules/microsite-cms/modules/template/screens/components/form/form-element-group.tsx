@@ -6,7 +6,7 @@ import {
   UseFormReturn,
   useFieldArray,
 } from "react-hook-form";
-import { TemplateFormInput } from "@/modules/common/services/db/actions/template/schema";
+import { TemplateFormInput } from "@microsite-cms/common/services/db/actions/template/schema";
 import { Button } from "@ui/button";
 import { Plus, PlusIcon, TrashIcon } from "lucide-react";
 import slugify from "slugify";

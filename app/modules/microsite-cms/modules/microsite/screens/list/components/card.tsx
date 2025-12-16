@@ -1,6 +1,6 @@
 import { Badge } from "@ui/badge";
 import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
-import { IMicrosite } from "@/modules/common/services/db/types/interfaces";
+import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
 import { DateTime } from "luxon";

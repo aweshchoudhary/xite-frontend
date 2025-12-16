@@ -1,6 +1,6 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
-import { ITemplateSection } from "@/modules/common/services/db/types/interfaces";
+import { ITemplateSection } from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewBlock from "./record-view-block";
 import {
   Accordion,
