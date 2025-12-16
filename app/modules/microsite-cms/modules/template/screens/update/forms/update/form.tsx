@@ -33,6 +33,7 @@ import {
 } from "@/modules/common/components/ui/select";
 import { updateTemplateAction } from "./action";
 import { useRouter } from "next/navigation";
+import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 
 interface UpdateFormProps {
   template: ITemplate;
@@ -80,8 +81,8 @@ export default function UpdateForm({ template }: UpdateFormProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-5 gap-4">
-          <FieldGroup className="col-span-4">
+        <div className="grid grid-cols-6 gap-4">
+          <FieldGroup className="col-span-2">
             <Controller
               name="name"
               control={form.control}
@@ -92,6 +93,24 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                     {...field}
                     id="update-title"
                     aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+          <FieldGroup className="col-span-3">
+            <Controller
+              name="cohortId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="update-name">Cohort</FieldLabel>
+                  <CohortSelectList
+                    onChange={(value) => field.onChange(value)}
+                    defaultValue={field.value}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
