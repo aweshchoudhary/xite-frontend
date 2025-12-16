@@ -1,4 +1,4 @@
-import Templates from "@/modules/microsite-cms/modules/template/screens/list";
+import Templates from "@microsite-cms/template/screens/list";
 
 export default function Page() {
   return (

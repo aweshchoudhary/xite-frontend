@@ -1,4 +1,4 @@
-import Update from "@/modules/microsite-cms/modules/template/screens/update";
+import Update from "@microsite-cms/template/screens/update";
 
 interface PageProps {
   params: Promise<{

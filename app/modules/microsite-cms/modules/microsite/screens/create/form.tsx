@@ -18,11 +18,12 @@ import {
   SelectItem,
   SelectValue,
 } from "@/modules/common/components/ui/select";
-import { ITemplate } from "@/modules/common/services/db/types/interfaces";
-import { createMicrosite } from "@/modules/common/services/db/actions/microsite/create";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { createMicrosite } from "@microsite-cms/common/services/db/actions/microsite/create";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
+import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -31,16 +32,18 @@ const formSchema = z.object({
 });
 
 export default function CreateForm({ templates }: { templates: ITemplate[] }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const cohort_key = searchParams.get("cohort_key");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      cohortId: "",
+      cohortId: cohort_key ?? "",
       templateId: "",
     },
   });
-
-  const router = useRouter();
 
   async function handleSubmit(fields: z.infer<typeof formSchema>) {
     toast.promise(
@@ -104,17 +107,10 @@ export default function CreateForm({ templates }: { templates: ITemplate[] }) {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="cohortId">Cohort ID</FieldLabel>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a cohort" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Cornell CHRO Cohort 1</SelectItem>
-                      <SelectItem value="3">Oxford SELP Cohort 4</SelectItem>
-                      <SelectItem value="2">Cornell CXO Cohort 2</SelectItem>
-                      <SelectItem value="3">Cornell SELP Cohort 3</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <CohortSelectList
+                    onChange={(value) => field.onChange(value)}
+                    defaultValue={field.value}
+                  />
                 </Field>
               )}
             />

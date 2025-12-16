@@ -1,14 +1,14 @@
 "use server";
 
-import MicrositeModel from "@/modules/microsite-cms/modules/common/services/db/models/microsite";
-import { TemplateModal } from "@/modules/microsite-cms/modules/common/services/db/models/template";
+import MicrositeModel from "@microsite-cms/common/services/db/models/microsite";
+import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
 import {
   IMicrosite,
   ITemplateBlock,
   ITemplatePage,
   ITemplateSection,
-} from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
+} from "@microsite-cms/common/services/db/types/interfaces";
+import connectDB from "@microsite-cms/common/services/db/connection";
 import slugify from "slugify";
 import { writeFile } from "fs/promises";
 

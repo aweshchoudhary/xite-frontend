@@ -1,8 +1,9 @@
 "use server";
 import {
-  getMicrositeByCohort,
+  getMicrositesByCohortId,
   getTemplatesByCohortId,
-} from "@/modules/microsite-cms/modules/common/services/db";
+} from "@microsite-cms/common/services/db";
+import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
 
 export async function getTemplatesByCohortIdAction(cohortId: string) {
   try {
@@ -13,9 +14,11 @@ export async function getTemplatesByCohortIdAction(cohortId: string) {
   }
 }
 
-export async function getMicrositesByCohortIdAction(cohortId: string) {
+export async function getMicrositesByCohortIdAction(
+  cohortId: string
+): Promise<IMicrosite[]> {
   try {
-    const microsites = await getMicrositeByCohort(cohortId);
+    const microsites = await getMicrositesByCohortId(cohortId);
     return microsites;
   } catch (error) {
     throw error;

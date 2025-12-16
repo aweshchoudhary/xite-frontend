@@ -1,6 +1,6 @@
 "use server";
-import { updateTemplate } from "@/modules/microsite-cms/modules/common/services/db";
-import { ITemplate } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import { updateTemplate } from "@microsite-cms/common/services/db";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import { revalidatePath } from "next/cache";
 
 export async function updateTemplateAction(

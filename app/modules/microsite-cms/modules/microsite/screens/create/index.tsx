@@ -1,8 +1,8 @@
 import CreateForm from "./form";
-import { getTemplates } from "@/modules/common/services/db/actions/template/read";
+import { getTemplatesByCohortId } from "@microsite-cms/common/services/db/actions/template/read";
 
-export default async function Create() {
-  const templates = await getTemplates();
+export default async function Create({ cohort_key }: { cohort_key: string }) {
+  const templates = await getTemplatesByCohortId(cohort_key);
   return (
     <div>
       <CreateForm templates={templates} />

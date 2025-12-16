@@ -1,6 +1,6 @@
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
-import { TemplateModal } from "@/modules/microsite-cms/modules/common/services/db/models/template";
-import { ITemplate } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import connectDB from "@microsite-cms/common/services/db/connection";
+import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 
 export async function fetchTemplates() {
   await connectDB();

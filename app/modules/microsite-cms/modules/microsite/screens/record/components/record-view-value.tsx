@@ -8,7 +8,7 @@ import { Textarea } from "@/modules/common/components/ui/textarea";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
 import RecordViewValueRichtext from "./record-view-value-richtext";
 import Image from "next/image";
-import { Button } from "@/modules/common/components/tiptap/components/tiptap-ui-primitive/button";
+import { Button } from "@tiptap-ui/components/tiptap-ui-primitive/button";
 
 interface RecordViewValueProps {
   element: ITemplateElement;

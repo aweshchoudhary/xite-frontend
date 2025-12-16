@@ -1,7 +1,7 @@
 "use server";
 
-import { MicrositeModel } from "@/modules/microsite-cms/modules/common/services/db/models/microsite";
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
+import { MicrositeModel } from "@microsite-cms/common/services/db/models/microsite";
+import connectDB from "@microsite-cms/common/services/db/connection";
 
 export async function getMicrosites() {
   await connectDB();
@@ -13,9 +13,9 @@ export async function getMicrositeById(id: string) {
   return JSON.parse(JSON.stringify(await MicrositeModel.findById(id).lean()));
 }
 
-export async function getMicrositeByCohort(cohortId: string) {
+export async function getMicrositesByCohortId(cohortId: string) {
   await connectDB();
   return JSON.parse(
-    JSON.stringify(await MicrositeModel.findOne({ cohortId }).lean())
+    JSON.stringify(await MicrositeModel.find({ cohortId }).lean())
   );
 }

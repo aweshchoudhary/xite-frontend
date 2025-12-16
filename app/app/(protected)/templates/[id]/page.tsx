@@ -1,5 +1,5 @@
-import RecordView from "@/modules/microsite-cms/modules/template/screens/record";
-import { fetchTemplate } from "@/modules/microsite-cms/modules/template/screens/record/actions/fetch";
+import RecordView from "@microsite-cms/template/screens/record";
+import { fetchTemplate } from "@microsite-cms/template/screens/record/actions/fetch";
 import { notFound } from "next/navigation";
 
 interface PageProps {

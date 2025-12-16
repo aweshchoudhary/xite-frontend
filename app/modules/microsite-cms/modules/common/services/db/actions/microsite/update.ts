@@ -1,7 +1,7 @@
 "use server";
-import { MicrositeModel } from "@/modules/microsite-cms/modules/common/services/db/models/microsite";
+import { MicrositeModel } from "@microsite-cms/common/services/db/models/microsite";
 import { MicrositeSchema } from "./schema";
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
+import connectDB from "@microsite-cms/common/services/db/connection";
 import { MicrositeFormInput } from "./schema";
 import { TemplateModal } from "../../models/template";
 import {
@@ -10,7 +10,7 @@ import {
   ITemplatePage,
   ITemplate,
 } from "../../types/interfaces";
-import { uploadFileAction } from "@/modules/microsite-cms/modules/common/services/file-system/upload-action";
+import { uploadFileAction } from "@microsite-cms/common/services/file-system/upload-action";
 import { writeFile } from "fs/promises";
 
 interface UpdateMicrositeProps {

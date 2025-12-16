@@ -1,8 +1,8 @@
 "use server";
 
-import { TemplateModal } from "@/modules/microsite-cms/modules/common/services/db/models/template";
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
-import { ITemplate } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
+import connectDB from "@microsite-cms/common/services/db/connection";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 
 export async function getTemplates(): Promise<ITemplate[]> {
   await connectDB();

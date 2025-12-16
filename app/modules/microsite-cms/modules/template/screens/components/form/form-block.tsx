@@ -12,7 +12,7 @@ import {
   UseFormReturn,
   useFieldArray,
 } from "react-hook-form";
-import { TemplateFormInput } from "@/modules/microsite-cms/modules/common/services/db/actions/template/schema";
+import { TemplateFormInput } from "@microsite-cms/common/services/db/actions/template/schema";
 import { Button } from "@/modules/common/components/ui/button";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { Checkbox } from "@/modules/common/components/ui/checkbox";

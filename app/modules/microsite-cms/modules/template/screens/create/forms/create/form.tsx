@@ -10,14 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TemplateFormInput,
   TemplateFormSchema,
-} from "@/modules/microsite-cms/modules/common/services/db/actions/template/schema";
+} from "@microsite-cms/common/services/db/actions/template/schema";
 import { Input } from "@/modules/common/components/ui/input";
-import FormPage from "@/modules/microsite-cms/modules/template/screens/components/form/form-page";
+import FormPage from "@microsite-cms/template/screens/components/form/form-page";
 import { Button } from "@/modules/common/components/ui/button";
 import { AlertCircle } from "lucide-react";
-import FormSection from "@/modules/microsite-cms/modules/template/screens/components/form/form-section";
+import FormSection from "@microsite-cms/template/screens/components/form/form-section";
 import { toast } from "sonner";
-import { createTemplate } from "@/modules/microsite-cms/modules/common/services/db/actions/template/create";
+import { createTemplate } from "@microsite-cms/common/services/db/actions/template/create";
 import {
   Tabs,
   TabsContent,

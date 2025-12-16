@@ -19,7 +19,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@tiptap-ui/*": ["./modules/microsite-cms/modules/common/components/tiptap/*"],
+      "@tiptap-templates/*": ["./modules/microsite-cms/modules/common/components/tiptap-templates/*"],
+      "@microsite-cms/*": ["./modules/microsite-cms/modules/*"],
+      // "@tiptap/*": ["./modules/microsite-cms/modules/common/components/tiptap/*"]
     }
   },
   "include": [

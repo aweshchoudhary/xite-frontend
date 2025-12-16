@@ -1,5 +1,5 @@
 import mongoose, { models } from "mongoose";
-import { ITemplate } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 
 const ElementSchema = new mongoose.Schema(
   {

@@ -1,4 +1,4 @@
-import Create from "@/modules/microsite-cms/modules/template/screens/create";
+import Create from "@microsite-cms/template/screens/create";
 
 export default function Page() {
   return (

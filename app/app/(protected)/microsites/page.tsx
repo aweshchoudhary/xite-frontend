@@ -1,4 +1,4 @@
-import Microsites from "@/modules/microsite-cms/modules/microsite/screens/list";
+import Microsites from "@microsite-cms/microsite/screens/list";
 
 export default function Page() {
   return (

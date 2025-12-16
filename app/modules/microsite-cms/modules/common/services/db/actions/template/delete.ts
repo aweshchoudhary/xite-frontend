@@ -1,7 +1,7 @@
 "use server";
 
-import { TemplateModal } from "@/modules/microsite-cms/modules/common/services/db/models/template";
-import connectDB from "@/modules/microsite-cms/modules/common/services/db/connection";
+import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
+import connectDB from "@microsite-cms/common/services/db/connection";
 
 export async function deleteTemplate(id: string) {
   await connectDB();

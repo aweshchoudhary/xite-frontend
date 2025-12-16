@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import {
   IMicrosite,
   ITemplate,
-} from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+} from "@microsite-cms/common/services/db/types/interfaces";
 import {
   getMicrositesByCohortIdAction,
   getTemplatesByCohortIdAction,
 } from "./action";
-import TemplateCard from "@/modules/microsite-cms/modules/template/screens/list/components/card";
-import MicrositeCard from "@/modules/microsite-cms/modules/microsite/screens/list/components/card";
+import TemplateCard from "@microsite-cms/template/screens/list/components/card";
+import MicrositeCard from "@microsite-cms/microsite/screens/list/components/card";
 import {
   Tabs,
   TabsTrigger,
@@ -85,6 +85,18 @@ const MicrositeCMSList = ({ cohort_key }: { cohort_key: string }) => {
       {microsites?.map((microsite) => (
         <MicrositeCard key={microsite._id} microsite={microsite} />
       ))}
+
+      {microsites?.length === 0 && (
+        <div className="flex flex-col items-center justify-center gap-3 h-50 bg-accent">
+          <Link
+            className="flex items-center gap-2"
+            href={`/microsites/new?cohort_key=${cohort_key}`}
+          >
+            <Plus className="size-4" /> Microsite
+          </Link>
+          <p>No microsites found</p>
+        </div>
+      )}
     </div>
   );
 };
