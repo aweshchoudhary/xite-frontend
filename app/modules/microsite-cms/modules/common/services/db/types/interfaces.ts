@@ -34,6 +34,7 @@ export interface ITemplate {
   name: string;
   cohortId: string;
   status?: "draft" | "active" | "archived";
+  type?: "fixed" | "open";
   description?: string;
   pages: ITemplatePage[];
   globalSections: ITemplateSection[];

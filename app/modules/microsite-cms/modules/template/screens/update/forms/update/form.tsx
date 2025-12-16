@@ -32,7 +32,10 @@ interface UpdateFormProps {
 export default function UpdateForm({ template }: UpdateFormProps) {
   const form = useForm<TemplateFormInput>({
     resolver: zodResolver(TemplateFormSchema),
-    defaultValues: template,
+    defaultValues: {
+      ...template,
+      type: template.type ?? "open",
+    },
   });
 
   const router = useRouter();
@@ -71,8 +74,8 @@ export default function UpdateForm({ template }: UpdateFormProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-6 gap-4">
-          <FieldGroup className="col-span-2">
+        <div className="grid grid-cols-3 gap-4">
+          <FieldGroup>
             <Controller
               name="name"
               control={form.control}
@@ -91,7 +94,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
               )}
             />
           </FieldGroup>
-          <FieldGroup className="col-span-3">
+          <FieldGroup>
             <Controller
               name="cohortId"
               control={form.control}
@@ -127,6 +130,34 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                       <SelectItem value="draft">Draft</SelectItem>
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="archived">Archived</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+          <FieldGroup>
+            <Controller
+              name="type"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="update-template-type">
+                    Template Type
+                  </FieldLabel>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger id="update-template-type">
+                      <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="open">Open template</SelectItem>
+                      <SelectItem value="fixed">Fixed template</SelectItem>
                     </SelectContent>
                   </Select>
                   {fieldState.invalid && (

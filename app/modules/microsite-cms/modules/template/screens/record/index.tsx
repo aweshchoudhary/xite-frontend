@@ -1,5 +1,3 @@
-import { Field, FieldGroup, FieldLabel } from "@ui/field";
-import { Input } from "@ui/input";
 import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
@@ -19,6 +17,8 @@ export default function RecordView({ template }: RecordViewProps) {
     return <div>Template not found</div>;
   }
 
+  const templateType = template.type ?? "open";
+
   return (
     <div>
       <div className="space-y-10">
@@ -27,6 +27,9 @@ export default function RecordView({ template }: RecordViewProps) {
           <div className="flex items-center gap-2">
             <Badge className="text-sm" variant={"secondary"}>
               {template.status}
+            </Badge>
+            <Badge className="text-sm" variant={"outline"}>
+              {templateType === "fixed" ? "Fixed template" : "Open template"}
             </Badge>
             <Link
               href={`/templates/${template._id}/edit`}

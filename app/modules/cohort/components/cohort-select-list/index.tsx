@@ -51,7 +51,7 @@ export default function CohortSelectList({
                     cohort.cohort_key === defaultValue && (
                       <div
                         key={defaultValue}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 truncate"
                       >
                         {cohort.name}
                       </div>

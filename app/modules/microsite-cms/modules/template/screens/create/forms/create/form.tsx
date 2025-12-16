@@ -14,6 +14,13 @@ import FormSection from "@microsite-cms/template/screens/components/form/form-se
 import { toast } from "sonner";
 import { createTemplate } from "@microsite-cms/common/services/db/actions/template/create";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 
@@ -27,6 +34,7 @@ export default function CreateForm() {
     defaultValues: {
       name: "",
       cohortId: cohort_key ?? "",
+      type: "open",
       pages: [],
     },
   });
@@ -65,7 +73,7 @@ export default function CreateForm() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-3 gap-5">
           <FieldGroup>
             <Controller
               name="name"
@@ -78,6 +86,34 @@ export default function CreateForm() {
                     id="form-rhf-demo-title"
                     aria-invalid={fieldState.invalid}
                   />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+          <FieldGroup>
+            <Controller
+              name="type"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="create-template-type">
+                    Template Type
+                  </FieldLabel>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger id="create-template-type">
+                      <SelectValue placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="open">Open template</SelectItem>
+                      <SelectItem value="fixed">Fixed template</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
