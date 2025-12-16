@@ -6,6 +6,7 @@ import {
 } from "@microsite-cms/common/services/db/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
+import RecordViewBranding from "./components/record-view-branding";
 import Link from "next/link";
 import { cn } from "@/modules/common/lib/utils";
 import { buttonVariants } from "@ui/button";
@@ -62,6 +63,7 @@ export default function RecordView({ microsite, template }: RecordViewProps) {
           <TabsList>
             <TabsTrigger value="common">Common</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
+            <TabsTrigger value="branding">Branding</TabsTrigger>
           </TabsList>
           <TabsContent value="common">
             <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
@@ -104,6 +106,11 @@ export default function RecordView({ microsite, template }: RecordViewProps) {
                   }))}
                 />
               )}
+            </div>
+          </TabsContent>
+          <TabsContent value="branding">
+            <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
+              <RecordViewBranding branding={microsite.branding} />
             </div>
           </TabsContent>
         </Tabs>
