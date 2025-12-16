@@ -65,7 +65,10 @@ export default function RecordViewBranding({
                 {branding.favicon ? (
                   <div className="max-w-xs p-3 aspect-square h-auto object-cover bg-muted rounded-lg border">
                     <Image
-                      src={branding.favicon.replace("http://localhost:3000", "")}
+                      src={branding.favicon.replace(
+                        "http://localhost:3000",
+                        ""
+                      )}
                       alt="Favicon"
                       width={32}
                       height={32}
@@ -136,7 +139,9 @@ export default function RecordViewBranding({
               </FieldGroup>
               <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="color-secondary">Secondary Color</FieldLabel>
+                  <FieldLabel htmlFor="color-secondary">
+                    Secondary Color
+                  </FieldLabel>
                   <div className="flex items-center gap-3">
                     <div
                       className="w-12 h-12 rounded-lg border-2 border-border"
@@ -265,4 +270,3 @@ export default function RecordViewBranding({
     </div>
   );
 }
-

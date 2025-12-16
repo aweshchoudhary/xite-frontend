@@ -54,3 +54,7 @@ secret-*
 
 app/modules/common/database/prisma/generated
 app/modules/common/database/prisma/generated/*
+
+
+credentials/*
+credentials

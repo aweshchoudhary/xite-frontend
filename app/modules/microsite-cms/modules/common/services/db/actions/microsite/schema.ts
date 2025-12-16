@@ -31,8 +31,8 @@ export const MicrositePageValue = z.object({
 });
 
 export const MicrositeBrandingSchema = z.object({
-  logo: z.string().optional(),
-  favicon: z.string().optional(),
+  logo: z.union([z.string(), z.instanceof(File)]).optional(),
+  favicon: z.union([z.string(), z.instanceof(File)]).optional(),
   colors: z
     .object({
       primary: z.string().optional(),

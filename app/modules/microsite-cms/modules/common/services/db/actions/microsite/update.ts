@@ -11,7 +11,6 @@ import {
   ITemplate,
 } from "../../types/interfaces";
 import { uploadFileAction } from "@microsite-cms/common/services/file-system/upload-action";
-import { writeFile } from "fs/promises";
 
 interface UpdateMicrositeProps {
   micrositeId: string;
@@ -36,7 +35,16 @@ export async function updateMicrosite({
   });
 
   data = await uploadImages(data, template);
-  await writeFile("microsite.json", JSON.stringify(data, null, 2));
+
+  // Handle branding file uploads
+  if (data.branding) {
+    if (data.branding.logo instanceof File) {
+      data.branding.logo = await uploadFileAction(data.branding.logo);
+    }
+    if (data.branding.favicon instanceof File) {
+      data.branding.favicon = await uploadFileAction(data.branding.favicon);
+    }
+  }
 
   const microsite = await MicrositeModel.findById(micrositeId);
   if (!microsite) throw new Error("Microsite not found");
@@ -47,31 +55,12 @@ export async function updateMicrosite({
   microsite.globalSections = data.globalSections;
   microsite.pages = data.pages;
 
-  // Handle branding
-  if (data.branding) {
-    // Upload logo and favicon if they are File objects
-    const uploadFileIfNeeded = async (
-      value: unknown
-    ): Promise<string | unknown> => {
-      if (value instanceof File) {
-        const fileUrl = await uploadFileAction(value);
-        return fileUrl;
-      }
-      return value;
+  if (data.branding && microsite.branding) {
+    data.branding = {
+      ...microsite.branding,
+      logo: data.branding.logo,
+      favicon: data.branding.favicon,
     };
-
-    if (data.branding.logo) {
-      data.branding.logo = (await uploadFileIfNeeded(
-        data.branding.logo
-      )) as string;
-    }
-    if (data.branding.favicon) {
-      data.branding.favicon = (await uploadFileIfNeeded(
-        data.branding.favicon
-      )) as string;
-    }
-
-    microsite.branding = data.branding;
   }
 
   await microsite.save();
