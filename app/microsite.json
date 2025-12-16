@@ -1,0 +1,73 @@
+{
+  "micrositeId": "6940e66e2f26d282ae6f0f69",
+  "title": "eafafasdfsadf",
+  "status": "draft",
+  "globalSections": [
+    {
+      "key": "asdfasdf",
+      "blocks": [
+        {
+          "key": "asdfasfd",
+          "type": "single",
+          "repeatable": false,
+          "value": {
+            "asdfasfd": null
+          },
+          "items": []
+        }
+      ]
+    },
+    {
+      "key": "asdfasdfasdf",
+      "blocks": [
+        {
+          "key": "asdfasdfsadf",
+          "type": "single",
+          "repeatable": false,
+          "value": {
+            "asdfasdfsadf": null
+          },
+          "items": []
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "dfasdfsafd",
+      "meta": {
+        "title": "dfasdfsafd",
+        "description": "dfasdfsafd",
+        "slug": "dfasdfsafd"
+      },
+      "sections": [
+        {
+          "key": "asdfasdfasdf",
+          "blocks": [
+            {
+              "key": "asdasdfasdf",
+              "type": "single",
+              "repeatable": false,
+              "value": null,
+              "items": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "branding": {
+    "colors": {
+      "primary": "#c91919",
+      "primary_foreground": "#c66f6f",
+      "secondary": "#ff0000",
+      "secondary_foreground": "#00ef0a",
+      "accent": "#8a0000",
+      "accent_foreground": "#0094ae",
+      "border": "#ffffff"
+    },
+    "fonts": {
+      "family": "asdfasdf"
+    }
+  }
+}

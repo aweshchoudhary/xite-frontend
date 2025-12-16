@@ -47,6 +47,33 @@ export async function updateMicrosite({
   microsite.globalSections = data.globalSections;
   microsite.pages = data.pages;
 
+  // Handle branding
+  if (data.branding) {
+    // Upload logo and favicon if they are File objects
+    const uploadFileIfNeeded = async (
+      value: unknown
+    ): Promise<string | unknown> => {
+      if (value instanceof File) {
+        const fileUrl = await uploadFileAction(value);
+        return fileUrl;
+      }
+      return value;
+    };
+
+    if (data.branding.logo) {
+      data.branding.logo = (await uploadFileIfNeeded(
+        data.branding.logo
+      )) as string;
+    }
+    if (data.branding.favicon) {
+      data.branding.favicon = (await uploadFileIfNeeded(
+        data.branding.favicon
+      )) as string;
+    }
+
+    microsite.branding = data.branding;
+  }
+
   await microsite.save();
 
   return JSON.parse(JSON.stringify(microsite));

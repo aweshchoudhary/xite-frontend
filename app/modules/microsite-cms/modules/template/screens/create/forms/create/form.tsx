@@ -65,8 +65,6 @@ export default function CreateForm() {
           </div>
         )}
 
-        {JSON.stringify(form.formState.errors)}
-
         <div className="grid grid-cols-2 gap-5">
           <FieldGroup>
             <Controller

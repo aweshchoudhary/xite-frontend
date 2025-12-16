@@ -30,6 +30,27 @@ export const MicrositePageValue = z.object({
   sections: z.array(MicrositeSectionValue),
 });
 
+export const MicrositeBrandingSchema = z.object({
+  logo: z.string().optional(),
+  favicon: z.string().optional(),
+  colors: z
+    .object({
+      primary: z.string().optional(),
+      primary_foreground: z.string().optional(),
+      secondary: z.string().optional(),
+      secondary_foreground: z.string().optional(),
+      accent: z.string().optional(),
+      accent_foreground: z.string().optional(),
+      border: z.string().optional(),
+    })
+    .optional(),
+  fonts: z
+    .object({
+      family: z.string().optional(),
+    })
+    .optional(),
+});
+
 export const MicrositeSchema = z.object({
   micrositeId: z.string().min(1),
   title: z.string().optional(),
@@ -37,6 +58,7 @@ export const MicrositeSchema = z.object({
 
   globalSections: z.array(MicrositeSectionValue),
   pages: z.array(MicrositePageValue),
+  branding: MicrositeBrandingSchema.optional(),
 });
 
 export type MicrositeFormInput = z.infer<typeof MicrositeSchema>;

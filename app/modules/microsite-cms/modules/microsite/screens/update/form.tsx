@@ -15,6 +15,7 @@ import { Button } from "@ui/button";
 import { AlertCircle } from "lucide-react";
 import FormPage from "./components/form-page";
 import FormSection from "./components/form-section";
+import FormBranding from "./components/form-branding";
 import { toast } from "sonner";
 import { updateMicrosite } from "@microsite-cms/common/services/db/actions/microsite/update";
 import {
@@ -37,6 +38,22 @@ export default function UpdateForm({ microsite, template }: UpdateFormProps) {
     defaultValues: {
       ...microsite,
       micrositeId: microsite._id || "",
+      branding: microsite.branding || {
+        logo: undefined,
+        favicon: undefined,
+        colors: {
+          primary: undefined,
+          primary_foreground: undefined,
+          secondary: undefined,
+          secondary_foreground: undefined,
+          accent: undefined,
+          accent_foreground: undefined,
+          border: undefined,
+        },
+        fonts: {
+          family: undefined,
+        },
+      },
     },
   });
 
@@ -148,7 +165,6 @@ export default function UpdateForm({ microsite, template }: UpdateFormProps) {
           ))}
         </div>
       )}
-      <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
 
       <form
         id="form-rhf-demo"
@@ -204,6 +220,7 @@ export default function UpdateForm({ microsite, template }: UpdateFormProps) {
           <TabsList>
             <TabsTrigger value="global">Global Sections</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
+            <TabsTrigger value="branding">Branding</TabsTrigger>
           </TabsList>
           <TabsContent value="global">
             <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
@@ -218,6 +235,11 @@ export default function UpdateForm({ microsite, template }: UpdateFormProps) {
           <TabsContent value="pages">
             <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
               <FormPage form={form} template={template} />
+            </div>
+          </TabsContent>
+          <TabsContent value="branding">
+            <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
+              <FormBranding form={form} />
             </div>
           </TabsContent>
         </Tabs>
