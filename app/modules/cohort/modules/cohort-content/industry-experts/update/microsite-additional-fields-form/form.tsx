@@ -1,5 +1,5 @@
 "use client";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
@@ -45,12 +45,11 @@ export default function UpdateMicrositeAdditionalFieldsForm({
   }, [saveForm]);
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-5"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-5"
+    >
         <div className="space-y-2">
           <MicrositeAdditionalFields
             form={form}
@@ -58,7 +57,6 @@ export default function UpdateMicrositeAdditionalFieldsForm({
             bottom_desc_field_name="bottom_description"
           />
         </div>
-      </form>
-    </Form>
+    </form>
   );
 }

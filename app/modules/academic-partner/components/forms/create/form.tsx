@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import { cn } from "@/modules/common/lib/utils";
 import { Field, FieldError, FieldLabel } from "@ui/field";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -53,12 +53,11 @@ export default function CreateForm({
   };
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-8"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <Controller
@@ -182,7 +181,6 @@ export default function CreateForm({
             {form.formState.isSubmitting ? "Creating..." : "Create"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

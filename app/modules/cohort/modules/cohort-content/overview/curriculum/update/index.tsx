@@ -2,7 +2,6 @@
 import {
   Controller,
   FieldArrayWithId,
-  Form,
   useForm,
   UseFormReturn,
   useFieldArray,
@@ -54,12 +53,11 @@ export default function CreateForm({
   });
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-8"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         <div className="space-y-5">
           {items.fields.map((field, index) => (
             <Item
@@ -103,8 +101,7 @@ export default function CreateForm({
             {form.formState.isSubmitting ? "Saving..." : "Save"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }
 

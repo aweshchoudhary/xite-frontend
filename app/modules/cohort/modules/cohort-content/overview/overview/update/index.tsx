@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
@@ -40,12 +40,11 @@ export default function CreateForm({
   };
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-5"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-5"
+    >
         <div className="space-y-2">
           <div>
             <Controller
@@ -118,7 +117,6 @@ export default function CreateForm({
             )}
           </Button>
         </div>
-      </form>
-    </Form>
+    </form>
   );
 }

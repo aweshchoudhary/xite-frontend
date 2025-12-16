@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
 import { createCohortAction, getLastCohortByProgramIdAction } from "./action";
@@ -159,8 +159,11 @@ export default function CreateForm({
   }, [form]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         {!form.watch("program_id") ? (
           <div>
             <Controller
@@ -406,7 +409,6 @@ export default function CreateForm({
             {isSubmitting ? "Creating..." : "Create Cohort"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

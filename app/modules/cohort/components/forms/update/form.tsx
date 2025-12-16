@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "../schema";
 import { updateCohortAction } from "./action";
@@ -95,8 +95,11 @@ export default function UpdateForm({
   }, [programId]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         {!form.watch("program_id") ? (
           <div>
             <Controller
@@ -337,7 +340,6 @@ export default function UpdateForm({
             {form.formState.isSubmitting ? "Saving..." : "Save"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

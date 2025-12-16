@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "../schema";
 import { updateAction } from "./action";
@@ -99,8 +99,11 @@ export default function UpdateForm({
   }, []);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <Controller
@@ -381,7 +384,6 @@ export default function UpdateForm({
             {form.formState.isSubmitting ? "Saving..." : "Save"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

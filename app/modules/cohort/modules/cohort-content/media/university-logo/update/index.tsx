@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
@@ -40,8 +40,7 @@ export default function CreateForm({
   };
 
   return (
-    <Form {...form}>
-      <form autoComplete="off" onSubmit={form.handleSubmit(handleSubmit)}>
+    <form autoComplete="off" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex items-center gap-2">
           <div>
             <Controller
@@ -101,7 +100,6 @@ export default function CreateForm({
             {form.formState.isSubmitting ? "Saving..." : "Save"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
 import { createAction } from "./action";
@@ -51,12 +51,11 @@ export default function CreateForm({
   };
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-8"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-8"
+    >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <Controller
@@ -113,7 +112,6 @@ export default function CreateForm({
             {form.formState.isSubmitting ? "Creating..." : "Create"}
           </Button>
         </footer>
-      </form>
-    </Form>
+    </form>
   );
 }

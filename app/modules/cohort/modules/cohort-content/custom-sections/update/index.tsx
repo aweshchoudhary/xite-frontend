@@ -1,7 +1,6 @@
 "use client";
 import {
   Controller,
-  Form,
   UseFormReturn,
   useFieldArray,
   useForm,
@@ -106,12 +105,11 @@ export default function CreateForm({
   }, [cohortData]);
 
   return (
-    <Form {...form}>
-      <form
-        autoComplete="off"
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-5"
-      >
+    <form
+      autoComplete="off"
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-5"
+    >
         {sections.fields.map((field, index) => (
           <SectionFormField
             key={field.id}
