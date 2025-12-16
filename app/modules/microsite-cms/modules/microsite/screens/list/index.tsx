@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";
 import { fetchMicrosites } from "./actions/fetch";

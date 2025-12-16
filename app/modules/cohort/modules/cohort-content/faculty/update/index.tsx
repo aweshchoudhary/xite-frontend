@@ -1,7 +1,7 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import Title from "../title";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import FacultySelectPopover from "./faculty-select-popover";
 import { SortableGrid } from "./draggable-wrapper";
 import UpdateMicrositeAdditionalFieldsForm from "./microsite-additional-fields-form/form";

@@ -1,16 +1,11 @@
 "use client";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/modules/common/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import CohortOverview from "./overview";
 import Link from "next/link";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import TemplatesContainer from "./microsite-cms/templates/container";
 
 type Props = {

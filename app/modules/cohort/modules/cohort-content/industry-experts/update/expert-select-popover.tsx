@@ -4,7 +4,7 @@ import * as React from "react";
 import { ChevronsUpDownIcon } from "lucide-react";
 
 import { getImageUrl } from "@/modules/common/lib/utils";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,20 +12,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/modules/common/components/ui/command";
+} from "@ui/command";
 import { GetAllOutput, getAll } from "@/modules/faculty/server/read";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { addExpertItemToSection } from "./action";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/modules/common/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@ui/dialog";
 type Props = {
   children?: React.ReactNode;
   sectionId: string;

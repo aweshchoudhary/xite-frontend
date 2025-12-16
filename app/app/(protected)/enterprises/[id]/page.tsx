@@ -2,7 +2,7 @@ import {
   getOne,
   GetOneOutput as GetOne,
 } from "@/modules/enterprise/server/read";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { ChevronDownIcon, Pencil, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,17 +15,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
+} from "@ui/dropdown-menu";
 import ViewCard from "@/modules/program/components/view/view-card";
 
 // Force dynamic rendering since we use auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export default async function Page({
   params,
 }: {

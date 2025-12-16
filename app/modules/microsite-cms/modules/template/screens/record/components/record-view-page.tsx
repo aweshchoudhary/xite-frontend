@@ -1,9 +1,5 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import { ITemplatePage } from "@/modules/common/services/db/types/interfaces";
 import RecordViewSection from "./record-view-section";
 

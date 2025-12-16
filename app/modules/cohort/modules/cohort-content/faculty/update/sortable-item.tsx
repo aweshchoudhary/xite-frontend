@@ -4,7 +4,7 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import FacultyCard from "../faculty-card";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Move, Plus, Trash } from "lucide-react";
 import { removeFacultyItemFromSection } from "./action";
 import { toast } from "sonner";

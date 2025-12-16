@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/modules/common/components/ui/button";
-import { Label } from "@/modules/common/components/ui/label";
+import { buttonVariants } from "@ui/button";
+import { Label } from "@ui/label";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { File, FileText, Upload } from "lucide-react";

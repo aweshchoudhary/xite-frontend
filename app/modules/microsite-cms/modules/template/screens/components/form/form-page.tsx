@@ -1,10 +1,5 @@
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import {
   Controller,
   UseFieldArrayReturn,
@@ -12,7 +7,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { TemplateFormInput } from "@/modules/common/services/db/actions/template/schema";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Plus, PlusIcon, TrashIcon } from "lucide-react";
 import FormSection from "./form-section";
 import slugify from "slugify";

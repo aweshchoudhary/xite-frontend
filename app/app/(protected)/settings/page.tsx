@@ -1,8 +1,4 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { Mail } from "lucide-react";
 import SignOutBtn from "./sign-out-btn";
 import { getImageUrl } from "@/modules/common/lib/utils";

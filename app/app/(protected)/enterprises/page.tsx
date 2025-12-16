@@ -5,18 +5,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import DataTable from "@/modules/enterprise/components/tables/main/table";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/enterprise/contants";
 
 // Force dynamic rendering since we use auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const permission = await checkPermission("Enterprise", "read");

@@ -1,8 +1,8 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { Label } from "@/modules/common/components/ui/label";
+import { Label } from "@ui/label";
 import { format } from "date-fns";
 import { cn } from "@/modules/common/lib/utils";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import Link from "next/link";
 import { LinkIcon } from "lucide-react";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";

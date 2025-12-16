@@ -5,12 +5,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import ProgramsTable from "@/modules/program/components/tables/program/table";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";
 import { Plus } from "lucide-react";

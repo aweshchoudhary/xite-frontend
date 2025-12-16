@@ -1,18 +1,14 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
-import { Textarea } from "@/modules/common/components/ui/textarea";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
+import { Textarea } from "@ui/textarea";
 import {
   IBlockValue,
   ITemplateBlock,
 } from "@/modules/common/services/db/types/interfaces";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 import RecordViewValue from "./record-view-value";
-import { Separator } from "@/modules/common/components/ui/separator";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Separator } from "@ui/separator";
+import { Badge } from "@ui/badge";
 
 interface RecordViewBlockProps {
   blocks: Array<{ block: IBlockValue; templateBlock: ITemplateBlock }>;

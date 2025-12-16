@@ -3,7 +3,7 @@ import View from "./view";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import BrochureUpdate from "./upload";
 import { FileText } from "lucide-react";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 type Props = {
   data: GetCohort;

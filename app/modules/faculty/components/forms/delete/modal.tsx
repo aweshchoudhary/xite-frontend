@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { deleteAction } from "./action";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { toast } from "sonner";
@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/modules/common/components/ui/alert-dialog";
+} from "@ui/alert-dialog";
 
 type FormModalProps = {
   trigger?: React.ReactNode;

@@ -2,16 +2,16 @@
 import { useState } from "react";
 import View from "./view";
 import Update from "./update";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/modules/common/components/ui/accordion";
-import { Badge } from "@/modules/common/components/ui/badge";
-import { Switch } from "@/modules/common/components/ui/switch";
+} from "@ui/accordion";
+import { Badge } from "@ui/badge";
+import { Switch } from "@ui/switch";
 import { toast } from "sonner";
 import { updateSectionVisibilityAction } from "./action";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";

@@ -3,12 +3,12 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/modules/common/components/ui/accordion";
-import { Badge } from "@/modules/common/components/ui/badge";
+} from "@ui/accordion";
+import { Badge } from "@ui/badge";
 import Container from "./index";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { useState } from "react";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
 
 type Props = {

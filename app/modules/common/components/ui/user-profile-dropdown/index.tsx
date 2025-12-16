@@ -1,11 +1,7 @@
 "use client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Logout01Icon } from "@hugeicons/core-free-icons";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/modules/common/components/ui/accordion";
+} from "@ui/accordion";
 import { BookOpen } from "lucide-react";
 import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 

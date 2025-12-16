@@ -5,13 +5,9 @@ import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/modules/common/lib/utils";
-import { Button } from "@/modules/common/components/ui/button";
-import { Calendar } from "@/modules/common/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/modules/common/components/ui/popover";
+import { Button } from "@ui/button";
+import { Calendar } from "@ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 
 type DateFormField = {
   value?: Date | null;

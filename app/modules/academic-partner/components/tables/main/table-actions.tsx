@@ -4,15 +4,11 @@ import { MODULE_PATH } from "@/modules/academic-partner/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Row } from "@tanstack/react-table";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/modules/common/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { useRouter } from "next/navigation";
 
 export default function TableActions({ row }: { row: Row<GetOne> }) {

@@ -1,19 +1,14 @@
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { TemplateFormInput } from "@/modules/common/services/db/actions/template/schema";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 
 type FieldArrayName =
   | `pages.${number}.sections.${number}.blocks.${number}.elements`

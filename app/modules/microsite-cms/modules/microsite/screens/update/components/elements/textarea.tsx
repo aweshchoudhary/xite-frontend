@@ -1,5 +1,5 @@
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
-import { Textarea } from "@/modules/common/components/ui/textarea";
+import { Textarea } from "@ui/textarea";
 
 interface TextareaElementProps {
   index: number;

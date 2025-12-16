@@ -4,7 +4,7 @@ import View from "./view";
 import Update from "./update";
 import { Pencil } from "lucide-react";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
 
 type ContainerProps = {

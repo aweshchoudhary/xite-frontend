@@ -1,14 +1,10 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import { ITemplateBlock } from "@/modules/common/services/db/types/interfaces";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 import RecordViewElementGroup from "./record-view-element-group";
 import RecordViewElementSingle from "./record-view-element-single";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 interface RecordViewBlockProps {
   blocks: ITemplateBlock[];

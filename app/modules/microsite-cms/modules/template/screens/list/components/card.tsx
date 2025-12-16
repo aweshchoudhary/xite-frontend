@@ -1,15 +1,11 @@
 "use client";
-import { Badge } from "@/modules/common/components/ui/badge";
-import {
-  Card as CardComponent,
-  CardContent,
-  CardTitle,
-} from "@/modules/common/components/ui/card";
+import { Badge } from "@ui/badge";
+import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
 import { ITemplate } from "@/modules/common/services/db/types/interfaces";
 import { CalendarIcon, Copy, Dot } from "lucide-react";
 import Link from "next/link";
 import { DateTime } from "luxon";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { duplicateTemplateAction } from "../actions/duplicate";
 import { toast } from "sonner";
 

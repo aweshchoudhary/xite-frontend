@@ -5,18 +5,13 @@ import { createSchema, CreateSchema } from "../schema";
 import { createAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { MODULE_NAME } from "@/modules/enterprise/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface CreateFormProps extends FormBaseProps<CreateSchema> {}
 

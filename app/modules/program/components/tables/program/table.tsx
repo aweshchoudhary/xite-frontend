@@ -3,7 +3,7 @@
 import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
 import { columns } from "./schema";
 import { getAll } from "@/modules/program/server/read";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import Link from "next/link";

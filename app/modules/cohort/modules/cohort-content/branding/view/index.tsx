@@ -1,6 +1,6 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { Label } from "@/modules/common/components/ui/label";
-import { Button } from "@/modules/common/components/ui/button";
+import { Label } from "@ui/label";
+import { Button } from "@ui/button";
 type Props = {
   data?: PrimaryDB.CohortBrandingGetPayload<{
     include: {

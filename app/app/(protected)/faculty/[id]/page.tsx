@@ -1,5 +1,5 @@
 import { getOne, GetOneOutput as GetOne } from "@/modules/faculty/server/read";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   ChevronDownIcon,
   Layers,
@@ -20,24 +20,20 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import { Badge } from "@/modules/common/components/ui/badge";
+} from "@ui/dropdown-menu";
+import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
 // Force dynamic rendering since we use auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export default async function Page({
   params,
 }: {

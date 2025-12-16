@@ -4,26 +4,18 @@ import { createSchema, CreateSchema } from "../schema";
 import { createAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Textarea } from "@/modules/common/components/ui/textarea";
-import { Button, buttonVariants } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Textarea } from "@ui/textarea";
+import { Button, buttonVariants } from "@ui/button";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
 import ImageSelector from "@/modules/common/components/global/image-selector";
-import { Label } from "@/modules/common/components/ui/label";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Label } from "@ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import { cn } from "@/modules/common/lib/utils";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
 import { Controller, Form, useForm } from "react-hook-form";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;

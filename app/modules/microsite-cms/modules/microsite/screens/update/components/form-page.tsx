@@ -1,17 +1,12 @@
 "use client";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import { Controller, UseFormReturn, useFieldArray } from "react-hook-form";
 import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
 import { FileText, Lock } from "lucide-react";
 import FormSection from "./form-section";
 import { ITemplate } from "@/modules/common/services/db/types/interfaces";
-import { Textarea } from "@/modules/common/components/ui/textarea";
+import { Textarea } from "@ui/textarea";
 
 interface FormPageProps {
   form: UseFormReturn<MicrositeFormInput>;

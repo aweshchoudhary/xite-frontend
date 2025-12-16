@@ -5,19 +5,14 @@ import { updateSchema, UpdateSchema } from "../schema";
 import { updateAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/enterprise/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 

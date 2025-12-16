@@ -20,10 +20,13 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@tiptap-ui/*": ["./modules/microsite-cms/modules/common/components/tiptap/*"],
-      "@tiptap-templates/*": ["./modules/microsite-cms/modules/common/components/tiptap-templates/*"],
+      "@tiptap-ui/*": ["./modules/common/components/tiptap/*"],
+      "@tiptap-templates/*": ["./modules/common/components/tiptap/tiptap-templates/*"],
       "@microsite-cms/*": ["./modules/microsite-cms/modules/*"],
-      // "@tiptap/*": ["./modules/microsite-cms/modules/common/components/tiptap/*"]
+      "@common-components/*": ["./modules/common/components/*"],
+      "@ui/*": ["./modules/common/components/ui/*"],
+      "@common-lib/*": ["./modules/common/lib/*"],
+      "@common-hooks/*": ["./modules/common/hooks/*"],
     }
   },
   "include": [

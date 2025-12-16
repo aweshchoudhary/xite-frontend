@@ -5,15 +5,15 @@ import { programCreateSchema, ProgramCreateSchema } from "../schema";
 import { createProgramAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
@@ -21,11 +21,7 @@ import EnterpriseSelect from "@/modules/enterprise/components/select-list";
 import { useEffect } from "react";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
 
 type CreateFormProps = FormBaseProps<ProgramCreateSchema>;
 

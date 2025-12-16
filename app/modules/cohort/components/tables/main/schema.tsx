@@ -1,11 +1,11 @@
 "use client";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
 import { GetCohortForTable } from "@/modules/cohort/server/cohort/read";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { format } from "date-fns";

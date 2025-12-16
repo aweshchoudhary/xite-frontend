@@ -1,15 +1,11 @@
 "use client";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
 import { GetOneOutput } from "@/modules/faculty/server/read";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { MODULE_PATH } from "@/modules/faculty/contants";
 import { getImageUrl } from "@/modules/common/lib/utils";
 

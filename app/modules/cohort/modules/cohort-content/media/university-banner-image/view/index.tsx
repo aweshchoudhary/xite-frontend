@@ -1,10 +1,10 @@
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { ImageIcon, Upload } from "lucide-react";
 import Image from "next/image";
 import BannerUpdate from "../upload";
-import { Label } from "@/modules/common/components/ui/label";
+import { Label } from "@ui/label";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
 

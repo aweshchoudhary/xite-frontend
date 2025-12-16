@@ -3,18 +3,13 @@ import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
 import { DatePickerField } from "@/modules/common/components/global/form/date-form-field";
 import DraggableList from "./sort-sections";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 

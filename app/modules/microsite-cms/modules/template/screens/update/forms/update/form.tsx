@@ -1,36 +1,26 @@
 "use client";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TemplateFormInput,
   TemplateFormSchema,
 } from "@microsite-cms/common/services/db/actions/template/schema";
-import { Input } from "@/modules/common/components/ui/input";
+import { Input } from "@ui/input";
 import FormPage from "@microsite-cms/template/screens/components/form/form-page";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { AlertCircle } from "lucide-react";
 import FormSection from "@microsite-cms/template/screens/components/form/form-section";
 import { toast } from "sonner";
 import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/modules/common/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { updateTemplateAction } from "./action";
 import { useRouter } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";

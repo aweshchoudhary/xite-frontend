@@ -10,7 +10,7 @@ import {
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import Link from "next/link";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 interface CohortTableProps {
   status?: WorkStatus | "ALL";

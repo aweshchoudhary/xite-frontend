@@ -1,14 +1,9 @@
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
-import { Button } from "@/modules/common/components/ui/button";
-import { Label } from "@/modules/common/components/ui/label";
+import { Button } from "@ui/button";
+import { Label } from "@ui/label";
 import { useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 type Props = {
   form: UseFormReturn<any>;

@@ -5,18 +5,14 @@ import { updateSchema, UpdateSchema } from "../schema";
 import { updateAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button, buttonVariants } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button, buttonVariants } from "@ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/faculty/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
-import { Label } from "@/modules/common/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
+import { Label } from "@ui/label";
 import { cn, getImageUrl } from "@/modules/common/lib/utils";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import ImageSelector from "@/modules/common/components/global/image-selector";
@@ -29,7 +25,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import {
   getSubjects,
   Subject,
@@ -38,12 +34,7 @@ import {
 } from "../create/server";
 import { Plus, X } from "lucide-react";
 import SubjectAreaSelectList from "../create/subject-area-select-list";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 

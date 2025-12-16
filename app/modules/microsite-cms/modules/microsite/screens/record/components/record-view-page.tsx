@@ -1,10 +1,6 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
-import { Textarea } from "@/modules/common/components/ui/textarea";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
+import { Textarea } from "@ui/textarea";
 import {
   IPageValue,
   ITemplatePage,

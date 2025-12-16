@@ -1,4 +1,4 @@
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/modules/common/components/ui/table";
+} from "@ui/table";
 import { ITemplate } from "@/modules/common/services/db/types/interfaces";
 import Link from "next/link";
 import DataTableActions from "./data-table-actions";

@@ -3,8 +3,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import { Button } from "@/modules/common/components/ui/button";
+} from "@ui/dropdown-menu";
+import { Button } from "@ui/button";
 import {
   CopyIcon,
   MoreHorizontalIcon,

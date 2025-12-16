@@ -1,5 +1,5 @@
-import { Badge } from "@/modules/common/components/ui/badge";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { Badge } from "@ui/badge";
+import { buttonVariants } from "@ui/button";
 import {
   Cohort,
   WorkStatus,

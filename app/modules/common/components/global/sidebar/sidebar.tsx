@@ -12,7 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/modules/common/components/ui/sidebar";
+} from "@ui/sidebar";
 import Link from "next/link";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
 import { links } from "./links";

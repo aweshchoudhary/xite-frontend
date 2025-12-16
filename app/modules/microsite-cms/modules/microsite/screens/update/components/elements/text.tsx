@@ -1,4 +1,4 @@
-import { Input } from "@/modules/common/components/ui/input";
+import { Input } from "@ui/input";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
 
 interface TextElementProps {

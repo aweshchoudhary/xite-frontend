@@ -1,11 +1,11 @@
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import { ArrowRight, Settings } from "lucide-react";
 import Link from "next/link";
 import { getAllByStatus } from "@/modules/cohort/server/cohort/read";
 import { getAll as getAllProgramsByStatus } from "@/modules/program/server/read";
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
-import { Separator } from "@/modules/common/components/ui/separator";
+import { Separator } from "@ui/separator";
 import ViewCard from "@/modules/program/components/view/view-card";
 
 // Force dynamic rendering since we use auth

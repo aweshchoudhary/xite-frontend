@@ -7,20 +7,16 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import PhoneInput from "react-phone-number-input";
 
-import { Input } from "@/modules/common/components/ui/input";
-import { Button, buttonVariants } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button, buttonVariants } from "@ui/button";
 import { MODULE_NAME } from "@/modules/faculty/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import AcademicPartnerSelect from "@/modules/program/components/academic-partner-list";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
-import { Label } from "@/modules/common/components/ui/label";
+import { Label } from "@ui/label";
 import ImageSelector from "@/modules/common/components/global/image-selector";
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@ui/avatar";
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import { cn } from "@/modules/common/lib/utils";
 import {
@@ -29,16 +25,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { useEffect, useState } from "react";
 import { FacultyCode, getFacultyCodes, getSubjects, Subject } from "./server";
 import SubjectAreaSelectList from "./subject-area-select-list";
 import { Plus, X } from "lucide-react";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 

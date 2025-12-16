@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { updateStatusAction } from "./action";
 import { toast } from "sonner";
 import { GetOne } from "@/modules/program/server/read";

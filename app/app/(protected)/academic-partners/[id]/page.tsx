@@ -1,5 +1,5 @@
 import { GetOne, getOne } from "@/modules/academic-partner/server/read";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { ChevronDownIcon, MapPin, Pencil, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,18 +12,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+} from "@ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import ViewCard from "@/modules/program/components/view/view-card";
 import { getImageUrl } from "@/modules/common/lib/utils";
 

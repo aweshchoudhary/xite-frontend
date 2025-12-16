@@ -4,13 +4,9 @@ import ColumnSortBtn from "@/modules/common/components/global/data-table/column-
 import TableActions from "./table-actions";
 import Link from "next/link";
 import { GetOne } from "@/modules/program/server/read";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
 export const columns: ColumnDef<GetOne>[] = [

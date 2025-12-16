@@ -1,11 +1,7 @@
 "use client";
 
 import { logoutAction } from "@/modules/common/authentication/firebase/action";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +9,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
+} from "@ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/modules/common/components/ui/sidebar";
+} from "@ui/sidebar";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { LogOut } from "lucide-react";
 

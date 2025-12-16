@@ -1,23 +1,14 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import { ITemplate } from "@/modules/common/services/db/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
 import Link from "next/link";
 import { cn } from "@/modules/common/lib/utils";
-import { buttonVariants } from "@/modules/common/components/ui/button";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/modules/common/components/ui/tabs";
+import { buttonVariants } from "@ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { Pencil } from "lucide-react";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 interface RecordViewProps {
   template: ITemplate;

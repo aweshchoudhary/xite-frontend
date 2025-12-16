@@ -1,8 +1,8 @@
 "use client";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
-import { Input } from "@/modules/common/components/ui/input";
-import { Label } from "@/modules/common/components/ui/label";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Label } from "@ui/label";
+import { Button } from "@ui/button";
 import { useRef, useState } from "react";
 import { File, Upload } from "lucide-react";
 

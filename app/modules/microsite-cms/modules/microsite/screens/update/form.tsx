@@ -9,14 +9,9 @@ import {
   MicrositeFormInput,
   MicrositeSchema,
 } from "@/modules/common/services/db/actions/microsite/schema";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { AlertCircle } from "lucide-react";
 import FormPage from "./components/form-page";
 import FormSection from "./components/form-section";
@@ -28,13 +23,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/modules/common/components/ui/tabs";
+} from "@ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 
 export interface UpdateFormProps {
   microsite: IMicrosite;

@@ -3,24 +3,15 @@ import { Controller, Form, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/modules/common/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { HexColorPicker } from "react-colorful";
 import { readableColor } from "polished";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 

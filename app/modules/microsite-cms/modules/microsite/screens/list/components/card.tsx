@@ -1,9 +1,5 @@
-import { Badge } from "@/modules/common/components/ui/badge";
-import {
-  Card as CardComponent,
-  CardContent,
-  CardTitle,
-} from "@/modules/common/components/ui/card";
+import { Badge } from "@ui/badge";
+import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
 import { IMicrosite } from "@/modules/common/services/db/types/interfaces";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,8 +21,7 @@ export default function Card({ microsite }: CardProps) {
       ? updatedAt
       : updatedAt?.toISOString() || new Date().toISOString();
 
-  const statusLabel =
-    microsite.status === "published" ? "Published" : "Draft";
+  const statusLabel = microsite.status === "published" ? "Published" : "Draft";
 
   return (
     <Link href={`/microsites/${microsite._id}`}>
@@ -57,4 +52,3 @@ export default function Card({ microsite }: CardProps) {
     </Link>
   );
 }
-

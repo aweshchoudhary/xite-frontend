@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { LogOut } from "lucide-react";
 import { logoutAction } from "@/modules/common/authentication/firebase/action";
 

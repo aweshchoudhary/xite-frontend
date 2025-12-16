@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import View from "./view";
 import Update from "./update";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
 import {
   CohortSectionWithData,
@@ -14,7 +14,7 @@ import {
 
 import { Container as BrandingContainer } from "../branding/container";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 type ContainerProps = {
   data?: GetCohort;

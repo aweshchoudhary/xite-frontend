@@ -14,9 +14,9 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/modules/common/components/ui/alert-dialog";
-import { Badge } from "@/modules/common/components/ui/badge";
-import { Button } from "@/modules/common/components/ui/button";
+} from "@ui/alert-dialog";
+import { Badge } from "@ui/badge";
+import { Button } from "@ui/button";
 import {
   Card,
   CardAction,
@@ -25,7 +25,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/modules/common/components/ui/card";
+} from "@ui/card";
 import {
   Combobox,
   ComboboxContent,
@@ -33,7 +33,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@/modules/common/components/ui/combobox";
+} from "@ui/combobox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -50,13 +50,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+} from "@ui/dropdown-menu";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import {
   Select,
   SelectContent,
@@ -64,8 +60,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
-import { Textarea } from "@/modules/common/components/ui/textarea";
+} from "@ui/select";
+import { Textarea } from "@ui/textarea";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   PlusSignIcon,

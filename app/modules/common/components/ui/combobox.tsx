@@ -4,13 +4,13 @@ import * as React from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 
 import { cn } from "@/modules/common/lib/utils";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/modules/common/components/ui/input-group";
+} from "@ui/input-group";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowDown01Icon,

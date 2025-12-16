@@ -1,9 +1,4 @@
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-  FieldGroup,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldError, FieldLabel, FieldGroup } from "@ui/field";
 import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
 import { Controller, FieldArrayPath, UseFormReturn } from "react-hook-form";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";

@@ -1,15 +1,15 @@
 "use client";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { MicrositeFormInput } from "@/modules/common/services/db/actions/microsite/schema";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Plus, Square, List } from "lucide-react";
 import {
   ITemplateBlock,
   ITemplateElement,
 } from "@/modules/common/services/db/types/interfaces";
-import { Separator } from "@/modules/common/components/ui/separator";
+import { Separator } from "@ui/separator";
 import ElementWrapper from "./elements/element-wrapper";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 type FieldArrayName =
   | `pages.${number}.sections.${number}.blocks`

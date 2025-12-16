@@ -1,5 +1,5 @@
 import { GetOne, getOne } from "@/modules/program/server/read";
-import { Button, buttonVariants } from "@/modules/common/components/ui/button";
+import { Button, buttonVariants } from "@ui/button";
 import {
   AlignJustify,
   ChevronDownIcon,
@@ -24,22 +24,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/modules/common/components/ui/breadcrumb";
+} from "@ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import { Badge } from "@/modules/common/components/ui/badge";
+} from "@ui/dropdown-menu";
+import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import CopyText from "@/modules/common/components/global/copy-text";
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";

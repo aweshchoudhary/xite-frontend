@@ -5,7 +5,7 @@ import UnauthorizedPageError from "@/modules/common/components/global/error/unau
 import { Loader, Book, Key, Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import CopyText from "@/modules/common/components/global/copy-text";
 import { format } from "date-fns";

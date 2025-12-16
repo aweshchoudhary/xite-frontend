@@ -11,12 +11,7 @@ import {
 } from "./action";
 import TemplateCard from "@microsite-cms/template/screens/list/components/card";
 import MicrositeCard from "@microsite-cms/microsite/screens/list/components/card";
-import {
-  Tabs,
-  TabsTrigger,
-  TabsList,
-  TabsContent,
-} from "@/modules/common/components/ui/tabs";
+import { Tabs, TabsTrigger, TabsList, TabsContent } from "@ui/tabs";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 

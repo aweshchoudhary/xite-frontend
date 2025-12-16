@@ -1,11 +1,11 @@
 import CohortStatusUpdate from "@/modules/cohort/components/forms/update/status-update";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/modules/common/components/ui/dropdown-menu";
+} from "@ui/dropdown-menu";
 import { Link, Pencil, TrashIcon, ChevronDownIcon } from "lucide-react";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";

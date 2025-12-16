@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { fetchTemplates } from "./actions/fetch";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";

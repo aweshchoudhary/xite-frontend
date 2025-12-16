@@ -1,8 +1,4 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { GetOneOutput } from "../../server/read";
 import Link from "next/link";
 import { getImageUrl } from "@/modules/common/lib/utils";

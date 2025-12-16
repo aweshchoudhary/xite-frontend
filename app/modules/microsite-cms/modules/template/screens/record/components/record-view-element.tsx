@@ -1,10 +1,6 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 
 interface RecordViewElementProps {
   element: ITemplateElement;

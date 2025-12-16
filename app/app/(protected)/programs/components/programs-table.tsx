@@ -1,4 +1,4 @@
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import {
   Table,
   TableBody,
@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/modules/common/components/ui/table";
+} from "@ui/table";
 import { getAll } from "@/modules/program/server/read";
 import Link from "next/link";
 

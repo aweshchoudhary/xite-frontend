@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { TrashIcon } from "lucide-react";
 import DeleteCohortModal from "../forms/delete/modal";
 import { useState } from "react";

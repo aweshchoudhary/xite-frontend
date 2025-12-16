@@ -1,5 +1,5 @@
-import { Avatar, AvatarImage } from "@/modules/common/components/ui/avatar";
-import { AvatarFallback } from "@/modules/common/components/ui/avatar";
+import { Avatar, AvatarImage } from "@ui/avatar";
+import { AvatarFallback } from "@ui/avatar";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { MessageCircle } from "lucide-react";

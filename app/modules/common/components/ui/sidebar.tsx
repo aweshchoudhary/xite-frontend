@@ -5,22 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 
 import { cn } from "@/modules/common/lib/utils";
-import { Button } from "@/modules/common/components/ui/button";
-import { Input } from "@/modules/common/components/ui/input";
-import { Separator } from "@/modules/common/components/ui/separator";
+import { Button } from "@ui/button";
+import { Input } from "@ui/input";
+import { Separator } from "@ui/separator";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/modules/common/components/ui/sheet";
-import { Skeleton } from "@/modules/common/components/ui/skeleton";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/modules/common/components/ui/tooltip";
+} from "@ui/sheet";
+import { Skeleton } from "@ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/tooltip";
 import { useIsMobile } from "@microsite-cms/common/hooks/use-mobile";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons";

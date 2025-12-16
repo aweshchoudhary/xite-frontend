@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/modules/common/components/ui/input";
+import { Input } from "@ui/input";
 import { updateProfileImage } from "./actions";
 import { toast } from "sonner";
 

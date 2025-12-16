@@ -1,12 +1,12 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/modules/common/components/ui/dialog";
+} from "@ui/dialog";
 import { useFormState } from "./context";
 import { useEffect } from "react";
 import UpdateForm from "./form";

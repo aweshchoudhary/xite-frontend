@@ -5,8 +5,8 @@ import { updateSchema, UpdateSchema } from "../schema";
 import { updateCohortAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DateRangePickerField } from "@/modules/common/components/global/form/date-range-form-field";
@@ -16,12 +16,7 @@ import { FormUpdateBaseProps } from "@/modules/common/components/global/form/typ
 import ProgramSelect from "@/modules/program/components/program-select-list";
 import { GetOne } from "@/modules/program/server/read";
 import { getOne } from "@/modules/program/server/read";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 

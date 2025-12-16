@@ -1,14 +1,14 @@
 "use client";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { GetOne } from "../../server/read";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import Link from "next/link";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { buttonVariants } from "@ui/button";
 import { Loader, PencilIcon, School, TrashIcon } from "lucide-react";
 import DeleteProgramModal from "../forms/delete/modal";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

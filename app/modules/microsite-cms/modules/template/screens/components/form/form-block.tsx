@@ -1,11 +1,6 @@
 "use client";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import {
   Controller,
   UseFieldArrayReturn,
@@ -13,9 +8,9 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { TemplateFormInput } from "@microsite-cms/common/services/db/actions/template/schema";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { PlusIcon, TrashIcon } from "lucide-react";
-import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import { Checkbox } from "@ui/checkbox";
 import slugify from "slugify";
 import FormSingleElement from "./form-element-single";
 import FormElementGroup from "./form-element-group";
@@ -24,8 +19,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import { Badge } from "@/modules/common/components/ui/badge";
+} from "@ui/dropdown-menu";
+import { Badge } from "@ui/badge";
 
 type FieldArrayName =
   | `pages.${number}.sections.${number}.blocks`

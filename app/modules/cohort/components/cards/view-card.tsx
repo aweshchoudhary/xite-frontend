@@ -1,7 +1,7 @@
 "use client";
-import { Badge } from "@/modules/common/components/ui/badge";
-import { Button } from "@/modules/common/components/ui/button";
-import { buttonVariants } from "@/modules/common/components/ui/button";
+import { Badge } from "@ui/badge";
+import { Button } from "@ui/button";
+import { buttonVariants } from "@ui/button";
 import {
   Cohort,
   WorkStatus,

@@ -9,14 +9,10 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/modules/common/components/ui/command";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/modules/common/components/ui/avatar";
+} from "@ui/command";
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getDataList } from "./actions";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { updateCohortIndustryExpertsList } from "../../server/cohort/update";

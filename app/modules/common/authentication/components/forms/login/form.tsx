@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { loginFormAction } from "./action";
 
 export default function LoginForm() {

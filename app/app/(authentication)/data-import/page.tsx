@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { handleUpdateMediaUrls, handleUpdateSectionPositions } from "./action";
 // // import { main } from "@/modules/common/database/prisma/seed/data-import";
 // import { toast } from "sonner";

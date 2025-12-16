@@ -3,7 +3,7 @@
 import { useState } from "react";
 import TitleUpdateForm from "./update";
 import { Pencil } from "lucide-react";
-import { Label } from "@/modules/common/components/ui/label";
+import { Label } from "@ui/label";
 
 export default function Title({
   title,

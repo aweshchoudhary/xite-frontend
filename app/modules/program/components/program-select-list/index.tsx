@@ -5,16 +5,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/modules/common/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/modules/common/components/ui/popover";
+} from "@ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { GetOne } from "@/modules/program/server/read";
 import { cn } from "@/modules/common/lib/utils";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
 import { getAllAction } from "./action";
 import CreateProgramModal from "../forms/create/modal";

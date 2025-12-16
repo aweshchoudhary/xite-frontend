@@ -1,5 +1,6 @@
-@import '../modules/microsite-cms/modules/common/components/tiptap/styles/_variables.scss';
-@import '../modules/microsite-cms/modules/common/components/tiptap/styles/_keyframe-animations.scss';
+@import '../modules/common/components/tiptap/styles/_variables.scss';
+@import '../modules/common/components/tiptap/styles/_keyframe-animations.scss';
+
 
 @import "tailwindcss";
 @import "tw-animate-css";

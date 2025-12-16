@@ -1,7 +1,7 @@
 "use client";
 import View from "./view";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { Image as ImageIcon } from "lucide-react";
 
 type Props = {

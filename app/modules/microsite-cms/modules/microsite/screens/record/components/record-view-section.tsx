@@ -1,9 +1,5 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
+import { Input } from "@ui/input";
 import {
   ISectionValue,
   ITemplateSection,
@@ -14,7 +10,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/modules/common/components/ui/accordion";
+} from "@ui/accordion";
 
 interface RecordViewSectionProps {
   sections: Array<{

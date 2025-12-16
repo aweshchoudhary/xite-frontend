@@ -19,13 +19,13 @@ import {
 } from "@tanstack/react-table";
 import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
+} from "@ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -33,7 +33,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/modules/common/components/ui/table";
+} from "@ui/table";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import SearchInput from "../../ui/search-input";
 

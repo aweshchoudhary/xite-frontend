@@ -7,12 +7,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { toast } from "sonner";
 import { updateCohortStatusAction } from "../action";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { isSectionsCompleted } from "@/modules/cohort/modules/cohort-content/cohort-content-container";
 
 export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {

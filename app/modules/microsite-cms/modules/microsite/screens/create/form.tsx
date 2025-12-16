@@ -3,21 +3,16 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-  FieldGroup,
-} from "@/modules/common/components/ui/field";
-import { Input } from "@/modules/common/components/ui/input";
-import { Button } from "@/modules/common/components/ui/button";
+import { Field, FieldError, FieldLabel, FieldGroup } from "@ui/field";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
 import { createMicrosite } from "@microsite-cms/common/services/db/actions/microsite/create";
 import { toast } from "sonner";

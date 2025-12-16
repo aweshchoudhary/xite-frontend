@@ -1,8 +1,4 @@
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/modules/common/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { ITemplateElement } from "@/modules/common/services/db/types/interfaces";
 
 interface RecordViewElementSingleProps {

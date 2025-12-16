@@ -5,7 +5,7 @@ import {
   SelectValue,
   SelectTrigger,
   SelectItem,
-} from "@/modules/common/components/ui/select";
+} from "@ui/select";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { usePathname, useRouter } from "next/navigation";

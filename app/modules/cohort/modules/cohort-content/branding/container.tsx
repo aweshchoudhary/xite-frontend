@@ -2,9 +2,9 @@
 import { useState } from "react";
 import View from "./view";
 import Update from "./update";
-import { Button } from "@/modules/common/components/ui/button";
+import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import { Badge } from "@/modules/common/components/ui/badge";
+import { Badge } from "@ui/badge";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
 
