@@ -1,0 +1,80 @@
+{
+  "_id": "6940e3e92f26d282ae6f0f42",
+  "name": "Main Template",
+  "cohortId": "cornell-chro-cohort-5",
+  "status": "draft",
+  "type": "open",
+  "globalSections": [
+    {
+      "key": "asdfasdf",
+      "title": "asdfasdf",
+      "blocks": [
+        {
+          "key": "asdfasfd",
+          "title": "asdfasfd",
+          "repeatable": false,
+          "elements": [
+            {
+              "key": "asdfasfd",
+              "title": "asdfasfd",
+              "type": "text",
+              "required": false
+            }
+          ],
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "key": "asdfasdfasdf",
+      "title": "asdfasdfasdf",
+      "blocks": [
+        {
+          "key": "asdfasdfsadf",
+          "title": "asdfasdfsadf",
+          "repeatable": false,
+          "elements": [
+            {
+              "key": "asdfasdfsadf",
+              "title": "asdfasdfsadf",
+              "type": "text",
+              "required": false
+            }
+          ],
+          "type": "single"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "title": "dfasdfsafd",
+      "slug": "dfasdfsafd",
+      "sections": [
+        {
+          "key": "asdfasdfasdf",
+          "title": "asdfasdfasdf",
+          "blocks": [
+            {
+              "key": "asdasdfasdf",
+              "title": "asdasdfasdf",
+              "repeatable": false,
+              "elements": [
+                {
+                  "key": "asdasdfasdf",
+                  "title": "asdasdfasdf",
+                  "type": "text",
+                  "required": true
+                }
+              ],
+              "type": "single"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "createdAt": "2025-12-16T04:45:29.750Z",
+  "updatedAt": "2025-12-16T04:45:29.750Z",
+  "__v": 0
+}

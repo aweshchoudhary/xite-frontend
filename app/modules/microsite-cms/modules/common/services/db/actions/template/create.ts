@@ -15,11 +15,13 @@ export async function createTemplate(data: ITemplate) {
 export async function duplicateTemplate(id: string) {
   await connectDB();
   const template = await TemplateModal.findById(id);
-  writeFile("template.json", JSON.stringify(template, null, 2));
+
   if (!template) throw new Error("Template not found");
+
   const duplicated = await TemplateModal.create({
     ...template,
     name: `${template.name} (Copy)`,
+    cohortId: template.cohortId,
     status: "draft",
     globalSections: template.globalSections,
     pages: template.pages,
