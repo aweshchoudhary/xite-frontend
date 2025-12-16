@@ -22,7 +22,7 @@ export const baseSchema = z.object({
 export const createSchema = baseSchema;
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid(),
+  id: z.uuid(),
   fees: z.array(
     feeSchema.extend({
       id: z.string().optional(),
@@ -31,7 +31,7 @@ export const updateSchema = baseSchema.extend({
   ),
 });
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

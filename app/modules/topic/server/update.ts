@@ -1,0 +1,30 @@
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { MODULE_PATH } from "../contants";
+import { revalidatePath } from "next/cache";
+
+export type UpdateOneOutput = PrimaryDB.TopicGetPayload<object>;
+
+export async function updateOne({
+  id,
+  data,
+}: {
+  id: string;
+  data: PrimaryDB.TopicUpdateInput;
+}) {
+  try {
+    const updatedData = await primaryDB.topic.update({
+      where: { id },
+      data,
+    });
+
+    revalidatePath(MODULE_PATH);
+
+    return updatedData;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+

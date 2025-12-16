@@ -12,7 +12,7 @@ export const customSectionSchema = z.object({
   description: z.string().optional().nullable(),
   banner_image_url: z.string().optional().nullable(),
   background: colorSchema.optional().nullable(),
-  after_section_id: z.string().uuid(),
+  after_section_id: z.uuid(),
   banner_image_position: z
     .enum(["left", "right", "center", "top", "bottom"])
     .default("left"),
@@ -20,14 +20,14 @@ export const customSectionSchema = z.object({
 
 export const baseSchema = z.object({
   sections: z.array(customSectionSchema),
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
 });
 
 export const updateSchema = z.object({
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
   sections: z.array(
     customSectionSchema.extend({
-      id: z.string().uuid().optional(),
+      id: z.uuid().optional(),
       banner_image_file: z.instanceof(File).optional().nullable(),
       banner_image_action: z.enum(["upload", "delete"]).default("upload"),
     })
@@ -36,7 +36,7 @@ export const updateSchema = z.object({
 
 export const createSchema = baseSchema;
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

@@ -5,13 +5,13 @@ export const baseSchema = z.object({
   visibility_start_date: z.date().optional().nullable(),
   visibility_end_date: z.date().optional().nullable(),
   custom_domain: z.string().optional().nullable(),
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
   sections: z.array(
     z.object({
-      id: z.string().uuid(),
+      id: z.uuid(),
       section_position: z.number(),
       section_type: z.nativeEnum(CohortSectionType),
-      section_id: z.string().uuid(),
+      section_id: z.uuid(),
       section_title: z.string(),
       data: z.any(),
     })
@@ -19,12 +19,12 @@ export const baseSchema = z.object({
 });
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
 });
 
 export const createSchema = baseSchema;
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

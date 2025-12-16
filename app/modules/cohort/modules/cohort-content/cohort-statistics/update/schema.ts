@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 const listSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
   title: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
   items: z
     .array(
       z.object({
-        id: z.string().uuid().optional(),
+        id: z.uuid().optional(),
         title: z.string().min(1).max(255).optional(),
         description: z.string().optional().nullable(),
       })
@@ -47,16 +47,16 @@ export const baseSchema = z.object({
       .default("upload"),
   }),
   section_width: z.enum(["center", "full"]).optional().nullable(),
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
 });
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
 });
 
 export const createSchema = baseSchema;
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

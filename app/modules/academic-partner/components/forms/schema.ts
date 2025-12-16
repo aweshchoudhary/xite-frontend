@@ -13,12 +13,12 @@ export const createSchema = baseSchema.extend({
 });
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid(),
+  id: z.uuid(),
   logo_file: z.instanceof(File).optional().nullable(),
   logo_file_action: z.enum(["upload", "delete"]).optional().nullable(),
 });
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

@@ -5,12 +5,12 @@ export const baseSchema = z.object({
 });
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
 });
 
 export const createSchema = baseSchema;
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

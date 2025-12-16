@@ -17,7 +17,7 @@ export const baseSchema = z.object({
   top_description: z.string().optional().nullable(),
   bottom_description: z.string().optional().nullable(),
   items: z.array(itemBaseSchema),
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
 });
 
 export const createSchema = baseSchema;
@@ -31,7 +31,7 @@ export const updateSchema = baseSchema.extend({
   ),
 });
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

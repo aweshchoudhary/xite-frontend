@@ -9,11 +9,9 @@ export const baseSchema = z.object({
 
 export const createSchema = baseSchema;
 
-export const updateSchema = baseSchema
-  .extend({ id: z.string().uuid() })
-  .partial();
+export const updateSchema = baseSchema.extend({ id: z.uuid() }).partial();
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;

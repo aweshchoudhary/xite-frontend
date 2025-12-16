@@ -6,11 +6,11 @@ export const baseSchema = z.object({
   bottom_description: z.string().optional().nullable(),
   certificate_image_url: z.string().optional().nullable(),
   section_width: z.enum(["center", "full"]).optional().nullable(),
-  cohort_id: z.string().uuid(),
+  cohort_id: z.uuid(),
 });
 
 export const updateSchema = baseSchema.extend({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
   certificate_image_file: z.instanceof(File).optional(),
   certificate_image_file_action: z
     .enum(["upload", "delete"])
@@ -20,7 +20,7 @@ export const updateSchema = baseSchema.extend({
 
 export const createSchema = baseSchema;
 
-export const deleteSchema = z.object({ id: z.string().uuid() });
+export const deleteSchema = z.object({ id: z.uuid() });
 
 export type BaseSchema = z.infer<typeof baseSchema>;
 export type CreateSchema = z.infer<typeof createSchema>;
