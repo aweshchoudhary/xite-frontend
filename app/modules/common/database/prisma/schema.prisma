@@ -363,6 +363,27 @@ model DesignCohortCurriculumSession {
   updated_by_id     String?
 }
 
+model Topic {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  sub_topics  SubTopic[]
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+}
+
+model SubTopic {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  keywords    String[]
+  taost_id    String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  topic_id    String
+  topic       Topic    @relation(fields: [topic_id], references: [id])
+}
+
 model CohortStatisticsSection {
   id                      String                              @id @default(uuid())
   title                   String
