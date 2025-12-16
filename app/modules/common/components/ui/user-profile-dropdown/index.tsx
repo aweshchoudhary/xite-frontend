@@ -11,6 +11,7 @@ import {
 } from "../dropdown-menu";
 import { useAuth } from "@/modules/common/authentication/firebase/use-auth-hook";
 import { logoutAction } from "@/modules/common/authentication/firebase/action";
+import { useRouter } from "next/navigation";
 
 export default function UserProfileDropdown() {
   return <UserProfileDropdownMenu />;
@@ -33,6 +34,7 @@ export const UserProfileAvatar = () => {
 
 const UserProfileDropdownMenu = () => {
   const { user } = useAuth();
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -48,7 +50,11 @@ const UserProfileDropdownMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => logoutAction()}
+          onClick={() => {
+            logoutAction().then(() => {
+              router.push("/login");
+            });
+          }}
           className="bg-destructive/5"
           variant="destructive"
         >

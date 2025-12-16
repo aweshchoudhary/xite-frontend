@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
-import { redirect } from "next/navigation";
 import { primaryDB } from "../../database/prisma/connection";
 import { UserRole } from "../../database/prisma/generated/prisma";
 import { getCache, setCache } from "../../services/redis/controllers";
@@ -60,14 +59,14 @@ export async function loginAction(idToken: string) {
     path: "/",
   });
 
-  // 5. Redirect
-  redirect("/");
+  return {
+    user,
+  };
 }
 
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
-  redirect("/login");
 }
 
 export async function getUser(): Promise<{

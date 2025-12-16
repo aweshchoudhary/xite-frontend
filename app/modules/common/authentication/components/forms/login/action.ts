@@ -12,5 +12,6 @@ export async function loginFormAction() {
     await loginAction(idToken);
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }

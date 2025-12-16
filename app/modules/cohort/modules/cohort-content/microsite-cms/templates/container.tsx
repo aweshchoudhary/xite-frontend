@@ -72,7 +72,7 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
           className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-accent"
           href={`/templates/new?cohort_key=${cohort_key}`}
         >
-          <Plus className="size-4" /> New template
+          <Plus className="size-4" /> Template
         </Link>
       </div>
 
@@ -84,14 +84,12 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
         </div>
       ) : (
         <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-accent/40 p-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Start by creating your first template for this cohort.
-          </p>
+          <p className="text-sm text-muted-foreground">No templates yet.</p>
           <Link
             className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             href={`/templates/new?cohort_key=${cohort_key}`}
           >
-            <Plus className="size-4" /> Create template
+            <Plus className="size-4" /> Template
           </Link>
         </div>
       )}
@@ -124,7 +122,7 @@ const MicrositeCMSList = ({ cohort_key }: { cohort_key: string }) => {
           className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-accent"
           href={`/microsites/new?cohort_key=${cohort_key}`}
         >
-          <Plus className="size-4" /> New microsite
+          <Plus className="size-4" /> Microsite
         </Link>
       </div>
 
@@ -136,14 +134,12 @@ const MicrositeCMSList = ({ cohort_key }: { cohort_key: string }) => {
         </div>
       ) : (
         <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-accent/40 p-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Create a microsite to customize the CMS experience for this cohort.
-          </p>
+          <p className="text-sm text-muted-foreground">No microsites yet.</p>
           <Link
             className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             href={`/microsites/new?cohort_key=${cohort_key}`}
           >
-            <Plus className="size-4" /> Create microsite
+            <Plus className="size-4" /> Microsite
           </Link>
         </div>
       )}

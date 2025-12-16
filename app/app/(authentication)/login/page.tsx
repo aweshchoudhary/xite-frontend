@@ -7,19 +7,15 @@ export default async function Login() {
   if (session) redirect("/");
 
   return (
-    <section className="min-h-screen grid grid-cols-2">
-      <div className="bg-primary flex items-center justify-center">
-        <Image
-          src="/xite-logo.png"
-          alt="logo"
-          width={1000}
-          height={1000}
-          className="w-100"
-        />
-      </div>
-      <div className="flex items-center justify-center">
-        <LoginForm />
-      </div>
-    </section>
+    <div className="min-h-screen bg-primary flex items-center justify-center flex-col gap-4">
+      <Image
+        src="/xite-logo.png"
+        alt="logo"
+        width={1000}
+        height={1000}
+        className="w-100"
+      />
+      <LoginForm />
+    </div>
   );
 }
