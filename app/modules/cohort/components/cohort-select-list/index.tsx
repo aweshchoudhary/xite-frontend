@@ -21,7 +21,7 @@ export default function CohortSelectList({
   defaultValue,
 }: {
   onChange: (value: string) => void;
-  defaultValue?: string;
+  defaultValue?: string | null;
 }) {
   const [cohortList, setCohortList] = useState<GetCohortByProgramId[]>([]);
   const [open, setOpen] = useState(false);

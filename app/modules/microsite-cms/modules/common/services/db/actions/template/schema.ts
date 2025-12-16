@@ -35,7 +35,7 @@ export const PageSchema = z.object({
 
 export const TemplateFormSchema = z.object({
   name: z.string().min(1),
-  cohortId: z.string().min(1),
+  cohortId: z.string().nullable().optional(),
   status: z.enum(["draft", "active", "archived"]).optional(),
   type: z.enum(["fixed", "open"]).optional(),
   description: z.string().optional(),

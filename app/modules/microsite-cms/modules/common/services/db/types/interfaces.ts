@@ -32,7 +32,7 @@ export interface ITemplatePage {
 export interface ITemplate {
   _id?: string;
   name: string;
-  cohortId: string;
+  cohortId?: string | null;
   status?: "draft" | "active" | "archived";
   type?: "fixed" | "open";
   description?: string;

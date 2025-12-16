@@ -94,24 +94,26 @@ export default function UpdateForm({ template }: UpdateFormProps) {
               )}
             />
           </FieldGroup>
-          <FieldGroup>
-            <Controller
-              name="cohortId"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="update-name">Cohort</FieldLabel>
-                  <CohortSelectList
-                    onChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
+          {form.watch("type") === "open" && (
+            <FieldGroup>
+              <Controller
+                name="cohortId"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="update-name">Cohort</FieldLabel>
+                    <CohortSelectList
+                      onChange={(value) => field.onChange(value)}
+                      defaultValue={field.value}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          )}
           <FieldGroup>
             <Controller
               name="status"

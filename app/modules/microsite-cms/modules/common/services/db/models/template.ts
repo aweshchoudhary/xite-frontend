@@ -47,7 +47,7 @@ const PageSchema = new mongoose.Schema(
 const TemplateSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    cohortId: { type: String, required: true },
+    cohortId: { type: String, required: false },
     status: {
       type: String,
       enum: ["draft", "active", "archived"],

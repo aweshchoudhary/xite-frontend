@@ -80,10 +80,10 @@ export default function CreateForm() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-name">Name</FieldLabel>
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-title"
+                    id="title"
                     aria-invalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
@@ -121,24 +121,26 @@ export default function CreateForm() {
               )}
             />
           </FieldGroup>
-          <FieldGroup>
-            <Controller
-              name="cohortId"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-name">Cohort</FieldLabel>
-                  <CohortSelectList
-                    onChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
+          {form.watch("type") === "open" && (
+            <FieldGroup>
+              <Controller
+                name="cohortId"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="name">Cohort</FieldLabel>
+                    <CohortSelectList
+                      onChange={(value) => field.onChange(value)}
+                      defaultValue={field.value}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          )}
         </div>
 
         <Tabs defaultValue="common" className="w-full space-y-3">
