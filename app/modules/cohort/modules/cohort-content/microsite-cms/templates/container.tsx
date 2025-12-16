@@ -17,6 +17,8 @@ import {
   TabsList,
   TabsContent,
 } from "@/modules/common/components/ui/tabs";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function TemplatesContainer({ data }: { data: GetCohort }) {
   return (
@@ -53,6 +55,18 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
       {templates.map((template) => (
         <TemplateCard key={template._id} template={template} />
       ))}
+
+      {templates.length === 0 && (
+        <div className="flex flex-col items-center justify-center gap-3 h-50 bg-accent">
+          <Link
+            className="flex items-center gap-2"
+            href={`/templates/new?cohort_key=${cohort_key}`}
+          >
+            <Plus className="size-4" /> Template
+          </Link>
+          <p>No templates found</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -24,15 +24,19 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/modules/common/components/ui/tabs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 
 export default function CreateForm() {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const cohort_key = searchParams.get("cohort_key");
+
   const form = useForm<TemplateFormInput>({
     resolver: zodResolver(TemplateFormSchema),
     defaultValues: {
       name: "",
+      cohortId: cohort_key ?? "",
       pages: [],
     },
   });
@@ -70,6 +74,8 @@ export default function CreateForm() {
             ))}
           </div>
         )}
+
+        {JSON.stringify(form.formState.errors)}
 
         <div className="grid grid-cols-2 gap-5">
           <FieldGroup>
