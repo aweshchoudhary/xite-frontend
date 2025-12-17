@@ -17,6 +17,8 @@ export const itemBaseSchema = z.object({
       title: z.string().min(1).max(255),
       position: z.number(),
       overview: z.string().optional().nullable(),
+      topic_id: z.string().optional().nullable(),
+      sub_topic_id: z.string().optional().nullable(),
       objectives: z.array(
         z.object({
           description: z.string().optional().nullable(),

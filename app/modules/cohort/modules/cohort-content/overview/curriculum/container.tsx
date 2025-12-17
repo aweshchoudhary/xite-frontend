@@ -65,16 +65,38 @@ export function Container({ data }: ContainerProps) {
                       description: objective.description,
                     })) || [],
                   sessions:
-                    item.sessions?.map((session) => ({
-                      position: session.position,
-                      title: session.title,
-                      objectives:
-                        session.objectives?.map((objective) => ({
-                          position: objective.position,
-                          description: objective.description,
-                        })) || [],
-                      overview: session.overview || "",
-                    })) || [],
+                    item.sessions?.map((session) => {
+                      // Type assertion for sub_topic data
+                      const sessionData = session as {
+                        position: number;
+                        title: string;
+                        overview: string | null;
+                        objectives: Array<{
+                          position: number;
+                          description: string;
+                        }>;
+                        sub_topic?: {
+                          topic_id: string;
+                          topic?: { id: string };
+                        } | null;
+                        sub_topic_id?: string | null;
+                      };
+                      return {
+                        position: sessionData.position,
+                        title: sessionData.title,
+                        objectives:
+                          sessionData.objectives?.map((objective) => ({
+                            position: objective.position,
+                            description: objective.description,
+                          })) || [],
+                        overview: sessionData.overview || "",
+                        topic_id:
+                          sessionData.sub_topic?.topic_id ||
+                          sessionData.sub_topic?.topic?.id ||
+                          null,
+                        sub_topic_id: sessionData.sub_topic_id || null,
+                      };
+                    }) || [],
                 })) || [],
               cohort_id: data?.id || "",
             }}

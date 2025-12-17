@@ -81,6 +81,7 @@ export const updateAction = async ({
               title: session.title,
               overview: session.overview,
               parent_section_id: createdItem.id,
+              sub_topic_id: session.sub_topic_id || null,
               updated_by_id: currentUser?.dbUser?.id,
             },
           });

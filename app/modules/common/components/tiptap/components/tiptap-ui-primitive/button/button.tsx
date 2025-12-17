@@ -65,6 +65,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn("tiptap-button", className)}
           ref={ref}
           aria-label={ariaLabel}
+          type="button"
           {...props}
         >
           {children}

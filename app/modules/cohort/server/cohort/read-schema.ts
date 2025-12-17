@@ -101,6 +101,11 @@ export const GetCohortInclude = {
           sessions: {
             include: {
               objectives: true,
+              sub_topic: {
+                include: {
+                  topic: true,
+                },
+              },
             },
           },
         },

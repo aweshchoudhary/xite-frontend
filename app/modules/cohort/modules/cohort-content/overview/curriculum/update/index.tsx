@@ -19,6 +19,8 @@ import { Plus } from "lucide-react";
 import { Trash } from "lucide-react";
 import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import TopicSelectList from "@/modules/cohort/components/topic-select-list";
+import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -246,6 +248,8 @@ const Item = ({ form, field, index, items }: ItemProps) => {
                 title: "",
                 objectives: [],
                 position: sessions.fields.length + 1,
+                topic_id: null,
+                sub_topic_id: null,
               })
             }
             size={"sm"}
@@ -314,7 +318,7 @@ const Session = ({
         </Button>
       </div>
 
-      <div>
+      <div className="space-y-4">
         <Controller
           control={form.control}
           name={`items.${itemIndex}.sessions.${sessionIndex}.title`}
@@ -329,6 +333,60 @@ const Session = ({
             </Field>
           )}
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <Field>
+            <FieldLabel>Topic</FieldLabel>
+            <Controller
+              control={form.control}
+              name={`items.${itemIndex}.sessions.${sessionIndex}.topic_id`}
+              render={({ field, fieldState }) => (
+                <>
+                  <TopicSelectList
+                    onChange={(value) => {
+                      field.onChange(value);
+                      // Clear subtopic when topic changes
+                      form.setValue(
+                        `items.${itemIndex}.sessions.${sessionIndex}.sub_topic_id`,
+                        null
+                      );
+                    }}
+                    defaultValue={field.value}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </>
+              )}
+            />
+          </Field>
+
+          <Field>
+            <FieldLabel>SubTopic</FieldLabel>
+            <Controller
+              control={form.control}
+              name={`items.${itemIndex}.sessions.${sessionIndex}.sub_topic_id`}
+              render={({ field, fieldState }) => {
+                const topicId = form.watch(
+                  `items.${itemIndex}.sessions.${sessionIndex}.topic_id`
+                );
+                return (
+                  <>
+                    <SubTopicSelectList
+                      onChange={field.onChange}
+                      defaultValue={field.value}
+                      topicId={topicId}
+                      disabled={!topicId}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </>
+                );
+              }}
+            />
+          </Field>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-10">

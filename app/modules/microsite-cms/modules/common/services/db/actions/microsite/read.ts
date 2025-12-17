@@ -19,3 +19,14 @@ export async function getMicrositesByCohortId(cohortId: string) {
     JSON.stringify(await MicrositeModel.find({ cohortId }).lean())
   );
 }
+
+export async function getMicrositeByCohortId({
+  cohortId,
+}: {
+  cohortId: string;
+}) {
+  await connectDB();
+  return JSON.parse(
+    JSON.stringify(await MicrositeModel.findOne({ cohortId }).lean())
+  );
+}

@@ -19,6 +19,8 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
+import { useEffect, useState } from "react";
+import { getMicrositesByCohortIdAction } from "./action";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -26,10 +28,13 @@ const formSchema = z.object({
   templateId: z.string().min(1, { message: "this field is required" }),
 });
 
-export default function CreateForm({ templates }: { templates: ITemplate[] }) {
+export default function CreateForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const cohort_key = searchParams.get("cohort_key");
+  const [cohortId, setCohortId] = useState<string>(cohort_key ?? "");
+
+  const [templates, setTemplates] = useState<ITemplate[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,6 +58,16 @@ export default function CreateForm({ templates }: { templates: ITemplate[] }) {
       }
     );
   }
+
+  useEffect(() => {
+    if (!cohortId) return;
+    const fetchTemplates = async () => {
+      const templates = await getMicrositesByCohortIdAction(cohortId);
+      setTemplates(templates);
+      console.log({ templates });
+    };
+    fetchTemplates();
+  }, [cohortId]);
 
   return (
     <div>
@@ -103,7 +118,10 @@ export default function CreateForm({ templates }: { templates: ITemplate[] }) {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="cohortId">Cohort ID</FieldLabel>
                   <CohortSelectList
-                    onChange={(value) => field.onChange(value)}
+                    onChange={(value) => {
+                      setCohortId(value);
+                      field.onChange(value);
+                    }}
                     defaultValue={field.value}
                   />
                 </Field>

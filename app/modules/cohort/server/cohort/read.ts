@@ -114,6 +114,11 @@ export type GetCohort = PrimaryDB.CohortGetPayload<{
             sessions: {
               include: {
                 objectives: true;
+                sub_topic: {
+                  include: {
+                    topic: true;
+                  };
+                };
               };
             };
           };
