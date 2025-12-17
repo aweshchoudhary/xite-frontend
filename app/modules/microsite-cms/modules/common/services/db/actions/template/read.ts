@@ -11,11 +11,16 @@ export async function getTemplates(): Promise<ITemplate[]> {
 }
 
 export async function getTemplatesByCohortId(
-  cohortId: string
+  cohortId?: string
 ): Promise<ITemplate[]> {
   await connectDB();
-  const templates = await TemplateModal.find({ cohortId });
-  const fixedTemplates = await TemplateModal.find({ type: "fixed" });
+  const templates = cohortId
+    ? await TemplateModal.find({ cohortId, status: "active" })
+    : [];
+  const fixedTemplates = await TemplateModal.find({
+    type: "fixed",
+    status: "active",
+  });
   return JSON.parse(JSON.stringify([...templates, ...fixedTemplates]));
 }
 

@@ -20,7 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 import { useEffect, useState } from "react";
-import { getMicrositesByCohortIdAction } from "./action";
+import { getTemplatesByCohortIdAction } from "./action";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -60,11 +60,9 @@ export default function CreateForm() {
   }
 
   useEffect(() => {
-    if (!cohortId) return;
     const fetchTemplates = async () => {
-      const templates = await getMicrositesByCohortIdAction(cohortId);
+      const templates = await getTemplatesByCohortIdAction(cohortId);
       setTemplates(templates);
-      console.log({ templates });
     };
     fetchTemplates();
   }, [cohortId]);

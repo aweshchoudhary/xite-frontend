@@ -1,8 +1,7 @@
 "use server";
-import { getMicrositesByCohortId } from "../../../common/services/db";
+import { getTemplatesByCohortId } from "../../../common/services/db";
 
-export async function getMicrositesByCohortIdAction(cohortId: string) {
-  console.log({ cohortId });
-  const microsites = await getMicrositesByCohortId(cohortId);
-  return microsites;
+export async function getTemplatesByCohortIdAction(cohortId?: string) {
+  const templates = await getTemplatesByCohortId(cohortId);
+  return templates;
 }
