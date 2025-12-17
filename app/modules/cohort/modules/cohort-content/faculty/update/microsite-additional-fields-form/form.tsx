@@ -3,11 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
-import { Button } from "@ui/button";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
 import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {
   saveForm: boolean;
@@ -16,7 +15,6 @@ interface CreateFormProps extends FormBaseProps<UpdateSchema> {
 export default function UpdateMicrositeAdditionalFieldsForm({
   defaultValues,
   onSuccess,
-  onCancel,
   saveForm,
 }: CreateFormProps) {
   const form = useForm({
@@ -24,26 +22,32 @@ export default function UpdateMicrositeAdditionalFieldsForm({
     defaultValues: defaultValues as UpdateSchema,
   });
 
-  const handleSubmit = async (data: UpdateSchema) => {
-    try {
-      await updateAction({ data });
-      toast.success(`Faculty section updated`);
-      onSuccess?.();
-    } catch (error) {
-      toast.error("Error updating faculty section");
-    }
-  };
+  const handleSubmit = useCallback(
+    async (data: UpdateSchema) => {
+      try {
+        await updateAction({ data });
+        toast.success(`Faculty section updated`);
+        onSuccess?.();
+      } catch (error) {
+        console.error("Error updating faculty section:", error);
+        toast.error("Error updating faculty section");
+      }
+    },
+    [onSuccess]
+  );
 
-  const handleCancel = () => {
-    form.reset();
-    onCancel?.();
-  };
+  // Reset form when defaultValues change (e.g., after reload)
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset(defaultValues as UpdateSchema);
+    }
+  }, [defaultValues, form]);
 
   useEffect(() => {
     if (saveForm) {
       form.handleSubmit(handleSubmit)();
     }
-  }, [saveForm]);
+  }, [saveForm, form, handleSubmit]);
 
   return (
     <form
@@ -51,13 +55,13 @@ export default function UpdateMicrositeAdditionalFieldsForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-5"
     >
-        <div className="space-y-2">
-          <MicrositeAdditionalFields
-            form={form}
-            top_desc_field_name="top_description"
-            bottom_desc_field_name="bottom_description"
-          />
-        </div>
+      <div className="space-y-2">
+        <MicrositeAdditionalFields
+          form={form}
+          top_desc_field_name="top_description"
+          bottom_desc_field_name="bottom_description"
+        />
+      </div>
     </form>
   );
 }
