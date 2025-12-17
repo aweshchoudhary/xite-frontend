@@ -4,6 +4,7 @@ import {
   School01Icon,
   User02Icon,
   Building01Icon,
+  Globe02Icon,
 } from "@hugeicons/core-free-icons";
 import { Resource } from "@/modules/common/authentication/access-control";
 import { IconSvgElement } from "@hugeicons/react";
@@ -58,5 +59,19 @@ export const links: Link[] = [
     resource: "Enterprise",
     exact: false,
     icon: Building01Icon,
+  },
+  {
+    title: "Microsites CMS",
+    url: "/microsite-cms",
+    resource: "Microsite",
+    exact: false,
+    icon: Globe02Icon,
+  },
+  {
+    title: "T-ST Management",
+    url: "/topics",
+    resource: "Topic",
+    exact: false,
+    icon: TextAlignJustifyCenterFreeIcons,
   },
 ];

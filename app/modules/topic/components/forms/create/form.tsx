@@ -5,7 +5,6 @@ import { createAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
-import { Textarea } from "@ui/textarea";
 import { Button } from "@ui/button";
 import { MODULE_NAME } from "@/modules/topic/contants";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
@@ -51,7 +50,7 @@ export default function CreateForm({
     <form
       autoComplete="off"
       onSubmit={form.handleSubmit(handleSubmit)}
-      className="space-y-8"
+      className="space-y-8 max-w-md mx-auto"
     >
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
@@ -62,25 +61,6 @@ export default function CreateForm({
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Title</FieldLabel>
                 <Input placeholder="Title" {...field} />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </div>
-        <div className="col-span-2">
-          <Controller
-            control={form.control}
-            name="description"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Description</FieldLabel>
-                <Textarea
-                  placeholder="Description"
-                  {...field}
-                  value={field.value ?? ""}
-                />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

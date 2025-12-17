@@ -6,7 +6,8 @@ export type Resource =
   | "AcademicPartners"
   | "Enterprise"
   | "Microsite"
-  | "Topic";
+  | "Topic"
+  | "Template";
 
 export type Role = "Admin" | "User";
 
@@ -21,6 +22,7 @@ export const permissions: Permissions = {
     Enterprise: ["read", "write", "update", "delete"],
     Microsite: ["read", "write", "update", "delete"],
     Topic: ["read", "write", "update", "delete"],
+    Template: ["read", "write", "update", "delete"],
   },
   User: {
     Program: ["read", "write", "update"],
@@ -30,5 +32,6 @@ export const permissions: Permissions = {
     Enterprise: ["read", "write", "update"],
     Microsite: ["read", "write", "update"],
     Topic: ["read", "write", "update"],
+    Template: ["read", "write", "update"],
   },
 };

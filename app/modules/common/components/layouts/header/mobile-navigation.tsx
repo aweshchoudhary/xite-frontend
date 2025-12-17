@@ -9,7 +9,7 @@ import { Link as LinkType } from "../../global/sidebar/links";
 export default function MobileNavigation() {
   return (
     <div className="flex items-center justify-center px-5 bg-primary text-primary-foreground">
-      <ul className="flex items-center gap-4 py-3">
+      <ul className="flex items-center flex-wrap justify-center gap-4 py-3">
         {links.map((link) => (
           <LinkItem key={link.url} link={link} />
         ))}
