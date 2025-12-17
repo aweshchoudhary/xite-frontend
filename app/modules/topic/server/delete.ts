@@ -10,6 +10,10 @@ export async function deleteOne({
   id: string;
 }): Promise<DeleteOneOutput> {
   try {
+    await primaryDB.subTopic.deleteMany({
+      where: { topic_id: id },
+    });
+
     const deletedData = await primaryDB.topic.delete({
       where: { id },
     });
@@ -20,5 +24,3 @@ export async function deleteOne({
     throw error;
   }
 }
-
-
