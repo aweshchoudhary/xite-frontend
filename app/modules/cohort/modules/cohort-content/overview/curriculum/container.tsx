@@ -20,10 +20,9 @@ export function Container({ data }: ContainerProps) {
 
   const sectionData = data?.design_curriculum_section;
 
+  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id || "");
+
   if (!data) return null;
-
-  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
-
   return (
     <div className="group relative transition-all duration-200">
       <div className="flex items-center justify-between mb-5">

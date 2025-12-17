@@ -359,32 +359,32 @@ model DesignCohortCurriculumSession {
   updated_at        DateTime                           @updatedAt
   parent_section    DesignCohortCurriculumSectionItem? @relation(fields: [parent_section_id], references: [id])
   parent_section_id String?
-  topic_id          String?
-  topic             Topic?                             @relation(fields: [topic_id], references: [id])
+  sub_topic_id      String?
+  sub_topic         SubTopic?                          @relation(fields: [sub_topic_id], references: [id])
   updated_by        User?                              @relation(fields: [updated_by_id], references: [id])
   updated_by_id     String?
 }
 
 model Topic {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  sub_topics  SubTopic[]
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+}
+
+model SubTopic {
   id          String                          @id @default(uuid())
   title       String
   description String?
   sessions    DesignCohortCurriculumSession[]
-  sub_topics  SubTopic[]
+  keywords    String[]
+  taost_id    String                          @unique
   created_at  DateTime                        @default(now())
   updated_at  DateTime                        @updatedAt
-}
-
-model SubTopic {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  keywords    String[]
-  taost_id    String   @unique
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
   topic_id    String
-  topic       Topic    @relation(fields: [topic_id], references: [id])
+  topic       Topic                           @relation(fields: [topic_id], references: [id])
 }
 
 model CohortStatisticsSection {
