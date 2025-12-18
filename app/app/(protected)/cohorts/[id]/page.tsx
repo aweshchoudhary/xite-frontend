@@ -31,7 +31,7 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-8 max-w-5xl mx-auto">
+    <div className="spacing space-y-8 mx-auto">
       <PageHeader data={data} />
       <section className="flex items-start lg:gap-10 gap-5">
         <div className="py-5 mb-10 px-8 space-y-6 w-fit! shrink-0 bg-background rounded-md border">

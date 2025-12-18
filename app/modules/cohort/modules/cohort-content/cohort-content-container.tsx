@@ -21,7 +21,7 @@ const tabs = [
   },
   {
     value: "microsite-cms",
-    label: "Microsite CMS",
+    label: "Microsite",
     icon: Globe,
     showCompleteStatus: true,
   },

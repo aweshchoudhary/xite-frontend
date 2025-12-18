@@ -61,17 +61,17 @@ export const links: Link[] = [
     icon: Building01Icon,
   },
   {
-    title: "Microsites CMS",
-    url: "/microsite-cms",
-    resource: "Microsite",
-    exact: false,
-    icon: Globe02Icon,
-  },
-  {
     title: "T-ST Management",
     url: "/topics",
     resource: "Topic",
     exact: false,
     icon: TextAlignJustifyCenterFreeIcons,
+  },
+  {
+    title: "CMS",
+    url: "/microsite-cms",
+    resource: "Microsite",
+    exact: false,
+    icon: Globe02Icon,
   },
 ];
