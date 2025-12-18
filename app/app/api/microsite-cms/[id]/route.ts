@@ -1,9 +1,12 @@
-import { getMicrositeByCohortId } from "@/modules/microsite-cms/modules/common/services/db";
+import {
+  getMicrositeByCohortId,
+  getMicrositeById,
+} from "@/modules/microsite-cms/modules/common/services/db";
 import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ cohort_key: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const apikey =
     request.headers.get("Authorization") ||
@@ -17,8 +20,8 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { cohort_key } = await params;
-  const microsite = await getMicrositeByCohortId({ cohortId: cohort_key });
+  const { id } = await params;
+  const microsite = await getMicrositeById(id);
   if (!microsite) {
     return NextResponse.json({ error: "Microsite not found" }, { status: 404 });
   }
