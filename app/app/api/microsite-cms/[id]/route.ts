@@ -1,7 +1,4 @@
-import {
-  getMicrositeByCohortId,
-  getMicrositeById,
-} from "@/modules/microsite-cms/modules/common/services/db";
+import { getMicrositeById } from "@/modules/microsite-cms/modules/common/services/db";
 import { NextResponse } from "next/server";
 
 export async function GET(
