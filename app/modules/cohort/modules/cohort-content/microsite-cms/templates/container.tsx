@@ -6,14 +6,16 @@ import {
   ITemplate,
 } from "@microsite-cms/common/services/db/types/interfaces";
 import {
-  getMicrositesByCohortIdAction,
+  getMicrositeByCohortKeyAction,
   getTemplatesByCohortIdAction,
+  getTemplateByIdAction,
 } from "./action";
 import TemplateCard from "@microsite-cms/template/screens/list/components/card";
-import MicrositeCard from "@microsite-cms/microsite/screens/list/components/card";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@ui/tabs";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import CreateForm from "@microsite-cms/microsite/screens/create/form";
+import RecordView from "@microsite-cms/microsite/screens/record";
 
 export default function TemplatesContainer({ data }: { data: GetCohort }) {
   const cohortKey = data?.cohort_key ?? "";
@@ -22,25 +24,25 @@ export default function TemplatesContainer({ data }: { data: GetCohort }) {
     <section className="space-y-6">
       <header className="flex flex-col gap-2">
         <h2 className="text-xl font-semibold leading-tight">
-          Templates & Microsites
+          Templates & Microsite
         </h2>
         <p className="text-sm text-muted-foreground">
-          Manage reusable templates and CMS microsites for this cohort.
+          Manage reusable templates and CMS microsite for this cohort.
         </p>
       </header>
 
       <Tabs defaultValue="templates" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:w-auto">
           <TabsTrigger value="templates">Templates</TabsTrigger>
-          <TabsTrigger value="microsite-cms">Microsite CMS</TabsTrigger>
+          <TabsTrigger value="microsite">Microsite</TabsTrigger>
         </TabsList>
 
         <TabsContent value="templates" className="mt-6">
           <TemplatesList cohort_key={cohortKey} />
         </TabsContent>
 
-        <TabsContent value="microsite-cms" className="mt-6">
-          <MicrositeCMSList cohort_key={cohortKey} />
+        <TabsContent value="microsite" className="mt-6">
+          <MicrositeView cohort_key={cohortKey} />
         </TabsContent>
       </Tabs>
     </section>
@@ -97,52 +99,42 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
   );
 };
 
-const MicrositeCMSList = ({ cohort_key }: { cohort_key: string }) => {
-  const [microsites, setMicrosites] = useState<IMicrosite[]>([]);
+const MicrositeView = ({ cohort_key }: { cohort_key: string }) => {
+  const [microsite, setMicrosite] = useState<IMicrosite | null>(null);
+  const [template, setTemplate] = useState<ITemplate | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchMicrosites = async () => {
-      const microsites = await getMicrositesByCohortIdAction(cohort_key);
-      setMicrosites(microsites);
+    const fetchMicrosite = async () => {
+      try {
+        const micrositeData = await getMicrositeByCohortKeyAction(cohort_key);
+        setMicrosite(micrositeData);
+        if (micrositeData?.templateId) {
+          const templateData = await getTemplateByIdAction(
+            micrositeData.templateId
+          );
+          setTemplate(templateData);
+        }
+      } catch (error) {
+        console.error("Error fetching microsite:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchMicrosites();
+    fetchMicrosite();
   }, [cohort_key]);
-  const hasMicrosites = (microsites?.length ?? 0) > 0;
 
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-sm text-muted-foreground">
-          {hasMicrosites
-            ? `${microsites.length} microsite${
-                microsites.length > 1 ? "s" : ""
-              }`
-            : "No microsites yet"}
-        </div>
-        <Link
-          className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-accent"
-          href={`/microsites/new?cohort_key=${cohort_key}`}
-        >
-          <Plus className="size-4" /> Microsite
-        </Link>
+  if (loading) {
+    return (
+      <div className="flex min-h-[220px] items-center justify-center">
+        <p className="text-sm text-muted-foreground">Loading...</p>
       </div>
+    );
+  }
 
-      {hasMicrosites ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {microsites?.map((microsite) => (
-            <MicrositeCard key={microsite._id} microsite={microsite} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-accent/40 p-6 text-center">
-          <p className="text-sm text-muted-foreground">No microsites yet.</p>
-          <Link
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-            href={`/microsites/new?cohort_key=${cohort_key}`}
-          >
-            <Plus className="size-4" /> Microsite
-          </Link>
-        </div>
-      )}
-    </div>
-  );
+  if (microsite && template) {
+    return <RecordView microsite={microsite} template={template} />;
+  }
+
+  return <CreateForm cohort_key={cohort_key} />;
 };

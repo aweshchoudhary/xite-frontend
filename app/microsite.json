@@ -1,28 +1,14 @@
 {
-  "templateId": "6942b309b95a3ff322a69ca4",
-  "cohortId": "cornell-chro-cohort-5",
-  "title": "Cornell CHRO Test",
+  "templateId": "6942bb24eb8cf6a39c9b4397",
+  "cohortId": "oxford-nsp-cohort-1",
+  "title": "Oxford NSP Test",
   "status": "draft",
   "globalSections": [
     {
-      "key": "footer",
+      "key": "asdfasdf",
       "blocks": [
         {
-          "key": "right-logo",
-          "type": "single",
-          "repeatable": false,
-          "value": null,
-          "items": []
-        },
-        {
-          "key": "left-logo",
-          "type": "single",
-          "repeatable": false,
-          "value": null,
-          "items": []
-        },
-        {
-          "key": "program-title",
+          "key": "adfadfasdf",
           "type": "single",
           "repeatable": false,
           "value": null,
@@ -31,24 +17,10 @@
       ]
     },
     {
-      "key": "header",
+      "key": "adfasdfsafd",
       "blocks": [
         {
-          "key": "left-logo",
-          "type": "single",
-          "repeatable": false,
-          "value": null,
-          "items": []
-        },
-        {
-          "key": "right-logo",
-          "type": "single",
-          "repeatable": false,
-          "value": null,
-          "items": []
-        },
-        {
-          "key": "program-title",
+          "key": "sadfsdfasdf",
           "type": "single",
           "repeatable": false,
           "value": null,
@@ -59,25 +31,18 @@
   ],
   "pages": [
     {
-      "name": "Home",
+      "name": "asdfsadfasdf",
       "meta": {
-        "title": "Home",
-        "description": "Home",
-        "slug": "home"
+        "title": "asdfsadfasdf",
+        "description": "asdfsadfasdf",
+        "slug": "asdfsadfasdf"
       },
       "sections": [
         {
-          "key": "program-overview",
+          "key": "asdfasdf",
           "blocks": [
             {
-              "key": "title",
-              "type": "single",
-              "repeatable": false,
-              "value": null,
-              "items": []
-            },
-            {
-              "key": "description",
+              "key": "adsasdfasdf",
               "type": "single",
               "repeatable": false,
               "value": null,
@@ -88,8 +53,8 @@
       ]
     }
   ],
-  "_id": "694386e444b65aa412b39b57",
-  "createdAt": "2025-12-18T04:45:24.701Z",
-  "updatedAt": "2025-12-18T04:45:24.701Z",
+  "_id": "69481c4cb458feefc55d497e",
+  "createdAt": "2025-12-21T16:11:56.734Z",
+  "updatedAt": "2025-12-21T16:11:56.734Z",
   "__v": 0
 }

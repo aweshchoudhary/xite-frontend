@@ -18,9 +18,10 @@ import { createMicrosite } from "@microsite-cms/common/services/db/actions/micro
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
-import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 import { useEffect, useState } from "react";
 import { getTemplatesByCohortIdAction } from "./action";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -28,11 +29,17 @@ const formSchema = z.object({
   templateId: z.string().min(1, { message: "this field is required" }),
 });
 
-export default function CreateForm() {
+interface CreateFormProps {
+  cohort_key?: string;
+}
+
+export default function CreateForm({
+  cohort_key: cohortKeyProp,
+}: CreateFormProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const cohort_key = searchParams.get("cohort_key");
-  const [cohortId, setCohortId] = useState<string>(cohort_key ?? "");
+  const cohort_key = cohortKeyProp ?? searchParams.get("cohort_key") ?? "";
+  const [cohortId] = useState<string>(cohort_key);
 
   const [templates, setTemplates] = useState<ITemplate[]>([]);
 
@@ -40,7 +47,7 @@ export default function CreateForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      cohortId: cohort_key ?? "",
+      cohortId: cohort_key,
       templateId: "",
     },
   });
@@ -61,11 +68,16 @@ export default function CreateForm() {
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      const templates = await getTemplatesByCohortIdAction(cohortId);
-      setTemplates(templates);
+      if (cohortId) {
+        const templates = await getTemplatesByCohortIdAction(cohortId);
+        setTemplates(templates);
+      }
     };
     fetchTemplates();
   }, [cohortId]);
+
+  const templateId = form.watch("templateId");
+  const showOtherFields = !!templateId;
 
   return (
     <div>
@@ -87,55 +99,26 @@ export default function CreateForm() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-5">
-          <FieldGroup>
-            <Controller
-              name="title"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">Title</FieldLabel>
-                  <Input
-                    {...field}
-                    id="form-rhf-demo-title"
-                    aria-invalid={fieldState.invalid}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-
-          <FieldGroup>
-            <Controller
-              name="cohortId"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="cohortId">Cohort ID</FieldLabel>
-                  <CohortSelectList
-                    onChange={(value) => {
-                      setCohortId(value);
-                      field.onChange(value);
-                    }}
-                    defaultValue={field.value}
-                  />
-                </Field>
-              )}
-            />
-          </FieldGroup>
-
+        <div className="space-y-5">
           <FieldGroup>
             <Controller
               name="templateId"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="templateId">Template ID</FieldLabel>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger>
+                  <div className="flex items-center gap-2">
+                    <FieldLabel htmlFor="templateId" className="flex-1">
+                      Template
+                    </FieldLabel>
+                    <Link
+                      href={`/templates/new?cohort_key=${cohort_key}`}
+                      className="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium hover:bg-accent"
+                    >
+                      <Plus className="size-3" />
+                    </Link>
+                  </div>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="templateId">
                       <SelectValue placeholder="Select a template" />
                     </SelectTrigger>
                     <SelectContent>
@@ -149,14 +132,51 @@ export default function CreateForm() {
                       ))}
                     </SelectContent>
                   </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </Field>
               )}
             />
           </FieldGroup>
+
+          {showOtherFields && (
+            <>
+              <input
+                type="hidden"
+                {...form.register("cohortId")}
+                value={cohort_key}
+              />
+              <FieldGroup>
+                <Controller
+                  name="title"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="form-rhf-demo-title">
+                        Title
+                      </FieldLabel>
+                      <Input
+                        {...field}
+                        id="form-rhf-demo-title"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </>
+          )}
         </div>
-        <div>
-          <Button type="submit">Save</Button>
-        </div>
+
+        {showOtherFields && (
+          <div>
+            <Button type="submit">Save</Button>
+          </div>
+        )}
       </form>
     </div>
   );
