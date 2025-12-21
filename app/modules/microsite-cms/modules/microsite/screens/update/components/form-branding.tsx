@@ -18,9 +18,6 @@ export default function FormBranding({ form }: FormBrandingProps) {
   const logoInputRef = useRef<HTMLInputElement>(null);
   const faviconInputRef = useRef<HTMLInputElement>(null);
 
-  const logoValue = form.watch("branding.logo");
-  const faviconValue = form.watch("branding.favicon");
-
   const [logoPreview, setLogoPreview] = useState<string | undefined>(() => {
     const initialValue = form.getValues("branding.logo");
     if (typeof initialValue === "string" && initialValue) {
