@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 import { useState } from "react";
 import TemplateSelectList from "@microsite-cms/template/components/template-select-list";
+import { duplicateTemplateAction } from "@microsite-cms/template/screens/list/actions/duplicate";
 
 export default function CreateForm() {
   const searchParams = useSearchParams();
@@ -64,7 +65,24 @@ export default function CreateForm() {
       toast.error("Please select a template");
       return;
     }
-    router.push(`/templates/${selectedTemplateId}`);
+
+    toast.promise(
+      async () => {
+        const duplicatedTemplate = await duplicateTemplateAction(
+          selectedTemplateId
+        );
+        if (duplicatedTemplate._id) {
+          router.push(`/templates/${duplicatedTemplate._id}`);
+        } else {
+          throw new Error("Failed to create template copy");
+        }
+      },
+      {
+        loading: "Creating template copy...",
+        success: "Template copied successfully",
+        error: "Failed to copy template",
+      }
+    );
   }
 
   // Show initial selection if no mode is selected
@@ -135,7 +153,7 @@ export default function CreateForm() {
               onClick={handleCopyFromTemplate}
               disabled={!selectedTemplateId}
             >
-              Continue
+              Copy
             </Button>
           </div>
         </div>
