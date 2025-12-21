@@ -84,6 +84,7 @@ const MicrositeSchema = new mongoose.Schema(
   {
     templateId: { type: String, required: true },
     cohortId: { type: String, required: true },
+    domain: { type: String, required: true, unique: true, index: true },
 
     title: { type: String },
     status: {
@@ -91,7 +92,6 @@ const MicrositeSchema = new mongoose.Schema(
       enum: ["draft", "active", "archived"],
       default: "draft",
     },
-    domain: { type: String },
 
     globalSections: { type: [SectionValueSchema], default: [] },
     pages: { type: [PageValueSchema], default: [] },

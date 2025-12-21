@@ -3,7 +3,6 @@
 import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
 import connectDB from "@microsite-cms/common/services/db/connection";
 import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
-import { writeFile } from "fs/promises";
 
 export async function createTemplate(data: ITemplate) {
   await connectDB();
