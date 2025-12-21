@@ -23,11 +23,17 @@ import {
 } from "@ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
+import { useState } from "react";
+import TemplateSelectList from "@microsite-cms/template/components/template-select-list";
 
 export default function CreateForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const cohort_key = searchParams.get("cohort_key");
+  const [creationMode, setCreationMode] = useState<"copy" | "scratch" | null>(
+    null
+  );
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
 
   const form = useForm<TemplateFormInput>({
     resolver: zodResolver(TemplateFormSchema),
@@ -53,8 +59,102 @@ export default function CreateForm() {
     );
   }
 
+  async function handleCopyFromTemplate() {
+    if (!selectedTemplateId) {
+      toast.error("Please select a template");
+      return;
+    }
+    router.push(`/templates/${selectedTemplateId}`);
+  }
+
+  // Show initial selection if no mode is selected
+  if (creationMode === null) {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold">Create Template</h2>
+        <p className="text-muted-foreground">
+          Choose how you want to create your template
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            className="h-32 flex flex-col items-center justify-center gap-2"
+            onClick={() => setCreationMode("copy")}
+          >
+            <span className="text-lg font-medium">
+              Copy from other template
+            </span>
+            <span className="text-sm text-muted-foreground">
+              Start with an existing template
+            </span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-32 flex flex-col items-center justify-center gap-2"
+            onClick={() => setCreationMode("scratch")}
+          >
+            <span className="text-lg font-medium">Start from scratch</span>
+            <span className="text-sm text-muted-foreground">
+              Create a new template from scratch
+            </span>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show copy from template form
+  if (creationMode === "copy") {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setCreationMode(null)}
+          >
+            ← Back
+          </Button>
+          <h2 className="text-xl font-semibold">Copy from Template</h2>
+        </div>
+        <div className="max-w-md space-y-4">
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="template-select">Select Template</FieldLabel>
+              <TemplateSelectList
+                onChange={setSelectedTemplateId}
+                defaultValue={selectedTemplateId}
+              />
+            </Field>
+          </FieldGroup>
+          <div>
+            <Button
+              type="button"
+              onClick={handleCopyFromTemplate}
+              disabled={!selectedTemplateId}
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show create from scratch form
   return (
     <div>
+      <div className="mb-6">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => setCreationMode(null)}
+        >
+          ← Back
+        </Button>
+      </div>
       <form
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}
