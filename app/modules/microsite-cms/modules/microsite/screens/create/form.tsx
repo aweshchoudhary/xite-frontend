@@ -22,6 +22,14 @@ import { useEffect, useState } from "react";
 import { getTemplatesByCohortIdAction } from "./action";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -79,19 +87,40 @@ export default function CreateForm({
   const templateId = form.watch("templateId");
   const showOtherFields = !!templateId;
 
+  function handleCancel() {
+    router.push("/microsites");
+  }
+
   return (
-    <div>
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/microsites">Microsites</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Create Microsite</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h1 className="text-2xl font-semibold">Create Microsite</h1>
       <form
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-10"
+        aria-label="Create microsite form"
       >
         {Object.entries(form.formState.errors).length > 0 && (
-          <div className="py-5 space-y-2">
+          <div className="py-5 space-y-2" role="alert" aria-live="polite">
             {Object.entries(form.formState.errors).map(([key, error]) => (
               <div key={key}>
                 <h5 className="flex capitalize items-center gap-2 text-sm font-medium text-destructive">
-                  <AlertCircle className="size-4" /> {key}
+                  <AlertCircle className="size-4" aria-hidden="true" /> {key}
                 </h5>
                 <FieldError errors={[error]} />
               </div>
@@ -118,7 +147,7 @@ export default function CreateForm({
                     </Link>
                   </div>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="templateId">
+                    <SelectTrigger id="templateId" aria-label="Select template">
                       <SelectValue placeholder="Select a template" />
                     </SelectTrigger>
                     <SelectContent>
@@ -173,7 +202,10 @@ export default function CreateForm({
         </div>
 
         {showOtherFields && (
-          <div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
             <Button type="submit">Save</Button>
           </div>
         )}

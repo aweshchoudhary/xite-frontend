@@ -26,6 +26,15 @@ import {
   SelectValue,
 } from "@ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
+import { useRouter } from "next/navigation";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 export interface UpdateFormProps {
   microsite: IMicrosite;
@@ -38,6 +47,7 @@ export default function UpdateForm({
   template,
   onSaveSuccess,
 }: UpdateFormProps) {
+  const router = useRouter();
   const form = useForm<MicrositeFormInput>({
     resolver: zodResolver(MicrositeSchema),
     defaultValues: {
@@ -159,14 +169,42 @@ export default function UpdateForm({
     );
   }
 
+  function handleCancel() {
+    router.push(`/microsites/${microsite._id}`);
+  }
+
   return (
-    <div>
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/microsites">Microsites</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/microsites/${microsite._id}`}>
+              {microsite.title || "Microsite"}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Edit</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h1 className="text-2xl font-semibold">
+        Edit Microsite: {microsite.title || "Untitled"}
+      </h1>
       {Object.entries(form.formState.errors).length > 0 && (
-        <div className="py-5 space-y-2">
+        <div className="py-5 space-y-2" role="alert" aria-live="polite">
           {Object.entries(form.formState.errors).map(([key, error]) => (
             <div key={key}>
               <h5 className="flex capitalize items-center gap-2 text-sm font-medium text-destructive">
-                <AlertCircle className="size-4" /> {key}
+                <AlertCircle className="size-4" aria-hidden="true" /> {key}
               </h5>
               <FieldError errors={[error]} />
             </div>
@@ -178,6 +216,7 @@ export default function UpdateForm({
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-10"
+        aria-label="Edit microsite form"
       >
         <div className="grid grid-cols-2 gap-5">
           <FieldGroup>
@@ -207,7 +246,7 @@ export default function UpdateForm({
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="status">Status</FieldLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="status">
+                    <SelectTrigger id="status" aria-label="Select status">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
@@ -252,7 +291,10 @@ export default function UpdateForm({
             </div>
           </TabsContent>
         </Tabs>
-        <div>
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
           <Button type="submit">Save</Button>
         </div>
       </form>

@@ -267,13 +267,14 @@ export default function CreateForm() {
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-10"
+        aria-label="Create template form"
       >
         {Object.entries(form.formState.errors).length > 0 && (
-          <div className="py-5 space-y-2">
+          <div className="py-5 space-y-2" role="alert" aria-live="polite">
             {Object.entries(form.formState.errors).map(([key, error]) => (
               <div key={key}>
                 <h5 className="flex capitalize items-center gap-2 text-sm font-medium text-destructive">
-                  <AlertCircle className="size-4" /> {key}
+                  <AlertCircle className="size-4" aria-hidden="true" /> {key}
                 </h5>
                 <FieldError errors={[error]} />
               </div>
@@ -288,12 +289,13 @@ export default function CreateForm() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="name">Name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="title"
-                    aria-invalid={fieldState.invalid}
-                  />
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="name"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={fieldState.invalid ? "name-error" : undefined}
+                    />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -336,7 +338,7 @@ export default function CreateForm() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="name">Cohort</FieldLabel>
+                    <FieldLabel htmlFor="cohort-select">Cohort</FieldLabel>
                     <CohortSelectList
                       onChange={(value) => field.onChange(value)}
                       defaultValue={field.value}

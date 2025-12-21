@@ -24,6 +24,14 @@ import {
 import { updateTemplateAction } from "./action";
 import { useRouter } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 interface UpdateFormProps {
   template: ITemplate;
@@ -54,19 +62,48 @@ export default function UpdateForm({ template }: UpdateFormProps) {
     );
   }
 
+  function handleCancel() {
+    router.push(`/templates/${template._id}`);
+  }
+
   return (
-    <div>
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/templates/${template._id}`}>
+              {template.name || "Template"}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Edit</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h1 className="text-2xl font-semibold">
+        Edit Template: {template.name || "Untitled"}
+      </h1>
       <form
         id="update"
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-10"
+        aria-label="Edit template form"
       >
         {Object.entries(form.formState.errors).length > 0 && (
-          <div className="py-5 space-y-2">
+          <div className="py-5 space-y-2" role="alert" aria-live="polite">
             {Object.entries(form.formState.errors).map(([key, error]) => (
               <div key={key}>
                 <h5 className="flex capitalize items-center gap-2 text-sm font-medium text-destructive">
-                  <AlertCircle className="size-4" /> {key}
+                  <AlertCircle className="size-4" aria-hidden="true" /> {key}
                 </h5>
                 <FieldError errors={[error]} />
               </div>
@@ -84,8 +121,9 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                   <FieldLabel htmlFor="update-name">Name</FieldLabel>
                   <Input
                     {...field}
-                    id="update-title"
+                    id="update-name"
                     aria-invalid={fieldState.invalid}
+                    aria-describedby={fieldState.invalid ? "update-name-error" : undefined}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -101,7 +139,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="update-name">Cohort</FieldLabel>
+                    <FieldLabel htmlFor="update-cohort">Cohort</FieldLabel>
                     <CohortSelectList
                       onChange={(value) => field.onChange(value)}
                       defaultValue={field.value}
@@ -125,7 +163,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                     defaultValue={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id="update-status" aria-label="Select status">
                       <SelectValue placeholder="Select a status" />
                     </SelectTrigger>
                     <SelectContent>
@@ -191,7 +229,10 @@ export default function UpdateForm({ template }: UpdateFormProps) {
             </div>
           </TabsContent>
         </Tabs>
-        <div>
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
           <Button type="submit">Save</Button>
         </div>
       </form>
