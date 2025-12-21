@@ -30,9 +30,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 export interface UpdateFormProps {
   microsite: IMicrosite;
   template: ITemplate;
+  onSaveSuccess?: () => void;
 }
 
-export default function UpdateForm({ microsite, template }: UpdateFormProps) {
+export default function UpdateForm({
+  microsite,
+  template,
+  onSaveSuccess,
+}: UpdateFormProps) {
   const form = useForm<MicrositeFormInput>({
     resolver: zodResolver(MicrositeSchema),
     defaultValues: {
@@ -142,6 +147,9 @@ export default function UpdateForm({ microsite, template }: UpdateFormProps) {
           templateId: microsite.templateId,
           fields,
         });
+        if (onSaveSuccess) {
+          onSaveSuccess();
+        }
       },
       {
         loading: "Saving...",

@@ -7,18 +7,23 @@ import {
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
 import RecordViewBranding from "./components/record-view-branding";
-import Link from "next/link";
 import { cn } from "@/modules/common/lib/utils";
 import { buttonVariants } from "@ui/button";
+import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 
 interface RecordViewProps {
   microsite: IMicrosite;
   template: ITemplate;
+  onEdit?: () => void;
 }
 
-export default function RecordView({ microsite, template }: RecordViewProps) {
+export default function RecordView({
+  microsite,
+  template,
+  onEdit,
+}: RecordViewProps) {
   if (!microsite) {
     return <div>Microsite not found</div>;
   }
@@ -50,12 +55,22 @@ export default function RecordView({ microsite, template }: RecordViewProps) {
                 {microsite.status}
               </Badge>
             </div>
-            <Link
-              className={cn(buttonVariants({ variant: "default", size: "sm" }))}
-              href={`/microsites/${microsite._id}/edit`}
-            >
-              Edit
-            </Link>
+            {onEdit ? (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={onEdit}
+              >
+                Edit
+              </Button>
+            ) : (
+              <a
+                className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+                href={`/microsites/${microsite._id}/edit`}
+              >
+                Edit
+              </a>
+            )}
           </div>
         </div>
 
