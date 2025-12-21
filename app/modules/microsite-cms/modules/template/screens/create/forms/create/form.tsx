@@ -26,6 +26,14 @@ import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 import { useState } from "react";
 import TemplateSelectList from "@microsite-cms/template/components/template-select-list";
 import { duplicateTemplateAction } from "@microsite-cms/template/screens/list/actions/duplicate";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 export default function CreateForm() {
   const searchParams = useSearchParams();
@@ -85,11 +93,30 @@ export default function CreateForm() {
     );
   }
 
+  function handleCancel() {
+    router.push("/templates");
+  }
+
   // Show initial selection if no mode is selected
   if (creationMode === null) {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold">Create Template</h2>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Create Template</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <h1 className="text-2xl font-semibold">Create Template</h1>
         <p className="text-muted-foreground">
           Choose how you want to create your template
         </p>
@@ -119,6 +146,11 @@ export default function CreateForm() {
             </span>
           </Button>
         </div>
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </div>
       </div>
     );
   }
@@ -127,6 +159,33 @@ export default function CreateForm() {
   if (creationMode === "copy") {
     return (
       <div className="space-y-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCreationMode(null);
+                }}
+              >
+                Create Template
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Copy from Template</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className="flex items-center gap-4">
           <Button
             type="button"
@@ -135,7 +194,7 @@ export default function CreateForm() {
           >
             ← Back
           </Button>
-          <h2 className="text-xl font-semibold">Copy from Template</h2>
+          <h1 className="text-2xl font-semibold">Copy from Template</h1>
         </div>
         <div className="max-w-md space-y-4">
           <FieldGroup>
@@ -147,7 +206,10 @@ export default function CreateForm() {
               />
             </Field>
           </FieldGroup>
-          <div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
             <Button
               type="button"
               onClick={handleCopyFromTemplate}
@@ -163,8 +225,35 @@ export default function CreateForm() {
 
   // Show create from scratch form
   return (
-    <div>
-      <div className="mb-6">
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setCreationMode(null);
+              }}
+            >
+              Create Template
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Create from Scratch</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="flex items-center gap-4">
         <Button
           type="button"
           variant="ghost"
@@ -172,6 +261,7 @@ export default function CreateForm() {
         >
           ← Back
         </Button>
+        <h1 className="text-2xl font-semibold">Create Template from Scratch</h1>
       </div>
       <form
         id="form-rhf-demo"
@@ -281,7 +371,10 @@ export default function CreateForm() {
             </div>
           </TabsContent>
         </Tabs>
-        <div>
+        <div className="flex gap-2">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
           <Button type="submit">Save</Button>
         </div>
       </form>

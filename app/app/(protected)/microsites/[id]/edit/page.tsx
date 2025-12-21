@@ -12,7 +12,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <main>
       <section>
-        <div className="lg:p-10 max-w-5xl mx-auto">
+        <div>
           <Update id={id} />
         </div>
       </section>
