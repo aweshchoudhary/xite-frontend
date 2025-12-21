@@ -7,6 +7,14 @@ import { buttonVariants } from "@ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { Pencil } from "lucide-react";
 import { Badge } from "@ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 interface RecordViewProps {
   template: ITemplate;
@@ -20,7 +28,22 @@ export default function RecordView({ template }: RecordViewProps) {
   const templateType = template.type ?? "open";
 
   return (
-    <div>
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{template.name || "Template"}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="space-y-10">
         <div className="flex items-end gap-5 justify-between">
           <h1 className="text-2xl font-bold">{template.name}</h1>
@@ -36,14 +59,15 @@ export default function RecordView({ template }: RecordViewProps) {
               className={cn(
                 buttonVariants({ variant: "outline", size: "icon" })
               )}
+              aria-label="Edit template"
             >
-              <Pencil className="size-3.5" />
+              <Pencil className="size-3.5" aria-hidden="true" />
             </Link>
           </div>
         </div>
 
         <Tabs defaultValue="common" className="w-full space-y-3">
-          <TabsList>
+          <TabsList aria-label="Template content sections">
             <TabsTrigger value="common">Common</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
           </TabsList>

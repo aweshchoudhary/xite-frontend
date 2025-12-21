@@ -12,6 +12,14 @@ import { buttonVariants } from "@ui/button";
 import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ui/breadcrumb";
 
 interface RecordViewProps {
   microsite: IMicrosite;
@@ -29,7 +37,27 @@ export default function RecordView({
   }
 
   return (
-    <div>
+    <div className="space-y-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/microsites">Microsites</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              {microsite.title || "Microsite"}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h1 className="text-2xl font-semibold">
+        {microsite.title || "Microsite"}
+      </h1>
       <div className="space-y-10">
         <div className="flex items-end gap-5 justify-between">
           <FieldGroup className="max-w-xs">
@@ -40,6 +68,7 @@ export default function RecordView({
                 value={microsite.title || ""}
                 readOnly
                 className="bg-muted"
+                aria-label="Microsite title"
               />
             </Field>
           </FieldGroup>
@@ -60,6 +89,7 @@ export default function RecordView({
                 variant="default"
                 size="sm"
                 onClick={onEdit}
+                aria-label="Edit microsite"
               >
                 Edit
               </Button>
@@ -67,6 +97,7 @@ export default function RecordView({
               <a
                 className={cn(buttonVariants({ variant: "default", size: "sm" }))}
                 href={`/microsites/${microsite._id}/edit`}
+                aria-label="Edit microsite"
               >
                 Edit
               </a>
@@ -75,7 +106,7 @@ export default function RecordView({
         </div>
 
         <Tabs defaultValue="common" className="w-full space-y-3">
-          <TabsList>
+          <TabsList aria-label="Microsite content sections">
             <TabsTrigger value="common">Common</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
             <TabsTrigger value="branding">Branding</TabsTrigger>

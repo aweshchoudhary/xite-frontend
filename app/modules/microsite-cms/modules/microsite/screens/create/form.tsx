@@ -76,10 +76,11 @@ export default function CreateForm({
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      if (cohortId) {
-        const templates = await getTemplatesByCohortIdAction(cohortId);
-        setTemplates(templates);
-      }
+      // Always fetch templates - getTemplatesByCohortId returns fixed templates even when cohortId is undefined
+      const templates = await getTemplatesByCohortIdAction(
+        cohortId || undefined
+      );
+      setTemplates(templates);
     };
     fetchTemplates();
   }, [cohortId]);
