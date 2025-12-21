@@ -55,6 +55,7 @@ export const MicrositeSchema = z.object({
   micrositeId: z.string().min(1),
   title: z.string().optional(),
   status: z.enum(["draft", "active", "archived"]),
+  domain: z.string().min(1, "Domain is required"),
 
   globalSections: z.array(MicrositeSectionValue),
   pages: z.array(MicrositePageValue),

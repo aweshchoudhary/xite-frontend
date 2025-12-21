@@ -3,7 +3,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
-import { Palette, Image as ImageIcon, Type, Upload } from "lucide-react";
+import { Palette, Image as ImageIcon, Type, Upload, Globe } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@ui/button";
 import { useRef, useState } from "react";
@@ -43,6 +43,34 @@ export default function FormBranding({ form }: FormBrandingProps) {
       </header>
 
       <div className="w-full relative p-8 space-y-6 bg-background shadow-xs rounded-xl border border-border/50">
+        {/* Domain */}
+        <div className="space-y-5">
+          <div className="flex items-center gap-2 mb-4">
+            <Globe className="size-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Domain</h3>
+          </div>
+          <div className="grid grid-cols-1 gap-5">
+            <FieldGroup>
+              <Controller
+                name="domain"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="domain">Domain</FieldLabel>
+                    <Input
+                      id="domain"
+                      {...field}
+                      placeholder="e.g., example.com"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </div>
+        </div>
         {/* Logo and Favicon */}
         <div className="space-y-5">
           <div className="flex items-center gap-2 mb-4">
