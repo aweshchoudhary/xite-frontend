@@ -23,21 +23,6 @@ export default function Card({ template }: CardProps) {
           </Link>
           <div className="flex items-center gap-2">
             <Badge variant="secondary">{template.status}</Badge>
-            {template._id && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() =>
-                  toast.promise(duplicateTemplateAction(template._id!), {
-                    loading: "Duplicating template...",
-                    success: "Template duplicated successfully",
-                    error: "Failed to duplicate template",
-                  })
-                }
-              >
-                <Copy />
-              </Button>
-            )}
           </div>
         </div>
         <p>{template.description}</p>

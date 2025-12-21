@@ -11,7 +11,6 @@ import {
   getTemplateByIdAction,
 } from "./action";
 import TemplateCard from "@microsite-cms/template/screens/list/components/card";
-import { Tabs, TabsTrigger, TabsList, TabsContent } from "@ui/tabs";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import CreateForm from "@microsite-cms/microsite/screens/create/form";
@@ -23,29 +22,15 @@ export default function TemplatesContainer({ data }: { data: GetCohort }) {
 
   return (
     <section className="space-y-6">
-      <header className="flex flex-col gap-2">
-        <h2 className="text-xl font-semibold leading-tight">
-          Templates & Microsite
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Manage reusable templates and CMS microsite for this cohort.
-        </p>
-      </header>
-
-      <Tabs defaultValue="templates" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:w-auto">
-          <TabsTrigger value="templates">Templates</TabsTrigger>
-          <TabsTrigger value="microsite">Microsite</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="templates" className="mt-6">
-          <TemplatesList cohort_key={cohortKey} />
-        </TabsContent>
-
-        <TabsContent value="microsite" className="mt-6">
+      <div className="space-y-8">
+        <TemplatesList cohort_key={cohortKey} />
+        <div className="border-t pt-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold">Microsite</h3>
+          </div>
           <MicrositeView cohort_key={cohortKey} />
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </section>
   );
 }
@@ -66,10 +51,8 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-sm text-muted-foreground">
-          {hasTemplates
-            ? `${templates.length} template${templates.length > 1 ? "s" : ""}`
-            : "No templates yet"}
+        <div>
+          <h2 className="lg:text-xl text-lg font-semibold">Templates</h2>
         </div>
         <Link
           className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-accent"
@@ -80,7 +63,7 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
       </div>
 
       {hasTemplates ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
           {templates.map((template) => (
             <TemplateCard key={template._id} template={template} />
           ))}
