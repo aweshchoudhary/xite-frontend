@@ -1,14 +1,14 @@
 {
-  "templateId": "6942bb24eb8cf6a39c9b4397",
-  "cohortId": "oxford-nsp-cohort-1",
-  "title": "Oxford NSP Test",
+  "templateId": "69482f69b458feefc55d4b27",
+  "cohortId": "cornell-chro-cohort-5",
+  "title": "Website",
   "status": "draft",
   "globalSections": [
     {
-      "key": "asdfasdf",
+      "key": "header",
       "blocks": [
         {
-          "key": "adfadfasdf",
+          "key": "title",
           "type": "single",
           "repeatable": false,
           "value": null,
@@ -17,10 +17,10 @@
       ]
     },
     {
-      "key": "adfasdfsafd",
+      "key": "footer",
       "blocks": [
         {
-          "key": "sadfsdfasdf",
+          "key": "title",
           "type": "single",
           "repeatable": false,
           "value": null,
@@ -31,18 +31,25 @@
   ],
   "pages": [
     {
-      "name": "asdfsadfasdf",
+      "name": "Home",
       "meta": {
-        "title": "asdfsadfasdf",
-        "description": "asdfsadfasdf",
-        "slug": "asdfsadfasdf"
+        "title": "Home",
+        "description": "Home",
+        "slug": "home"
       },
       "sections": [
         {
-          "key": "asdfasdf",
+          "key": "program-overview",
           "blocks": [
             {
-              "key": "adsasdfasdf",
+              "key": "title",
+              "type": "single",
+              "repeatable": false,
+              "value": null,
+              "items": []
+            },
+            {
+              "key": "description",
               "type": "single",
               "repeatable": false,
               "value": null,
@@ -53,8 +60,8 @@
       ]
     }
   ],
-  "_id": "69481c4cb458feefc55d497e",
-  "createdAt": "2025-12-21T16:11:56.734Z",
-  "updatedAt": "2025-12-21T16:11:56.734Z",
+  "_id": "69482f91b458feefc55d4b43",
+  "createdAt": "2025-12-21T17:34:09.931Z",
+  "updatedAt": "2025-12-21T17:34:09.931Z",
   "__v": 0
 }

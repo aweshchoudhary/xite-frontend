@@ -11,7 +11,10 @@ export async function createTemplate(data: ITemplate) {
   return JSON.parse(JSON.stringify(template)) as ITemplate;
 }
 
-export async function duplicateTemplate(id: string) {
+export async function duplicateTemplate(
+  id: string,
+  cohortId?: string
+) {
   await connectDB();
   const template = await TemplateModal.findById(id);
 
@@ -20,7 +23,7 @@ export async function duplicateTemplate(id: string) {
   const duplicated = await TemplateModal.create({
     ...template,
     name: `${template.name} (Copy)`,
-    cohortId: template.cohortId,
+    cohortId: cohortId ?? template.cohortId,
     status: "draft",
     globalSections: template.globalSections,
     pages: template.pages,

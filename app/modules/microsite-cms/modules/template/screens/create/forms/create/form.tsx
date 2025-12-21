@@ -77,7 +77,8 @@ export default function CreateForm() {
     toast.promise(
       async () => {
         const duplicatedTemplate = await duplicateTemplateAction(
-          selectedTemplateId
+          selectedTemplateId,
+          cohort_key ?? undefined
         );
         if (duplicatedTemplate._id) {
           router.push(`/templates/${duplicatedTemplate._id}`);
@@ -289,13 +290,15 @@ export default function CreateForm() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="name">Name</FieldLabel>
-                    <Input
-                      {...field}
-                      id="name"
-                      aria-invalid={fieldState.invalid}
-                      aria-describedby={fieldState.invalid ? "name-error" : undefined}
-                    />
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <Input
+                    {...field}
+                    id="name"
+                    aria-invalid={fieldState.invalid}
+                    aria-describedby={
+                      fieldState.invalid ? "name-error" : undefined
+                    }
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
