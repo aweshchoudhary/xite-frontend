@@ -92,6 +92,7 @@ const MicrositeView = ({ cohort_key }: { cohort_key: string }) => {
   const [template, setTemplate] = useState<ITemplate | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [cohortTemplates, setCohortTemplates] = useState<ITemplate[]>([]);
 
   const fetchMicrosite = useCallback(async () => {
     try {
@@ -111,9 +112,23 @@ const MicrositeView = ({ cohort_key }: { cohort_key: string }) => {
     }
   }, [cohort_key]);
 
+  const fetchCohortTemplates = useCallback(async () => {
+    try {
+      const allTemplates = await getTemplatesByCohortIdAction(cohort_key);
+      // Only get cohort templates (exclude fixed templates)
+      const templates = allTemplates.filter(
+        (template) => template.type !== "fixed"
+      );
+      setCohortTemplates(templates);
+    } catch (error) {
+      console.error("Error fetching cohort templates:", error);
+    }
+  }, [cohort_key]);
+
   useEffect(() => {
     fetchMicrosite();
-  }, [fetchMicrosite]);
+    fetchCohortTemplates();
+  }, [fetchMicrosite, fetchCohortTemplates]);
 
   const handleEdit = () => {
     setIsEditMode(true);
@@ -163,6 +178,23 @@ const MicrositeView = ({ cohort_key }: { cohort_key: string }) => {
         template={template}
         onEdit={handleEdit}
       />
+    );
+  }
+
+  // If no cohort templates exist, show message instead of form
+  if (cohortTemplates.length === 0) {
+    return (
+      <div className="flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-accent/40 p-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Create a template first to create a microsite.
+        </p>
+        <Link
+          className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          href={`/templates/new?cohort_key=${cohort_key}`}
+        >
+          <Plus className="size-4" /> Create Template
+        </Link>
+      </div>
     );
   }
 
