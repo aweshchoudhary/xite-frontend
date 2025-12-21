@@ -77,13 +77,17 @@ export default function CreateForm({
   useEffect(() => {
     const fetchTemplates = async () => {
       // Always fetch templates - getTemplatesByCohortId returns fixed templates even when cohortId is undefined
-      const templates = await getTemplatesByCohortIdAction(
+      const allTemplates = await getTemplatesByCohortIdAction(
         cohortId || undefined
       );
-      setTemplates(templates);
+      // When cohort_key is provided (in cohort screen context), only show cohort templates (exclude fixed templates)
+      const filteredTemplates = cohort_key
+        ? allTemplates.filter((template) => template.type !== "fixed")
+        : allTemplates;
+      setTemplates(filteredTemplates);
     };
     fetchTemplates();
-  }, [cohortId]);
+  }, [cohortId, cohort_key]);
 
   const templateId = form.watch("templateId");
   const showOtherFields = !!templateId;

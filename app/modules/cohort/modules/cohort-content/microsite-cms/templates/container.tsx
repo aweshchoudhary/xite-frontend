@@ -40,8 +40,12 @@ const TemplatesList = ({ cohort_key }: { cohort_key: string }) => {
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      const templates = await getTemplatesByCohortIdAction(cohort_key);
-      setTemplates(templates);
+      const allTemplates = await getTemplatesByCohortIdAction(cohort_key);
+      // Only show cohort templates (exclude fixed templates)
+      const cohortTemplates = allTemplates.filter(
+        (template) => template.type !== "fixed"
+      );
+      setTemplates(cohortTemplates);
     };
     fetchTemplates();
   }, [cohort_key]);
