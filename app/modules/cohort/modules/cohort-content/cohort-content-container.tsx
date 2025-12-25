@@ -4,9 +4,8 @@ import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
 import { Badge } from "@ui/badge";
 import CohortOverview from "./overview";
-import Link from "next/link";
-import { buttonVariants } from "@ui/button";
 import TemplatesContainer from "./microsite-cms/templates/container";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   data: GetCohort;
@@ -28,19 +27,16 @@ const tabs = [
 ];
 
 export default function CohortContent({ data }: Props) {
+  // get query params ?tab=microsite-cms
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
+  const defaultValue = tab || "content";
   return (
     <section className="space-y-6 w-full">
       <div className="flex items-center gap-2 justify-between">
         <h2 className="text-lg font-semibold">Cohort Content</h2>
-        <Link
-          href={`${process.env.NEXT_PUBLIC_MICROSITE_PREVIEW_DOMAIN}/preview/${data.cohort_key}`}
-          target="_blank"
-          className={buttonVariants({ variant: "outline" })}
-        >
-          Preview Microsite
-        </Link>
       </div>
-      <Tabs defaultValue={"content"} className="w-full">
+      <Tabs defaultValue={defaultValue} className="w-full">
         <div className="bg-background rounded-lg px-4 border py-3">
           <TabsList className="w-full grid grid-cols-2 gap-1 bg-transparent h-auto p-0">
             {tabs.map((tab) => (

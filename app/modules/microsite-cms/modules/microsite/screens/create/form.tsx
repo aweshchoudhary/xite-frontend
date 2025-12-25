@@ -30,10 +30,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
+import { getTemplateListAction } from "../../../template/components/template-select-list/action";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
-  cohortId: z.string().min(1, { message: "this field is required" }),
+  cohortId: z.string(),
   templateId: z.string().min(1, { message: "this field is required" }),
 });
 
@@ -63,8 +64,11 @@ export default function CreateForm({
   async function handleSubmit(fields: z.infer<typeof formSchema>) {
     toast.promise(
       async () => {
-        const microsite = await createMicrosite(fields);
-        router.push(`/microsites/${microsite._id}/edit`);
+        await createMicrosite(fields);
+        const redirect_path = cohortKeyProp
+          ? `/cohorts/${cohortId}?tab=microsite-cms`
+          : `/cms?tab=microsite-cms`;
+        router.push(redirect_path);
       },
       {
         loading: "Saving...",
@@ -77,49 +81,24 @@ export default function CreateForm({
   useEffect(() => {
     const fetchTemplates = async () => {
       // Always fetch templates - getTemplatesByCohortId returns fixed templates even when cohortId is undefined
-      const allTemplates = await getTemplatesByCohortIdAction(
-        cohortId || undefined
-      );
-      // When cohort_key is provided (in cohort screen context), only show cohort templates (exclude fixed templates)
-      const filteredTemplates = cohort_key
-        ? allTemplates.filter((template) => template.type !== "fixed")
-        : allTemplates;
-      setTemplates(filteredTemplates);
+      const allTemplates = await getTemplateListAction();
+      setTemplates(allTemplates);
     };
     fetchTemplates();
-  }, [cohortId, cohort_key]);
+  }, []);
 
   const templateId = form.watch("templateId");
   const showOtherFields = !!templateId;
 
   function handleCancel() {
-    router.push("/microsites");
+    const redirect_path = cohortKeyProp
+      ? `/cohorts/${cohortId}?tab=microsite-cms`
+      : `/cms?tab=microsite-cms`;
+    router.push(redirect_path);
   }
 
   return (
     <div className="space-y-6">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/cms">CMS</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/cms?tab=microsites">
-              Microsites
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Create Microsite</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <h1 className="text-2xl font-semibold">Create Microsite</h1>
       <form
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}

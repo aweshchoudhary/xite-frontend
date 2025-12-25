@@ -83,8 +83,8 @@ const MicrositeBrandingSchema = new mongoose.Schema(
 const MicrositeSchema = new mongoose.Schema(
   {
     templateId: { type: String, required: true },
-    cohortId: { type: String, required: true },
-    domain: { type: String, required: true, unique: true, index: true },
+    cohortId: { type: String },
+    domain: { type: String },
 
     title: { type: String },
     status: {

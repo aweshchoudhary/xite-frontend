@@ -27,15 +27,6 @@ import {
 } from "@ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter } from "next/navigation";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@ui/breadcrumb";
-
 export interface UpdateFormProps {
   microsite: IMicrosite;
   template: ITemplate;
@@ -170,35 +161,14 @@ export default function UpdateForm({
   }
 
   function handleCancel() {
-    router.push(`/microsites/${microsite._id}`);
+    const redirect_path = microsite.cohortId
+      ? `/cohorts/${microsite.cohortId}?tab=microsite-cms`
+      : `/cms?tab=microsite-cms`;
+    router.push(redirect_path);
   }
 
   return (
     <div className="space-y-6">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/microsites">Microsites</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/microsites/${microsite._id}`}>
-              {microsite.title || "Microsite"}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Edit</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <h1 className="text-2xl font-semibold">
-        Edit Microsite: {microsite.title || "Untitled"}
-      </h1>
       {Object.entries(form.formState.errors).length > 0 && (
         <div className="py-5 space-y-2" role="alert" aria-live="polite">
           {Object.entries(form.formState.errors).map(([key, error]) => (

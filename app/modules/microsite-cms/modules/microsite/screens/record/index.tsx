@@ -38,23 +38,6 @@ export default function RecordView({
 
   return (
     <div className="space-y-6">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/microsites">Microsites</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {microsite.title || "Microsite"}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
       <h1 className="text-2xl font-semibold">
         {microsite.title || "Microsite"}
       </h1>
@@ -95,7 +78,9 @@ export default function RecordView({
               </Button>
             ) : (
               <a
-                className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+                className={cn(
+                  buttonVariants({ variant: "default", size: "sm" })
+                )}
                 href={`/microsites/${microsite._id}/edit`}
                 aria-label="Edit microsite"
               >

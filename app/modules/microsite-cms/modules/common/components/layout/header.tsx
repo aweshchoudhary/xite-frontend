@@ -33,8 +33,8 @@ export default function Header() {
               ? "text-primary underline"
               : "text-muted-foreground"
           )}
-          href="/microsites"
-          onClick={() => setCurrentPage("microsites")}
+          href="/cms?tab=microsite-cms"
+          onClick={() => setCurrentPage("microsite-cms")}
         >
           Microsites
         </Link>

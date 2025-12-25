@@ -1,7 +1,7 @@
 {
-  "templateId": "69482f69b458feefc55d4b27",
-  "cohortId": "cornell-chro-cohort-5",
-  "title": "Website",
+  "templateId": "694d5dac3872413a43e6b1c5",
+  "cohortId": "mr-cxo-cohort-3",
+  "title": "asdfasdf",
   "status": "draft",
   "globalSections": [
     {
@@ -47,21 +47,14 @@
               "repeatable": false,
               "value": null,
               "items": []
-            },
-            {
-              "key": "description",
-              "type": "single",
-              "repeatable": false,
-              "value": null,
-              "items": []
             }
           ]
         }
       ]
     }
   ],
-  "_id": "69482f91b458feefc55d4b43",
-  "createdAt": "2025-12-21T17:34:09.931Z",
-  "updatedAt": "2025-12-21T17:34:09.931Z",
+  "_id": "694d61c639adf3ad0c6ce685",
+  "createdAt": "2025-12-25T16:09:42.187Z",
+  "updatedAt": "2025-12-25T16:09:42.187Z",
   "__v": 0
 }

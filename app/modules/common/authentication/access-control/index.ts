@@ -27,11 +27,6 @@ export const permissions: Permissions = {
   User: {
     Program: ["read", "write", "update"],
     Cohort: ["read", "write", "update"],
-    Faculty: ["read", "write", "update"],
-    AcademicPartners: ["read", "write", "update"],
-    Enterprise: ["read", "write", "update"],
     Microsite: ["read", "write", "update"],
-    Topic: ["read", "write", "update"],
-    Template: ["read", "write", "update"],
   },
 };
