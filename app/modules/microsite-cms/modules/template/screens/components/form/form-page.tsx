@@ -40,6 +40,11 @@ export default function FormPage({ form }: FormPageProps) {
       </header>
 
       <div className="space-y-5">
+        {pageFields.fields.length === 0 && (
+          <div className="p-10 border text-center bg-gray-50">
+            <p className="text-sm">No pages yet.</p>
+          </div>
+        )}
         {pageFields.fields.map((_, index) => (
           <div key={index} className="relative group/page-item">
             <FormPageItem

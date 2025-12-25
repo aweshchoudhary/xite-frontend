@@ -55,6 +55,11 @@ export default function FormElementGroup({
       </header>
 
       <div className="space-y-5">
+        {elementFields.fields.length === 0 && (
+          <div className="text-center p-10 bg-gray-50 border">
+            <p className="text-sm">No elements yet.</p>
+          </div>
+        )}
         {elementFields.fields.map((_, index) => (
           <div key={index} className="relative group/element-item">
             <FormElementGroupItem

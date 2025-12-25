@@ -1,3 +1,4 @@
+"use client";
 import { fetchMicrosites } from "./actions/fetch";
 import CardList from "./components/card-list";
 import { useState, useEffect } from "react";

@@ -58,7 +58,7 @@ export default function CreateForm() {
     toast.promise(
       async () => {
         await createTemplate(fields);
-        router.push("/templates");
+        router.push("/cms?tab=templates");
       },
       {
         loading: "Saving...",
@@ -95,7 +95,7 @@ export default function CreateForm() {
   }
 
   function handleCancel() {
-    router.push("/templates");
+    router.push("/cms?tab=templates");
   }
 
   // Show initial selection if no mode is selected
@@ -105,11 +105,13 @@ export default function CreateForm() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              <BreadcrumbLink href="/cms">CMS</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+              <BreadcrumbLink href="/cms?tab=templates">
+                Templates
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -118,9 +120,6 @@ export default function CreateForm() {
           </BreadcrumbList>
         </Breadcrumb>
         <h1 className="text-2xl font-semibold">Create Template</h1>
-        <p className="text-muted-foreground">
-          Choose how you want to create your template
-        </p>
         <div className="grid grid-cols-2 gap-4">
           <Button
             type="button"
@@ -167,7 +166,13 @@ export default function CreateForm() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+              <BreadcrumbLink href="/cms">CMS</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/cms?tab=templates">
+                Templates
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -187,17 +192,8 @@ export default function CreateForm() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="flex items-center gap-4">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => setCreationMode(null)}
-          >
-            ← Back
-          </Button>
-          <h1 className="text-2xl font-semibold">Copy from Template</h1>
-        </div>
-        <div className="max-w-md space-y-4">
+        <br />
+        <div className="space-y-5">
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="template-select">Select Template</FieldLabel>
@@ -207,7 +203,7 @@ export default function CreateForm() {
               />
             </Field>
           </FieldGroup>
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
@@ -234,7 +230,7 @@ export default function CreateForm() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+            <BreadcrumbLink href="/cms?tab=templates">Templates</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -254,16 +250,7 @@ export default function CreateForm() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex items-center gap-4">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => setCreationMode(null)}
-        >
-          ← Back
-        </Button>
-        <h1 className="text-2xl font-semibold">Create Template from Scratch</h1>
-      </div>
+      <br />
       <form
         id="form-rhf-demo"
         onSubmit={form.handleSubmit(handleSubmit)}
@@ -328,7 +315,7 @@ export default function CreateForm() {
             </div>
           </TabsContent>
         </Tabs>
-        <div className="flex gap-2">
+        <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={handleCancel}>
             Cancel
           </Button>

@@ -75,7 +75,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+            <BreadcrumbLink href="/cms?tab=templates">Templates</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -123,7 +123,9 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                     {...field}
                     id="update-name"
                     aria-invalid={fieldState.invalid}
-                    aria-describedby={fieldState.invalid ? "update-name-error" : undefined}
+                    aria-describedby={
+                      fieldState.invalid ? "update-name-error" : undefined
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -163,7 +165,10 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                     defaultValue={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger id="update-status" aria-label="Select status">
+                    <SelectTrigger
+                      id="update-status"
+                      aria-label="Select status"
+                    >
                       <SelectValue placeholder="Select a status" />
                     </SelectTrigger>
                     <SelectContent>

@@ -49,6 +49,11 @@ export default function FormBlock({ form, fieldArrayName }: FormBlockProps) {
       </header>
 
       <div className="space-y-5 p-8 bg-accent/40 rounded-lg border-2 border-dashed border-border/50">
+        {blockFields.fields.length === 0 && (
+          <div className="text-center">
+            <p className="text-sm">No blocks yet.</p>
+          </div>
+        )}
         {blockFields.fields.map((_, index) => (
           <div key={index} className="relative group/block-item">
             <FormBlockItem

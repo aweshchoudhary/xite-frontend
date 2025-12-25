@@ -9,7 +9,7 @@ import { useState } from "react";
 export default function Header() {
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useState<string>(
-    pathname.startsWith("/templates") ? "templates" : "microsites"
+    pathname.startsWith("/cms?tab=templates") ? "templates" : "microsites"
   );
   return (
     <header className="flex items-center justify-between py-4 px-10 border-b">
@@ -22,7 +22,7 @@ export default function Header() {
               ? "text-primary underline"
               : "text-muted-foreground"
           )}
-          href="/templates"
+          href="/cms?tab=templates"
           onClick={() => setCurrentPage("templates")}
         >
           Templates

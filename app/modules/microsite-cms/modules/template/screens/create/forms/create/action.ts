@@ -6,6 +6,6 @@ import { revalidatePath } from "next/cache";
 
 export async function createTemplateAction(data: ITemplate) {
   const template = await createTemplate(data);
-  revalidatePath("/templates");
+  revalidatePath("/cms");
   return template;
 }

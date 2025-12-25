@@ -46,6 +46,12 @@ export default function FormSection({
         </div>
       </header>
 
+      {sectionFields.fields.length === 0 && (
+        <div className="p-10 border text-center bg-background">
+          <p className="text-sm">No sections yet.</p>
+        </div>
+      )}
+
       {sectionFields.fields.map((_, index) => (
         <div key={index} className="relative group/section-item">
           <FormSectionItem

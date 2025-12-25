@@ -80,7 +80,7 @@ const PageBreadcrumb = () => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>Templates</BreadcrumbPage>
+          <BreadcrumbPage>CMS</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

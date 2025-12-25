@@ -36,7 +36,7 @@ export default function RecordView({ template }: RecordViewProps) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/templates">Templates</BreadcrumbLink>
+            <BreadcrumbLink href="/cms?tab=templates">Templates</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
