@@ -69,7 +69,7 @@ export const links: Link[] = [
   },
   {
     title: "CMS",
-    url: "/microsite-cms",
+    url: "/cms",
     resource: "Microsite",
     exact: false,
     icon: Globe02Icon,

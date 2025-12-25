@@ -34,9 +34,6 @@ export default function FormElementGroup({
       <header className="flex items-center justify-between pb-3 border-b">
         <div>
           <h3 className="text-sm font-medium">Group elements</h3>
-          <p className="text-xs text-muted-foreground">
-            Define multiple elements inside this block.
-          </p>
         </div>
         <Button
           onClick={() =>
@@ -48,12 +45,12 @@ export default function FormElementGroup({
             })
           }
           type="button"
-          variant="secondary"
+          variant="outline"
           size="sm"
-          className="gap-2"
+          className="gap-2 rounded-full shadow"
         >
           <PlusIcon className="size-4" />
-          Add element
+          Element
         </Button>
       </header>
 
@@ -67,22 +64,26 @@ export default function FormElementGroup({
               elementFields={elementFields}
               fieldArrayName={fieldArrayName}
             />
-            <Button
-              onClick={() =>
-                elementFields.insert(index + 1, {
-                  key: "",
-                  title: "",
-                  type: "text",
-                  required: true,
-                })
-              }
-              variant="outline"
-              size="icon-sm"
-              type="button"
-              className="rounded-full absolute -bottom-4 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/element-item:opacity-100 transition-all"
-            >
-              <Plus className="size-4" />
-            </Button>
+
+            <div className="absolute -bottom-3 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/element-item:opacity-100 transition-all">
+              <Button
+                onClick={() =>
+                  elementFields.insert(index + 1, {
+                    key: "",
+                    title: "",
+                    type: "text",
+                    required: true,
+                  })
+                }
+                variant="outline"
+                size="sm"
+                type="button"
+                className="rounded-full shadow"
+              >
+                <Plus className="size-4" />
+                Element
+              </Button>
+            </div>
           </div>
         ))}
       </div>
@@ -104,16 +105,16 @@ const FormElementGroupItem = ({
   fieldArrayName,
 }: FormElementGroupItemProps) => {
   return (
-    <div className="w-full relative group/block-item p-4 border border-border/50 bg-background rounded-lg shadow-xs">
+    <div className="w-full relative group/block-item p-8 border border-border/50 bg-background rounded-lg shadow-xs">
       <Button
         onClick={() => elementFields.remove(index)}
         size="sm"
-        variant="ghost"
+        variant="outline"
         type="button"
         className="absolute top-3 z-50 right-3 text-destructive opacity-0 group-hover/element-item:opacity-100 transition-all"
       >
         <TrashIcon className="size-3.5" />
-        Remove
+        Element
       </Button>
 
       <div className="space-y-5">

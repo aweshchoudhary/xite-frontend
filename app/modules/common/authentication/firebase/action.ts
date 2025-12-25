@@ -69,55 +69,64 @@ export async function logoutAction() {
   cookieStore.delete("session");
 }
 
-export async function getUser(): Promise<{
-  dbUser: DbUser;
-  user: UserRecord;
-  roles: UserRole[];
-} | null> {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("session");
+export async function getUser(): Promise<
+  | {
+      dbUser: DbUser;
+      user: UserRecord;
+      roles: UserRole[];
+    }
+  | null
+  | undefined
+> {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("session");
 
-  if (!session) return null;
+    if (!session) return null;
 
-  // 1️⃣ Verify session
-  const decodedToken = await adminAuth.verifySessionCookie(session.value);
-  const uid = decodedToken.uid;
+    // 1️⃣ Verify session
+    const decodedToken = await adminAuth.verifySessionCookie(session.value);
+    const uid = decodedToken.uid;
 
-  // 2️⃣ Session-aware cache key
-  const cacheKey = `auth:user:${uid}`;
+    // 2️⃣ Session-aware cache key
+    const cacheKey = `auth:user:${uid}`;
 
-  // 3️⃣ Check Redis
-  const cached = await getCache<{
-    user: UserRecord;
-    roles: UserRole[];
-    dbUser: DbUser;
-  }>(cacheKey);
+    // 3️⃣ Check Redis
+    const cached = await getCache<{
+      user: UserRecord;
+      roles: UserRole[];
+      dbUser: DbUser;
+    }>(cacheKey);
 
-  if (cached) {
-    return cached;
+    if (cached) {
+      return cached;
+    }
+
+    // 4️⃣ Fetch from Firebase
+    const user = await adminAuth.getUser(uid);
+
+    // 5️⃣ Fetch roles from DB
+    const dbUser = await primaryDB.user.findUnique({
+      where: { email: user.email },
+      include: { roles: true },
+    });
+
+    if (!dbUser || !dbUser.roles) return null;
+
+    const payload = {
+      user: user.toJSON() as UserRecord,
+      roles: dbUser.roles,
+      dbUser: dbUser,
+    };
+
+    // 6️⃣ Cache (short TTL is enough)
+    await setCache(cacheKey, payload, 300); // 5 minutes
+
+    return payload;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-
-  // 4️⃣ Fetch from Firebase
-  const user = await adminAuth.getUser(uid);
-
-  // 5️⃣ Fetch roles from DB
-  const dbUser = await primaryDB.user.findUnique({
-    where: { email: user.email },
-    include: { roles: true },
-  });
-
-  if (!dbUser || !dbUser.roles) return null;
-
-  const payload = {
-    user: user.toJSON() as UserRecord,
-    roles: dbUser.roles,
-    dbUser: dbUser,
-  };
-
-  // 6️⃣ Cache (short TTL is enough)
-  await setCache(cacheKey, payload, 300); // 5 minutes
-
-  return payload;
 }
 
 export async function getUserRoles(): Promise<UserRole[]> {

@@ -31,7 +31,7 @@ export default function FormPage({ form }: FormPageProps) {
               pageFields.append({ title: "", slug: "", sections: [] })
             }
             type="button"
-            variant="light"
+            variant="outline"
             size="sm"
           >
             <PlusIcon className="size-4" /> Page
@@ -48,21 +48,24 @@ export default function FormPage({ form }: FormPageProps) {
               index={index}
               pageFields={pageFields}
             />
-            <Button
-              onClick={() =>
-                pageFields.insert(index + 1, {
-                  title: "",
-                  slug: "",
-                  sections: [],
-                })
-              }
-              variant="outline"
-              size="icon-sm"
-              type="button"
-              className="rounded-full absolute -bottom-4 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/page-item:opacity-100 transition-all"
-            >
-              <Plus className="size-4" />
-            </Button>
+            <div className="absolute -bottom-3 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/page-item:opacity-100 transition-all">
+              <Button
+                onClick={() =>
+                  pageFields.insert(index + 1, {
+                    title: "",
+                    slug: "",
+                    sections: [],
+                  })
+                }
+                variant="outline"
+                size="sm"
+                type="button"
+                className="rounded-full shadow"
+              >
+                <Plus className="size-4" />
+                Page
+              </Button>
+            </div>
           </div>
         ))}
       </div>
@@ -78,16 +81,16 @@ interface FormPageItemProps {
 
 const FormPageItem = ({ form, index, pageFields }: FormPageItemProps) => {
   return (
-    <div className="w-full relative space-y-8">
+    <div className="w-full relative space-y-8 p-10 border bg-gray-50">
       <Button
         onClick={() => pageFields.remove(index)}
         size="sm"
-        variant="ghost"
+        variant="outline"
         type="button"
-        className="absolute top-3 z-50 right-3 text-destructive opacity-0 group-hover/page-item:opacity-100 transition-all"
+        className="absolute top-5 z-50 right-5 text-destructive opacity-0 group-hover/page-item:opacity-100 transition-all"
       >
         <TrashIcon className="size-3.5" />
-        Remove
+        Page
       </Button>
 
       <div className="grid grid-cols-2 gap-5">

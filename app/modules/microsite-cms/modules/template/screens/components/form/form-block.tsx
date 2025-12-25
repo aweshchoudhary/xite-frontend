@@ -87,16 +87,16 @@ const FormBlockItem = ({
 
   return (
     <div>
-      <div className="w-full p-5 relative group/block-item border border-border/50 shadow-xs bg-background rounded-lg space-y-5">
+      <div className="w-full p-12 relative group/block-item border border-border/50 shadow-xs bg-background rounded-lg space-y-5">
         <Button
           onClick={() => blockFields.remove(index)}
           size="sm"
-          variant="ghost"
+          variant="outline"
           type="button"
           className="absolute top-3 z-50 right-3 text-destructive opacity-0 group-hover/block-item:opacity-100 transition-all"
         >
           <TrashIcon className="size-3.5" />
-          Remove
+          Block
         </Button>
 
         <div className="flex items-center justify-between gap-3">
@@ -242,8 +242,9 @@ const FormBlockAddButton = ({ fieldArray, index }: FormBlockAddButtonProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon-sm" className="rounded-full">
+        <Button variant="outline" size="sm" className="rounded-full shadow">
           <PlusIcon className="size-4" />
+          Block
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

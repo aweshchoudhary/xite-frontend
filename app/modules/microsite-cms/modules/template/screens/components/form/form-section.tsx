@@ -11,12 +11,6 @@ import { Button } from "@ui/button";
 import { Plus, PlusIcon, TrashIcon } from "lucide-react";
 import FormBlock from "./form-block";
 import slugify from "slugify";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@ui/accordion";
 
 type FieldArrayName = `pages.${number}.sections` | `globalSections`;
 
@@ -45,23 +39,23 @@ export default function FormSection({
               sectionFields.append({ key: "", title: "", blocks: [] })
             }
             type="button"
-            variant="light"
+            variant="outline"
           >
             <PlusIcon className="size-4" /> Section
           </Button>
         </div>
       </header>
 
-      <Accordion className="space-y-5" type="single" collapsible>
-        {sectionFields.fields.map((_, index) => (
-          <div key={index} className="relative group/section-item">
-            <FormSectionItem
-              key={index}
-              form={form}
-              index={index}
-              sectionFields={sectionFields}
-              fieldArrayName={fieldArrayName}
-            />
+      {sectionFields.fields.map((_, index) => (
+        <div key={index} className="relative group/section-item">
+          <FormSectionItem
+            key={index}
+            form={form}
+            index={index}
+            sectionFields={sectionFields}
+            fieldArrayName={fieldArrayName}
+          />
+          <div className="absolute -bottom-3 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/section-item:opacity-100 transition-all">
             <Button
               onClick={() =>
                 sectionFields.insert(index + 1, {
@@ -71,15 +65,16 @@ export default function FormSection({
                 })
               }
               variant="outline"
-              size="icon-sm"
+              size="sm"
               type="button"
-              className="rounded-full absolute -bottom-4 z-50 right-1/2 -translate-x-1/2 opacity-0 group-hover/section-item:opacity-100 transition-all"
+              className="rounded-full shadow"
             >
               <Plus className="size-4" />
+              Section
             </Button>
           </div>
-        ))}
-      </Accordion>
+        </div>
+      ))}
     </div>
   );
 }
@@ -98,82 +93,73 @@ const FormSectionItem = ({
   fieldArrayName,
 }: FormSectionItemProps) => {
   return (
-    <AccordionItem value={`section-${index}`}>
-      <AccordionTrigger>
-        {form.getValues(`${fieldArrayName}.${index}.title`)}
-      </AccordionTrigger>
-      <AccordionContent>
-        <div className="w-full relative p-8 space-y-5 bg-background shadow-xs rounded-xl">
-          <Button
-            onClick={() => sectionFields.remove(index)}
-            size="sm"
-            variant="ghost"
-            type="button"
-            className="absolute top-3 z-50 right-3 text-destructive opacity-0 group-hover/section-item:opacity-100 transition-all"
-          >
-            <TrashIcon className="size-3.5" />
-            Remove
-          </Button>
+    <div className="w-full p-8 space-y-5 bg-background shadow-xs border rounded-xl">
+      <Button
+        onClick={() => sectionFields.remove(index)}
+        size="sm"
+        variant="outline"
+        type="button"
+        className="absolute top-3 z-50 right-3 text-destructive opacity-0 group-hover/section-item:opacity-100 transition-all"
+      >
+        <TrashIcon className="size-3.5" />
+        Section
+      </Button>
 
-          <div className="grid grid-cols-2 gap-5">
-            <FieldGroup>
-              <Controller
-                name={`${fieldArrayName}.${index}.title`}
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={`section-title-${index}`}>
-                      Title
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={`section-title-${index}`}
-                      aria-invalid={fieldState.invalid}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.setValue(
-                          `${fieldArrayName}.${index}.key`,
-                          slugify(e.target.value, { lower: true })
-                        );
-                        form.trigger(`${fieldArrayName}.${index}.key`);
-                      }}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
+      <div className="grid grid-cols-2 gap-5">
+        <FieldGroup>
+          <Controller
+            name={`${fieldArrayName}.${index}.title`}
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={`section-title-${index}`}>
+                  Title
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id={`section-title-${index}`}
+                  aria-invalid={fieldState.invalid}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    form.setValue(
+                      `${fieldArrayName}.${index}.key`,
+                      slugify(e.target.value, { lower: true })
+                    );
+                    form.trigger(`${fieldArrayName}.${index}.key`);
+                  }}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
                 )}
-              />
-            </FieldGroup>
-            <FieldGroup>
-              <Controller
-                name={`${fieldArrayName}.${index}.key`}
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={`section-key-${index}`}>
-                      Key
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={`section-key-${index}`}
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </div>
-
-          <FormBlock
-            form={form}
-            fieldArrayName={`${fieldArrayName}.${index}.blocks`}
+              </Field>
+            )}
           />
-        </div>
-      </AccordionContent>
-    </AccordionItem>
+        </FieldGroup>
+        <FieldGroup>
+          <Controller
+            name={`${fieldArrayName}.${index}.key`}
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={`section-key-${index}`}>Key</FieldLabel>
+                <Input
+                  {...field}
+                  id={`section-key-${index}`}
+                  aria-invalid={fieldState.invalid}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </FieldGroup>
+      </div>
+
+      <FormBlock
+        form={form}
+        fieldArrayName={`${fieldArrayName}.${index}.blocks`}
+      />
+    </div>
   );
 };

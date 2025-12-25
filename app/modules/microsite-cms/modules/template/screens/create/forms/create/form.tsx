@@ -306,54 +306,6 @@ export default function CreateForm() {
               )}
             />
           </FieldGroup>
-          <FieldGroup>
-            <Controller
-              name="type"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="create-template-type">
-                    Template Type
-                  </FieldLabel>
-                  <Select
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger id="create-template-type">
-                      <SelectValue placeholder="Select a type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="open">Open template</SelectItem>
-                      <SelectItem value="fixed">Fixed template</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          {form.watch("type") === "open" && (
-            <FieldGroup>
-              <Controller
-                name="cohortId"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="cohort-select">Cohort</FieldLabel>
-                    <CohortSelectList
-                      onChange={(value) => field.onChange(value)}
-                      defaultValue={field.value}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          )}
         </div>
 
         <Tabs defaultValue="common" className="w-full space-y-3">
@@ -371,7 +323,7 @@ export default function CreateForm() {
             </div>
           </TabsContent>
           <TabsContent value="pages">
-            <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
+            <div>
               <FormPage form={form} />
             </div>
           </TabsContent>
