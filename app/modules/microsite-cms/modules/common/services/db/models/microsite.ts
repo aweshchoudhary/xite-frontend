@@ -84,7 +84,12 @@ const MicrositeSchema = new mongoose.Schema(
   {
     templateId: { type: String, required: true },
     cohortId: { type: String },
-    domain: { type: String },
+    domain: { type: String, unique: false },
+    type: {
+      type: String,
+      enum: ["generic", "program-specific"],
+      default: "generic",
+    },
 
     title: { type: String },
     status: {

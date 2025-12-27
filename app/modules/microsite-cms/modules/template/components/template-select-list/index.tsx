@@ -10,7 +10,10 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import {
+  ITemplate,
+  TemplateType,
+} from "@microsite-cms/common/services/db/types/interfaces";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
@@ -19,16 +22,18 @@ import { getTemplateListAction } from "./action";
 export default function TemplateSelectList({
   onChange,
   defaultValue,
+  type,
 }: {
   onChange: (value: string) => void;
   defaultValue?: string | null;
+  type?: TemplateType;
 }) {
   const [templateList, setTemplateList] = useState<ITemplate[]>([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchTemplateList = async () => {
-      const templates = await getTemplateListAction();
+      const templates = await getTemplateListAction(type);
       setTemplateList(templates);
     };
     fetchTemplateList();
@@ -66,7 +71,10 @@ export default function TemplateSelectList({
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
           <Command>
-            <CommandInput placeholder="Search template..." className="h-full w-full" />
+            <CommandInput
+              placeholder="Search template..."
+              className="h-full w-full"
+            />
             <CommandList>
               <CommandEmpty>No templates found.</CommandEmpty>
               <CommandGroup>
@@ -80,11 +88,15 @@ export default function TemplateSelectList({
                       onChange(currentValue);
                     }}
                   >
-                    <div className="flex items-center gap-2">{template.name}</div>
+                    <div className="flex items-center gap-2">
+                      {template.name}
+                    </div>
                     <Check
                       className={cn(
                         "ml-auto",
-                        defaultValue === (template._id ?? "") ? "opacity-100" : "opacity-0"
+                        defaultValue === (template._id ?? "")
+                          ? "opacity-100"
+                          : "opacity-0"
                       )}
                     />
                   </CommandItem>
@@ -97,4 +109,3 @@ export default function TemplateSelectList({
     </div>
   );
 }
-

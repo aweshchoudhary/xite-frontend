@@ -7,15 +7,16 @@ import {
   ITemplateBlock,
   ITemplatePage,
   ITemplateSection,
+  TemplateType,
 } from "@microsite-cms/common/services/db/types/interfaces";
 import connectDB from "@microsite-cms/common/services/db/connection";
 import slugify from "slugify";
-import { writeFile } from "fs/promises";
 
 export async function createMicrosite(data: {
   templateId: string;
   cohortId: string;
   title?: string;
+  type: TemplateType;
 }): Promise<IMicrosite> {
   await connectDB();
 
@@ -42,6 +43,7 @@ export async function createMicrosite(data: {
     cohortId: data.cohortId,
     title: data.title ?? "",
     status: "draft",
+    type: data.type,
 
     globalSections: cloneSections(template.globalSections ?? []),
 
@@ -57,8 +59,6 @@ export async function createMicrosite(data: {
   };
 
   const created = await MicrositeModel.create(micrositeData);
-
-  await writeFile("microsite.json", JSON.stringify(created, null, 2));
 
   return JSON.parse(JSON.stringify(created)) as IMicrosite;
 }

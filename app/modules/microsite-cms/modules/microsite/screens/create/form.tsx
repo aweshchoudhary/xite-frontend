@@ -13,41 +13,38 @@ import {
   SelectItem,
   SelectValue,
 } from "@ui/select";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import {
+  ITemplate,
+  TemplateType,
+} from "@microsite-cms/common/services/db/types/interfaces";
 import { createMicrosite } from "@microsite-cms/common/services/db/actions/microsite/create";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getTemplatesByCohortIdAction } from "./action";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@ui/breadcrumb";
 import { getTemplateListAction } from "../../../template/components/template-select-list/action";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
   cohortId: z.string(),
   templateId: z.string().min(1, { message: "this field is required" }),
+  type: z.enum(["generic", "program-specific"]).optional(),
 });
 
 interface CreateFormProps {
   cohort_key?: string;
+  type?: TemplateType;
 }
 
 export default function CreateForm({
   cohort_key: cohortKeyProp,
+  type: defaultType,
 }: CreateFormProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const cohort_key = cohortKeyProp ?? searchParams.get("cohort_key") ?? "";
+  const type_key = searchParams.get("type");
+
   const [cohortId] = useState<string>(cohort_key);
 
   const [templates, setTemplates] = useState<ITemplate[]>([]);
@@ -58,16 +55,20 @@ export default function CreateForm({
       title: "",
       cohortId: cohort_key,
       templateId: "",
+      type: defaultType || (type_key as TemplateType) || "generic",
     },
   });
 
   async function handleSubmit(fields: z.infer<typeof formSchema>) {
     toast.promise(
       async () => {
-        await createMicrosite(fields);
+        await createMicrosite({
+          ...fields,
+          type: fields.type ?? "generic",
+        });
         const redirect_path = cohortKeyProp
           ? `/cohorts/${cohortId}?tab=microsite-cms`
-          : `/cms?tab=microsite-cms`;
+          : `/cms?tab=microsites`;
         router.push(redirect_path);
       },
       {
@@ -81,11 +82,13 @@ export default function CreateForm({
   useEffect(() => {
     const fetchTemplates = async () => {
       // Always fetch templates - getTemplatesByCohortId returns fixed templates even when cohortId is undefined
-      const allTemplates = await getTemplateListAction();
+      const allTemplates = await getTemplateListAction(
+        defaultType || (type_key as TemplateType) || "generic"
+      );
       setTemplates(allTemplates);
     };
     fetchTemplates();
-  }, []);
+  }, [defaultType, type_key]);
 
   const templateId = form.watch("templateId");
   const showOtherFields = !!templateId;
@@ -93,7 +96,7 @@ export default function CreateForm({
   function handleCancel() {
     const redirect_path = cohortKeyProp
       ? `/cohorts/${cohortId}?tab=microsite-cms`
-      : `/cms?tab=microsite-cms`;
+      : `/cms?tab=microsites`;
     router.push(redirect_path);
   }
 
@@ -129,12 +132,6 @@ export default function CreateForm({
                     <FieldLabel htmlFor="templateId" className="flex-1">
                       Template
                     </FieldLabel>
-                    <Link
-                      href={`/templates/new?cohort_key=${cohort_key}`}
-                      className="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium hover:bg-accent"
-                    >
-                      <Plus className="size-3" />
-                    </Link>
                   </div>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger id="templateId" aria-label="Select template">
@@ -191,14 +188,12 @@ export default function CreateForm({
           )}
         </div>
 
-        {showOtherFields && (
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </div>
-        )}
+        <div className="flex gap-2 justify-end">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button type="submit">Save</Button>
+        </div>
       </form>
     </div>
   );

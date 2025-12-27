@@ -3,6 +3,7 @@ import { fetchMicrosites } from "./actions/fetch";
 import CardList from "./components/card-list";
 import { useState, useEffect } from "react";
 import { IMicrosite } from "../../../common/services/db/types/interfaces";
+import DataTable from "./components/data-table";
 
 export default function Microsites() {
   const [microsites, setMicrosites] = useState<IMicrosite[]>([]);
@@ -24,7 +25,7 @@ export default function Microsites() {
 
   return (
     <div className="space-y-6">
-      <CardList microsites={microsites} />
+      <DataTable microsites={microsites} />
     </div>
   );
 }

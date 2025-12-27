@@ -52,6 +52,11 @@ const TemplateSchema = new mongoose.Schema(
       enum: ["draft", "active", "archived"],
       default: "draft",
     },
+    type: {
+      type: String,
+      enum: ["generic", "program-specific"],
+      default: "generic",
+    },
     globalSections: { type: [SectionSchema], default: [] },
     description: String,
     pages: [PageSchema],

@@ -7,15 +7,6 @@ import {
 } from "@/modules/common/components/ui/breadcrumb";
 
 import { Breadcrumb } from "@/modules/common/components/ui/breadcrumb";
-import { Button } from "@/modules/common/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/modules/common/components/ui/dropdown-menu";
-import { Plus } from "lucide-react";
-import Link from "next/link";
 import TabsContainer from "./components/tabs";
 
 export default async function Page({
@@ -45,24 +36,6 @@ const PageHeader = async () => {
                 <PageBreadcrumb />
               </div>
               <h1 className="h1 font-medium text-primary">CMS</h1>
-            </div>
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button>
-                    <Plus className="size-4" />
-                    New
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Link href="/templates/new">Template</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/microsites/new">Microsite</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
         </div>

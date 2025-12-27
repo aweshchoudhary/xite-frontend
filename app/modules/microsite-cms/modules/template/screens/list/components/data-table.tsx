@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@ui/badge";
 import {
   Table,
@@ -19,8 +20,8 @@ export default function DataTable({ templates }: { templates: ITemplate[] }) {
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Last Modified</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -36,9 +37,15 @@ export default function DataTable({ templates }: { templates: ITemplate[] }) {
               </Link>
             </TableCell>
             <TableCell>
-              <Badge>Active</Badge>
+              <Badge variant="outline">{template.type}</Badge>
             </TableCell>
-            <TableCell>Now</TableCell>
+            <TableCell>
+              <Badge
+                variant={template.status === "active" ? "success" : "secondary"}
+              >
+                {template.status}
+              </Badge>
+            </TableCell>
             <TableCell>
               <DataTableActions />
             </TableCell>

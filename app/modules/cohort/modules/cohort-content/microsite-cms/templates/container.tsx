@@ -108,7 +108,7 @@ const MicrositeView = ({ cohort_key }: { cohort_key: string }) => {
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Choose a template to start.</h3>
       </div>
-      <CreateForm cohort_key={cohort_key} />;
+      <CreateForm cohort_key={cohort_key} type="program-specific" />
     </div>
   );
 };

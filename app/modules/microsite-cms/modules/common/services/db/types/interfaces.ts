@@ -29,12 +29,14 @@ export interface ITemplatePage {
   sections: ITemplateSection[];
 }
 
+export type TemplateType = "generic" | "program-specific";
+
 export interface ITemplate {
   _id?: string;
   name: string;
   cohortId?: string | null;
   status?: "draft" | "active" | "archived";
-  type?: "fixed" | "open";
+  type?: TemplateType;
   description?: string;
   pages: ITemplatePage[];
   globalSections: ITemplateSection[];
@@ -92,6 +94,7 @@ export interface IMicrosite {
 
   templateId: string;
   cohortId: string;
+  type: TemplateType;
 
   title: string;
   status: "draft" | "active" | "archived";

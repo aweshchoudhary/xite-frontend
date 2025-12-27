@@ -163,7 +163,7 @@ export default function UpdateForm({
   function handleCancel() {
     const redirect_path = microsite.cohortId
       ? `/cohorts/${microsite.cohortId}?tab=microsite-cms`
-      : `/cms?tab=microsite-cms`;
+      : `/cms?tab=microsites`;
     router.push(redirect_path);
   }
 

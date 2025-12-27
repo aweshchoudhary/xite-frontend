@@ -14,7 +14,7 @@ type Props = {
 const tabs = [
   {
     value: "content",
-    label: "Content",
+    label: "Core Content",
     icon: FileText,
     showCompleteStatus: true,
   },

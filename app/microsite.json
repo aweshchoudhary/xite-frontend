@@ -1,7 +1,8 @@
 {
-  "templateId": "694d5dac3872413a43e6b1c5",
-  "cohortId": "mr-cxo-cohort-3",
-  "title": "asdfasdf",
+  "templateId": "694fbd1f4933babddfc1fe3f",
+  "cohortId": "cornell-selp-cohort-6",
+  "type": "generic",
+  "title": "Cornell CHRO",
   "status": "draft",
   "globalSections": [
     {
@@ -53,8 +54,8 @@
       ]
     }
   ],
-  "_id": "694d61c639adf3ad0c6ce685",
-  "createdAt": "2025-12-25T16:09:42.187Z",
-  "updatedAt": "2025-12-25T16:09:42.187Z",
+  "_id": "694fc64eb4f8737c66025d96",
+  "createdAt": "2025-12-27T11:43:10.392Z",
+  "updatedAt": "2025-12-27T11:43:10.392Z",
   "__v": 0
 }

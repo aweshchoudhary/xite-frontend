@@ -14,15 +14,7 @@ import FormSection from "@microsite-cms/template/screens/components/form/form-se
 import { toast } from "sonner";
 import { createTemplate } from "@microsite-cms/common/services/db/actions/template/create";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
-import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
 import { useState } from "react";
 import TemplateSelectList from "@microsite-cms/template/components/template-select-list";
 import { duplicateTemplateAction } from "@microsite-cms/template/screens/list/actions/duplicate";
@@ -34,11 +26,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
+import { TemplateType } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
 
 export default function CreateForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const cohort_key = searchParams.get("cohort_key");
+  const type = searchParams.get("type");
   const [creationMode, setCreationMode] = useState<"copy" | "scratch" | null>(
     null
   );
@@ -49,7 +43,7 @@ export default function CreateForm() {
     defaultValues: {
       name: "",
       cohortId: cohort_key ?? "",
-      type: "open",
+      type: (type as TemplateType) ?? "generic",
       pages: [],
     },
   });
@@ -200,6 +194,7 @@ export default function CreateForm() {
               <TemplateSelectList
                 onChange={setSelectedTemplateId}
                 defaultValue={selectedTemplateId}
+                type={form.getValues("type")}
               />
             </Field>
           </FieldGroup>

@@ -25,8 +25,6 @@ export default function RecordView({ template }: RecordViewProps) {
     return <div>Template not found</div>;
   }
 
-  const templateType = template.type ?? "open";
-
   return (
     <div className="space-y-6">
       <Breadcrumb>
@@ -52,7 +50,7 @@ export default function RecordView({ template }: RecordViewProps) {
               {template.status}
             </Badge>
             <Badge className="text-sm" variant={"outline"}>
-              {templateType === "fixed" ? "Fixed template" : "Open template"}
+              Type: {template.type}
             </Badge>
             <Link
               href={`/templates/${template._id}/edit`}

@@ -2,11 +2,20 @@
 
 import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
 import connectDB from "@microsite-cms/common/services/db/connection";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import {
+  ITemplate,
+  TemplateType,
+} from "@microsite-cms/common/services/db/types/interfaces";
 
-export async function getTemplates(): Promise<ITemplate[]> {
+export async function getTemplates(type?: TemplateType): Promise<ITemplate[]> {
   await connectDB();
-  const items = await TemplateModal.find();
+  let items;
+
+  if (type) {
+    items = await TemplateModal.find({ type });
+  } else {
+    items = await TemplateModal.find();
+  }
   return JSON.parse(JSON.stringify(items));
 }
 
