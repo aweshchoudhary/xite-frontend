@@ -8,6 +8,7 @@ services:
         EMAIL_SERVER: ${EMAIL_SERVER}
         EMAIL_FROM: ${EMAIL_FROM}
         DATABASE_URL: ${DATABASE_URL}
+        FIREBASE_ADMIN_CREDENTIALS_COPY_FROM: ${FIREBASE_ADMIN_CREDENTIALS_COPY_FROM}
     volumes:
       - ${GCP_SERVICE_ACCOUNT_KEY}:/app/service-account-key.json:ro
       - ${FIREBASE_ADMIN_CREDENTIALS_COPY_FROM}:/app/firebase-service-account-key.json:ro
