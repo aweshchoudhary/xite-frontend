@@ -47,7 +47,6 @@ export default function FormPage({ form, template }: FormPageProps) {
               <FormPageItem
                 form={form}
                 index={index}
-                pageFields={pageFields}
                 templatePage={templatePage}
               />
             </div>

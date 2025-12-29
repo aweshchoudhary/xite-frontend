@@ -73,6 +73,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/lodash.throttle": "^4.1.9",
+    "@types/luxon": "^3.7.1",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",
     "@types/react": "^19",

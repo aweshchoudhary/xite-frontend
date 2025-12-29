@@ -36,7 +36,7 @@ export async function updateTemplate(id: string, data: Partial<ITemplate>) {
 }
 
 function syncMicrositeWithTemplate(
-  microsite: IMicrosite,
+  microsite: any,
   oldTemplate: ITemplate,
   newTemplate: ITemplate
 ) {
@@ -48,8 +48,8 @@ function syncMicrositeWithTemplate(
 
   const oldPagesMap = new Map(oldTemplate.pages.map((p) => [p.slug, p]));
   const micrositePagesMap = new Map(
-    microsite.pages.map((p) => [p.meta.slug, p])
-  );
+    microsite.pages.map((p: any) => [p.meta.slug, p])
+  ) as any;
 
   microsite.pages = newTemplate.pages.map((newPage) => {
     const oldPage = oldPagesMap.get(newPage.slug);
@@ -138,7 +138,11 @@ function syncBlocks(
       type: newBlock.type,
       repeatable: newBlock.repeatable,
       value: syncBlockValue(oldBlock, newBlock, currentBlock.value),
-      items: syncBlockItems(oldBlock, newBlock, currentBlock.items || []),
+      items: syncBlockItems(
+        oldBlock,
+        newBlock,
+        (currentBlock.items as any) || []
+      ),
     };
   });
 }

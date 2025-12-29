@@ -2,10 +2,18 @@
 
 import { MicrositeModel } from "@microsite-cms/common/services/db/models/microsite";
 import connectDB from "@microsite-cms/common/services/db/connection";
+import { TemplateType } from "../../types/interfaces";
 
-export async function getMicrosites() {
+export async function getMicrosites(type?: TemplateType) {
   await connectDB();
-  return JSON.parse(JSON.stringify(await MicrositeModel.find().lean()));
+  let items;
+
+  if (type) {
+    items = await MicrositeModel.find({ type });
+  } else {
+    items = await MicrositeModel.find();
+  }
+  return JSON.parse(JSON.stringify(items));
 }
 
 export async function getMicrositeById(id: string) {

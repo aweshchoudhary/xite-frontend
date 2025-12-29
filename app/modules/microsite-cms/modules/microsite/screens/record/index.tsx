@@ -58,7 +58,9 @@ export default function RecordView({
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Badge variant={"outline"}>Template: {template.name}</Badge>
-              <Badge variant={"outline"}>Cohort: {microsite.cohortId}</Badge>
+              {microsite.cohortId && (
+                <Badge variant={"outline"}>Cohort: {microsite.cohortId}</Badge>
+              )}
               <Badge
                 variant={
                   microsite.status === "active" ? "default" : "secondary"

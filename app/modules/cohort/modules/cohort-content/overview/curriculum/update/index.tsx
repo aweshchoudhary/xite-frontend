@@ -22,7 +22,7 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
 
-interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
+type CreateFormProps = FormBaseProps<UpdateSchema>;
 
 export default function CreateForm({
   defaultValues,
@@ -60,49 +60,49 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-8"
     >
-        <div className="space-y-5">
-          {items.fields.map((field, index) => (
-            <Item
-              key={field.id}
-              form={form}
-              field={field}
-              index={index}
-              items={items}
-            />
-          ))}
+      <div className="space-y-5">
+        {items.fields.map((field, index) => (
+          <Item
+            key={field.id}
+            form={form}
+            field={field}
+            index={index}
+            items={items}
+          />
+        ))}
 
-          <Button
-            type="button"
-            onClick={() =>
-              items.append({
-                title: "",
-                objectives: [],
-                sessions: [],
-                position: items.fields.length + 1,
-              })
-            }
-            size={"sm"}
-            variant={"outline"}
-          >
-            <Plus className="size-4" />
-            Add Module
-          </Button>
-        </div>
+        <Button
+          type="button"
+          onClick={() =>
+            items.append({
+              title: "",
+              objectives: [],
+              sessions: [],
+              position: items.fields.length + 1,
+            })
+          }
+          size={"sm"}
+          variant={"outline"}
+        >
+          <Plus className="size-4" />
+          Add Module
+        </Button>
+      </div>
 
-        <MicrositeAdditionalFields
-          form={form}
-          top_desc_field_name="top_description"
-          bottom_desc_field_name="bottom_description"
-        />
+      <MicrositeAdditionalFields
+        form={form}
+        top_desc_field_name="top_description"
+        bottom_desc_field_name="bottom_description"
+      />
 
-        <footer className="flex justify-end gap-2">
-          <Button variant="outline" type="button" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button type="submit">
-            {form.formState.isSubmitting ? "Saving..." : "Save"}
-          </Button>
-        </footer>
+      <footer className="flex justify-end gap-2">
+        <Button variant="outline" type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">
+          {form.formState.isSubmitting ? "Saving..." : "Save"}
+        </Button>
+      </footer>
     </form>
   );
 }
@@ -165,11 +165,7 @@ const Item = ({ form, field, index, items }: ItemProps) => {
             name={`items.${index}.overview`}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <TextEditor
-                  placeholder="Overview"
-                  defaultValue={field.value}
-                  formField={field}
-                />
+                <TextEditor placeholder="Overview" formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -351,7 +347,6 @@ const Session = ({
                         null
                       );
                     }}
-                    defaultValue={field.value}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -374,7 +369,6 @@ const Session = ({
                   <>
                     <SubTopicSelectList
                       onChange={field.onChange}
-                      defaultValue={field.value}
                       topicId={topicId}
                       disabled={!topicId}
                     />
@@ -397,11 +391,7 @@ const Session = ({
             name={`items.${itemIndex}.sessions.${sessionIndex}.overview`}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <TextEditor
-                  placeholder="Overview"
-                  defaultValue={field.value}
-                  formField={field}
-                />
+                <TextEditor placeholder="Overview" formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

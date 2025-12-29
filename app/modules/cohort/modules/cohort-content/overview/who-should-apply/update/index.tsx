@@ -45,55 +45,51 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-8"
     >
+      <div>
+        <h3 className="text-lg font-semibold mb-3">
+          <Controller
+            control={form.control}
+            name="title"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <Input placeholder="Title" {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </h3>
         <div>
-          <h3 className="text-lg font-semibold mb-3">
-            <Controller
-              control={form.control}
-              name="title"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <Input placeholder="Title" {...field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </h3>
-          <div>
-            <Controller
-              control={form.control}
-              name="description"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <TextEditor
-                    placeholder="Description"
-                    defaultValue={field.value}
-                    formField={field}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
+          <Controller
+            control={form.control}
+            name="description"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <TextEditor placeholder="Description" formField={field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
         </div>
+      </div>
 
-        <MicrositeAdditionalFields
-          form={form}
-          top_desc_field_name="top_description"
-          bottom_desc_field_name="bottom_description"
-        />
+      <MicrositeAdditionalFields
+        form={form}
+        top_desc_field_name="top_description"
+        bottom_desc_field_name="bottom_description"
+      />
 
-        <footer className="flex justify-end gap-2">
-          <Button variant="outline" type="button" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button type="submit">
-            {form.formState.isSubmitting ? "Saving..." : "Save"}
-          </Button>
-        </footer>
+      <footer className="flex justify-end gap-2">
+        <Button variant="outline" type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">
+          {form.formState.isSubmitting ? "Saving..." : "Save"}
+        </Button>
+      </footer>
     </form>
   );
 }

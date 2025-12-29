@@ -1,6 +1,5 @@
 "use client";
 import { fetchMicrosites } from "./actions/fetch";
-import CardList from "./components/card-list";
 import { useState, useEffect } from "react";
 import { IMicrosite } from "../../../common/services/db/types/interfaces";
 import DataTable from "./components/data-table";
@@ -9,7 +8,7 @@ export default function Microsites() {
   const [microsites, setMicrosites] = useState<IMicrosite[]>([]);
   useEffect(() => {
     const fetchMicrositesEffect = async () => {
-      const microsites = await fetchMicrosites();
+      const microsites = await fetchMicrosites("generic");
       setMicrosites(microsites || []);
     };
     fetchMicrositesEffect();

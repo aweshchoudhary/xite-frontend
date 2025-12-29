@@ -16,7 +16,14 @@ export async function createAction(
   data: CreateSchema
 ): Promise<CreateActionOutput> {
   try {
-    const createdData = await createOne(data);
+    const createdData = await createOne({
+      ...data,
+      topic: {
+        connect: {
+          id: data.topic_id,
+        },
+      },
+    });
 
     if (!createdData) {
       throw new Error(`Failed to create SubTopic`);
@@ -30,4 +37,3 @@ export async function createAction(
     return { error: `Failed to create SubTopic` };
   }
 }
-

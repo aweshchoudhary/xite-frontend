@@ -32,7 +32,7 @@ import {
 } from "@/modules/cohort/server/cohort/read";
 import { useEffect, useState } from "react";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError } from "@ui/field";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {
   cohortData: GetCohort;
@@ -110,64 +110,63 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-5"
     >
-        {sections.fields.map((field, index) => (
-          <SectionFormField
-            key={field.id}
-            index={index}
-            form={form}
-            cohortSections={cohortSections}
-            defaultValues={defaultValues as any}
-            sections={sections.fields}
-          />
-        ))}
+      {sections.fields.map((field, index) => (
+        <SectionFormField
+          key={field.id}
+          index={index}
+          form={form}
+          cohortSections={cohortSections}
+          defaultValues={defaultValues as any}
+          sections={sections.fields}
+        />
+      ))}
 
-        <div>
-          <Button
-            type="button"
-            size={"sm"}
-            variant={"outline"}
-            onClick={() =>
-              sections.append({
-                title: "",
-                description: "",
-                top_description: "",
-                bottom_description: "",
-                after_section_id: "",
-              })
-            }
-          >
-            <Plus className="size-4" />
-            Add Section
-          </Button>
-        </div>
+      <div>
+        <Button
+          type="button"
+          size={"sm"}
+          variant={"outline"}
+          onClick={() =>
+            sections.append({
+              title: "",
+              description: "",
+              top_description: "",
+              bottom_description: "",
+              after_section_id: "",
+            })
+          }
+        >
+          <Plus className="size-4" />
+          Add Section
+        </Button>
+      </div>
 
-        <div className="flex justify-end gap-2">
-          <Button
-            variant="outline"
-            type="button"
-            onClick={handleCancel}
-            disabled={form.formState.isSubmitting}
-            size={"sm"}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            size={"sm"}
-          >
-            {form.formState.isSubmitting ? (
-              <div className="flex items-center gap-2">
-                <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                Saving...
-              </div>
-            ) : (
-              "Save"
-            )}
-          </Button>
-        </div>
-      </form>
-    </Form>
+      <div className="flex justify-end gap-2">
+        <Button
+          variant="outline"
+          type="button"
+          onClick={handleCancel}
+          disabled={form.formState.isSubmitting}
+          size={"sm"}
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          size={"sm"}
+        >
+          {form.formState.isSubmitting ? (
+            <div className="flex items-center gap-2">
+              <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              Saving...
+            </div>
+          ) : (
+            "Save"
+          )}
+        </Button>
+      </div>
+    </form>
   );
 }
 
@@ -388,7 +387,6 @@ export const SectionFormField = ({
               <Field data-invalid={fieldState.invalid}>
                 <TextEditor
                   placeholder="Add a comprehensive overview of your program..."
-                  defaultValue={field.value}
                   formField={field}
                 />
                 {fieldState.invalid && (

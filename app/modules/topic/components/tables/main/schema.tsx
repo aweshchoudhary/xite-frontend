@@ -44,11 +44,4 @@ export const columns: ColumnDef<GetOne>[] = [
       </div>
     ),
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => <TableActions row={row} />,
-  },
 ];
-
-

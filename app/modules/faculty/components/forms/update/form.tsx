@@ -104,74 +104,180 @@ export default function UpdateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-8"
     >
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <Controller
-              control={form.control}
-              name="profile_image_file"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Profile Image</FieldLabel>
-                  <Label htmlFor="image-selector">
-                    <ImageSelector
-                      setSelectedImage={(image) => {
-                        field.onChange(image);
-                      }}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="col-span-2">
+          <Controller
+            control={form.control}
+            name="profile_image_file"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Profile Image</FieldLabel>
+                <Label htmlFor="image-selector">
+                  <ImageSelector
+                    setSelectedImage={(image) => {
+                      field.onChange(image);
+                    }}
+                  />
+                  <Avatar className="size-20 border">
+                    <AvatarImage
+                      src={
+                        field.value
+                          ? generatePreviewUrl(field.value) ?? ""
+                          : getImageUrl(currentData.profile_image ?? "")
+                      }
                     />
-                    <Avatar className="size-20 border">
-                      <AvatarImage
-                        src={
-                          field.value
-                            ? generatePreviewUrl(field.value) ?? ""
-                            : getImageUrl(currentData.profile_image ?? "")
-                        }
-                      />
-                      <AvatarFallback className="uppercase">
-                        {form.watch("name")
-                          ? form.watch("name")?.slice(0, 2)
-                          : ""}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div
-                      className={cn(
-                        buttonVariants({ variant: "outline" }),
-                        "mt-2 text-xs"
-                      )}
-                    >
-                      Upload
-                    </div>
-                  </Label>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
+                    <AvatarFallback className="uppercase">
+                      {form.watch("name")
+                        ? form.watch("name")?.slice(0, 2)
+                        : ""}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "mt-2 text-xs"
+                    )}
+                  >
+                    Upload
+                  </div>
+                </Label>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="name"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Name</FieldLabel>
+                <Input placeholder="Name" {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="preferred_name"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Preferred Name</FieldLabel>
+                <Input
+                  placeholder="Preferred Name"
+                  {...field}
+                  value={field.value ?? ""}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="faculty_code_id"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Faculty Category</FieldLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
+                  defaultValue={field.value ?? undefined}
+                >
+                  <SelectTrigger className="w-full capitalize">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    {facultyCodes?.map((type) => (
+                      <SelectItem
+                        key={type.id}
+                        value={type.id}
+                        className="capitalize"
+                      >
+                        {type.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="phone"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Phone</FieldLabel>
+                <PhoneInput
+                  className="w-full border px-3 py-1.5 rounded-md shadow-xs"
+                  {...field}
+                  placeholder="Phone"
+                  international
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="email"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Email</FieldLabel>
+                <Input type="email" placeholder="Email" {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="academic_partner_id"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Academic Partner</FieldLabel>
+                <AcademicPartnerSelect formField={field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div className="col-span-2 space-y-4">
           <div>
             <Controller
               control={form.control}
-              name="name"
+              name="title"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Name</FieldLabel>
-                  <Input placeholder="Name" {...field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={form.control}
-              name="preferred_name"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Preferred Name</FieldLabel>
+                  <FieldLabel>Title</FieldLabel>
                   <Input
-                    placeholder="Preferred Name"
+                    type="text"
+                    placeholder="Title"
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -182,208 +288,98 @@ export default function UpdateForm({
               )}
             />
           </div>
-          <div>
-            <Controller
-              control={form.control}
-              name="faculty_code_id"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Faculty Category</FieldLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                    }}
-                    defaultValue={field.value ?? undefined}
-                  >
-                    <SelectTrigger className="w-full capitalize">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent className="w-full">
-                      {facultyCodes?.map((type) => (
-                        <SelectItem
-                          key={type.id}
-                          value={type.id}
-                          className="capitalize"
-                        >
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={form.control}
-              name="phone"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Phone</FieldLabel>
-                  <PhoneInput
-                    className="w-full border px-3 py-1.5 rounded-md shadow-xs"
-                    {...field}
-                    placeholder="Phone"
-                    international
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={form.control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Email</FieldLabel>
-                  <Input type="email" placeholder="Email" {...field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={form.control}
-              name="academic_partner_id"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Academic Partner</FieldLabel>
-                  <AcademicPartnerSelect formField={field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <div className="col-span-2 space-y-4">
-            <div>
-              <Controller
-                control={form.control}
-                name="title"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Title</FieldLabel>
-                    <Input
-                      type="text"
-                      placeholder="Title"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
 
-            <div>
-              <Controller
-                control={form.control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Description</FieldLabel>
-                    <TextEditor placeholder="Description" formField={field} />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
-            <div>
-              <Controller
-                control={form.control}
-                name="note"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Note</FieldLabel>
-                    <TextEditor placeholder="Note" formField={field} />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
+          <div>
+            <Controller
+              control={form.control}
+              name="description"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Description</FieldLabel>
+                  <TextEditor placeholder="Description" formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
           </div>
           <div>
-            <FieldLabel className="mb-2">Subject Areas</FieldLabel>
-            <div className="space-y-2">
-              {subjectAreasFieldArray.fields.map((field, index) => (
-                <div key={field.id} className="space-y-3">
-                  <Controller
-                    control={form.control}
-                    name={`faculty_subject_areas.${index}`}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <div className="flex items-center gap-3">
-                          <div className="flex-1">
-                            <SubjectAreaSelectList
-                              subjects={subjects ?? []}
-                              selectedSubjects={selectedSubjects}
-                              onSelect={(value) => {
-                                field.onChange(value);
-                                setSelectedSubjects([
-                                  ...selectedSubjects,
-                                  value,
-                                ]);
-                              }}
-                              defaultValue={field.value}
-                            />
-                          </div>
-                          <Button
-                            type="button"
-                            onClick={() => subjectAreasFieldArray.remove(index)}
-                            variant="outline"
-                            size="icon"
-                            className="text-red-700"
-                          >
-                            <X className="size-4" strokeWidth={1.5} />
-                          </Button>
-                        </div>
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-            <Button
-              variant="outline"
-              type="button"
-              onClick={() => subjectAreasFieldArray.append("")}
-              size="sm"
-              className="mt-3"
-            >
-              <Plus className="size-4" strokeWidth={1.5} /> Subject Area
-            </Button>
+            <Controller
+              control={form.control}
+              name="note"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Note</FieldLabel>
+                  <TextEditor placeholder="Note" formField={field} />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
           </div>
         </div>
+        <div>
+          <FieldLabel className="mb-2">Subject Areas</FieldLabel>
+          <div className="space-y-2">
+            {subjectAreasFieldArray.fields.map((field, index) => (
+              <div key={field.id} className="space-y-3">
+                <Controller
+                  control={form.control}
+                  name={`faculty_subject_areas.${index}`}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1">
+                          <SubjectAreaSelectList
+                            subjects={subjects ?? []}
+                            selectedSubjects={selectedSubjects}
+                            onSelect={(value) => {
+                              field.onChange(value);
+                              setSelectedSubjects([...selectedSubjects, value]);
+                            }}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          onClick={() => subjectAreasFieldArray.remove(index)}
+                          variant="outline"
+                          size="icon"
+                          className="text-red-700"
+                        >
+                          <X className="size-4" strokeWidth={1.5} />
+                        </Button>
+                      </div>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </div>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => subjectAreasFieldArray.append("")}
+            size="sm"
+            className="mt-3"
+          >
+            <Plus className="size-4" strokeWidth={1.5} /> Subject Area
+          </Button>
+        </div>
+      </div>
 
-        <footer className="flex justify-end gap-2">
-          <Button variant="outline" type="button" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button type="submit">
-            {form.formState.isSubmitting ? "Saving..." : "Save"}
-          </Button>
-        </footer>
+      <footer className="flex justify-end gap-2">
+        <Button variant="outline" type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">
+          {form.formState.isSubmitting ? "Saving..." : "Save"}
+        </Button>
+      </footer>
     </form>
   );
 }

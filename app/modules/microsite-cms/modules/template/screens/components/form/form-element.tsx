@@ -36,7 +36,7 @@ export default function FormElement({
               <FieldLabel htmlFor={`element-type-${index}`}>
                 Element Type
               </FieldLabel>
-              <Select defaultValue={field.value} onValueChange={field.onChange}>
+              <Select onValueChange={field.onChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a type" />
                 </SelectTrigger>

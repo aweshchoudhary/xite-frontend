@@ -92,6 +92,8 @@ export interface IMicrositeBranding {
 export interface IMicrosite {
   _id?: string;
 
+  domain?: string;
+
   templateId: string;
   cohortId: string;
   type: TemplateType;

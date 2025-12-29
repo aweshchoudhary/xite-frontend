@@ -1,9 +1,8 @@
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import { Button } from "@ui/button";
-import { Label } from "@ui/label";
 import { useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
 
 type Props = {
   form: UseFormReturn<any>;
@@ -80,7 +79,6 @@ export default function MicrositeAdditionalFields({
                 <div>
                   <TextEditor
                     placeholder="Add a top description"
-                    defaultValue={field.value}
                     formField={field}
                   />
                 </div>
@@ -103,7 +101,6 @@ export default function MicrositeAdditionalFields({
                 <div>
                   <TextEditor
                     placeholder="Add a bottom description"
-                    defaultValue={field.value}
                     formField={field}
                   />
                 </div>

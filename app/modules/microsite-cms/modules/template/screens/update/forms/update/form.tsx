@@ -42,7 +42,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
     resolver: zodResolver(TemplateFormSchema),
     defaultValues: {
       ...template,
-      type: template.type ?? "open",
+      type: template.type ?? "generic",
     },
   });
 
@@ -134,26 +134,6 @@ export default function UpdateForm({ template }: UpdateFormProps) {
               )}
             />
           </FieldGroup>
-          {form.watch("type") === "open" && (
-            <FieldGroup>
-              <Controller
-                name="cohortId"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="update-cohort">Cohort</FieldLabel>
-                    <CohortSelectList
-                      onChange={(value) => field.onChange(value)}
-                      defaultValue={field.value}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          )}
           <FieldGroup>
             <Controller
               name="status"
@@ -161,10 +141,7 @@ export default function UpdateForm({ template }: UpdateFormProps) {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="update-status">Status</FieldLabel>
-                  <Select
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                  >
+                  <Select onValueChange={field.onChange}>
                     <SelectTrigger
                       id="update-status"
                       aria-label="Select status"
@@ -175,34 +152,6 @@ export default function UpdateForm({ template }: UpdateFormProps) {
                       <SelectItem value="draft">Draft</SelectItem>
                       <SelectItem value="active">Active</SelectItem>
                       <SelectItem value="archived">Archived</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          <FieldGroup>
-            <Controller
-              name="type"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="update-template-type">
-                    Template Type
-                  </FieldLabel>
-                  <Select
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger id="update-template-type">
-                      <SelectValue placeholder="Select a type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="open">Open template</SelectItem>
-                      <SelectItem value="fixed">Fixed template</SelectItem>
                     </SelectContent>
                   </Select>
                   {fieldState.invalid && (

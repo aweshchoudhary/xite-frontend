@@ -10,26 +10,13 @@ type CardProps = {
 };
 
 export default function Card({ microsite }: CardProps) {
-  const updatedAt =
-    microsite.updatedAt ||
-    microsite.createdAt ||
-    microsite.publishedAt ||
-    new Date().toISOString();
-
-  const updatedAtIso =
-    typeof updatedAt === "string"
-      ? updatedAt
-      : updatedAt?.toISOString() || new Date().toISOString();
-
-  const statusLabel = microsite.status === "published" ? "Published" : "Draft";
-
   return (
     <Link href={`/microsites/${microsite._id}`}>
       <CardComponent>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <CardTitle>{microsite.title || "Untitled microsite"}</CardTitle>
-            <Badge variant="secondary">{statusLabel}</Badge>
+            <Badge variant="secondary">{microsite.status}</Badge>
           </div>
 
           <p className="text-sm text-muted-foreground">
@@ -44,7 +31,9 @@ export default function Card({ microsite }: CardProps) {
             <CalendarIcon className="size-4" />
             <span>
               Last modified:{" "}
-              {DateTime.fromISO(updatedAtIso).toFormat("dd MMM yyyy")}
+              {DateTime.fromISO(microsite.updatedAt || "").toFormat(
+                "dd MMM yyyy"
+              )}
             </span>
           </div>
         </CardContent>
