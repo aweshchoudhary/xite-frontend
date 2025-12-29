@@ -10,7 +10,7 @@ services:
         DATABASE_URL: ${DATABASE_URL}
     volumes:
       - ${GCP_SERVICE_ACCOUNT_KEY}:/app/service-account-key.json:ro
-      - ${FIREBASE_ADMIN_CREDENTIALS}:/app/firebase-admin-credentials.json:ro
+      - ${FIREBASE_ADMIN_CREDENTIALS_COPY_FROM}:/app/firebase-admin-credentials.json:ro
     restart: always
     env_file:
       - .env
