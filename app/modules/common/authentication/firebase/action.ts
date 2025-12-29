@@ -10,7 +10,7 @@ import { UserRecord } from "firebase-admin/auth";
 
 export async function loginAction(idToken: string) {
   // 1. Verify the token with Firebase Admin
-  const decodedToken = await adminAuth.verifyIdToken(idToken);
+  const decodedToken = await adminAuth().verifyIdToken(idToken);
   const email = decodedToken.email;
 
   // 2. SERVER-SIDE SECURITY CHECK
@@ -46,7 +46,7 @@ export async function loginAction(idToken: string) {
 
   // 3. Create a Session Cookie (expires in 5 days)
   const expiresIn = 60 * 60 * 24 * 5 * 1000;
-  const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+  const sessionCookie = await adminAuth().createSessionCookie(idToken, {
     expiresIn,
   });
 
@@ -85,7 +85,7 @@ export async function getUser(): Promise<
     if (!session) return null;
 
     // 1️⃣ Verify session
-    const decodedToken = await adminAuth.verifySessionCookie(session.value);
+    const decodedToken = await adminAuth().verifySessionCookie(session.value);
     const uid = decodedToken.uid;
 
     // 2️⃣ Session-aware cache key
@@ -103,7 +103,7 @@ export async function getUser(): Promise<
     }
 
     // 4️⃣ Fetch from Firebase
-    const user = await adminAuth.getUser(uid);
+    const user = await adminAuth().getUser(uid);
 
     // 5️⃣ Fetch roles from DB
     const dbUser = await primaryDB.user.findUnique({
