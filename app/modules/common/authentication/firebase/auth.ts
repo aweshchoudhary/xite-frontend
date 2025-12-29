@@ -2,6 +2,7 @@
 import admin from "firebase-admin";
 import { cert } from "firebase-admin/app";
 
+// adafsdfas
 export const adminAuth = () => {
   if (!admin.apps.length) {
     console.log(
