@@ -762,6 +762,7 @@ model Faculty {
   cohort_industry_experts_section_items CohortIndustryExpertsSectionItem[]
   faculty_subject_area                  FacultySubjectArea?                @relation(fields: [facultySubjectAreaId], references: [id])
   facultySubjectAreaId                  String?
+  subtopics                             SubTopic[]
   updated_by                            User?                              @relation(fields: [updated_by_id], references: [id])
   updated_by_id                         String?
 }
