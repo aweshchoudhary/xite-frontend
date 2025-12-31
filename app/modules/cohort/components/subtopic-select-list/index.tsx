@@ -23,11 +23,13 @@ export default function SubTopicSelectList({
   defaultValue,
   topicId,
   disabled,
+  excludeSubtopics,
 }: {
   onChange: (value: string) => void;
   defaultValue?: string | null;
   topicId?: string | null;
   disabled?: boolean;
+  excludeSubtopics?: string[];
 }) {
   const [subTopicList, setSubTopicList] = useState<SubTopic[]>([]);
   const [open, setOpen] = useState(false);
@@ -43,6 +45,13 @@ export default function SubTopicSelectList({
     };
     fetchSubTopicList();
   }, [topicId]);
+
+  // Filter out excluded subtopics, but keep the current field's own selection
+  const availableSubtopics = subTopicList.filter(
+    (subtopic) =>
+      !excludeSubtopics?.includes(subtopic.id) ||
+      subtopic.id === defaultValue
+  );
 
   return (
     <div>
@@ -81,7 +90,7 @@ export default function SubTopicSelectList({
             <CommandList>
               <CommandEmpty>No subtopic found.</CommandEmpty>
               <CommandGroup>
-                {subTopicList.map((subtopic) => (
+                {availableSubtopics.map((subtopic) => (
                   <CommandItem
                     key={subtopic.id}
                     value={subtopic.id}

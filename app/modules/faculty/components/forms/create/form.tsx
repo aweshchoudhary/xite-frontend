@@ -437,6 +437,14 @@ export default function CreateForm({
                         const topicId = form.watch(
                           `subtopics.${index}.topic_id`
                         );
+                        // Get all selected subtopic IDs except the current field's selection
+                        const allSubtopics = form.watch("subtopics") || [];
+                        const selectedSubtopicIds = allSubtopics
+                          .map((st) => st?.sub_topic_id)
+                          .filter(
+                            (id): id is string =>
+                              Boolean(id) && id !== field.value
+                          );
                         return (
                           <>
                             <SubTopicSelectList
@@ -444,6 +452,7 @@ export default function CreateForm({
                               topicId={topicId}
                               disabled={!topicId}
                               defaultValue={field.value ?? undefined}
+                              excludeSubtopics={selectedSubtopicIds}
                             />
                             {fieldState.invalid && (
                               <FieldError errors={[fieldState.error]} />
