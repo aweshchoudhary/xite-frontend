@@ -10,6 +10,11 @@ export type GetOneOutput = PrimaryDB.FacultyGetPayload<{
         subject_area: true;
       };
     };
+    subtopics: {
+      include: {
+        topic: true;
+      };
+    };
   };
 }>;
 export type GetAllOutput = GetOneOutput[];
@@ -22,6 +27,11 @@ export async function getAll(): Promise<GetAllOutput> {
         faculty_subject_areas: {
           include: {
             subject_area: true,
+          },
+        },
+        subtopics: {
+          include: {
+            topic: true,
           },
         },
       },
@@ -45,6 +55,11 @@ export async function getOne({
         faculty_subject_areas: {
           include: {
             subject_area: true,
+          },
+        },
+        subtopics: {
+          include: {
+            topic: true,
           },
         },
       },

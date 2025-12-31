@@ -12,6 +12,12 @@ export const baseSchema = z.object({
   note: z.string().optional().nullable(),
   profile_image: z.string().nullable().optional(),
   academic_partner_id: z.uuid(),
+  subtopics: z.array(
+    z.object({
+      topic_id: z.string().nullable(),
+      sub_topic_id: z.string().nullable(),
+    })
+  ).optional(),
 });
 
 export const createSchema = baseSchema.extend({

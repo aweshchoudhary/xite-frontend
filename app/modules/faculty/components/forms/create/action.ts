@@ -18,6 +18,7 @@ export async function createAction(
       profile_image_file,
       academic_partner_id,
       faculty_code_id,
+      subtopics,
       ...rest
     } = data;
     let profile_image = null;
@@ -25,6 +26,12 @@ export async function createAction(
     if (profile_image_file) {
       profile_image = (await uploadFile(profile_image_file)).fileUrl;
     }
+
+    // Extract valid subtopic IDs (filter out nulls)
+    const validSubtopicIds =
+      subtopics
+        ?.filter((st) => st.sub_topic_id)
+        .map((st) => st.sub_topic_id) ?? [];
 
     const createdData = await createOne({
       ...rest,
@@ -43,6 +50,11 @@ export async function createAction(
         connect: {
           id: faculty_code_id ?? undefined,
         },
+      },
+      subtopics: {
+        connect: validSubtopicIds.map((id) => ({
+          id: id!,
+        })),
       },
     });
 

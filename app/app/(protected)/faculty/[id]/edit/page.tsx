@@ -31,6 +31,13 @@ export default async function EditPage({
               faculty_subject_areas: currentData.faculty_subject_areas.map(
                 (subjectArea) => subjectArea.id
               ),
+              subtopics:
+                currentData.subtopics && currentData.subtopics.length > 0
+                  ? currentData.subtopics.map((subtopic) => ({
+                      topic_id: subtopic.topic?.id ?? subtopic.topic_id ?? null,
+                      sub_topic_id: subtopic.id ?? null,
+                    }))
+                  : [{ topic_id: null, sub_topic_id: null }],
             }}
             successRedirectPath={`${MODULE_PATH}/${currentData.id}`}
             cancelRedirectPath={`${MODULE_PATH}/${currentData.id}`}

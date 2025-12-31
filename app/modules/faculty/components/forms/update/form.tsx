@@ -34,9 +34,11 @@ import {
 } from "../create/server";
 import { Plus, X } from "lucide-react";
 import SubjectAreaSelectList from "../create/subject-area-select-list";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
+import TopicSelectList from "@/modules/cohort/components/topic-select-list";
+import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
 
-interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
+type UpdateFormProps = FormUpdateBaseProps<UpdateSchema>;
 
 export default function UpdateForm({
   currentData,
@@ -46,7 +48,13 @@ export default function UpdateForm({
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(updateSchema),
-    defaultValues: currentData,
+    defaultValues: {
+      ...currentData,
+      subtopics:
+        currentData.subtopics && currentData.subtopics.length > 0
+          ? currentData.subtopics
+          : [{ topic_id: null, sub_topic_id: null }],
+    },
   });
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
@@ -82,6 +90,11 @@ export default function UpdateForm({
     control: form.control,
     // @ts-expect-error This is a valid field
     name: "faculty_subject_areas",
+  });
+
+  const subtopicsFieldArray = useFieldArray({
+    control: form.control,
+    name: "subtopics",
   });
 
   useEffect(() => {
@@ -363,11 +376,103 @@ export default function UpdateForm({
           <Button
             variant="outline"
             type="button"
-            onClick={() => subjectAreasFieldArray.append("")}
+            onClick={() => {
+              // @ts-expect-error - faculty_subject_areas is an array of strings
+              subjectAreasFieldArray.append("");
+            }}
             size="sm"
             className="mt-3"
           >
             <Plus className="size-4" strokeWidth={1.5} /> Subject Area
+          </Button>
+        </div>
+        <div>
+          <FieldLabel className="mb-2">Topics & Subtopics</FieldLabel>
+          <div className="space-y-4">
+            {subtopicsFieldArray.fields.map((field, index) => (
+              <div key={field.id} className="space-y-3 border p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">
+                    Topic/Subtopic #{index + 1}
+                  </span>
+                  <Button
+                    type="button"
+                    onClick={() => subtopicsFieldArray.remove(index)}
+                    variant="outline"
+                    size="icon"
+                    className="text-red-700"
+                  >
+                    <X className="size-4" strokeWidth={1.5} />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel>Topic</FieldLabel>
+                    <Controller
+                      control={form.control}
+                      name={`subtopics.${index}.topic_id`}
+                      render={({ field, fieldState }) => (
+                        <>
+                          <TopicSelectList
+                            onChange={(value) => {
+                              field.onChange(value);
+                              // Clear subtopic when topic changes
+                              form.setValue(
+                                `subtopics.${index}.sub_topic_id`,
+                                null
+                              );
+                            }}
+                            defaultValue={field.value ?? undefined}
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </>
+                      )}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel>SubTopic</FieldLabel>
+                    <Controller
+                      control={form.control}
+                      name={`subtopics.${index}.sub_topic_id`}
+                      render={({ field, fieldState }) => {
+                        const topicId = form.watch(
+                          `subtopics.${index}.topic_id`
+                        );
+                        return (
+                          <>
+                            <SubTopicSelectList
+                              onChange={field.onChange}
+                              topicId={topicId}
+                              disabled={!topicId}
+                              defaultValue={field.value ?? undefined}
+                            />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </>
+                        );
+                      }}
+                    />
+                  </Field>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() =>
+              subtopicsFieldArray.append({
+                topic_id: null,
+                sub_topic_id: null,
+              })
+            }
+            size="sm"
+            className="mt-3"
+          >
+            <Plus className="size-4" strokeWidth={1.5} /> Add Topic/Subtopic
           </Button>
         </div>
       </div>

@@ -23,6 +23,7 @@ export async function updateAction(
       faculty_subject_areas,
       faculty_code_id,
       academic_partner_id,
+      subtopics,
       ...rest
     } = data;
 
@@ -42,6 +43,17 @@ export async function updateAction(
     const subjectAreasToAdd = faculty_subject_areas;
     const subjectAreasToRemove = faculty.faculty_subject_areas.filter(
       (subjectArea) => !faculty_subject_areas.includes(subjectArea.id)
+    );
+
+    // Extract valid subtopic IDs (filter out nulls)
+    const validSubtopicIds =
+      subtopics
+        ?.filter((st) => st.sub_topic_id)
+        .map((st) => st.sub_topic_id) ?? [];
+
+    const subtopicsToAdd = validSubtopicIds;
+    const subtopicsToRemove = faculty.subtopics.filter(
+      (subtopic) => !validSubtopicIds.includes(subtopic.id)
     );
 
     const updatedData = await updateOne({
@@ -65,6 +77,14 @@ export async function updateAction(
           })),
           disconnect: subjectAreasToRemove.map((subjectArea) => ({
             id: subjectArea.id,
+          })),
+        },
+        subtopics: {
+          connect: subtopicsToAdd.map((subtopicId) => ({
+            id: subtopicId!,
+          })),
+          disconnect: subtopicsToRemove.map((subtopic) => ({
+            id: subtopic.id,
           })),
         },
       },
