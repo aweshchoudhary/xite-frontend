@@ -55,6 +55,5 @@ secret-*
 app/modules/common/database/prisma/generated
 app/modules/common/database/prisma/generated/*
 
-
-credentials/*
-credentials
+credentials/*.json
+./credentials/*.json
