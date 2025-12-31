@@ -381,6 +381,7 @@ model SubTopic {
   sessions    DesignCohortCurriculumSession[]
   keywords    String[]
   taost_id    String                          @unique
+  faculties   Faculty[]
   created_at  DateTime                        @default(now())
   updated_at  DateTime                        @updatedAt
   topic_id    String
