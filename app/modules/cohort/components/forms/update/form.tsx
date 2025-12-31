@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { DateRangePickerField } from "@/modules/common/components/global/form/date-range-form-field";
 import CurrencySelect from "@/modules/common/components/global/currency-select/currency-select";
@@ -17,6 +17,7 @@ import ProgramSelect from "@/modules/program/components/program-select-list";
 import { GetOne } from "@/modules/program/server/read";
 import { getOne } from "@/modules/program/server/read";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 
@@ -43,6 +44,11 @@ export default function UpdateForm({
   const [program, setProgram] = useState<GetOne | null | undefined>(null);
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     try {
@@ -107,7 +113,11 @@ export default function UpdateForm({
               name="program_id"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Program</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("program_id")}
+                  >
+                    Program
+                  </FieldLabel>
                   <ProgramSelect
                     onChange={(value) => {
                       field.onChange(value);
@@ -143,7 +153,9 @@ export default function UpdateForm({
                   name="name"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Name</FieldLabel>
+                      <FieldLabel isRequired={requiredFields.includes("name")}>
+                        Name
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Name"
@@ -163,7 +175,9 @@ export default function UpdateForm({
                   name="format"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Format</FieldLabel>
+                      <FieldLabel isRequired={requiredFields.includes("format")}>
+                        Format
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Online, In-Class, Hybrid"
@@ -183,7 +197,11 @@ export default function UpdateForm({
                   name="duration"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Duration</FieldLabel>
+                      <FieldLabel
+                        isRequired={requiredFields.includes("duration")}
+                      >
+                        Duration
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="2 weeks, 6 months, etc."
@@ -202,7 +220,11 @@ export default function UpdateForm({
                   name="location"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Location</FieldLabel>
+                      <FieldLabel
+                        isRequired={requiredFields.includes("location")}
+                      >
+                        Location
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Oxford, Dubai, New York, etc."
@@ -265,7 +287,11 @@ export default function UpdateForm({
                           name={`fees.${index}.amount`}
                           render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                              <FieldLabel>Fee</FieldLabel>
+                              <FieldLabel
+                                isRequired={requiredFields.includes("fees")}
+                              >
+                                Fee
+                              </FieldLabel>
                               <Input
                                 type="number"
                                 {...field}

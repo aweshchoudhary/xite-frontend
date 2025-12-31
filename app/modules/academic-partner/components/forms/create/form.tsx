@@ -17,6 +17,8 @@ import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generat
 import { cn } from "@/modules/common/lib/utils";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { Controller, useForm } from "react-hook-form";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -32,6 +34,11 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(createSchema),
+    []
+  );
 
   const handleSubmit = async (data: CreateSchema) => {
     const resp = await createAction(data);
@@ -109,7 +116,9 @@ export default function CreateForm({
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Name</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("name")}>
+                    Name
+                  </FieldLabel>
                   <Input placeholder="Name" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -124,7 +133,11 @@ export default function CreateForm({
               name="display_name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Display Name</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("display_name")}
+                  >
+                    Display Name
+                  </FieldLabel>
                   <Input
                     placeholder="Display Name"
                     {...field}
@@ -158,7 +171,9 @@ export default function CreateForm({
               name="address"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Address</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("address")}>
+                    Address
+                  </FieldLabel>
                   <Textarea
                     placeholder="Address"
                     {...field}

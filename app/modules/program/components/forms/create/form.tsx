@@ -18,10 +18,11 @@ import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import EnterpriseSelect from "@/modules/enterprise/components/select-list";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
 import { Field, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 type CreateFormProps = FormBaseProps<ProgramCreateSchema>;
 
@@ -41,6 +42,11 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(programCreateSchema),
+    []
+  );
 
   const handleSubmit = async (data: ProgramCreateSchema) => {
     toast.promise(submitHandler(data), {
@@ -82,7 +88,9 @@ export default function CreateForm({
             name="name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Name</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("name")}>
+                  Name
+                </FieldLabel>
                 <Input placeholder="Name" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -97,7 +105,11 @@ export default function CreateForm({
             name="short_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Program Short Name</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("short_name")}
+                >
+                  Program Short Name
+                </FieldLabel>
                 <Input
                   placeholder="e.g. Oxford SELP, MR Ross"
                   {...field}
@@ -123,7 +135,9 @@ export default function CreateForm({
             name="type"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Type</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("type")}>
+                  Type
+                </FieldLabel>
                 <Select
                   onValueChange={(value) => {
                     field.onChange(value);
@@ -158,7 +172,11 @@ export default function CreateForm({
             name="academic_partner_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Academic Partner</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("academic_partner_id")}
+                >
+                  Academic Partner
+                </FieldLabel>
                 <AcademicPartnerSelect formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -174,7 +192,11 @@ export default function CreateForm({
               name="enterprise_id"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Enterprise</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("enterprise_id")}
+                  >
+                    Enterprise
+                  </FieldLabel>
                   <EnterpriseSelect formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

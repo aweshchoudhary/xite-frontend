@@ -7,12 +7,13 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/topic/contants";
 import { Textarea } from "@ui/textarea";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { Field, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 
@@ -28,6 +29,11 @@ export default function UpdateForm({
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     const resp = await updateAction(data, currentData.id);
@@ -64,7 +70,9 @@ export default function UpdateForm({
               name="title"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Title</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("title")}>
+                    Title
+                  </FieldLabel>
                   <Input autoComplete="off" placeholder="Title" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

@@ -21,8 +21,9 @@ import { createMicrosite } from "@microsite-cms/common/services/db/actions/micro
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getTemplateListAction } from "../../../template/components/template-select-list/action";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "this field is required" }),
@@ -48,6 +49,11 @@ export default function CreateForm({
   const [cohortId] = useState<string>(cohort_key);
 
   const [templates, setTemplates] = useState<ITemplate[]>([]);
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(formSchema),
+    []
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -129,7 +135,11 @@ export default function CreateForm({
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <div className="flex items-center gap-2">
-                    <FieldLabel htmlFor="templateId" className="flex-1">
+                    <FieldLabel
+                      htmlFor="templateId"
+                      className="flex-1"
+                      isRequired={requiredFields.includes("templateId")}
+                    >
                       Template
                     </FieldLabel>
                   </div>
@@ -169,7 +179,10 @@ export default function CreateForm({
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="form-rhf-demo-title">
+                      <FieldLabel
+                        htmlFor="form-rhf-demo-title"
+                        isRequired={requiredFields.includes("title")}
+                      >
                         Title
                       </FieldLabel>
                       <Input

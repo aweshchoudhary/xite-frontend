@@ -13,6 +13,8 @@ import { Field, FieldError, FieldLabel } from "@ui/field";
 import { Controller, useForm } from "react-hook-form";
 import { Badge } from "@ui/badge";
 import { X } from "lucide-react";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -28,6 +30,11 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(createSchema),
+    []
+  );
 
   const handleSubmit = async (data: CreateSchema) => {
     const resp = await createAction(data);
@@ -79,7 +86,9 @@ export default function CreateForm({
               name="title"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Title</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("title")}>
+                    Title
+                  </FieldLabel>
                   <Input placeholder="Title" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -94,7 +103,11 @@ export default function CreateForm({
               name="description"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Description</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("description")}
+                  >
+                    Description
+                  </FieldLabel>
                   <Textarea
                     placeholder="Description"
                     {...field}
@@ -113,7 +126,9 @@ export default function CreateForm({
               name="taost_id"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Taost ID</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("taost_id")}>
+                    Taost ID
+                  </FieldLabel>
                   <Input placeholder="Taost ID" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

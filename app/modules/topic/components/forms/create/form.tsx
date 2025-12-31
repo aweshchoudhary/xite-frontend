@@ -11,6 +11,8 @@ import { FormBaseProps } from "@/modules/common/components/global/form/types/for
 import { useRouter } from "next/navigation";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { Controller, useForm } from "react-hook-form";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -26,6 +28,8 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(() => getRequiredFields(createSchema), []);
 
   const handleSubmit = async (data: CreateSchema) => {
     const resp = await createAction(data);
@@ -59,7 +63,9 @@ export default function CreateForm({
             name="title"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Title</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("title")}>
+                  Title
+                </FieldLabel>
                 <Input placeholder="Title" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

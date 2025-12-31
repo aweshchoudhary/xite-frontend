@@ -26,12 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { FacultyCode, getFacultyCodes } from "./server";
 import { Plus, X } from "lucide-react";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -57,6 +58,11 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(createSchema),
+    []
+  );
 
   const handleSubmit = async (data: CreateSchema) => {
     const resp = await createAction(data);
@@ -147,7 +153,9 @@ export default function CreateForm({
             name="name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Name</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("name")}>
+                  Name
+                </FieldLabel>
                 <Input placeholder="Name" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -162,7 +170,11 @@ export default function CreateForm({
             name="preferred_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Preferred Name</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("preferred_name")}
+                >
+                  Preferred Name
+                </FieldLabel>
                 <Input
                   placeholder="Preferred Name"
                   {...field}
@@ -181,7 +193,11 @@ export default function CreateForm({
             name="faculty_code_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Faculty Category</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("faculty_code_id")}
+                >
+                  Faculty Category
+                </FieldLabel>
                 <Select
                   onValueChange={(value) => {
                     field.onChange(value);
@@ -216,7 +232,9 @@ export default function CreateForm({
             name="phone"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Phone</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("phone")}>
+                  Phone
+                </FieldLabel>
                 <PhoneInput
                   className="w-full border px-3 py-1.5 rounded-md bg-background"
                   {...field}
@@ -236,7 +254,9 @@ export default function CreateForm({
             name="email"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Email</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("email")}>
+                  Email
+                </FieldLabel>
                 <Input type="email" placeholder="Email" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -251,7 +271,11 @@ export default function CreateForm({
             name="academic_partner_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Academic Partner</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("academic_partner_id")}
+                >
+                  Academic Partner
+                </FieldLabel>
                 <AcademicPartnerSelect formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -267,7 +291,9 @@ export default function CreateForm({
               name="title"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Title</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("title")}>
+                    Title
+                  </FieldLabel>
                   <Input
                     type="text"
                     placeholder="Title"
@@ -288,7 +314,11 @@ export default function CreateForm({
               name="description"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Description</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("description")}
+                  >
+                    Description
+                  </FieldLabel>
                   <TextEditor placeholder="Description" formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -303,7 +333,9 @@ export default function CreateForm({
               name="note"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Note</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("note")}>
+                    Note
+                  </FieldLabel>
                   <TextEditor placeholder="Note" formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

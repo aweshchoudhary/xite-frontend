@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button, buttonVariants } from "@ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/faculty/contants";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
@@ -31,6 +31,7 @@ import { Plus, X } from "lucide-react";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 type UpdateFormProps = FormUpdateBaseProps<UpdateSchema>;
 
@@ -53,6 +54,11 @@ export default function UpdateForm({
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
   const [facultyCodes, setFacultyCodes] = useState<FacultyCode[] | null>(null);
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     const resp = await updateAction(data, currentData.id ?? "");
@@ -147,7 +153,9 @@ export default function UpdateForm({
             name="name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Name</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("name")}>
+                  Name
+                </FieldLabel>
                 <Input placeholder="Name" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -162,7 +170,11 @@ export default function UpdateForm({
             name="preferred_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Preferred Name</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("preferred_name")}
+                >
+                  Preferred Name
+                </FieldLabel>
                 <Input
                   placeholder="Preferred Name"
                   {...field}
@@ -181,7 +193,11 @@ export default function UpdateForm({
             name="faculty_code_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Faculty Category</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("faculty_code_id")}
+                >
+                  Faculty Category
+                </FieldLabel>
                 <Select
                   onValueChange={(value) => {
                     field.onChange(value);
@@ -216,7 +232,9 @@ export default function UpdateForm({
             name="phone"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Phone</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("phone")}>
+                  Phone
+                </FieldLabel>
                 <PhoneInput
                   className="w-full border px-3 py-1.5 rounded-md shadow-xs"
                   {...field}
@@ -236,7 +254,9 @@ export default function UpdateForm({
             name="email"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Email</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("email")}>
+                  Email
+                </FieldLabel>
                 <Input type="email" placeholder="Email" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -251,7 +271,11 @@ export default function UpdateForm({
             name="academic_partner_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Academic Partner</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("academic_partner_id")}
+                >
+                  Academic Partner
+                </FieldLabel>
                 <AcademicPartnerSelect formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -267,7 +291,9 @@ export default function UpdateForm({
               name="title"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Title</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("title")}>
+                    Title
+                  </FieldLabel>
                   <Input
                     type="text"
                     placeholder="Title"
@@ -288,7 +314,11 @@ export default function UpdateForm({
               name="description"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Description</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("description")}
+                  >
+                    Description
+                  </FieldLabel>
                   <TextEditor placeholder="Description" formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -303,7 +333,9 @@ export default function UpdateForm({
               name="note"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Note</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("note")}>
+                    Note
+                  </FieldLabel>
                   <TextEditor placeholder="Note" formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

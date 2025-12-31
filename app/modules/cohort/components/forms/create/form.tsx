@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useState } from "react";
 import CurrencySelect from "@/modules/common/components/global/currency-select/currency-select";
 import { DateRangePickerField } from "@/modules/common/components/global/form/date-range-form-field";
@@ -29,7 +29,10 @@ export default function CreateForm({
   cancelRedirectPath,
 }: CreateFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const requiredFields = getRequiredFields(createSchema);
+  const requiredFields = useMemo(
+    () => getRequiredFields(createSchema),
+    []
+  );
 
   const {
     program_id,
@@ -171,7 +174,12 @@ export default function CreateForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Program</FieldLabel>
+                  <FieldLabel
+                    htmlFor={field.name}
+                    isRequired={requiredFields.includes("program_id")}
+                  >
+                    Program
+                  </FieldLabel>
                   <ProgramSelect
                     onChange={(value) => {
                       field.onChange(value);
@@ -207,7 +215,9 @@ export default function CreateForm({
                   name="name"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Name</FieldLabel>
+                      <FieldLabel isRequired={requiredFields.includes("name")}>
+                        Name
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Name"
@@ -227,7 +237,9 @@ export default function CreateForm({
                   name="format"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Format</FieldLabel>
+                      <FieldLabel isRequired={requiredFields.includes("format")}>
+                        Format
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Online, In-Class, Hybrid"
@@ -247,7 +259,11 @@ export default function CreateForm({
                   name="duration"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Duration</FieldLabel>
+                      <FieldLabel
+                        isRequired={requiredFields.includes("duration")}
+                      >
+                        Duration
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="2 weeks, 6 months, etc."
@@ -266,7 +282,11 @@ export default function CreateForm({
                   name="location"
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Location</FieldLabel>
+                      <FieldLabel
+                        isRequired={requiredFields.includes("location")}
+                      >
+                        Location
+                      </FieldLabel>
                       <Input
                         type="text"
                         placeholder="Oxford, Dubai, New York, etc."
@@ -329,7 +349,11 @@ export default function CreateForm({
                           name={`fees.${index}.amount`}
                           render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                              <FieldLabel>Fee</FieldLabel>
+                              <FieldLabel
+                                isRequired={requiredFields.includes("fees")}
+                              >
+                                Fee
+                              </FieldLabel>
                               <Input
                                 type="number"
                                 {...field}

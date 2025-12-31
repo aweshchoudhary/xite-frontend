@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -22,6 +22,7 @@ import AcademicPartnerSelect from "../../academic-partner-list";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import EnterpriseSelect from "@/modules/enterprise/components/select-list";
 import { Field, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 type UpdateFormProps = FormUpdateBaseProps<ProgramUpdateSchema>;
 
@@ -37,6 +38,11 @@ export default function UpdateForm({
   });
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(programUpdateSchema),
+    []
+  );
 
   const handleSubmit = async (data: ProgramUpdateSchema) => {
     try {
@@ -74,7 +80,9 @@ export default function UpdateForm({
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Name</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("name")}>
+                    Name
+                  </FieldLabel>
                   <Input
                     autoComplete="off"
                     placeholder="Course Name"
@@ -93,7 +101,11 @@ export default function UpdateForm({
               name="short_name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Short Name</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("short_name")}
+                  >
+                    Short Name
+                  </FieldLabel>
                   <Input
                     autoComplete="off"
                     placeholder="Short Name"
@@ -124,7 +136,11 @@ export default function UpdateForm({
               name="program_key"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Program Key</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("program_key")}
+                  >
+                    Program Key
+                  </FieldLabel>
                   <Input
                     autoComplete="off"
                     placeholder="Program Key"
@@ -143,7 +159,9 @@ export default function UpdateForm({
               name="type"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Program Type</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("type")}>
+                    Program Type
+                  </FieldLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="capitalize w-full">
                       <SelectValue placeholder="Select Program Type" />
@@ -173,7 +191,11 @@ export default function UpdateForm({
               name="academic_partner_id"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Academic Partner</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("academic_partner_id")}
+                  >
+                    Academic Partner
+                  </FieldLabel>
                   <AcademicPartnerSelect formField={field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -189,7 +211,11 @@ export default function UpdateForm({
                 name="enterprise_id"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Enterprise</FieldLabel>
+                    <FieldLabel
+                      isRequired={requiredFields.includes("enterprise_id")}
+                    >
+                      Enterprise
+                    </FieldLabel>
                     <EnterpriseSelect formField={field} />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

@@ -12,6 +12,8 @@ import { HexColorPicker } from "react-colorful";
 import { readableColor } from "polished";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -24,6 +26,11 @@ export default function CreateForm({
     resolver: zodResolver(updateSchema),
     defaultValues: defaultValues as UpdateSchema,
   });
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     toast.promise(updateAction({ data }), {
@@ -52,7 +59,12 @@ export default function CreateForm({
               name="font_name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel className="mb-3">Font Name</FieldLabel>
+                  <FieldLabel
+                    className="mb-3"
+                    isRequired={requiredFields.includes("font_name")}
+                  >
+                    Font Name
+                  </FieldLabel>
                   <Input
                     placeholder="Arial, Helvetica, sans-serif"
                     {...field}

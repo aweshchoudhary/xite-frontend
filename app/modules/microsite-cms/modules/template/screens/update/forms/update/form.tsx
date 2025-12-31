@@ -24,6 +24,8 @@ import {
 import { updateTemplateAction } from "./action";
 import { useRouter } from "next/navigation";
 import CohortSelectList from "@/modules/cohort/components/cohort-select-list";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -38,6 +40,11 @@ interface UpdateFormProps {
 }
 
 export default function UpdateForm({ template }: UpdateFormProps) {
+  const requiredFields = useMemo(
+    () => getRequiredFields(TemplateFormSchema),
+    []
+  );
+
   const form = useForm<TemplateFormInput>({
     resolver: zodResolver(TemplateFormSchema),
     defaultValues: {
@@ -118,7 +125,12 @@ export default function UpdateForm({ template }: UpdateFormProps) {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="update-name">Name</FieldLabel>
+                  <FieldLabel
+                    htmlFor="update-name"
+                    isRequired={requiredFields.includes("name")}
+                  >
+                    Name
+                  </FieldLabel>
                   <Input
                     {...field}
                     id="update-name"

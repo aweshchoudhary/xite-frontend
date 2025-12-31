@@ -10,6 +10,8 @@ import { updateAction } from "./actions";
 import { DatePickerField } from "@/modules/common/components/global/form/date-form-field";
 import DraggableList from "./sort-sections";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
 
@@ -22,6 +24,11 @@ export default function CreateForm({
     resolver: zodResolver(updateSchema),
     defaultValues: defaultValues as UpdateSchema,
   });
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     toast.promise(updateAction({ data }), {
@@ -85,7 +92,12 @@ export default function CreateForm({
               name="custom_domain"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel className="mb-3">Custom Domain</FieldLabel>
+                  <FieldLabel
+                    className="mb-3"
+                    isRequired={requiredFields.includes("custom_domain")}
+                  >
+                    Custom Domain
+                  </FieldLabel>
                   <Input
                     placeholder="https://example.com"
                     {...field}

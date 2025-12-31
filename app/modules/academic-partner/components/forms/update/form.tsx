@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button, buttonVariants } from "@ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
 import { Textarea } from "@ui/textarea";
@@ -18,6 +18,7 @@ import { FormUpdateBaseProps } from "@/modules/common/components/global/form/typ
 import { generatePreviewUrl } from "@/modules/common/lib/img-preview-url-generator";
 import ImageSelector from "@/modules/common/components/global/image-selector";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 interface UpdateFormProps extends FormUpdateBaseProps<UpdateSchema> {}
 
@@ -33,6 +34,11 @@ export default function UpdateForm({
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     const resp = await updateAction(data, currentData.id);
@@ -113,7 +119,9 @@ export default function UpdateForm({
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Name</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("name")}>
+                    Name
+                  </FieldLabel>
                   <Input autoComplete="off" placeholder="Name" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -128,7 +136,11 @@ export default function UpdateForm({
               name="display_name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Display Name</FieldLabel>
+                  <FieldLabel
+                    isRequired={requiredFields.includes("display_name")}
+                  >
+                    Display Name
+                  </FieldLabel>
                   <Input
                     autoComplete="off"
                     placeholder="Display Name"
@@ -163,7 +175,9 @@ export default function UpdateForm({
               name="address"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Address</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("address")}>
+                    Address
+                  </FieldLabel>
                   <Textarea
                     placeholder="Address"
                     {...field}

@@ -21,6 +21,8 @@ import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/c
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 type CreateFormProps = FormBaseProps<UpdateSchema>;
 
@@ -33,6 +35,11 @@ export default function CreateForm({
     resolver: zodResolver(updateSchema),
     defaultValues: defaultValues as UpdateSchema,
   });
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     try {

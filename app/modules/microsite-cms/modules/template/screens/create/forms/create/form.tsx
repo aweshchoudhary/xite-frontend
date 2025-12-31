@@ -15,7 +15,8 @@ import { toast } from "sonner";
 import { createTemplate } from "@microsite-cms/common/services/db/actions/template/create";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 import TemplateSelectList from "@microsite-cms/template/components/template-select-list";
 import { duplicateTemplateAction } from "@microsite-cms/template/screens/list/actions/duplicate";
 import {
@@ -37,6 +38,11 @@ export default function CreateForm() {
     null
   );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(TemplateFormSchema),
+    []
+  );
 
   const form = useForm<TemplateFormInput>({
     resolver: zodResolver(TemplateFormSchema),
@@ -272,7 +278,12 @@ export default function CreateForm() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <FieldLabel
+                    htmlFor="name"
+                    isRequired={requiredFields.includes("name")}
+                  >
+                    Name
+                  </FieldLabel>
                   <Input
                     {...field}
                     id="name"

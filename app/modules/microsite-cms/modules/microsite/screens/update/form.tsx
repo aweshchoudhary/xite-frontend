@@ -27,6 +27,8 @@ import {
 } from "@ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter } from "next/navigation";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 export interface UpdateFormProps {
   microsite: IMicrosite;
   template: ITemplate;
@@ -39,6 +41,12 @@ export default function UpdateForm({
   onSaveSuccess,
 }: UpdateFormProps) {
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(MicrositeSchema),
+    []
+  );
+
   const form = useForm<MicrositeFormInput>({
     resolver: zodResolver(MicrositeSchema),
     defaultValues: {
@@ -195,7 +203,12 @@ export default function UpdateForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">Title</FieldLabel>
+                  <FieldLabel
+                    htmlFor="form-rhf-demo-title"
+                    isRequired={requiredFields.includes("title")}
+                  >
+                    Title
+                  </FieldLabel>
                   <Input
                     {...field}
                     id="form-rhf-demo-title"
@@ -214,7 +227,12 @@ export default function UpdateForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="status">Status</FieldLabel>
+                  <FieldLabel
+                    htmlFor="status"
+                    isRequired={requiredFields.includes("status")}
+                  >
+                    Status
+                  </FieldLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger id="status" aria-label="Select status">
                       <SelectValue placeholder="Select status" />

@@ -7,8 +7,12 @@ import { cn } from "@/modules/common/lib/utils";
 
 function Label({
   className,
+  isRequired,
+  children,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: React.ComponentProps<typeof LabelPrimitive.Root> & {
+  isRequired?: boolean;
+}) {
   return (
     <LabelPrimitive.Root
       data-slot="label"
@@ -17,7 +21,14 @@ function Label({
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {isRequired && (
+        <span className="text-destructive ml-0.5" aria-label="required">
+          *
+        </span>
+      )}
+    </LabelPrimitive.Root>
   );
 }
 

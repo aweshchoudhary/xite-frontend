@@ -7,13 +7,14 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@ui/textarea";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { Badge } from "@ui/badge";
 import { X } from "lucide-react";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
 type UpdateFormProps = FormUpdateBaseProps<UpdateSchema>;
 
@@ -29,6 +30,11 @@ export default function UpdateForm({
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(updateSchema),
+    []
+  );
 
   const handleSubmit = async (data: UpdateSchema) => {
     const resp = await updateAction(data, currentData.id);
@@ -79,7 +85,9 @@ export default function UpdateForm({
             name="title"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Title</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("title")}>
+                  Title
+                </FieldLabel>
                 <Input autoComplete="off" placeholder="Title" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -94,7 +102,11 @@ export default function UpdateForm({
             name="description"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Description</FieldLabel>
+                <FieldLabel
+                  isRequired={requiredFields.includes("description")}
+                >
+                  Description
+                </FieldLabel>
                 <Textarea
                   placeholder="Description"
                   {...field}
@@ -113,7 +125,9 @@ export default function UpdateForm({
             name="taost_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Taost ID</FieldLabel>
+                <FieldLabel isRequired={requiredFields.includes("taost_id")}>
+                  Taost ID
+                </FieldLabel>
                 <Input autoComplete="off" placeholder="Taost ID" {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

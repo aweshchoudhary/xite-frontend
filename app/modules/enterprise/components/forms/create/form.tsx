@@ -12,6 +12,8 @@ import TextEditor from "@/modules/common/components/global/rich-editor/text-edit
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { useMemo } from "react";
 
 interface CreateFormProps extends FormBaseProps<CreateSchema> {}
 
@@ -30,6 +32,11 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const requiredFields = useMemo(
+    () => getRequiredFields(createSchema),
+    []
+  );
 
   const handleSubmit = async (data: CreateSchema) => {
     const resp = await createAction(data);
@@ -63,7 +70,9 @@ export default function CreateForm({
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Name</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("name")}>
+                    Name
+                  </FieldLabel>
                   <Input placeholder="Name" {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -78,7 +87,9 @@ export default function CreateForm({
               name="address"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Address</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("address")}>
+                    Address
+                  </FieldLabel>
                   <TextEditor formField={field} placeholder="Address" />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -93,7 +104,9 @@ export default function CreateForm({
               name="note"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Note</FieldLabel>
+                  <FieldLabel isRequired={requiredFields.includes("note")}>
+                    Note
+                  </FieldLabel>
                   <TextEditor formField={field} placeholder="Note" />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
