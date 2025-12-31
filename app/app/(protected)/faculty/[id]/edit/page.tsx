@@ -28,9 +28,6 @@ export default async function EditPage({
               ...currentData,
               academic_partner_id: currentData.academic_partner_id ?? "",
               profile_image_file_action: "upload",
-              faculty_subject_areas: currentData.faculty_subject_areas.map(
-                (subjectArea) => subjectArea.id
-              ),
               subtopics:
                 currentData.subtopics && currentData.subtopics.length > 0
                   ? currentData.subtopics.map((subtopic) => ({

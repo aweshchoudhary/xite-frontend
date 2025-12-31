@@ -27,8 +27,7 @@ import {
   SelectValue,
 } from "@ui/select";
 import { useEffect, useState } from "react";
-import { FacultyCode, getFacultyCodes, getSubjects, Subject } from "./server";
-import SubjectAreaSelectList from "./subject-area-select-list";
+import { FacultyCode, getFacultyCodes } from "./server";
 import { Plus, X } from "lucide-react";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
@@ -49,14 +48,11 @@ export default function CreateForm({
       phone: "",
       academic_partner_id: "",
       faculty_code_id: "",
-      faculty_subject_areas: [""],
       subtopics: [{ topic_id: null, sub_topic_id: null }],
       ...defaultValues,
     },
   });
 
-  const [subjects, setSubjects] = useState<Subject[] | null>(null);
-  const [selectedSubSubjects, setSelectedSubSubjects] = useState<string[]>([]);
   const [facultyCodes, setFacultyCodes] = useState<FacultyCode[] | null>(null);
 
   const { closeModal, redirect } = useFormState();
@@ -81,23 +77,12 @@ export default function CreateForm({
     closeModal();
   };
 
-  const subjectAreasFieldArray = useFieldArray({
-    control: form.control,
-    // @ts-expect-error This is a valid field
-    name: "faculty_subject_areas",
-  });
-
   const subtopicsFieldArray = useFieldArray({
     control: form.control,
     name: "subtopics",
   });
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const fetchedSubjects = await getSubjects();
-      setSubjects(fetchedSubjects);
-    };
-    fetchSubjects();
     const fetchFacultyCodes = async () => {
       const fetchedFacultyCodes = await getFacultyCodes();
       setFacultyCodes(fetchedFacultyCodes);
@@ -327,63 +312,8 @@ export default function CreateForm({
               )}
             />
           </div>
-        </div>
-        <div className="border-2 border-dashed bg-background p-5">
-          <FieldLabel className="mb-2">Subject Areas</FieldLabel>
-          <div className="space-y-2">
-            {subjectAreasFieldArray.fields.map((field, index) => (
-              <div key={field.id} className="space-y-3">
-                <Controller
-                  control={form.control}
-                  name={`faculty_subject_areas.${index}`}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1">
-                          <SubjectAreaSelectList
-                            subjects={subjects ?? []}
-                            onSelect={(value) => {
-                              field.onChange(value);
-                              setSelectedSubSubjects([
-                                ...selectedSubSubjects,
-                                value,
-                              ]);
-                            }}
-                          />
-                        </div>
-                        <Button
-                          type="button"
-                          onClick={() => subjectAreasFieldArray.remove(index)}
-                          variant="outline"
-                          size="icon"
-                          className="text-red-700"
-                        >
-                          <X className="size-4" strokeWidth={1.5} />
-                        </Button>
-                      </div>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-            ))}
           </div>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => {
-              // @ts-expect-error - faculty_subject_areas is an array of strings
-              subjectAreasFieldArray.append("");
-            }}
-            size="sm"
-            className="mt-3"
-          >
-            <Plus className="size-4" strokeWidth={1.5} /> Subject Area
-          </Button>
-        </div>
-        <div className="border-2 border-dashed bg-background p-5">
+          <div className="border-2 border-dashed bg-background p-5">
           <FieldLabel className="mb-2">Topics & Subtopics</FieldLabel>
           <div className="space-y-4">
             {subtopicsFieldArray.fields.map((field, index) => (

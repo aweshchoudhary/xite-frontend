@@ -26,14 +26,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@ui/select";
-import {
-  getSubjects,
-  Subject,
-  getFacultyCodes,
-  FacultyCode,
-} from "../create/server";
+import { getFacultyCodes, FacultyCode } from "../create/server";
 import { Plus, X } from "lucide-react";
-import SubjectAreaSelectList from "../create/subject-area-select-list";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
@@ -58,8 +52,6 @@ export default function UpdateForm({
   });
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
-  const [subjects, setSubjects] = useState<Subject[] | null>(null);
-  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [facultyCodes, setFacultyCodes] = useState<FacultyCode[] | null>(null);
 
   const handleSubmit = async (data: UpdateSchema) => {
@@ -86,24 +78,12 @@ export default function UpdateForm({
     });
   }, [currentData, setDefaultValues]);
 
-  const subjectAreasFieldArray = useFieldArray({
-    control: form.control,
-    // @ts-expect-error This is a valid field
-    name: "faculty_subject_areas",
-  });
-
   const subtopicsFieldArray = useFieldArray({
     control: form.control,
     name: "subtopics",
   });
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const fetchedSubjects = await getSubjects();
-      setSubjects(fetchedSubjects);
-    };
-    fetchSubjects();
-
     const fetchFacultyCodes = async () => {
       const fetchedFacultyCodes = await getFacultyCodes();
       setFacultyCodes(fetchedFacultyCodes);
@@ -332,59 +312,6 @@ export default function UpdateForm({
               )}
             />
           </div>
-        </div>
-        <div>
-          <FieldLabel className="mb-2">Subject Areas</FieldLabel>
-          <div className="space-y-2">
-            {subjectAreasFieldArray.fields.map((field, index) => (
-              <div key={field.id} className="space-y-3">
-                <Controller
-                  control={form.control}
-                  name={`faculty_subject_areas.${index}`}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1">
-                          <SubjectAreaSelectList
-                            subjects={subjects ?? []}
-                            selectedSubjects={selectedSubjects}
-                            onSelect={(value) => {
-                              field.onChange(value);
-                              setSelectedSubjects([...selectedSubjects, value]);
-                            }}
-                          />
-                        </div>
-                        <Button
-                          type="button"
-                          onClick={() => subjectAreasFieldArray.remove(index)}
-                          variant="outline"
-                          size="icon"
-                          className="text-red-700"
-                        >
-                          <X className="size-4" strokeWidth={1.5} />
-                        </Button>
-                      </div>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => {
-              // @ts-expect-error - faculty_subject_areas is an array of strings
-              subjectAreasFieldArray.append("");
-            }}
-            size="sm"
-            className="mt-3"
-          >
-            <Plus className="size-4" strokeWidth={1.5} /> Subject Area
-          </Button>
         </div>
         <div>
           <FieldLabel className="mb-2">Topics & Subtopics</FieldLabel>

@@ -41,11 +41,6 @@ export async function createAction(
           id: academic_partner_id,
         },
       },
-      faculty_subject_areas: {
-        connect: rest.faculty_subject_areas.map((id) => ({
-          id,
-        })),
-      },
       faculty_code: {
         connect: {
           id: faculty_code_id ?? undefined,

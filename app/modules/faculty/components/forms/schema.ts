@@ -7,7 +7,6 @@ export const baseSchema = z.object({
   email: z.string().email(),
   phone: z.string(),
   description: z.string().optional().nullable(),
-  faculty_subject_areas: z.array(z.uuid()),
   faculty_code_id: z.uuid().optional().nullable(),
   note: z.string().optional().nullable(),
   profile_image: z.string().nullable().optional(),

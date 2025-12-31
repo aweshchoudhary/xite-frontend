@@ -20,7 +20,6 @@ export async function updateAction(
       profile_image_file,
       profile_image: old_profile_image,
       profile_image_file_action,
-      faculty_subject_areas,
       faculty_code_id,
       academic_partner_id,
       subtopics,
@@ -39,11 +38,6 @@ export async function updateAction(
     if (!faculty) {
       throw new Error(`Faculty not found`);
     }
-
-    const subjectAreasToAdd = faculty_subject_areas;
-    const subjectAreasToRemove = faculty.faculty_subject_areas.filter(
-      (subjectArea) => !faculty_subject_areas.includes(subjectArea.id)
-    );
 
     // Extract valid subtopic IDs (filter out nulls)
     const validSubtopicIds =
@@ -71,14 +65,6 @@ export async function updateAction(
           },
         },
         profile_image,
-        faculty_subject_areas: {
-          connect: subjectAreasToAdd.map((subjectArea) => ({
-            id: subjectArea,
-          })),
-          disconnect: subjectAreasToRemove.map((subjectArea) => ({
-            id: subjectArea.id,
-          })),
-        },
         subtopics: {
           connect: subtopicsToAdd.map((subtopicId) => ({
             id: subtopicId!,

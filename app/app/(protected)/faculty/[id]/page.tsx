@@ -117,14 +117,33 @@ export default async function Page({
           </div>
           <div className="flex-1 space-y-6">
             <div className="bg-background p-5 border rounded-md">
-              <h2 className="text-lg font-medium">Subject Areas</h2>
-              <ul className="list-disc pl-6 mt-2">
-                {data.faculty_subject_areas.map((subjectArea) => (
-                  <li key={subjectArea.id}>
-                    {subjectArea.subject_area.name} - {subjectArea.name}
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-lg font-medium mb-4">Topics & Subtopics</h2>
+              {data.subtopics && data.subtopics.length > 0 ? (
+                <div className="space-y-3">
+                  {data.subtopics.map((subtopic, index) => (
+                    <div
+                      key={subtopic.id}
+                      className="flex items-center gap-2 p-3 bg-muted/50 rounded-md"
+                    >
+                      <span className="text-sm font-medium text-muted-foreground">
+                        #{index + 1}
+                      </span>
+                      <div className="flex-1">
+                        <div className="font-medium">
+                          {subtopic.topic?.title || "Unknown Topic"}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {subtopic.title}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No topics and subtopics assigned yet.
+                </p>
+              )}
             </div>
             <div className="bg-background p-5 border rounded-md">
               <h2 className="text-lg font-medium">Title: {data.title}</h2>
