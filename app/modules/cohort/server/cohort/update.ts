@@ -44,7 +44,7 @@ export async function updateCohort({
 
     // Trigger KB process if cohort is active
     if (cohort.status === "ACTIVE") {
-      fetch(`${process.env.NEXTAUTH_URL}/api/knowledge-base`, {
+      fetch(`${process.env.APP_PRODUCTION_URL}/api/knowledge-base`, {
         method: "POST",
         body: JSON.stringify({ cohortId }),
         headers: {
