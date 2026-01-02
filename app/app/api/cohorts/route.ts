@@ -26,3 +26,13 @@ export async function GET(request: Request) {
     { status: 200, headers: { "Access-Control-Allow-Origin": allowedOrigin } }
   );
 }
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": allowedOrigin,
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    },
+  });
+}
