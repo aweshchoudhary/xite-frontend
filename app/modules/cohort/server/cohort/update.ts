@@ -21,11 +21,11 @@ export async function updateCohort({
   data: PrimaryDB.CohortUpdateInput;
 }): Promise<UpdateCohortResponse> {
   try {
-    const isUserHasCohortAccess = await checkUserOwnsCohort(cohortId);
+    // const isUserHasCohortAccess = await checkUserOwnsCohort(cohortId);
 
-    if (!isUserHasCohortAccess) {
-      throw new Error("You are not authorized to update this cohort");
-    }
+    // if (!isUserHasCohortAccess) {
+    //   throw new Error("You are not authorized to update this cohort");
+    // }
 
     const user = await getLoggedInUser();
 
