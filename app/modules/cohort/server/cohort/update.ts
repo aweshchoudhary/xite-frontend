@@ -21,11 +21,11 @@ export async function updateCohort({
   data: PrimaryDB.CohortUpdateInput;
 }): Promise<UpdateCohortResponse> {
   try {
-    const isUserHasCohortAccess = await checkUserOwnsCohort(cohortId);
+    // const isUserHasCohortAccess = await checkUserOwnsCohort(cohortId);
 
-    if (!isUserHasCohortAccess) {
-      throw new Error("You are not authorized to update this cohort");
-    }
+    // if (!isUserHasCohortAccess) {
+    //   throw new Error("You are not authorized to update this cohort");
+    // }
 
     const user = await getLoggedInUser();
 
@@ -44,7 +44,7 @@ export async function updateCohort({
 
     // Trigger KB process if cohort is active
     if (cohort.status === "ACTIVE") {
-      fetch(`${process.env.NEXTAUTH_URL}/api/knowledge-base`, {
+      fetch(`${process.env.APP_PRODUCTION_URL}/api/knowledge-base`, {
         method: "POST",
         body: JSON.stringify({ cohortId }),
         headers: {
