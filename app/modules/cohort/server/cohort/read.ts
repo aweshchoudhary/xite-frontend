@@ -202,13 +202,19 @@ export async function getAllByStatus(status: WorkStatus | "ALL") {
         status: status === "ALL" ? undefined : status,
       },
       include: {
-        program: true,
+        program: {
+          include: {
+            academic_partner: true,
+          },
+        },
         fees: {
           include: {
             currency: true,
           },
         },
+        microsite_section: true,
         owner: true,
+        media_section: true,
       },
     });
     if (!cohorts) {
