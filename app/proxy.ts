@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// This is the allowed origin for the proxy
 const ALLOWED_ORIGIN = "http://localhost:3000";
 
 export function proxy(request: NextRequest) {

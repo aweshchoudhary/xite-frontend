@@ -1,8 +1,6 @@
 import { getAllByStatus } from "@/modules/cohort/server/cohort/read";
 import { NextResponse } from "next/server";
 
-const allowedOrigin = "http://localhost:3000";
-
 export async function GET(request: Request) {
   const authHeader =
     request.headers.get("Authorization") ||
@@ -21,18 +19,5 @@ export async function GET(request: Request) {
   }
 
   const allActiveCohorts = await getAllByStatus("ACTIVE");
-  return NextResponse.json(
-    { data: allActiveCohorts },
-    { status: 200, headers: { "Access-Control-Allow-Origin": allowedOrigin } }
-  );
-}
-
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": allowedOrigin,
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    },
-  });
+  return NextResponse.json({ data: allActiveCohorts }, { status: 200 });
 }
