@@ -1,7 +1,6 @@
 "use client";
 import View from "./view";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import { Badge } from "@ui/badge";
 import { Image as ImageIcon } from "lucide-react";
 
 type Props = {
@@ -10,14 +9,10 @@ type Props = {
 };
 
 export default function Container({ data, cohortId }: Props) {
-  const isCompleted = data.media_section?.banner_image_url;
   return data.media_section ? (
     <div className="group relative bg-card rounded-xl transition-all duration-200">
       <div className="flex items-center justify-between mb-4">
         <h3>Banner Image</h3>
-        <Badge variant={isCompleted ? "success" : "destructive"}>
-          {isCompleted ? "Completed" : "Incomplete"}
-        </Badge>
       </div>
       <div>
         <View

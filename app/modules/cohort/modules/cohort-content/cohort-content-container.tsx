@@ -100,11 +100,18 @@ export const isSectionsCompleted = (data: GetCohort): boolean => {
     !!data.who_should_apply_section.title &&
     !!data.who_should_apply_section.description;
 
+  const isMediaSectionComplete =
+    !!data.media_section?.banner_image_url &&
+    !!data.media_section?.brochure_url &&
+    !!data.media_section?.university_banner_url &&
+    !!data.media_section?.university_logo_url;
+
   return (
     isOverviewCompleted &&
     isCurriculumSectionCompleted &&
     isBenefitsSectionCompleted &&
     isFacultySectionCompleted &&
-    isWhoShouldApplySectionCompleted
+    isWhoShouldApplySectionCompleted &&
+    isMediaSectionComplete
   );
 };

@@ -9,14 +9,10 @@ type Props = {
 };
 
 export default function Container({ data, cohortId }: Props) {
-  const isCompleted = data.media_section?.university_logo_url;
   return data.media_section ? (
     <div className="relative">
       <div className="flex items-center justify-between mb-4">
         <h3>University Logo</h3>
-        <Badge variant={isCompleted ? "success" : "destructive"}>
-          {isCompleted ? "Completed" : "Incomplete"}
-        </Badge>
       </div>
       <View
         data={data.media_section}

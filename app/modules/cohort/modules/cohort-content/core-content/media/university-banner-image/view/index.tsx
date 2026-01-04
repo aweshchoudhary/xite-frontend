@@ -36,7 +36,7 @@ export default function View({ data, cohortId, status }: Props) {
               />
             </div>
           )}
-          {status !== WorkStatus.ACTIVE && isUserHasCohortAccess && (
+          {isUserHasCohortAccess && (
             <div className="absolute bottom-3 right-0 flex items-center gap-2">
               <div
                 className={buttonVariants({ variant: "outline", size: "sm" })}

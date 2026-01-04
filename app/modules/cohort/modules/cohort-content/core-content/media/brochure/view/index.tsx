@@ -48,9 +48,9 @@ export default function View({ data, cohortId, status }: Props) {
               <File className="size-7 text-muted-foreground" strokeWidth={1} />
             </div>
           )}
-          {status !== WorkStatus.ACTIVE && isUserHasCohortAccess && (
+          {isUserHasCohortAccess && (
             <Label className="block" htmlFor="brochure">
-              <div className="absolute bottom-3 right-0 flex items-center gap-2">
+              <div className="flex mt-5 items-center gap-2">
                 <div
                   className={buttonVariants({ variant: "outline", size: "sm" })}
                 >
