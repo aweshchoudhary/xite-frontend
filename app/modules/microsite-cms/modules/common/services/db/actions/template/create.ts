@@ -2,7 +2,10 @@
 
 import { TemplateModal } from "@microsite-cms/common/services/db/models/template";
 import connectDB from "@microsite-cms/common/services/db/connection";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import {
+  ITemplate,
+  TemplateType,
+} from "@microsite-cms/common/services/db/types/interfaces";
 
 export async function createTemplate(data: ITemplate) {
   await connectDB();
@@ -13,7 +16,8 @@ export async function createTemplate(data: ITemplate) {
 
 export async function duplicateTemplate(
   id: string,
-  cohortId?: string
+  cohortId?: string,
+  type?: TemplateType
 ) {
   await connectDB();
   const template = await TemplateModal.findById(id);
@@ -25,6 +29,7 @@ export async function duplicateTemplate(
     name: `${template.name} (Copy)`,
     cohortId: cohortId ?? template.cohortId,
     status: "draft",
+    type: type ?? template.type,
     globalSections: template.globalSections,
     pages: template.pages,
   });

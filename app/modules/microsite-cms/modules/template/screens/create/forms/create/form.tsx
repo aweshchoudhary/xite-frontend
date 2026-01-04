@@ -78,7 +78,8 @@ export default function CreateForm() {
       async () => {
         const duplicatedTemplate = await duplicateTemplateAction(
           selectedTemplateId,
-          cohort_key ?? undefined
+          cohort_key ?? undefined,
+          form.getValues("type")
         );
         if (duplicatedTemplate._id) {
           router.push(`/templates/${duplicatedTemplate._id}`);
