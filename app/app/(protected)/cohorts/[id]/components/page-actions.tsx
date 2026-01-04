@@ -6,10 +6,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@ui/dropdown-menu";
-import { Link, Pencil, TrashIcon, ChevronDownIcon } from "lucide-react";
+import { Pencil, TrashIcon, ChevronDownIcon } from "lucide-react";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
-import { checkUserOwnsCohort } from "@/modules/user/utils";
+import Link from "next/link";
 
 export const HeaderActions = async ({
   data,
@@ -18,10 +18,8 @@ export const HeaderActions = async ({
   data: GetCohort;
   id: string;
 }) => {
-  const updatePermission = await checkPermission("Program", "update");
-  const deletePermission = await checkPermission("Program", "delete");
-
-  const isUserHasCohortAccess = await checkUserOwnsCohort(id);
+  const updatePermission = await checkPermission("Cohort", "update");
+  const deletePermission = await checkPermission("Cohort", "delete");
 
   return (
     <>
@@ -33,14 +31,21 @@ export const HeaderActions = async ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit" align="end">
-          <DropdownMenuItem asChild>
-            <Link href={`/cohorts/${id}/edit`}>
-              <Pencil className="size-3.5" /> Edit
-            </Link>
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem className="text-destructive">
+          {updatePermission && (
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/cohorts/${id}/edit`}
+                className="flex items-center gap-2"
+              >
+                <Pencil className="size-3.5" /> Edit
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {deletePermission && (
+            <DropdownMenuItem className="text-destructive">
               <TrashIcon className="size-3.5 text-inherit" /> Delete
-            </DropdownMenuItem> */}
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

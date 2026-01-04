@@ -39,68 +39,41 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
     if (!location) errors.push("Cohort: Location");
     if (!fees || fees.length === 0) errors.push("Cohort: Fees");
 
-    const {
-      certification,
-      experts,
-      statistics,
-      testimonials,
-      media,
-      faculty,
-      microsite,
-      overview,
-    } = isSectionsCompleted(cohort);
+    const isCompleted = isSectionsCompleted(cohort);
 
-    if (!overview) errors.push("Overview Section");
-    if (!certification) errors.push("Certification Section");
-    if (!experts) errors.push("Experts Section");
-    if (!statistics) errors.push("Statistics Section");
-    if (!testimonials) errors.push("Testimonials Section");
-    if (!media) errors.push("Media Section");
-    if (!faculty) errors.push("Faculty Section");
-    if (!microsite) errors.push("Microsite Section");
+    if (!isCompleted) errors.push("Core Content Section");
 
     return errors;
   }, [cohort]);
 
   useEffect(() => {
-    if (status === cohort.status) return;
+    const fn = async () => {
+      if (status === cohort.status) return;
 
-    if (status == WorkStatus.PLANNING) {
-      const dcs = cohort.design_curriculum_section;
-      const isDesignCurriculumCompleted = dcs?.title && dcs?.items.length > 0;
-
-      if (!isDesignCurriculumCompleted) {
-        toast.error("Curriculum Section is not complete.");
-        setStatus(cohort.status);
-        return;
-      }
-    }
-
-    if (status !== WorkStatus.DRAFT && status !== WorkStatus.PLANNING) {
-      const errors = validateCohort();
-      if (errors.length > 0) {
-        toast.error(
-          "Cohort Details are not complete. Please complete the following sections:",
-          {
+      if (status === WorkStatus.ACTIVE) {
+        const errors = validateCohort();
+        if (errors.length > 0) {
+          toast.error("Data incomplete.", {
             description: (
-              <ul className="list-disc text-base list-inside">
+              <ul className="list-disc text-foreground text-base list-inside">
                 {errors.map((err, i) => (
                   <li key={i}>{err}</li>
                 ))}
               </ul>
             ),
             classNames: {
-              title: "text-base font-semibold",
+              title: "text-base font-semibold text-destructive",
             },
-          }
-        );
-        setStatus(cohort.status);
-        return;
+          });
+          setStatus(cohort.status);
+          return;
+        }
       }
-    }
 
-    updateCohortStatusAction(cohort.id, status);
-    toast.success(`Status updated to ${enumDisplay(status)}`);
+      updateCohortStatusAction(cohort.id, status);
+      toast.success(`Status updated to ${enumDisplay(status)}`);
+    };
+    fn();
   }, [status, cohort, validateCohort]);
 
   return (
