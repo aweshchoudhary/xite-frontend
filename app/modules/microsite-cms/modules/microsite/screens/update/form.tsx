@@ -42,10 +42,7 @@ export default function UpdateForm({
 }: UpdateFormProps) {
   const router = useRouter();
 
-  const requiredFields = useMemo(
-    () => getRequiredFields(MicrositeSchema),
-    []
-  );
+  const requiredFields = useMemo(() => getRequiredFields(MicrositeSchema), []);
 
   const form = useForm<MicrositeFormInput>({
     resolver: zodResolver(MicrositeSchema),
@@ -148,8 +145,6 @@ export default function UpdateForm({
             });
           });
         }
-
-        console.log(fields);
 
         await updateMicrosite({
           micrositeId: microsite._id,

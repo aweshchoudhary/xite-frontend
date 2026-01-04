@@ -57,10 +57,17 @@ export async function updateMicrosite({
   microsite.pages = data.pages;
 
   if (data.branding && microsite.branding) {
-    data.branding = {
+    microsite.branding = {
       ...microsite.branding,
-      logo: data.branding.logo,
-      favicon: data.branding.favicon,
+      logo:
+        typeof data.branding.logo === "string"
+          ? data.branding.logo
+          : microsite.branding.logo,
+      favicon:
+        typeof data.branding.favicon === "string"
+          ? data.branding.favicon
+          : microsite.branding.favicon,
+      colors: data.branding.colors as any,
     };
   }
 
