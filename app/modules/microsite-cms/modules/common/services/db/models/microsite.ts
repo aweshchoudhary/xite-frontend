@@ -38,6 +38,8 @@ const SectionValueSchema = new mongoose.Schema(
   {
     key: { type: String, required: true },
     branding: { type: SectionBrandingSchema, default: {} },
+    title: { type: String },
+    visible: { type: Boolean, default: true },
     blocks: { type: [BlockValueSchema], default: [] },
   },
   { _id: false }

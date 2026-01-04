@@ -259,7 +259,7 @@ export function SimpleEditor({
   }, [isMobile, mobileView]);
 
   return (
-    <div className="simple-editor-wrapper w-auto! h-auto! max-h-[50vh]!">
+    <div className="simple-editor-wrapper w-auto! border h-auto! max-h-[50vh]!">
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           ref={toolbarRef}
@@ -270,6 +270,7 @@ export function SimpleEditor({
                 }
               : {}),
           }}
+          className="bg-gray-50!"
         >
           {mobileView === "main" ? (
             <MainToolbarContent

@@ -16,6 +16,8 @@ export const MicrositeBlockValue = z.object({
 });
 
 export const MicrositeSectionValue = z.object({
+  title: z.string().optional(),
+  visible: z.boolean().optional(),
   key: z.string(),
   blocks: z.array(MicrositeBlockValue),
 });

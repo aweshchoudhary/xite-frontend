@@ -10,6 +10,7 @@ import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/mi
 import FormBlock from "./form-block";
 import { ITemplateSection } from "@microsite-cms/common/services/db/types/interfaces";
 import { Layers, Lock } from "lucide-react";
+import { Checkbox } from "@/modules/common/components/ui/checkbox";
 
 type FieldArrayName = `pages.${number}.sections` | `globalSections`;
 
@@ -95,7 +96,27 @@ const FormSectionItem = ({
         <Layers className="size-4 text-muted-foreground" />
       </div>
 
-      <FieldGroup>
+      <FieldGroup className="grid grid-cols-3 gap-5">
+        <Controller
+          name={`${fieldArrayName}.${index}.title`}
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor={`section-key-${index}`}
+                className="flex items-center gap-2"
+              >
+                Display Title
+              </FieldLabel>
+              <Input
+                {...field}
+                id={`section-title-${index}`}
+                aria-invalid={fieldState.invalid}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
         <Controller
           name={`${fieldArrayName}.${index}.key`}
           control={form.control}
@@ -115,6 +136,34 @@ const FormSectionItem = ({
                 readOnly
                 className="bg-muted"
               />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name={`${fieldArrayName}.${index}.visible`}
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor={`section-visible-${index}`}
+                className="flex items-center gap-2"
+              >
+                Visible
+              </FieldLabel>
+              <div>
+                <Checkbox
+                  value={field.value ? "true" : "false"}
+                  id={`section-visible-${index}`}
+                  aria-invalid={fieldState.invalid}
+                  checked={!!field.value}
+                  onCheckedChange={(checked) => {
+                    const isTrue = checked === true;
+                    field.onChange(isTrue);
+                  }}
+                />
+                <FieldError errors={[fieldState.error]} />
+              </div>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
