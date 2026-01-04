@@ -200,7 +200,7 @@ export default function CreateForm() {
               <TemplateSelectList
                 onChange={setSelectedTemplateId}
                 defaultValue={selectedTemplateId}
-                type={form.getValues("type")}
+                // type={form.getValues("type")}
               />
             </Field>
           </FieldGroup>
