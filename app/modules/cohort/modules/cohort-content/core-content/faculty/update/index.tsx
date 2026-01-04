@@ -4,7 +4,6 @@ import Title from "../title";
 import { Button } from "@ui/button";
 import FacultySelectPopover from "./faculty-select-popover";
 import { SortableGrid } from "./draggable-wrapper";
-import UpdateMicrositeAdditionalFieldsForm from "./microsite-additional-fields-form/form";
 
 type Props = {
   cohortId: string;
@@ -31,7 +30,7 @@ type Props = {
   saveForm: boolean;
 };
 
-export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
+export default function Update({ data }: Props) {
   if (!data) return null;
   return (
     <div className="bg-card">
@@ -78,22 +77,6 @@ export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
           </FacultySelectPopover>
         </div>
       )}
-
-      <br />
-      <br />
-      <hr />
-      <br />
-
-      <UpdateMicrositeAdditionalFieldsForm
-        defaultValues={{
-          bottom_description: data?.bottom_description,
-          top_description: data?.top_description,
-          id: data?.id,
-        }}
-        saveForm={saveForm}
-        onSuccess={onSuccess}
-        onCancel={onCancel}
-      />
     </div>
   );
 }

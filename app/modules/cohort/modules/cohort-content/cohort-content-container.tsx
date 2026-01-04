@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
 import { Badge } from "@ui/badge";
-import CohortOverview from "./overview";
+import CohortOverview from "./core-content";
 import TemplatesContainer from "./microsite-cms/templates/container";
 import { useSearchParams } from "next/navigation";
 

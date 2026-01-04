@@ -5,7 +5,7 @@ import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
-import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
+import MicrositeAdditionalFields from "../../../../common/components/microsite-additional-fields-update";
 import { useEffect, useCallback } from "react";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {

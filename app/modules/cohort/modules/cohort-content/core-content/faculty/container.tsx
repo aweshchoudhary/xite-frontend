@@ -15,16 +15,17 @@ type ContainerProps = {
 export function Container({ data }: ContainerProps) {
   const [saveForm, setSaveForm] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  if (!data || !data?.faculty_section) return null;
   const isCompleted =
     data?.faculty_section?.title && data?.faculty_section?.items.length > 0;
 
+  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id || "");
+
+  if (!data || !data?.faculty_section) return null;
+
   if (!data) return null;
 
-  const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
-
   return (
-    <div className="group relative border bg-background p-5 rounded-xl transition-all duration-200">
+    <div>
       <div className="flex items-center justify-between mb-5">
         <Badge variant={isCompleted ? "success" : "destructive"}>
           {isCompleted ? "Completed" : "Incomplete"}

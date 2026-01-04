@@ -2,7 +2,7 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import FacultyCard from "../faculty-card";
 import Link from "next/link";
-import MicrositeAdditionalFieldsView from "../../common/components/microsite-additional-fields-view";
+import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 export type Props = {
   data: PrimaryDB.CohortFacultySectionGetPayload<{
@@ -35,11 +35,11 @@ export default function View({ data }: Props) {
       </div>
 
       {data?.items && data.items.length > 0 ? (
-        <div className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6">
           {data.items
             .sort((a, b) => a.position - b.position)
             .map(({ faculty: item }) => (
-              <Link href={`/faculty/${item.id}`}>
+              <Link key={item.id} href={`/faculty/${item.id}`}>
                 <FacultyCard
                   profile_image={item.profile_image || ""}
                   name={item.name}
@@ -57,11 +57,6 @@ export default function View({ data }: Props) {
           </p>
         </div>
       )}
-      <br />
-      <MicrositeAdditionalFieldsView
-        top_desc={data?.top_description || ""}
-        bottom_desc={data?.bottom_description || ""}
-      />
     </div>
   );
 }

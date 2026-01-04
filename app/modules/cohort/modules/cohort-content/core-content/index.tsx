@@ -3,6 +3,7 @@ import { Container as OverviewContainer } from "./overview/container";
 import { Container as CurriculumContainer } from "./curriculum/container";
 import { Container as BenefitsContainer } from "./benefits/container";
 import { Container as WhoShouldApplyContainer } from "./who-should-apply/container";
+import { Container as FacultyContainer } from "./faculty/container";
 
 type Props = {
   data: GetCohort;
@@ -18,10 +19,11 @@ export default function CohortDetails({ data }: Props) {
         <div className="p-6 border rounded-lg bg-background">
           <CurriculumContainer data={data} />
         </div>
-      </div>
-      <div className="space-y-6">
         <div className="p-6 border rounded-lg bg-background">
           <BenefitsContainer data={data} />
+        </div>
+        <div className="p-6 border rounded-lg bg-background">
+          <FacultyContainer data={data} />
         </div>
         <div className="p-6 border rounded-lg bg-background">
           <WhoShouldApplyContainer data={data} />
