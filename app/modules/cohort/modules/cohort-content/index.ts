@@ -9,4 +9,4 @@ export { Container as CertificationContainer } from "./certification/container";
 export { Container as CohortStatisticsContainer } from "./cohort-statistics/container";
 export { Container as MicrositeContainer } from "./microsite/container";
 export { Container as BrandingContainer } from "./branding/container";
-export { default as MediaContainer } from "./core-content/media/container";
+export { default as CohortContentMedia } from "./core-content/media";

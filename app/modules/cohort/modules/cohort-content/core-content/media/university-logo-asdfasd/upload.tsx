@@ -4,14 +4,14 @@ import { Input } from "@ui/input";
 import { updateUniversityLogoAction } from "./server/action";
 import { toast } from "sonner";
 
-export default function BannerUpdate({
+export default function UniversityLogoUpdate({
   cohortId,
   fieldName,
 }: {
   cohortId: string;
   fieldName?: string;
 }) {
-  const handleChangeLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeBanner = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const file = e.target.files?.[0];
       if (file) {
@@ -21,9 +21,9 @@ export default function BannerUpdate({
         }
 
         toast.promise(updateUniversityLogoAction(cohortId, file), {
-          loading: "Updating logo...",
-          success: "Logo updated successfully",
-          error: "Failed to update logo",
+          loading: "Updating university logo...",
+          success: "University logo updated successfully",
+          error: "Failed to update university logo",
         });
       }
     } catch (error) {
@@ -35,9 +35,9 @@ export default function BannerUpdate({
     <div>
       <Input
         className="sr-only"
-        id={fieldName || "university-logo-image"}
+        id={fieldName || "banner-image"}
         type="file"
-        onChange={handleChangeLogo}
+        onChange={handleChangeBanner}
         accept="image/*"
       />
     </div>
