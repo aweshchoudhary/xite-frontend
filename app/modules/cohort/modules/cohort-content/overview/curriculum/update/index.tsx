@@ -18,11 +18,9 @@ import TextEditor from "@/modules/common/components/global/rich-editor/text-edit
 import { Plus } from "lucide-react";
 import { Trash } from "lucide-react";
 import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError, FieldLabel } from "@ui/field";
 import TopicSelectList from "@/modules/cohort/components/topic-select-list";
 import SubTopicSelectList from "@/modules/cohort/components/subtopic-select-list";
-import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
-import { useMemo } from "react";
 
 type CreateFormProps = FormBaseProps<UpdateSchema>;
 
@@ -36,18 +34,16 @@ export default function CreateForm({
     defaultValues: defaultValues as UpdateSchema,
   });
 
-  const requiredFields = useMemo(
-    () => getRequiredFields(updateSchema),
-    []
-  );
-
   const handleSubmit = async (data: UpdateSchema) => {
     try {
       await updateAction({ data });
       toast.success(`Curriculum updated`);
       onSuccess?.();
     } catch (error) {
-      toast.error("Error updating curriculum section");
+      toast.error("Error updating curriculum section", {
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
     }
   };
 
@@ -121,7 +117,7 @@ type ItemProps = {
   items: UseFieldArrayReturn<UpdateSchema, "items", "id">;
 };
 
-const Item = ({ form, field, index, items }: ItemProps) => {
+const Item = ({ form, index, items }: ItemProps) => {
   const curriculumObjectives = useFieldArray({
     control: form.control,
     name: `items.${index}.objectives`,
@@ -285,7 +281,7 @@ const Item = ({ form, field, index, items }: ItemProps) => {
 
 type SessionProps = {
   form: UseFormReturn<UpdateSchema>;
-  field: any; // FieldArrayWithId for sessions
+  field: any;
   itemIndex: number;
   sessionIndex: number;
   sessionItems: any;
@@ -293,7 +289,6 @@ type SessionProps = {
 
 const Session = ({
   form,
-  field,
   itemIndex,
   sessionIndex,
   sessionItems,

@@ -9,8 +9,7 @@ import { MODULE_NAME } from "@/modules/academic-partner/contants";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
-import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError } from "@ui/field";
 
 type CreateFormProps = FormBaseProps<UpdateSchema>;
 
@@ -84,11 +83,6 @@ export default function CreateForm({
             )}
           />
         </div>
-        <MicrositeAdditionalFields
-          form={form}
-          top_desc_field_name="top_description"
-          bottom_desc_field_name="bottom_description"
-        />
       </div>
 
       <div className="flex justify-end gap-2">

@@ -24,7 +24,6 @@ export default function DataTable({
         <TableRow>
           <TableHead>Name</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Last Modified</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -42,7 +41,6 @@ export default function DataTable({
             <TableCell>
               <Badge>Active</Badge>
             </TableCell>
-            <TableCell>Now</TableCell>
             <TableCell>
               <DataTableActions />
             </TableCell>

@@ -2,7 +2,6 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { CheckIcon, Gift } from "lucide-react";
 import Image from "next/image";
-import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 type Props = {
   data?: PrimaryDB.CohortBenefitsSectionGetPayload<{
@@ -59,11 +58,6 @@ export default function CohortContentDetailsOverviewView({ data }: Props) {
           </p>
         </div>
       )}
-
-      <MicrositeAdditionalFieldsView
-        top_desc={data?.top_description || ""}
-        bottom_desc={data?.bottom_description || ""}
-      />
     </div>
   );
 }

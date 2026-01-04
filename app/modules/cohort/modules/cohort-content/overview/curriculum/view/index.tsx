@@ -6,7 +6,6 @@ import {
   AccordionTrigger,
 } from "@ui/accordion";
 import { BookOpen } from "lucide-react";
-import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 type Props = {
   data?: PrimaryDB.DesignCohortCurriculumSectionGetPayload<{
@@ -141,10 +140,6 @@ export default function CohortContentDetailsOverviewView({ data }: Props) {
           </p>
         </div>
       )}
-      <MicrositeAdditionalFieldsView
-        top_desc={data?.top_description || ""}
-        bottom_desc={data?.bottom_description || ""}
-      />
     </div>
   );
 }

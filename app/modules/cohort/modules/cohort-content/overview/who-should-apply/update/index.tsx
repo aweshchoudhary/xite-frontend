@@ -9,10 +9,9 @@ import { MODULE_NAME } from "@/modules/academic-partner/contants";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
-import MicrositeAdditionalFields from "@/modules/cohort/modules/cohort-content/common/components/microsite-additional-fields-update";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { Field, FieldError } from "@ui/field";
 
-interface CreateFormProps extends FormBaseProps<UpdateSchema> {}
+type CreateFormProps = FormBaseProps<UpdateSchema>;
 
 export default function CreateForm({
   defaultValues,
@@ -30,7 +29,10 @@ export default function CreateForm({
       toast.success(`${MODULE_NAME} updated`);
       onSuccess?.();
     } catch (error) {
-      toast.error("Error updating description section");
+      toast.error("Error updating description section", {
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
+      });
     }
   };
 
@@ -75,12 +77,6 @@ export default function CreateForm({
           />
         </div>
       </div>
-
-      <MicrositeAdditionalFields
-        form={form}
-        top_desc_field_name="top_description"
-        bottom_desc_field_name="bottom_description"
-      />
 
       <footer className="flex justify-end gap-2">
         <Button variant="outline" type="button" onClick={handleCancel}>

@@ -30,11 +30,13 @@ const PageBreadcrumb = () => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/cms?tab=microsites">Microsites</BreadcrumbLink>
+          <BreadcrumbLink href="/cms?tab=microsites">
+            External Websites
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>Create External Microsite</BreadcrumbPage>
+          <BreadcrumbPage>Create External Website</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

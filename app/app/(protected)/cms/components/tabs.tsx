@@ -42,7 +42,7 @@ export default function TabsContainer({ tab = "templates" }: { tab: string }) {
               className="px-5! py-2! data-active:border-primary! text-base data-active:border-b-2 border-0 shadow-none! w-fit! h-fit!"
               value="microsites"
             >
-              External Microsites
+              External Websites
             </TabsTrigger>
           </TabsList>
           <div className="shrink-0">
@@ -70,7 +70,7 @@ export default function TabsContainer({ tab = "templates" }: { tab: string }) {
                 className={cn(buttonVariants({ variant: "outline" }))}
                 href="/microsites/new?type=generic"
               >
-                <Plus /> External Microsite
+                <Plus /> External Website
               </Link>
             )}
           </div>

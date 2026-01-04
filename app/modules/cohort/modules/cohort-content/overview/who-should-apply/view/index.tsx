@@ -1,5 +1,4 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 type Props = {
   data?: PrimaryDB.CohortWhoShouldApplySectionGetPayload<object> | null;
@@ -20,11 +19,6 @@ export default function CohortContentDetailsOverviewView({ data }: Props) {
             data?.description ||
             "Click on the Edit button to start adding Who Should Apply",
         }}
-      />
-
-      <MicrositeAdditionalFieldsView
-        top_desc={data?.top_description || ""}
-        bottom_desc={data?.bottom_description || ""}
       />
     </div>
   );
