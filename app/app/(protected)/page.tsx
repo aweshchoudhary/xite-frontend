@@ -69,6 +69,13 @@ const AllPrograms = async () => {
       </div>
     );
 
+  // Sort programs by updated_at (most recently updated first)
+  const sortedPrograms = [...programs.data].sort((a, b) => {
+    const dateA = a.updated_at?.getTime() || 0;
+    const dateB = b.updated_at?.getTime() || 0;
+    return dateB - dateA; // Descending order
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -84,7 +91,7 @@ const AllPrograms = async () => {
       <Separator className="my-3" />
 
       <div className="space-y-3">
-        {programs.data?.slice(0, 4).map((program) => (
+        {sortedPrograms.slice(0, 4).map((program) => (
           <ViewCard key={program.id} program={program} />
         ))}
       </div>
@@ -106,6 +113,14 @@ const AllCohorts = async () => {
         </div>
       </div>
     );
+
+  // Sort cohorts by start_date (earliest first)
+  const sortedCohorts = [...cohorts].sort((a, b) => {
+    const dateA = a.start_date?.getTime() || 0;
+    const dateB = b.start_date?.getTime() || 0;
+    return dateA - dateB; // Ascending order
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -121,7 +136,7 @@ const AllCohorts = async () => {
       <Separator className="my-3" />
 
       <div className="space-y-3">
-        {cohorts.slice(0, 4).map((cohort) => (
+        {sortedCohorts.slice(0, 4).map((cohort) => (
           <ViewCohortCard key={cohort.id} cohort={cohort} />
         ))}
       </div>
