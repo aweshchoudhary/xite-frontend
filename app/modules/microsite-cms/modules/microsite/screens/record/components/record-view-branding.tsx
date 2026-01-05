@@ -1,15 +1,23 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
+import {
+  InputGroup,
+  InputGroupInput,
+  InputGroupAddon,
+  InputGroupText,
+} from "@ui/input-group";
 import { IMicrositeBranding } from "@microsite-cms/common/services/db/types/interfaces";
-import { Palette, Image as ImageIcon, Type } from "lucide-react";
+import { Palette, Image as ImageIcon, Type, Globe } from "lucide-react";
 import Image from "next/image";
 
 interface RecordViewBrandingProps {
   branding?: IMicrositeBranding;
+  domain?: string;
 }
 
 export default function RecordViewBranding({
   branding,
+  domain,
 }: RecordViewBrandingProps) {
   if (!branding) {
     return (
@@ -29,6 +37,38 @@ export default function RecordViewBranding({
       </header>
 
       <div className="w-full relative p-8 space-y-6 bg-background shadow-xs rounded-xl border border-border/50">
+        {/* Domain */}
+        {domain && (
+          <div className="space-y-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Globe className="size-4 text-muted-foreground" />
+              <h3 className="text-sm font-semibold">Domain</h3>
+            </div>
+            <div className="grid grid-cols-1 gap-5">
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="domain">Domain</FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      id="domain"
+                      value={
+                        domain && typeof domain === "string"
+                          ? domain.replace(/\.xedinstitute\.org$/, "")
+                          : domain || ""
+                      }
+                      readOnly
+                      className="bg-muted"
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupText>xedinstitute.org</InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </Field>
+              </FieldGroup>
+            </div>
+          </div>
+        )}
+
         {/* Logo and Favicon */}
         <div className="space-y-5">
           <div className="flex items-center gap-2 mb-4">

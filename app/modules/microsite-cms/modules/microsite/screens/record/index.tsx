@@ -125,7 +125,10 @@ export default function RecordView({
           </TabsContent>
           <TabsContent value="branding">
             <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
-              <RecordViewBranding branding={microsite.branding} />
+              <RecordViewBranding
+                branding={microsite.branding}
+                domain={microsite.domain}
+              />
             </div>
           </TabsContent>
         </Tabs>
