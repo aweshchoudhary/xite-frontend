@@ -10,6 +10,8 @@ export const baseSchema = z.object({
   name: z.string().min(1).max(255).nullable().optional(),
   start_date: z.date().nullable().optional(),
   end_date: z.date().nullable().optional(),
+  mkt_start_date: z.date().nullable().optional(),
+  mkt_end_date: z.date().nullable().optional(),
   format: z.string(),
   duration: z.string(),
   location: z.string(),

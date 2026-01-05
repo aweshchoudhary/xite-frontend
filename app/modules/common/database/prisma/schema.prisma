@@ -95,6 +95,8 @@ model Cohort {
   description                  String?
   start_date                   DateTime?
   end_date                     DateTime?
+  mkt_start_date               DateTime?
+  mkt_end_date                 DateTime?
   format                       String?
   duration                     String?
   location                     String?

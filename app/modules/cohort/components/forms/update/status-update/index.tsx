@@ -24,6 +24,8 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
       fees,
       start_date,
       end_date,
+      mkt_start_date,
+      mkt_end_date,
       format,
       duration,
       location,
@@ -34,6 +36,8 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
     if (max_cohort_size === undefined) errors.push("Cohort: Max Cohort Size");
     if (!start_date) errors.push("Cohort: Start Date");
     if (!end_date) errors.push("Cohort: End Date");
+    if (!mkt_start_date) errors.push("Cohort: Marketing Start Date");
+    if (!mkt_end_date) errors.push("Cohort: Marketing End Date");
     if (!format) errors.push("Cohort: Format");
     if (!duration) errors.push("Cohort: Duration");
     if (!location) errors.push("Cohort: Location");
