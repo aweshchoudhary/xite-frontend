@@ -275,6 +275,26 @@ export default function UpdateForm({
             <div>
               <Controller
                 control={form.control}
+                name="jira_id"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Jira ID (Optional)</FieldLabel>
+                    <Input
+                      type="text"
+                      placeholder="Jira ID"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+            <div>
+              <Controller
+                control={form.control}
                 name="mkt_start_date"
                 render={({ fieldState }) => (
                   <Field>

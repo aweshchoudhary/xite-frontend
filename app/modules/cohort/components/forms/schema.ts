@@ -19,6 +19,7 @@ export const baseSchema = z.object({
   program_id: z.string(),
   fees: z.array(feeSchema),
   max_cohort_size: z.number().min(0).default(0),
+  jira_id: z.string().nullable().optional(),
 });
 
 export const createSchema = baseSchema;

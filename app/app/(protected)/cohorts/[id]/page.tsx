@@ -143,6 +143,12 @@ export default async function Page({
                   .join(", ") || "N/A"}
               </div>
             </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                Jira ID
+              </div>
+              <div>{data.jira_id || "N/A"}</div>
+            </div>
           </div>
         </div>
         <div className="flex-1 flex items-start lg:gap-10 gap-5">

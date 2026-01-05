@@ -53,6 +53,7 @@ export default async function EditCohortPage({ params }: EditProgramPageProps) {
             format: cohort.format ?? "",
             duration: cohort.duration ?? "",
             location: cohort.location ?? "",
+            jira_id: cohort.jira_id ?? "",
           }}
           successRedirectPath={`${MODULE_PATH}/${cohort.id}`}
           cancelRedirectPath={`${MODULE_PATH}/${cohort.id}`}

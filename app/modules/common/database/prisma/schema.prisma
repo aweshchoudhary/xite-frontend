@@ -141,6 +141,7 @@ model Cohort {
   updated_by                   User?                          @relation("updated_by", fields: [updated_by_id], references: [id])
   updated_by_id                String?
   checklist_file_url           String?
+  jira_id                      String?
 
   @@unique([cohort_key, id])
 }
