@@ -39,6 +39,24 @@ export const columns: ColumnDef<GetCohortForTable>[] = [
     enableHiding: true,
   },
   {
+    accessorKey: "program.enterprise.name",
+    header: ({ column }) => {
+      return <ColumnSortBtn column={column} title="Enterprise" />;
+    },
+    cell: ({ row }) =>
+      row.original.program.enterprise_id ? (
+        <Link
+          className="hover:underline"
+          href={`/enterprises/${row.original.program.enterprise?.id}`}
+        >
+          {row.original.program.enterprise?.name}
+        </Link>
+      ) : (
+        "N/A"
+      ),
+    enableHiding: true,
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return <ColumnSortBtn column={column} title="Status" />;
