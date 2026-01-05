@@ -16,9 +16,15 @@ import Link from "next/link";
 import { PlusSignIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/cohort/contants";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use searchParams and auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "Cohorts",
+  description: "Manage and view all cohorts on Xite Platform. Track cohort status, assignments, and progress.",
+});
 
 interface PageProps {
   searchParams: Promise<{

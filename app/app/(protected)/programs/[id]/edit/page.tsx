@@ -4,6 +4,8 @@ import { getOne } from "@/modules/program/server/read";
 import { notFound } from "next/navigation";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 interface EditPageProps {
   params: Promise<{
@@ -13,6 +15,27 @@ interface EditPageProps {
 
 // Force dynamic rendering since we use auth
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data } = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Edit Program",
+      description: "Edit program on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${data.name}`,
+    description: `Edit program details for ${data.name} on Xite Platform`,
+  });
+}
 export default async function EditPage({ params }: EditPageProps) {
   const permission = await checkPermission("Program", "update");
   const { id } = await params;

@@ -4,6 +4,8 @@ import { getCohort } from "@/modules/cohort/server/cohort/read";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { notFound } from "next/navigation";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 interface EditProgramPageProps {
   params: Promise<{
@@ -13,6 +15,27 @@ interface EditProgramPageProps {
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const cohort = await getCohort({ id });
+
+  if (!cohort) {
+    return generateSEOMetadata({
+      title: "Edit Cohort",
+      description: "Edit cohort on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${cohort.name || cohort.cohort_key || "Cohort"}`,
+    description: `Edit cohort details for ${cohort.name || cohort.cohort_key || "this cohort"} on Xite Platform`,
+  });
+}
 
 export default async function EditCohortPage({ params }: EditProgramPageProps) {
   const permission = await checkPermission("Cohort", "update");

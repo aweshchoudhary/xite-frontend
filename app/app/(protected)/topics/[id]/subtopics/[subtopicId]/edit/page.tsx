@@ -2,6 +2,38 @@ import UpdateForm from "@/modules/topic/components/forms/subtopic/update/form";
 import { MODULE_PATH } from "@/modules/topic/contants";
 import { notFound } from "next/navigation";
 import { getOne } from "@/modules/topic/server/read";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string; subtopicId: string }>;
+}): Promise<Metadata> {
+  const { id, subtopicId } = await params;
+  const { data: topic } = await getOne({ id });
+
+  if (!topic) {
+    return generateSEOMetadata({
+      title: "Edit Sub Topic",
+      description: "Edit subtopic on Xite Platform",
+    });
+  }
+
+  const subtopic = topic.sub_topics.find((st) => st.id === subtopicId);
+
+  if (!subtopic) {
+    return generateSEOMetadata({
+      title: "Edit Sub Topic",
+      description: "Edit subtopic on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${subtopic.title}`,
+    description: `Edit subtopic details for ${subtopic.title} under ${topic.title} on Xite Platform`,
+  });
+}
 
 export default async function EditSubTopicPage({
   params,

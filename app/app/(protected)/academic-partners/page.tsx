@@ -17,9 +17,15 @@ import {
   MODULE_NAME,
   MODULE_NAME_PLURAL,
 } from "@/modules/academic-partner/contants";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "Academic Partners",
+  description: "Manage and view all academic partners on Xite Platform. Track partnerships and collaborations with academic institutions.",
+});
 
 export default async function Page() {
   const permission = await checkPermission("AcademicPartners", "read");

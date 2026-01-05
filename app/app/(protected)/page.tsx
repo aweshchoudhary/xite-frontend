@@ -7,9 +7,15 @@ import { getAll as getAllProgramsByStatus } from "@/modules/program/server/read"
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Separator } from "@ui/separator";
 import ViewCard from "@/modules/program/components/view/view-card";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "Dashboard",
+  description: "View and manage your programs and cohorts from the Xite Platform dashboard",
+});
 
 export default async function Home() {
   return (

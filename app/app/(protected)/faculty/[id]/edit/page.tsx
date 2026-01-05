@@ -2,6 +2,29 @@ import UpdateForm from "@/modules/faculty/components/forms/update/form";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { getOne } from "@/modules/faculty/server/read";
 import { notFound } from "next/navigation";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Edit Faculty",
+      description: "Edit faculty member on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${data.name}`,
+    description: `Edit faculty details for ${data.name} on Xite Platform`,
+  });
+}
 
 export default async function EditPage({
   params,

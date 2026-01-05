@@ -2,6 +2,13 @@ import LoginForm from "@/modules/common/authentication/components/forms/login/fo
 import { getUser } from "@/modules/common/authentication/firebase/action";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+
+export const metadata = generateSEOMetadata({
+  title: "Login",
+  description: "Sign in to your Xite Platform account to access your learning management dashboard",
+});
+
 export default async function Login() {
   const session = await getUser();
   if (session) redirect("/");

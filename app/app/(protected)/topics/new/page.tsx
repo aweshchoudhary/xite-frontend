@@ -2,9 +2,15 @@ import CreateForm from "@/modules/topic/components/forms/create/form";
 import { MODULE_PATH } from "@/modules/topic/contants";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "New Topic",
+  description: "Create a new topic on Xite Platform. Add topic details, description, and organize your learning content.",
+});
 
 export default async function NewTopicPage() {
   const permission = await checkPermission("Topic", "write");

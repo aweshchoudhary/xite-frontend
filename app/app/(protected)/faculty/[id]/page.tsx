@@ -31,9 +31,34 @@ import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Faculty Not Found",
+      description: "The requested faculty member could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: data.name,
+    description: `View faculty details for ${data.name} on Xite Platform. ${data.academic_partner ? `Academic Partner: ${data.academic_partner.name}.` : ""} ${data.email ? `Contact: ${data.email}` : ""}`,
+    ogTitle: data.name,
+    ogDescription: `Faculty member ${data.name} on Xite Platform`,
+  });
+}
 export default async function Page({
   params,
 }: {

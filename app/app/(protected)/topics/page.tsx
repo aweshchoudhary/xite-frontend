@@ -14,9 +14,15 @@ import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/topic/contants";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "Topics",
+  description: "Manage and organize topics and subtopics on Xite Platform. Create, edit, and structure your learning content.",
+});
 
 export default async function Page() {
   const permission = await checkPermission("Topic", "read");

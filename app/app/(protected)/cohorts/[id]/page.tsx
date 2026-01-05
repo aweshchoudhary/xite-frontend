@@ -11,6 +11,31 @@ import CopyText from "@/modules/common/components/global/copy-text";
 import { format } from "date-fns";
 import CohortContent from "@/modules/cohort/modules/cohort-content/cohort-content-container";
 import { PageHeader } from "./components/page-header";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getCohort({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Cohort Not Found",
+      description: "The requested cohort could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: data.name || `Cohort ${data.cohort_key || id}`,
+    description: `View cohort details for ${data.name || data.cohort_key || "this cohort"} on Xite Platform. Program: ${data.program.name}.`,
+    ogTitle: data.name || `Cohort ${data.cohort_key || id}`,
+    ogDescription: `Cohort details for ${data.program.name} program on Xite Platform`,
+  });
+}
 
 export default async function Page({
   params,

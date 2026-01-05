@@ -23,9 +23,34 @@ import {
   DropdownMenuTrigger,
 } from "@ui/dropdown-menu";
 import ViewCard from "@/modules/program/components/view/view-card";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Enterprise Not Found",
+      description: "The requested enterprise could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: data.name,
+    description: `View enterprise details for ${data.name} on Xite Platform. ${data.programs.length} program(s) associated.`,
+    ogTitle: data.name,
+    ogDescription: `Enterprise partner ${data.name} on Xite Platform`,
+  });
+}
 export default async function Page({
   params,
 }: {

@@ -2,6 +2,29 @@ import UpdateForm from "@/modules/enterprise/components/forms/update/form";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
 import { getOne } from "@/modules/enterprise/server/read";
 import { notFound } from "next/navigation";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Edit Enterprise",
+      description: "Edit enterprise on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${data.name}`,
+    description: `Edit enterprise details for ${data.name} on Xite Platform`,
+  });
+}
 
 export default async function EditPage({
   params,

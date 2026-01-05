@@ -7,6 +7,12 @@ import {
   BreadcrumbSeparator,
 } from "@/modules/common/components/ui/breadcrumb";
 import Create from "@microsite-cms/microsite/screens/create";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+
+export const metadata = generateSEOMetadata({
+  title: "New Microsite",
+  description: "Create a new microsite on Xite Platform. Set up custom learning sites for your programs and cohorts.",
+});
 
 export default async function Page() {
   return (

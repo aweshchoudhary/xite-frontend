@@ -37,9 +37,34 @@ import { enumDisplay } from "@/modules/common/lib/enum-display";
 import CopyText from "@/modules/common/components/global/copy-text";
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data: program } = await getOne({ id });
+
+  if (!program) {
+    return generateSEOMetadata({
+      title: "Program Not Found",
+      description: "The requested program could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: program.name,
+    description: `View program details for ${program.name} on Xite Platform. Academic Partner: ${program.academic_partner.name}. ${program.cohorts.length} cohort(s).`,
+    ogTitle: program.name,
+    ogDescription: `${program.name} program by ${program.academic_partner.name} on Xite Platform`,
+  });
+}
 
 export default async function ProgramPage({
   params,

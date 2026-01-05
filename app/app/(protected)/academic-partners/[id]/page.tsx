@@ -22,9 +22,34 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import ViewCard from "@/modules/program/components/view/view-card";
 import { getImageUrl } from "@/modules/common/lib/utils";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data } = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Academic Partner Not Found",
+      description: "The requested academic partner could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: data.name,
+    description: `View academic partner details for ${data.name} on Xite Platform. ${data.programs.length} program(s), ${data.faculties.length} faculty member(s).`,
+    ogTitle: data.name,
+    ogDescription: `Academic partner ${data.name} on Xite Platform`,
+  });
+}
 
 export default async function Page({
   params,

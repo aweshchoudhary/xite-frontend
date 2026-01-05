@@ -2,9 +2,15 @@ import CreateForm from "@/modules/enterprise/components/forms/create/form";
 import { MODULE_PATH } from "@/modules/enterprise/contants";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
 export const dynamic = 'force-dynamic';
+
+export const metadata = generateSEOMetadata({
+  title: "New Enterprise",
+  description: "Add a new enterprise partner to Xite Platform. Set up enterprise details and partnership information.",
+});
 
 export default async function NewCohortPage() {
   const permission = await checkPermission("Enterprise", "write");

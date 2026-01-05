@@ -8,6 +8,12 @@ import {
 
 import { Breadcrumb } from "@/modules/common/components/ui/breadcrumb";
 import TabsContainer from "./components/tabs";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+
+export const metadata = generateSEOMetadata({
+  title: "CMS",
+  description: "Manage content and microsite configurations on Xite Platform",
+});
 
 export default async function Page({
   searchParams,

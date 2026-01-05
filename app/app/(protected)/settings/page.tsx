@@ -3,6 +3,12 @@ import { Mail } from "lucide-react";
 import SignOutBtn from "./sign-out-btn";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { getUser } from "@/modules/common/authentication/firebase/action";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+
+export const metadata = generateSEOMetadata({
+  title: "Settings",
+  description: "Manage your account settings and preferences on Xite Platform",
+});
 
 export default async function SettingsPage() {
   const session = await getUser();

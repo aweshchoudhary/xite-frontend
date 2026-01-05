@@ -15,9 +15,34 @@ import {
 } from "@ui/breadcrumb";
 import SubTopicsList from "./components/subtopics-list";
 import HeaderActions from "./components/header-actions";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data } = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Topic Not Found",
+      description: "The requested topic could not be found on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: data.title,
+    description: `View topic details for ${data.title} on Xite Platform. ${data.sub_topics.length} subtopic(s). ${data.description ? data.description.substring(0, 100) + "..." : ""}`,
+    ogTitle: data.title,
+    ogDescription: data.description ? data.description.substring(0, 150) : `Topic: ${data.title} on Xite Platform`,
+  });
+}
 
 export default async function TopicPage({
   params,

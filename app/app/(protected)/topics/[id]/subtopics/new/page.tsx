@@ -4,9 +4,32 @@ import { checkPermission } from "@/modules/common/authentication/access-control/
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { notFound } from "next/navigation";
 import { getOne } from "@/modules/topic/server/read";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data: topic } = await getOne({ id });
+
+  if (!topic) {
+    return generateSEOMetadata({
+      title: "New Sub Topic",
+      description: "Create a new subtopic on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `New Sub Topic - ${topic.title}`,
+    description: `Create a new subtopic for ${topic.title} on Xite Platform`,
+  });
+}
 
 export default async function NewSubTopicPage({
   params,

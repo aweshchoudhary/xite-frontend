@@ -15,9 +15,15 @@ import { cn } from "@/modules/common/lib/utils";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/program/contants";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use searchParams and auth
 export const dynamic = "force-dynamic";
+
+export const metadata = generateSEOMetadata({
+  title: "Programs",
+  description: "Manage and view all programs on Xite Platform. Create, edit, and track program information.",
+});
 
 interface PageProps {
   searchParams: Promise<{

@@ -2,6 +2,29 @@ import UpdateForm from "@/modules/academic-partner/components/forms/update/form"
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
 import { getOne } from "@/modules/academic-partner/server/read";
 import { notFound } from "next/navigation";
+import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const { data } = await getOne({ id });
+
+  if (!data) {
+    return generateSEOMetadata({
+      title: "Edit Academic Partner",
+      description: "Edit academic partner on Xite Platform",
+    });
+  }
+
+  return generateSEOMetadata({
+    title: `Edit ${data.name}`,
+    description: `Edit academic partner details for ${data.name} on Xite Platform`,
+  });
+}
 
 export default async function EditPage({
   params,
