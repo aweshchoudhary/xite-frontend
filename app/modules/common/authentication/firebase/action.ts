@@ -1,0 +1,135 @@
+"use server";
+
+import { cookies } from "next/headers";
+import { adminAuth } from "./auth";
+import { primaryDB } from "../../database/prisma/connection";
+import { UserRole } from "../../database/prisma/generated/prisma";
+import { getCache, setCache } from "../../services/redis/controllers";
+import { User as DbUser } from "../../database/prisma/generated/prisma";
+import { UserRecord } from "firebase-admin/auth";
+
+export async function loginAction(idToken: string) {
+  // 1. Verify the token with Firebase Admin
+  const decodedToken = await adminAuth().verifyIdToken(idToken);
+  const email = decodedToken.email;
+
+  // 2. SERVER-SIDE SECURITY CHECK
+  if (!email?.endsWith("@xedinstitute.org")) {
+    throw new Error("Unauthorized: Organization email required.");
+  }
+
+  // 2.2 create user in prisma database if not exists
+  const user = await primaryDB.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (!user) {
+    await primaryDB.user.create({
+      data: {
+        email: email,
+        name: decodedToken.name,
+        image: decodedToken.picture,
+        roles: {
+          connectOrCreate: {
+            where: {
+              role: "User",
+            },
+            create: {
+              role: "User",
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // 3. Create a Session Cookie (expires in 5 days)
+  const expiresIn = 60 * 60 * 24 * 5 * 1000;
+  const sessionCookie = await adminAuth().createSessionCookie(idToken, {
+    expiresIn,
+  });
+
+  // 4. Set the cookie in the browser
+  const cookieStore = await cookies();
+  cookieStore.set("session", sessionCookie, {
+    maxAge: expiresIn,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  });
+
+  return {
+    user,
+  };
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
+}
+
+export async function getUser(): Promise<
+  | {
+      dbUser: DbUser;
+      user: UserRecord;
+      roles: UserRole[];
+    }
+  | null
+  | undefined
+> {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("session");
+
+    if (!session) return null;
+
+    // 1️⃣ Verify session
+    const decodedToken = await adminAuth().verifySessionCookie(session.value);
+    const uid = decodedToken.uid;
+
+    // 2️⃣ Session-aware cache key
+    const cacheKey = `auth:user:${uid}`;
+
+    // 3️⃣ Check Redis
+    const cached = await getCache<{
+      user: UserRecord;
+      roles: UserRole[];
+      dbUser: DbUser;
+    }>(cacheKey);
+
+    if (cached) {
+      return cached;
+    }
+
+    // 4️⃣ Fetch from Firebase
+    const user = await adminAuth().getUser(uid);
+
+    // 5️⃣ Fetch roles from DB
+    const dbUser = await primaryDB.user.findUnique({
+      where: { email: user.email },
+      include: { roles: true },
+    });
+
+    if (!dbUser || !dbUser.roles) return null;
+
+    const payload = {
+      user: user.toJSON() as UserRecord,
+      roles: dbUser.roles,
+      dbUser: dbUser,
+    };
+
+    // 6️⃣ Cache (short TTL is enough)
+    await setCache(cacheKey, payload, 300); // 5 minutes
+
+    return payload;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getUserRoles(): Promise<UserRole[]> {
+  const data = await getUser();
+  return data?.roles ?? [];
+}

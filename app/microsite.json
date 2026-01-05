@@ -1,0 +1,61 @@
+{
+  "templateId": "694fbd1f4933babddfc1fe3f",
+  "cohortId": "cornell-selp-cohort-6",
+  "type": "generic",
+  "title": "Cornell CHRO",
+  "status": "draft",
+  "globalSections": [
+    {
+      "key": "header",
+      "blocks": [
+        {
+          "key": "title",
+          "type": "single",
+          "repeatable": false,
+          "value": null,
+          "items": []
+        }
+      ]
+    },
+    {
+      "key": "footer",
+      "blocks": [
+        {
+          "key": "title",
+          "type": "single",
+          "repeatable": false,
+          "value": null,
+          "items": []
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "meta": {
+        "title": "Home",
+        "description": "Home",
+        "slug": "home"
+      },
+      "sections": [
+        {
+          "key": "program-overview",
+          "blocks": [
+            {
+              "key": "title",
+              "type": "single",
+              "repeatable": false,
+              "value": null,
+              "items": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "_id": "694fc64eb4f8737c66025d96",
+  "createdAt": "2025-12-27T11:43:10.392Z",
+  "updatedAt": "2025-12-27T11:43:10.392Z",
+  "__v": 0
+}

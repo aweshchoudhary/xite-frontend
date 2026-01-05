@@ -1,0 +1,272 @@
+[
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Leading Self",
+      "TOAST_ID": "SELF.LEAD.LEAD",
+      "Keywords": "Self-awareness, transformational leadership; Leadership effectiveness"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Getting Things Done",
+      "TOAST_ID": "SELF.LEAD.DONE",
+      "Keywords": "Leadership effectiveness, performance effectiveness, Minimize decision fatigue"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Emotions and Emotional Intelligence",
+      "TOAST_ID": "SELF.LEAD.EI",
+      "Keywords": "Emotional intelligence, resilience, personal mastery"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Managing Self",
+      "TOAST_ID": "SELF.LEAD.MANAGE",
+      "Keywords": "Self-awareness, personal leadership and effectiveness"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Critical Thinking and Problem Solving",
+      "TOAST_ID": "SELF.LEAD.PROBLEMSOLVING",
+      "Keywords": "Analytical thinking, reasoning, structured problem solving, judgement"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Leading with Resilience, Purpose, and Agility",
+      "TOAST_ID": "SELF.LEAD.PURPOSE",
+      "Keywords": "Resilient Leadership, Vision, Purpose, Speed, Agility"
+    },
+    {
+      "Topic": "Leading Self",
+      "SubTopic": "Growth Mindset",
+      "TOAST_ID": "SELF.LEAD.MINDSET",
+      "Keywords": "Adaptability, agility, continuous learning, resilience, learning to learn"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Leading Teams",
+      "TOAST_ID": "TEAM.LEAD.LEAD",
+      "Keywords": "Developing talent, transformational leadership"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Leading High Performance Teams",
+      "TOAST_ID": "TEAM.LEAD.HIGHPERF",
+      "Keywords": "Managing biases; Transformation leadership, high-impact team performance, inspirational leadership"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Persuasion and Influence",
+      "TOAST_ID": "TEAM.LEAD.PERSUADE",
+      "Keywords": "Influence, relationship management, persuasion"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Influence without Authority",
+      "TOAST_ID": "TEAM.LEAD.INFLUENCE",
+      "Keywords": "Influence, relationship management, influencing stakeholders, influence without authority"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Stakeholder Management",
+      "TOAST_ID": "TEAM.LEAD.STAKEHOLDER",
+      "Keywords": "Influence, relationship management, managing stakeholders"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Being a Trusted Advisor",
+      "TOAST_ID": "TEAM.LEAD.ADVISOR",
+      "Keywords": "Credibility, strategic partnership, reliability"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Leading Matrix Teams",
+      "TOAST_ID": "TEAM.LEAD.MATRIX",
+      "Keywords": "Cross-functional coordination, distributed leadership, collaboration effectiveness"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Coaching and Mentoring",
+      "TOAST_ID": "TEAM.LEAD.MENTOR",
+      "Keywords": "Developmental dialogue, questioning and feedback, building coaching culture, enabling others to grow"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Creative Leadership in a Complex World",
+      "TOAST_ID": "TEAM.LEAD.CREATIVE",
+      "Keywords": "Relationship capital, trust and credibility, political intelligence, stakeholder mapping"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Leading (People) through Change and Complexity",
+      "TOAST_ID": "TEAM.LEAD.CHANGEMGMT",
+      "Keywords": "Change readiness, communication for change, stakeholder alignment, driving adoption"
+    },
+    {
+      "Topic": "Leading Teams",
+      "SubTopic": "Negotiations",
+      "TOAST_ID": "TEAM.LEAD.NEGOTIATION",
+      "Keywords": "Negotiation, Interest-based negotiation, persuasion, win-win outcomes, cross-functional collaboration"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Operational Excellence",
+      "TOAST_ID": "ORG.EXEC.OPS",
+      "Keywords": "Lean principles, process optimisation, continuous improvement, execution discipline, efficiency and scalability"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Data-Driven Decision Making",
+      "TOAST_ID": "ORG.EXEC.DATADRIVEN",
+      "Keywords": "Evidence-based management, analytics for impact, interpreting insights, KPI dashboards, data storytelling"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Financial / Commercial Acumen",
+      "TOAST_ID": "ORG.EXEC.FINACUMEN",
+      "Keywords": "Value creation, P&L thinking, cost–benefit analysis, ROI mindset, business profitability levers"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Systems Thinking",
+      "TOAST_ID": "ORG.EXEC.SYSTEMS",
+      "Keywords": "Analyze complex problems by viewing the whole system, Think holistically, Approach for complex situations"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Managing Complexity",
+      "TOAST_ID": "ORG.EXEC.COMPLEXITY",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Decision Making",
+      "TOAST_ID": "ORG.EXEC.DECISION",
+      "Keywords": "Judgement under uncertainty, cognitive biases, structured choices, trade-off analysis, decision agility"
+    },
+    {
+      "Topic": "Execution",
+      "SubTopic": "Strategy Execution",
+      "TOAST_ID": "ORG.EXEC.STRATEGY",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Leading Organizations",
+      "SubTopic": "Leading Organizations",
+      "TOAST_ID": "ORG.LEAD.ORGS",
+      "Keywords": "Purpose-driven leadership, culture building, alignment and accountability, governance and ethics"
+    },
+    {
+      "Topic": "Leading Organizations",
+      "SubTopic": "Leadership in a Volatile World",
+      "TOAST_ID": "ORG.LEAD.VOLATILE",
+      "Keywords": "Global Volatility and Change"
+    },
+    {
+      "Topic": "Leading Change",
+      "SubTopic": "Leading Change in Organizations",
+      "TOAST_ID": "ORG.LEAD.CHANGE",
+      "Keywords": "Adaptive leadership, ambiguity tolerance, systems awareness, strategic resilience"
+    },
+    {
+      "Topic": "Advanced Leadership Communication",
+      "SubTopic": "Storytelling with Data Insights",
+      "TOAST_ID": "ORG.COMMS.STORYDATA",
+      "Keywords": "Narrative through data, visual clarity, translating analytics to influence, insight communication"
+    },
+    {
+      "Topic": "Advanced Leadership Communication",
+      "SubTopic": "Storytelling for Leaders",
+      "TOAST_ID": "ORG.COMMS.STORYLEADERS",
+      "Keywords": "Authentic communication, gravitas, strategic storytelling, influence and presence"
+    },
+    {
+      "Topic": "Leading Organizations",
+      "SubTopic": "Strategic Leadership",
+      "TOAST_ID": "ORG.LEAD.STRATEGIC",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Leading Organizations",
+      "SubTopic": "Leadership and Diversity",
+      "TOAST_ID": "ORG.LEAD.DIVERSITY",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Leading Organizations",
+      "SubTopic": "Leading with Gravitas; Executive Presence",
+      "TOAST_ID": "ORG.LEAD.PRESENCE",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Future-back Strategy",
+      "TOAST_ID": "ORG.STR.FUTURE",
+      "Keywords": "Strategic foresight, scenario planning, transformation roadmaps, future-fit business models, navigating disruption; Future-back strategy and execution"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Strategic Thinking",
+      "TOAST_ID": "ORG.STR.THINKING",
+      "Keywords": "Systems thinking, complexity navigation, analytical reasoning, strategic choices"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Breakthrough Innovation",
+      "TOAST_ID": "ORG.STR.BREAKTHROUGH",
+      "Keywords": "Leapfrog innovation, innovation ecosystems, disruptive ideas, creative experimentation, market creation, disruptive innovation"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Customer Centricity",
+      "TOAST_ID": "ORG.STR.CUSTOMER",
+      "Keywords": "Customer value creation, customer obsession, customer-centric strategy, conjoint analysis"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Design Thinking",
+      "TOAST_ID": "ORG.STR.DESIGN",
+      "Keywords": "Human-centred problem solving, ideation and prototyping, reframing challenges, experimentation culture"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Creative Thinking",
+      "TOAST_ID": "ORG.STR.CREATIVE",
+      "Keywords": "Lateral thinking, divergent–convergent exploration, creativity under constraints, leading with creativity"
+    },
+    {
+      "Topic": "Strategy",
+      "SubTopic": "Business Model Innovation",
+      "TOAST_ID": "ORG.STR.BUSINESSMODEL",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Tech",
+      "SubTopic": "AI Strategy",
+      "TOAST_ID": "ORG.TECH.AI",
+      "Keywords": "AI-enabled transformation digital advantage, responsible AI, human–AI collaboration"
+    },
+    {
+      "Topic": "Tech",
+      "SubTopic": "Artificial Intelligence and Underlying Technologies",
+      "TOAST_ID": "ORG.TECH.OVERVIEW",
+      "Keywords": "Machine learning fundamentals, Generative AI, automation, emerging technologies (IoT, blockchain, cloud), digital ethics"
+    },
+    {
+      "Topic": "Tech",
+      "SubTopic": "Digital Transformation",
+      "TOAST_ID": "ORG.TECH.TRANSFORM",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Sales",
+      "SubTopic": "Sales Leadership",
+      "TOAST_ID": "ORG.SALES.SALES",
+      "Keywords": ""
+    },
+    {
+      "Topic": "Tech",
+      "SubTopic": "Fintech",
+      "TOAST_ID": "ORG.TECH.FINTECH",
+      "Keywords": ""
+    }
+   ]

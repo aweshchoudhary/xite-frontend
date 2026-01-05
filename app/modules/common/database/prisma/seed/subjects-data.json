@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Strategy",
+        "items": [
+            "Future-back Strategy",
+            "Strategic Thinking",
+            "Breakthrough Innovation",
+            "Customer Centricity",
+            "Design Thinking",
+            "Creative Thinking",
+            "AI Strategy"
+        ]
+    },
+    {
+        "name": "Execution",
+        "items": [
+            "Operational Excellence",
+            "Data-Driven Decision Making",
+            "Financial/Commercial Acumen",
+            "Decision Making"
+        ]
+    },
+    {
+        "name": "Leadership",
+        "items": [
+            "Leading Self; Growth Mindset",
+            "Leading Teams",
+            "Leading Organizations",
+            "Leading Change in Organizations",
+            "Coaching and Mentoring",
+            "Leading through Complexity",
+            "Storytelling with Data Insights",
+            "Storytelling for Leaders; Executive Presence",
+            "Influence and Stakeholder Management",
+            "Negotiations"
+        ]
+    }
+]

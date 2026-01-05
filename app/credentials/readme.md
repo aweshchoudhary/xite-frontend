@@ -1,0 +1,1 @@
+This folder is for Firebase and Google Service Account keys

@@ -1,0 +1,80 @@
+services:
+  app:
+    container_name: xite-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        EMAIL_SERVER: ${EMAIL_SERVER}
+        EMAIL_FROM: ${EMAIL_FROM}
+        DATABASE_URL: ${DATABASE_URL}
+        FIREBASE_ADMIN_CREDENTIALS: ${FIREBASE_ADMIN_CREDENTIALS}
+        NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_PROJECT_ID}
+        NEXT_PUBLIC_FIREBASE_APP_ID: ${NEXT_PUBLIC_FIREBASE_APP_ID}
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
+        NEXT_PUBLIC_FIREBASE_MESSAGING_ID: ${NEXT_PUBLIC_FIREBASE_MESSAGING_ID}
+        NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}
+    volumes:
+      - ${GCP_SERVICE_ACCOUNT_KEY}:/app/service-account-key.json:ro
+      - ${FIREBASE_ADMIN_CREDENTIALS_COPY_FROM}:/app/firebase-service-account-key.json:ro
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "50003:3000"
+    mem_limit: 512m
+    networks:
+      - xite-network
+    depends_on:
+      - xite-postgresql
+      - xite-redis
+      - xite-mongodb
+  # --- PostgreSQL DB ---
+  xite-postgresql:
+    image: postgres:15
+    container_name: xite-postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+    volumes:
+      - xite_postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "53001:5432"
+    mem_limit: 512m
+    networks:
+      - xite-network
+  xite-redis:
+    image: redis:7
+    container_name: xite-redis
+    restart: always
+    mem_limit: 512m
+    volumes:
+      - xite_redis_data:/data
+    networks:
+      - xite-network
+    expose:
+      - "6379"
+  xite-mongodb:
+    image: mongo:8
+    container_name: xite-mongodb
+    restart: always
+    mem_limit: 512m
+    volumes:
+      - xite_mongodb_data:/data/db
+    networks:
+      - xite-network
+    ports:
+      - "27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+volumes:
+  xite_postgresql_data:
+  xite_redis_data:
+  xite_mongodb_data:
+networks:
+  xite-network:
