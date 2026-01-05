@@ -12,14 +12,6 @@ import { buttonVariants } from "@ui/button";
 import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@ui/breadcrumb";
 
 interface RecordViewProps {
   microsite: IMicrosite;
@@ -58,16 +50,6 @@ export default function RecordView({
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Badge variant={"outline"}>Template: {template.name}</Badge>
-              {microsite.cohortId && (
-                <Badge variant={"outline"}>Cohort: {microsite.cohortId}</Badge>
-              )}
-              <Badge
-                variant={
-                  microsite.status === "active" ? "default" : "secondary"
-                }
-              >
-                {microsite.status}
-              </Badge>
             </div>
             {onEdit ? (
               <Button

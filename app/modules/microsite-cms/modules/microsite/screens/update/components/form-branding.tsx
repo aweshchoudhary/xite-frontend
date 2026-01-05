@@ -1,6 +1,12 @@
 "use client";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
+import {
+  InputGroup,
+  InputGroupInput,
+  InputGroupAddon,
+  InputGroupText,
+} from "@ui/input-group";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
 import { Palette, Image as ImageIcon, Type, Upload, Globe } from "lucide-react";
@@ -54,19 +60,44 @@ export default function FormBranding({ form }: FormBrandingProps) {
               <Controller
                 name="domain"
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="domain">Domain</FieldLabel>
-                    <Input
-                      id="domain"
-                      {...field}
-                      placeholder="e.g., example.com"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
+                render={({ field, fieldState }) => {
+                  // Strip "xedinstitute.org" suffix if present in the value
+                  const normalizedValue =
+                    field.value && typeof field.value === "string"
+                      ? field.value.replace(/\.xedinstitute\.org$/, "")
+                      : field.value || "";
+
+                  return (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="domain">Domain</FieldLabel>
+                      <InputGroup>
+                        <InputGroupInput
+                          id="domain"
+                          value={normalizedValue}
+                          placeholder="e.g., my-subdomain"
+                          onChange={(e) => {
+                            // Only allow alphanumeric characters and dashes
+                            const value = e.target.value.replace(
+                              /[^a-zA-Z0-9-]/g,
+                              ""
+                            );
+                            // Update the input value and call field's onChange
+                            e.target.value = value;
+                            field.onChange(value);
+                          }}
+                          onBlur={field.onBlur}
+                          ref={field.ref}
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <InputGroupText>xedinstitute.org</InputGroupText>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  );
+                }}
               />
             </FieldGroup>
           </div>

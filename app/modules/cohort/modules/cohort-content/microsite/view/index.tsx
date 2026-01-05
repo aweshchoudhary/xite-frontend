@@ -59,7 +59,9 @@ export default function CohortContentDetailsOverviewView({
         <div>
           <Label className="mb-3">Custom Domain</Label>
           {/* Custom domain can be long so make wrap */}
-          <div className="break-words">{data?.custom_domain || "N/A"}</div>
+          <div className="wrap-words">
+            {data?.custom_domain?.replace("xedinstitute.org", "") || "N/A"}
+          </div>
         </div>
       </div>
 

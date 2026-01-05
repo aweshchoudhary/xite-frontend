@@ -1,4 +1,3 @@
-import { Badge } from "@ui/badge";
 import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
 import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
 import { CalendarIcon } from "lucide-react";
@@ -16,7 +15,6 @@ export default function Card({ microsite }: CardProps) {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <CardTitle>{microsite.title || "Untitled microsite"}</CardTitle>
-            <Badge variant="secondary">{microsite.status}</Badge>
           </div>
 
           <p className="text-sm text-muted-foreground">

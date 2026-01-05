@@ -18,13 +18,6 @@ import FormSection from "./components/form-section";
 import FormBranding from "./components/form-branding";
 import { toast } from "sonner";
 import { updateMicrosite } from "@microsite-cms/common/services/db/actions/microsite/update";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter } from "next/navigation";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
@@ -75,17 +68,51 @@ export default function UpdateForm({
           return toast.error("Microsite ID is required");
         }
 
-        if (microsite.status === "active") {
-          // Validate all the required elements in the microsite
-          fields.globalSections.forEach((section, sectionIndex) => {
-            const templateSection = template.globalSections.find(
+        // Validate all the required elements in the microsite
+        fields.globalSections.forEach((section, sectionIndex) => {
+          const templateSection = template.globalSections.find(
+            (s) => s.key === section.key
+          );
+          section.blocks.forEach((block, blockIndex) => {
+            const templateBlock = templateSection?.blocks.find(
+              (b) => b.key === block.key
+            );
+
+            if (templateBlock) {
+              templateBlock.elements.forEach((element) => {
+                if (element.required) {
+                  // For single blocks, value is directly at block.value[element.key]
+                  // For group blocks, value is at block.value[element.key]
+                  const value = block.value?.[element.key];
+                  if (
+                    !value ||
+                    (typeof value === "string" && value.trim() === "")
+                  ) {
+                    form.setError(
+                      `globalSections.${sectionIndex}.blocks.${blockIndex}.value.${element.key}`,
+                      {
+                        message: `Required element ${element.key} is missing`,
+                      }
+                    );
+                  }
+                }
+              });
+            }
+          });
+        });
+
+        fields.pages.forEach((page, pageIndex) => {
+          const templatePage = template.pages.find(
+            (p) => p.slug === page.meta.slug
+          );
+          page.sections.forEach((section, sectionIndex) => {
+            const templateSection = templatePage?.sections.find(
               (s) => s.key === section.key
             );
             section.blocks.forEach((block, blockIndex) => {
               const templateBlock = templateSection?.blocks.find(
                 (b) => b.key === block.key
               );
-
               if (templateBlock) {
                 templateBlock.elements.forEach((element) => {
                   if (element.required) {
@@ -97,7 +124,7 @@ export default function UpdateForm({
                       (typeof value === "string" && value.trim() === "")
                     ) {
                       form.setError(
-                        `globalSections.${sectionIndex}.blocks.${blockIndex}.value.${element.key}`,
+                        `pages.${pageIndex}.sections.${sectionIndex}.blocks.${blockIndex}.value.${element.key}`,
                         {
                           message: `Required element ${element.key} is missing`,
                         }
@@ -108,43 +135,7 @@ export default function UpdateForm({
               }
             });
           });
-
-          fields.pages.forEach((page, pageIndex) => {
-            const templatePage = template.pages.find(
-              (p) => p.slug === page.meta.slug
-            );
-            page.sections.forEach((section, sectionIndex) => {
-              const templateSection = templatePage?.sections.find(
-                (s) => s.key === section.key
-              );
-              section.blocks.forEach((block, blockIndex) => {
-                const templateBlock = templateSection?.blocks.find(
-                  (b) => b.key === block.key
-                );
-                if (templateBlock) {
-                  templateBlock.elements.forEach((element) => {
-                    if (element.required) {
-                      // For single blocks, value is directly at block.value[element.key]
-                      // For group blocks, value is at block.value[element.key]
-                      const value = block.value?.[element.key];
-                      if (
-                        !value ||
-                        (typeof value === "string" && value.trim() === "")
-                      ) {
-                        form.setError(
-                          `pages.${pageIndex}.sections.${sectionIndex}.blocks.${blockIndex}.value.${element.key}`,
-                          {
-                            message: `Required element ${element.key} is missing`,
-                          }
-                        );
-                      }
-                    }
-                  });
-                }
-              });
-            });
-          });
-        }
+        });
 
         await updateMicrosite({
           micrositeId: microsite._id,
@@ -209,35 +200,6 @@ export default function UpdateForm({
                     id="form-rhf-demo-title"
                     aria-invalid={fieldState.invalid}
                   />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          <FieldGroup>
-            <Controller
-              name="status"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel
-                    htmlFor="status"
-                    isRequired={requiredFields.includes("status")}
-                  >
-                    Status
-                  </FieldLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="status" aria-label="Select status">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="archived">Archived</SelectItem>
-                    </SelectContent>
-                  </Select>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

@@ -1,4 +1,3 @@
-import { Badge } from "@ui/badge";
 import {
   Table,
   TableBody,
@@ -23,7 +22,6 @@ export default function DataTable({
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -37,9 +35,6 @@ export default function DataTable({
               >
                 {microsite.title}
               </Link>
-            </TableCell>
-            <TableCell>
-              <Badge>Active</Badge>
             </TableCell>
             <TableCell>
               <DataTableActions />

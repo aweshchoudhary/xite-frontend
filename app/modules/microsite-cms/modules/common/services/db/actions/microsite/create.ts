@@ -44,7 +44,9 @@ export async function createMicrosite(data: {
     title: data.title ?? "",
     status: "draft",
     type: data.type,
-    domain: `test-${slugify(data.title ?? "", { lower: true })}.com`,
+    domain: `test-${slugify(data.title ?? "", {
+      lower: true,
+    })}.xedinstitute.org`,
 
     globalSections: cloneSections(template.globalSections ?? []),
 
