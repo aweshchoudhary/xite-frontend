@@ -57,8 +57,12 @@ export const columns: ColumnDef<GetCohortForTable>[] = [
   },
   {
     id: "start_date",
-    accessorKey: "Start Date",
+    accessorKey: "start_date",
     enableHiding: true,
+    enableSorting: true,
+    header: ({ column }) => {
+      return <ColumnSortBtn column={column} title="Start Date" />;
+    },
     cell: ({ row }) => (
       <span className="text-muted-foreground text-sm">
         {row.original.start_date

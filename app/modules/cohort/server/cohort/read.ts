@@ -216,6 +216,9 @@ export async function getAllByStatus(status: WorkStatus | "ALL") {
         owner: true,
         media_section: true,
       },
+      orderBy: {
+        start_date: "asc",
+      },
     });
     if (!cohorts) {
       throw new Error("No cohorts found");
