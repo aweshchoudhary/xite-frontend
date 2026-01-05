@@ -210,3 +210,36 @@ export async function updateCohortStatusAction(
     throw error;
   }
 }
+
+export async function updateCohortChecklistAndStatusAction(
+  cohortId: string,
+  checklistFile: File
+) {
+  try {
+    const permission = await checkPermission("Cohort", "update");
+
+    if (!permission) {
+      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+    }
+
+    const { fileUrl: checklist_file_url } = await uploadFile(checklistFile);
+
+    const cohort = await updateCohort({
+      cohortId,
+      data: {
+        checklist_file_url,
+        status: WorkStatus.ACTIVE,
+      },
+    });
+
+    if (!cohort) {
+      throw new Error("Failed to update cohort");
+    }
+
+    revalidatePath(`/cohorts/${cohortId}`);
+    revalidatePath(`/cohorts/${cohortId}/edit`);
+    revalidatePath(`/cohorts/${cohortId}`);
+  } catch (error) {
+    throw error;
+  }
+}

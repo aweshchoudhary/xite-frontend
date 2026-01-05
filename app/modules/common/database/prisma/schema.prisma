@@ -140,6 +140,7 @@ model Cohort {
   ownerId                      String?
   updated_by                   User?                          @relation("updated_by", fields: [updated_by_id], references: [id])
   updated_by_id                String?
+  checklist_file_url           String?
 
   @@unique([cohort_key, id])
 }
