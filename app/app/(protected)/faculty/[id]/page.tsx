@@ -48,15 +48,20 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Faculty Not Found",
-      description: "The requested faculty member could not be found on Xite Platform",
+      description:
+        "The requested faculty member could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.name,
-    description: `View faculty details for ${data.name} on Xite Platform. ${data.academic_partner ? `Academic Partner: ${data.academic_partner.name}.` : ""} ${data.email ? `Contact: ${data.email}` : ""}`,
+    description: `View faculty details for ${data.name} on XITE Platform. ${
+      data.academic_partner
+        ? `Academic Partner: ${data.academic_partner.name}.`
+        : ""
+    } ${data.email ? `Contact: ${data.email}` : ""}`,
     ogTitle: data.name,
-    ogDescription: `Faculty member ${data.name} on Xite Platform`,
+    ogDescription: `Faculty member ${data.name} on XITE Platform`,
   });
 }
 export default async function Page({

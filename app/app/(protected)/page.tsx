@@ -14,7 +14,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Dashboard",
-  description: "View and manage your programs and cohorts from the Xite Platform dashboard",
+  description:
+    "View and manage your programs and cohorts from the XITE Platform dashboard",
 });
 
 export default async function Home() {

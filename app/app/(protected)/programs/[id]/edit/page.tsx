@@ -14,7 +14,7 @@ interface EditPageProps {
 }
 
 // Force dynamic rendering since we use auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -27,13 +27,13 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Edit Program",
-      description: "Edit program on Xite Platform",
+      description: "Edit program on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${data.name}`,
-    description: `Edit program details for ${data.name} on Xite Platform`,
+    description: `Edit program details for ${data.name} on XITE Platform`,
   });
 }
 export default async function EditPage({ params }: EditPageProps) {

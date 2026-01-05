@@ -16,13 +16,13 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Edit Academic Partner",
-      description: "Edit academic partner on Xite Platform",
+      description: "Edit academic partner on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${data.name}`,
-    description: `Edit academic partner details for ${data.name} on Xite Platform`,
+    description: `Edit academic partner details for ${data.name} on XITE Platform`,
   });
 }
 

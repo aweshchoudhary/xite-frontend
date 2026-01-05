@@ -39,15 +39,16 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Academic Partner Not Found",
-      description: "The requested academic partner could not be found on Xite Platform",
+      description:
+        "The requested academic partner could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.name,
-    description: `View academic partner details for ${data.name} on Xite Platform. ${data.programs.length} program(s), ${data.faculties.length} faculty member(s).`,
+    description: `View academic partner details for ${data.name} on XITE Platform. ${data.programs.length} program(s), ${data.faculties.length} faculty member(s).`,
     ogTitle: data.name,
-    ogDescription: `Academic partner ${data.name} on Xite Platform`,
+    ogDescription: `Academic partner ${data.name} on XITE Platform`,
   });
 }
 

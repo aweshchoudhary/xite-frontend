@@ -14,7 +14,7 @@ interface SEOOptions {
   nofollow?: boolean;
 }
 
-const defaultSiteName = "Xite Platform";
+const defaultSiteName = "XITE Platform";
 const defaultSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://xite.com";
 const defaultOgImage = `${defaultSiteUrl}/xite-logo.png`;
 

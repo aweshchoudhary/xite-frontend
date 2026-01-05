@@ -16,13 +16,13 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Edit Topic",
-      description: "Edit topic on Xite Platform",
+      description: "Edit topic on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${data.title}`,
-    description: `Edit topic details for ${data.title} on Xite Platform`,
+    description: `Edit topic details for ${data.title} on XITE Platform`,
   });
 }
 
@@ -56,4 +56,3 @@ export default async function EditPage({
     </article>
   );
 }
-

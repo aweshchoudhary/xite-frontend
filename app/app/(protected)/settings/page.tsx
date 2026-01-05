@@ -7,7 +7,7 @@ import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 export const metadata = generateSEOMetadata({
   title: "Settings",
-  description: "Manage your account settings and preferences on Xite Platform",
+  description: "Manage your account settings and preferences on XITE Platform",
 });
 
 export default async function SettingsPage() {

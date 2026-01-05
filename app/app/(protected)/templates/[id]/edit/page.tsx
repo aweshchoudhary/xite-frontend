@@ -21,13 +21,15 @@ export async function generateMetadata({
   if (!template) {
     return generateSEOMetadata({
       title: "Edit Template",
-      description: "Edit template on Xite Platform",
+      description: "Edit template on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${template.name || "Template"}`,
-    description: `Edit template details for ${template.name || "this template"} on Xite Platform`,
+    description: `Edit template details for ${
+      template.name || "this template"
+    } on XITE Platform`,
   });
 }
 

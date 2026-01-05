@@ -12,7 +12,7 @@ import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 export const metadata = generateSEOMetadata({
   title: "CMS",
-  description: "Manage content and microsite configurations on Xite Platform",
+  description: "Manage content and microsite configurations on XITE Platform",
 });
 
 export default async function Page({

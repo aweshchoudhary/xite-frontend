@@ -21,7 +21,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Faculty",
-  description: "Manage and view all faculty members on Xite Platform. Add, edit, and track faculty information.",
+  description:
+    "Manage and view all faculty members on XITE Platform. Add, edit, and track faculty information.",
 });
 
 export default async function Page() {

@@ -11,7 +11,8 @@ import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 export const metadata = generateSEOMetadata({
   title: "New Microsite",
-  description: "Create a new microsite on Xite Platform. Set up custom learning sites for your programs and cohorts.",
+  description:
+    "Create a new microsite on XITE Platform. Set up custom learning sites for your programs and cohorts.",
 });
 
 export default async function Page() {

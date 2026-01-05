@@ -25,15 +25,17 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Cohort Not Found",
-      description: "The requested cohort could not be found on Xite Platform",
+      description: "The requested cohort could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.name || `Cohort ${data.cohort_key || id}`,
-    description: `View cohort details for ${data.name || data.cohort_key || "this cohort"} on Xite Platform. Program: ${data.program.name}.`,
+    description: `View cohort details for ${
+      data.name || data.cohort_key || "this cohort"
+    } on XITE Platform. Program: ${data.program.name}.`,
     ogTitle: data.name || `Cohort ${data.cohort_key || id}`,
-    ogDescription: `Cohort details for ${data.program.name} program on Xite Platform`,
+    ogDescription: `Cohort details for ${data.program.name} program on XITE Platform`,
   });
 }
 

@@ -5,11 +5,12 @@ import UnauthorizedPageError from "@/modules/common/components/global/error/unau
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 // Force dynamic rendering since we use auth
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "New Program",
-  description: "Create a new program on Xite Platform. Set up program details, academic partnerships, and configurations.",
+  description:
+    "Create a new program on XITE Platform. Set up program details, academic partnerships, and configurations.",
 });
 
 export default async function NewCohortPage() {

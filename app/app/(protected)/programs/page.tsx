@@ -22,7 +22,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Programs",
-  description: "Manage and view all programs on Xite Platform. Create, edit, and track program information.",
+  description:
+    "Manage and view all programs on XITE Platform. Create, edit, and track program information.",
 });
 
 interface PageProps {

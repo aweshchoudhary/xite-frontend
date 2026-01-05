@@ -21,7 +21,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Enterprises",
-  description: "Manage and view all enterprise partners on Xite Platform. Track enterprise relationships and partnerships.",
+  description:
+    "Manage and view all enterprise partners on XITE Platform. Track enterprise relationships and partnerships.",
 });
 
 export default async function Page() {

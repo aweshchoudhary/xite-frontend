@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "New Academic Partner",
-  description: "Add a new academic partner to Xite Platform. Set up partner details, logo, and collaboration information.",
+  description:
+    "Add a new academic partner to XITE Platform. Set up partner details, logo, and collaboration information.",
 });
 
 export default async function NewCohortPage() {

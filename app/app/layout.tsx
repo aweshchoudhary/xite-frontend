@@ -16,18 +16,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Xite Platform - Learning Management System",
-  description: "Xite Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
+  title: "XITE Platform - Learning Management System",
+  description:
+    "XITE Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
   openGraph: {
-    title: "Xite Platform - Learning Management System",
-    description: "Xite Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
-    siteName: "Xite Platform",
+    title: "XITE Platform - Learning Management System",
+    description:
+      "XITE Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
+    siteName: "XITE Platform",
     images: [
       {
         url: "/xite-logo.png",
         width: 1200,
         height: 630,
-        alt: "Xite Platform",
+        alt: "XITE Platform",
       },
     ],
     locale: "en_US",
@@ -35,8 +37,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Xite Platform - Learning Management System",
-    description: "Xite Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
+    title: "XITE Platform - Learning Management System",
+    description:
+      "XITE Platform - Comprehensive learning management system for managing programs, cohorts, faculty, and academic partnerships",
     images: ["/xite-logo.png"],
   },
 };

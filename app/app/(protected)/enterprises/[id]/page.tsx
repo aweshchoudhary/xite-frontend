@@ -40,15 +40,16 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Enterprise Not Found",
-      description: "The requested enterprise could not be found on Xite Platform",
+      description:
+        "The requested enterprise could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.name,
-    description: `View enterprise details for ${data.name} on Xite Platform. ${data.programs.length} program(s) associated.`,
+    description: `View enterprise details for ${data.name} on XITE Platform. ${data.programs.length} program(s) associated.`,
     ogTitle: data.name,
-    ogDescription: `Enterprise partner ${data.name} on Xite Platform`,
+    ogDescription: `Enterprise partner ${data.name} on XITE Platform`,
   });
 }
 export default async function Page({

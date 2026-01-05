@@ -24,7 +24,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Academic Partners",
-  description: "Manage and view all academic partners on Xite Platform. Track partnerships and collaborations with academic institutions.",
+  description:
+    "Manage and view all academic partners on XITE Platform. Track partnerships and collaborations with academic institutions.",
 });
 
 export default async function Page() {

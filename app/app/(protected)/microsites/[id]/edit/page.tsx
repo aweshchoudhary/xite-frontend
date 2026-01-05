@@ -20,13 +20,15 @@ export async function generateMetadata({
   if (!data || !data.microsite) {
     return generateSEOMetadata({
       title: "Edit Microsite",
-      description: "Edit microsite on Xite Platform",
+      description: "Edit microsite on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${data.microsite.name || "Microsite"}`,
-    description: `Edit microsite details for ${data.microsite.name || "this microsite"} on Xite Platform`,
+    description: `Edit microsite details for ${
+      data.microsite.name || "this microsite"
+    } on XITE Platform`,
   });
 }
 

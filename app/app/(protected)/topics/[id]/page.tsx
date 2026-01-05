@@ -32,15 +32,21 @@ export async function generateMetadata({
   if (!data) {
     return generateSEOMetadata({
       title: "Topic Not Found",
-      description: "The requested topic could not be found on Xite Platform",
+      description: "The requested topic could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.title,
-    description: `View topic details for ${data.title} on Xite Platform. ${data.sub_topics.length} subtopic(s). ${data.description ? data.description.substring(0, 100) + "..." : ""}`,
+    description: `View topic details for ${data.title} on XITE Platform. ${
+      data.sub_topics.length
+    } subtopic(s). ${
+      data.description ? data.description.substring(0, 100) + "..." : ""
+    }`,
     ogTitle: data.title,
-    ogDescription: data.description ? data.description.substring(0, 150) : `Topic: ${data.title} on Xite Platform`,
+    ogDescription: data.description
+      ? data.description.substring(0, 150)
+      : `Topic: ${data.title} on XITE Platform`,
   });
 }
 
@@ -69,9 +75,7 @@ export default async function TopicPage({
       <section>
         <div className="flex xl:gap-15 items-start gap-10">
           <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">
-              Topic Details
-            </p>
+            <p className="text-sm text-muted-foreground mb-5">Topic Details</p>
             <div className="space-y-5">
               <div className="grid grid-cols-1 gap-2">
                 <div>
@@ -152,4 +156,3 @@ const PageBreadcrumb = ({ title }: { title: string }) => {
     </Breadcrumb>
   );
 };
-

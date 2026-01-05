@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "New Cohort",
-  description: "Create a new cohort on Xite Platform. Set up cohort details, dates, and assignments.",
+  description:
+    "Create a new cohort on XITE Platform. Set up cohort details, dates, and assignments.",
 });
 
 export default async function NewCohortPage({

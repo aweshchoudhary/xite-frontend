@@ -21,15 +21,20 @@ export async function generateMetadata({
   if (!data || !data.microsite) {
     return generateSEOMetadata({
       title: "Microsite Not Found",
-      description: "The requested microsite could not be found on Xite Platform",
+      description:
+        "The requested microsite could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: data.microsite.name || "Microsite",
-    description: `View microsite details for ${data.microsite.name || "this microsite"} on Xite Platform`,
+    description: `View microsite details for ${
+      data.microsite.name || "this microsite"
+    } on XITE Platform`,
     ogTitle: data.microsite.name || "Microsite",
-    ogDescription: `Microsite: ${data.microsite.name || "View microsite"} on Xite Platform`,
+    ogDescription: `Microsite: ${
+      data.microsite.name || "View microsite"
+    } on XITE Platform`,
   });
 }
 

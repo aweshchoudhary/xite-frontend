@@ -21,13 +21,13 @@ export async function generateMetadata({
   if (!topic) {
     return generateSEOMetadata({
       title: "New Sub Topic",
-      description: "Create a new subtopic on Xite Platform",
+      description: "Create a new subtopic on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `New Sub Topic - ${topic.title}`,
-    description: `Create a new subtopic for ${topic.title} on Xite Platform`,
+    description: `Create a new subtopic for ${topic.title} on XITE Platform`,
   });
 }
 
@@ -71,4 +71,3 @@ export default async function NewSubTopicPage({
     </div>
   );
 }
-

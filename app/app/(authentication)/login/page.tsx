@@ -6,7 +6,8 @@ import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 export const metadata = generateSEOMetadata({
   title: "Login",
-  description: "Sign in to your Xite Platform account to access your learning management dashboard",
+  description:
+    "Sign in to your XITE Platform account to access your learning management dashboard",
 });
 
 export default async function Login() {

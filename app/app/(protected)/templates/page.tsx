@@ -3,7 +3,8 @@ import { generateSEOMetadata } from "@/modules/common/lib/seo";
 
 export const metadata = generateSEOMetadata({
   title: "Templates",
-  description: "Manage microsite templates on Xite Platform. Create and customize templates for your learning sites.",
+  description:
+    "Manage microsite templates on XITE Platform. Create and customize templates for your learning sites.",
 });
 
 export default function Page() {

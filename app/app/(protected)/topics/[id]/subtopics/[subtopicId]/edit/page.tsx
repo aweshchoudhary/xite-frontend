@@ -16,7 +16,7 @@ export async function generateMetadata({
   if (!topic) {
     return generateSEOMetadata({
       title: "Edit Sub Topic",
-      description: "Edit subtopic on Xite Platform",
+      description: "Edit subtopic on XITE Platform",
     });
   }
 
@@ -25,13 +25,13 @@ export async function generateMetadata({
   if (!subtopic) {
     return generateSEOMetadata({
       title: "Edit Sub Topic",
-      description: "Edit subtopic on Xite Platform",
+      description: "Edit subtopic on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${subtopic.title}`,
-    description: `Edit subtopic details for ${subtopic.title} under ${topic.title} on Xite Platform`,
+    description: `Edit subtopic details for ${subtopic.title} under ${topic.title} on XITE Platform`,
   });
 }
 

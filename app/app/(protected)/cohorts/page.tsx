@@ -23,7 +23,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Cohorts",
-  description: "Manage and view all cohorts on Xite Platform. Track cohort status, assignments, and progress.",
+  description:
+    "Manage and view all cohorts on XITE Platform. Track cohort status, assignments, and progress.",
 });
 
 interface PageProps {

@@ -21,15 +21,19 @@ export async function generateMetadata({
   if (!template) {
     return generateSEOMetadata({
       title: "Template Not Found",
-      description: "The requested template could not be found on Xite Platform",
+      description: "The requested template could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: template.name || "Template",
-    description: `View template details for ${template.name || "this template"} on Xite Platform`,
+    description: `View template details for ${
+      template.name || "this template"
+    } on XITE Platform`,
     ogTitle: template.name || "Template",
-    ogDescription: `Template: ${template.name || "View template"} on Xite Platform`,
+    ogDescription: `Template: ${
+      template.name || "View template"
+    } on XITE Platform`,
   });
 }
 

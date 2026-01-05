@@ -54,15 +54,15 @@ export async function generateMetadata({
   if (!program) {
     return generateSEOMetadata({
       title: "Program Not Found",
-      description: "The requested program could not be found on Xite Platform",
+      description: "The requested program could not be found on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: program.name,
-    description: `View program details for ${program.name} on Xite Platform. Academic Partner: ${program.academic_partner.name}. ${program.cohorts.length} cohort(s).`,
+    description: `View program details for ${program.name} on XITE Platform. Academic Partner: ${program.academic_partner.name}. ${program.cohorts.length} cohort(s).`,
     ogTitle: program.name,
-    ogDescription: `${program.name} program by ${program.academic_partner.name} on Xite Platform`,
+    ogDescription: `${program.name} program by ${program.academic_partner.name} on XITE Platform`,
   });
 }
 

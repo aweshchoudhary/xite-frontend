@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "New Topic",
-  description: "Create a new topic on Xite Platform. Add topic details, description, and organize your learning content.",
+  description:
+    "Create a new topic on XITE Platform. Add topic details, description, and organize your learning content.",
 });
 
 export default async function NewTopicPage() {

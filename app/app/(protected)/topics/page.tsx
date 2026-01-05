@@ -21,7 +21,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = generateSEOMetadata({
   title: "Topics",
-  description: "Manage and organize topics and subtopics on Xite Platform. Create, edit, and structure your learning content.",
+  description:
+    "Manage and organize topics and subtopics on XITE Platform. Create, edit, and structure your learning content.",
 });
 
 export default async function Page() {

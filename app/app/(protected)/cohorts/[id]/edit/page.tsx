@@ -27,13 +27,15 @@ export async function generateMetadata({
   if (!cohort) {
     return generateSEOMetadata({
       title: "Edit Cohort",
-      description: "Edit cohort on Xite Platform",
+      description: "Edit cohort on XITE Platform",
     });
   }
 
   return generateSEOMetadata({
     title: `Edit ${cohort.name || cohort.cohort_key || "Cohort"}`,
-    description: `Edit cohort details for ${cohort.name || cohort.cohort_key || "this cohort"} on Xite Platform`,
+    description: `Edit cohort details for ${
+      cohort.name || cohort.cohort_key || "this cohort"
+    } on XITE Platform`,
   });
 }
 
