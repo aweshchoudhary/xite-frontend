@@ -23,6 +23,8 @@ import { FormBaseProps } from "@/modules/common/components/global/form/types/for
 import { useRouter } from "next/navigation";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
+import { Badge } from "@ui/badge";
+import { X } from "lucide-react";
 
 type CreateFormProps = FormBaseProps<ProgramCreateSchema>;
 
@@ -37,6 +39,7 @@ export default function CreateForm({
       ...defaultValues,
       description: defaultValues?.description,
       type: defaultValues?.type ?? ProgramType.OPEN,
+      tags: defaultValues?.tags ?? [],
     },
   });
 
@@ -75,6 +78,24 @@ export default function CreateForm({
     }
   }, [form.getValues("type")]);
 
+  const tags = form.watch("tags") || [];
+
+  const addTag = () => {
+    const input = document.getElementById("tag-input") as HTMLInputElement;
+    const value = input?.value?.trim();
+    if (value && !tags.includes(value)) {
+      form.setValue("tags", [...tags, value]);
+      input.value = "";
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    form.setValue(
+      "tags",
+      tags.filter((t) => t !== tag)
+    );
+  };
+
   return (
     <form
       autoComplete="off"
@@ -105,9 +126,7 @@ export default function CreateForm({
             name="short_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  isRequired={requiredFields.includes("short_name")}
-                >
+                <FieldLabel isRequired={requiredFields.includes("short_name")}>
                   Program Short Name
                 </FieldLabel>
                 <Input
@@ -206,6 +225,42 @@ export default function CreateForm({
             />
           </div>
         )}
+        <div className="col-span-2">
+          <Field>
+            <FieldLabel>Tags</FieldLabel>
+            <div className="flex gap-2">
+              <Input
+                id="tag-input"
+                placeholder="Add tag"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addTag();
+                  }
+                }}
+              />
+              <Button type="button" onClick={addTag}>
+                Add
+              </Button>
+            </div>
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {tags.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="gap-1">
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(tag)}
+                      className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                    >
+                      <X className="size-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </Field>
+        </div>
       </div>
 
       <footer className="flex justify-end gap-2">

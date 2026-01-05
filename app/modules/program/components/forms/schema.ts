@@ -10,6 +10,7 @@ export const programBaseSchema = z.object({
   enterprise_id: z.string().optional().nullable(),
   short_name: z.string(),
   program_key: z.string(),
+  tags: z.array(z.string()).default([]),
 });
 
 // Separate conditional validation logic

@@ -9,6 +9,7 @@ import {
   Pencil,
   Plus,
   School,
+  Tag,
   TrashIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -122,6 +123,22 @@ export default async function ProgramPage({
                 Cohorts
               </div>
               <div>{program.cohorts.length}</div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <Tag className="size-4" strokeWidth={1.5} /> Tags
+              </div>
+              <div className="flex max-w-xs flex-wrap gap-2">
+                {program.tags && program.tags.length > 0 ? (
+                  program.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))
+                ) : (
+                  <span className="text-muted-foreground text-sm">No tags</span>
+                )}
+              </div>
             </div>
           </div>
         </div>

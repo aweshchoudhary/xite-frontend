@@ -1,5 +1,9 @@
 "use server";
-import { updateOne, UpdateOneOutput } from "@/modules/program/server/update";
+import {
+  updateOne,
+  UpdateOneInput,
+  UpdateOneOutput,
+} from "@/modules/program/server/update";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { getCohortsByProgramId, getAll } from "@/modules/program/server/read";
@@ -9,10 +13,29 @@ export async function updateProgramAction(
   programId: string
 ): Promise<UpdateOneOutput> {
   try {
-    const program = await updateOne({
+    const { academic_partner_id, enterprise_id, ...rest } = data;
+
+    const inputData: UpdateOneInput = {
       id: programId,
-      data,
-    });
+      data: {
+        ...rest,
+        academic_partner: {
+          connect: {
+            id: academic_partner_id,
+          },
+        },
+      },
+    };
+
+    if (enterprise_id) {
+      inputData.data.enterprise = {
+        connect: {
+          id: enterprise_id,
+        },
+      };
+    }
+
+    const program = await updateOne(inputData);
 
     if (!program) {
       throw new Error("Failed to update program");
