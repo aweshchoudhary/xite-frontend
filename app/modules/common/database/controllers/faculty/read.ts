@@ -28,6 +28,7 @@ export async function getRecord({
  * Get multiple faculty records
  */
 export type GetManyRecordsInput = {
+  where?: PrimaryDB.FacultyWhereInput;
   include?: PrimaryDB.FacultyInclude;
   select?: PrimaryDB.FacultySelect;
   orderBy?: PrimaryDB.FacultyOrderByWithRelationInput;
@@ -38,6 +39,7 @@ export type GetManyRecordsInput = {
 export type GetManyRecordsOutput = PrimaryDB.FacultyGetPayload<object>[];
 
 export async function getManyRecords({
+  where,
   include,
   select,
   orderBy,
@@ -47,7 +49,7 @@ export async function getManyRecords({
 }: GetManyRecordsInput): Promise<GetManyRecordsOutput> {
   try {
     const findManyInput: PrimaryDB.FacultyFindManyArgs = {
-      where: {},
+      where: where || {},
       orderBy,
       cursor,
       take,

@@ -1,6 +1,9 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
+import {
+  getManyRecords,
+  getRecord,
+} from "@/modules/common/database/controllers/faculty/read";
 
 export type GetOneOutput = PrimaryDB.FacultyGetPayload<{
   include: {
@@ -21,7 +24,7 @@ export type GetAllOutput = GetOneOutput[];
 
 export async function getAll(): Promise<GetAllOutput> {
   try {
-    return await primaryDB.faculty.findMany({
+    return await getManyRecords({
       include: {
         academic_partner: true,
         faculty_subject_areas: {
@@ -48,8 +51,8 @@ export async function getOne({
   id: string;
 }): Promise<GetOneOutput | null> {
   try {
-    const faculty = await primaryDB.faculty.findUnique({
-      where: { id },
+    const faculty = await getRecord({
+      recordId: id,
       include: {
         academic_partner: true,
         faculty_subject_areas: {

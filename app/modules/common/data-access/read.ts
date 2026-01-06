@@ -1,5 +1,14 @@
 "use server";
 import { primaryDB } from "../database/prisma/connection";
+import {
+  getManyRecords as getManyCohorts,
+} from "../database/controllers/cohort/read";
+import {
+  getManyRecords as getManyFaculty,
+} from "../database/controllers/faculty/read";
+import {
+  getManyRecords as getManyAcademicPartners,
+} from "../database/controllers/academic-partner/read";
 
 type ReadProps = {
   query: string;
@@ -39,7 +48,7 @@ export async function globalSearchRead({ query }: ReadProps) {
       take: 5,
     });
 
-    const cohortsData = await primaryDB.cohort.findMany({
+    const cohortsData = await getManyCohorts({
       where: {
         OR: [
           {
@@ -78,7 +87,7 @@ export async function globalSearchRead({ query }: ReadProps) {
       take: 5,
     });
 
-    const facultyData = await primaryDB.faculty.findMany({
+    const facultyData = await getManyFaculty({
       where: {
         OR: [
           {
@@ -129,7 +138,7 @@ export async function globalSearchRead({ query }: ReadProps) {
       take: 5,
     });
 
-    const academicPartnerData = await primaryDB.academicPartner.findMany({
+    const academicPartnerData = await getManyAcademicPartners({
       where: {
         OR: [
           {

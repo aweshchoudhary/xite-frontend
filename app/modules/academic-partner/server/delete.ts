@@ -1,6 +1,6 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { deleteRecord } from "@/modules/common/database/controllers/academic-partner/delete";
 
 export type DeleteOneOutput = PrimaryDB.AcademicPartnerGetPayload<object>;
 
@@ -10,10 +10,7 @@ export async function deleteOne({
   id: string;
 }): Promise<DeleteOneOutput> {
   try {
-    const deletedData = await primaryDB.academicPartner.delete({
-      where: { id },
-    });
-
+    const deletedData = await deleteRecord({ recordId: id });
     return deletedData;
   } catch (error) {
     console.error(error);

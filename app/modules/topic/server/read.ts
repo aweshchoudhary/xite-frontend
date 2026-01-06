@@ -1,7 +1,10 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
+import {
+  getManyRecords,
+  getRecord,
+} from "@/modules/common/database/controllers/topic/read";
 
 export type GetOne = PrimaryDB.TopicGetPayload<{
   include: {
@@ -25,7 +28,7 @@ export type GetAllOutput = {
 
 export async function getAll(): Promise<GetAllOutput> {
   try {
-    const data = await primaryDB.topic.findMany({
+    const data = await getManyRecords({
       include: {
         sub_topics: true,
       },
@@ -44,8 +47,8 @@ export async function getAll(): Promise<GetAllOutput> {
 
 export async function getOne({ id }: { id: string }): Promise<GetOneOutput> {
   try {
-    const data = await primaryDB.topic.findUnique({
-      where: { id },
+    const data = await getRecord({
+      recordId: id,
       include: {
         sub_topics: true,
       },

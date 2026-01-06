@@ -29,6 +29,7 @@ export async function getRecord({
  * Get multiple cohort records
  */
 export type GetManyRecordsInput = {
+  where?: PrimaryDB.CohortWhereInput;
   include?: PrimaryDB.CohortInclude;
   select?: PrimaryDB.CohortSelect;
   orderBy?: PrimaryDB.CohortOrderByWithRelationInput;
@@ -39,6 +40,7 @@ export type GetManyRecordsInput = {
 export type GetManyRecordsOutput = PrimaryDB.CohortGetPayload<object>[];
 
 export async function getManyRecords({
+  where,
   include,
   select,
   orderBy,
@@ -48,7 +50,7 @@ export async function getManyRecords({
 }: GetManyRecordsInput): Promise<GetManyRecordsOutput> {
   try {
     const findManyInput: PrimaryDB.CohortFindManyArgs = {
-      where: {},
+      where: where || {},
       orderBy,
       cursor,
       take,
@@ -72,13 +74,15 @@ export async function getManyRecords({
 /**
  * Get multiple cohort records by their status
  */
-export type GetManyRecordsByStatusInput = GetManyRecordsInput & {
+export type GetManyRecordsByStatusInput = Omit<GetManyRecordsInput, "where"> & {
   status: WorkStatus | "ALL";
+  where?: PrimaryDB.CohortWhereInput;
 };
 export type GetManyRecordsByStatusOutput = Cohort[];
 
 export async function getManyRecordsByStatus({
   status,
+  where,
   include,
   select,
   orderBy,
@@ -88,7 +92,10 @@ export async function getManyRecordsByStatus({
 }: GetManyRecordsByStatusInput): Promise<GetManyRecordsByStatusOutput> {
   try {
     const findManyInput: PrimaryDB.CohortFindManyArgs = {
-      where: { status: status === "ALL" ? undefined : status },
+      where: {
+        ...(where || {}),
+        status: status === "ALL" ? undefined : status,
+      },
       orderBy,
       cursor,
       take,

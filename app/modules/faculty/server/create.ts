@@ -1,8 +1,8 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "../contants";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { createRecord } from "@/modules/common/database/controllers/faculty/create";
 
 export type CreateOneOutput = PrimaryDB.FacultyGetPayload<object>;
 
@@ -11,13 +11,11 @@ export async function createOne(
 ): Promise<CreateOneOutput> {
   try {
     const user = await getLoggedInUser();
-    const newData = await primaryDB.faculty.create({
-      data: {
-        ...data,
-        updated_by: {
-          connect: {
-            id: user.dbUser?.id,
-          },
+    const newData = await createRecord({
+      ...data,
+      updated_by: {
+        connect: {
+          id: user.dbUser?.id,
         },
       },
     });

@@ -1,7 +1,7 @@
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "../contants";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { createRecord } from "@/modules/common/database/controllers/topic/create";
 
 export type CreateOneOutput = PrimaryDB.TopicGetPayload<object>;
 
@@ -9,9 +9,7 @@ export async function createOne(
   data: PrimaryDB.TopicCreateInput
 ): Promise<CreateOneOutput> {
   try {
-    const newData = await primaryDB.topic.create({
-      data,
-    });
+    const newData = await createRecord(data);
     if (!newData) {
       throw new Error(`Failed to create ${MODULE_NAME}`);
     }

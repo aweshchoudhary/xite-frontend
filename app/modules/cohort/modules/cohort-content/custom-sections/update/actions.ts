@@ -8,6 +8,7 @@ import { getLoggedInUser } from "@/modules/user/utils";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
 import { upsertSectionPosition } from "@/modules/cohort/server/cohort/update";
+import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGenericSectionGetPayload<object>[];
@@ -43,8 +44,8 @@ export const updateAction = async ({
     // Disconnect and delete old sections (keep as is)
     await Promise.all(
       currentSections.map(async (section) => {
-        await primaryDB.cohort.update({
-          where: { id: cohort_id },
+        await updateRecord({
+          recordId: cohort_id,
           data: { generic_sections: { disconnect: { id: section.id } } },
         });
         await primaryDB.cohortSectionOrder.deleteMany({

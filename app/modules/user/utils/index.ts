@@ -3,7 +3,7 @@ import {
   getUser,
   getUserRoles,
 } from "@/modules/common/authentication/firebase/action";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { getRecord } from "@/modules/common/database/controllers/cohort/read";
 
 export const isUserAdmin = async () => {
   const session = await getUserRoles();
@@ -25,8 +25,8 @@ export const checkUserOwnsCohort = async (cohortId: string) => {
   if (isAdmin) return true;
 
   const user = await getLoggedInUser();
-  const cohort = await primaryDB.cohort.findFirst({
-    where: { id: cohortId },
+  const cohort = await getRecord({
+    recordId: cohortId,
     select: {
       ownerId: true,
     },

@@ -1,7 +1,7 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_PATH } from "../contants";
 import { revalidatePath } from "next/cache";
+import { updateRecord } from "@/modules/common/database/controllers/topic/update";
 
 export type UpdateOneOutput = PrimaryDB.TopicGetPayload<object>;
 
@@ -13,8 +13,8 @@ export async function updateOne({
   data: PrimaryDB.TopicUpdateInput;
 }) {
   try {
-    const updatedData = await primaryDB.topic.update({
-      where: { id },
+    const updatedData = await updateRecord({
+      recordId: id,
       data,
     });
 

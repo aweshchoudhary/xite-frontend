@@ -3,6 +3,7 @@ import { CohortSectionType } from "@/modules/common/database/prisma/generated/pr
 
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { createRecord } from "@/modules/common/database/controllers/cohort/create";
 
 export type CreateCohortOutputData = PrimaryDB.CohortGetPayload<object>;
 
@@ -10,18 +11,16 @@ export async function createCohort(data: PrimaryDB.CohortCreateInput) {
   try {
     const user = await getLoggedInUser();
 
-    const cohort = await primaryDB.cohort.create({
-      data: {
-        ...data,
-        owner: {
-          connect: {
-            id: user.dbUser?.id,
-          },
+    const cohort = await createRecord({
+      ...data,
+      owner: {
+        connect: {
+          id: user.dbUser?.id,
         },
-        updated_by: {
-          connect: {
-            id: user.dbUser?.id,
-          },
+      },
+      updated_by: {
+        connect: {
+          id: user.dbUser?.id,
         },
       },
     });

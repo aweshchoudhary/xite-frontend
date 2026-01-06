@@ -1,9 +1,9 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_PATH } from "../contants";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { updateRecord } from "@/modules/common/database/controllers/faculty/update";
 
 export type UpdateOneOutput = PrimaryDB.FacultyGetPayload<object>;
 
@@ -16,8 +16,8 @@ export async function updateOne({
 }) {
   try {
     const user = await getLoggedInUser();
-    const updatedData = await primaryDB.faculty.update({
-      where: { id },
+    const updatedData = await updateRecord({
+      recordId: id,
       data: {
         ...data,
         updated_by: {

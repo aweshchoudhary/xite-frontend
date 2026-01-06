@@ -1,10 +1,9 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
-
 import { UpdateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGetPayload<object>;
@@ -23,10 +22,8 @@ export const updateAction = async ({
 
     await updateSectionOrder({ sections, cohort_id });
 
-    const upsertedData = await primaryDB.cohort.update({
-      where: {
-        id: cohort_id,
-      },
+    const upsertedData = await updateRecord({
+      recordId: cohort_id,
       data: {
         microsite_section: {
           update: {

@@ -1,7 +1,10 @@
 "use server";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
+import {
+  getManyRecords,
+  getRecord,
+} from "@/modules/common/database/controllers/academic-partner/read";
 
 export type GetOne = PrimaryDB.AcademicPartnerGetPayload<{
   include: {
@@ -33,7 +36,7 @@ export type GetAllOutput = {
 
 export async function getAll(): Promise<GetAllOutput> {
   try {
-    const data = await primaryDB.academicPartner.findMany({
+    const data = await getManyRecords({
       include: {
         programs: {
           include: {
@@ -57,8 +60,8 @@ export async function getAll(): Promise<GetAllOutput> {
 
 export async function getOne({ id }: { id: string }): Promise<GetOneOutput> {
   try {
-    const data = await primaryDB.academicPartner.findUnique({
-      where: { id },
+    const data = await getRecord({
+      recordId: id,
       include: {
         programs: {
           include: {

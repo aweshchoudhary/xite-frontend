@@ -6,6 +6,11 @@ import {
   WorkStatus,
 } from "@/modules/common/database/prisma/generated/prisma";
 import { GetCohortInclude } from "./read-schema";
+import {
+  getManyRecords,
+  getManyRecordsByStatus,
+  getRecord,
+} from "@/modules/common/database/controllers/cohort/read";
 
 export type GetCohort = PrimaryDB.CohortGetPayload<{
   include: {
@@ -151,7 +156,7 @@ export type GetCohortForTable = PrimaryDB.CohortGetPayload<{
 
 export async function getCohorts() {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
+    const cohorts = await getManyRecords({
       include: {
         program: true,
         fees: {
@@ -206,10 +211,8 @@ export async function getCohorts() {
 
 export async function getAllByStatus(status: WorkStatus | "ALL") {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
-      where: {
-        status: status === "ALL" ? undefined : status,
-      },
+    const cohorts = await getManyRecordsByStatus({
+      status,
       include: {
         program: {
           include: {
@@ -243,11 +246,11 @@ export async function getAllByStatus(status: WorkStatus | "ALL") {
 
 export async function getAll() {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
-      where: {},
+    const cohorts = await getManyRecords({
       include: {
         program: {
           include: {
+            enterprise: true,
             tags: true,
           },
         },
@@ -256,45 +259,12 @@ export async function getAll() {
             currency: true,
           },
         },
-        faculty_section: {
-          include: {
-            items: {
-              include: {
-                faculty: {
-                  include: {
-                    academic_partner: true,
-                    faculty_subject_areas: {
-                      include: {
-                        subject_area: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        design_curriculum_section: {
-          include: {
-            items: {
-              include: {
-                objectives: true,
-                sessions: {
-                  include: {
-                    objectives: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        owner: true,
       },
     });
     if (!cohorts) {
       throw new Error("No cohorts found");
     }
-    return cohorts;
+    return cohorts as GetCohortForTable[];
   } catch (error) {
     console.error(error);
     throw error;
@@ -309,30 +279,36 @@ export async function getCohort({
   accessCheck?: boolean;
 }): Promise<GetCohort> {
   try {
-    const cohort = await primaryDB.cohort.findFirst({
-      where: {
-        OR: [
-          {
-            id,
-          },
-          {
-            cohort_key: id,
-          },
-          {
-            microsite_section: {
-              custom_domain: id,
-            },
-          },
-        ],
-      },
+    // Try by id first using controller
+    let cohort = await getRecord({
+      recordId: id,
       include: GetCohortInclude,
     });
+
+    // If not found, try by cohort_key or custom_domain using direct query
+    if (!cohort) {
+      cohort = await primaryDB.cohort.findFirst({
+        where: {
+          OR: [
+            {
+              cohort_key: id,
+            },
+            {
+              microsite_section: {
+                custom_domain: id,
+              },
+            },
+          ],
+        },
+        include: GetCohortInclude,
+      });
+    }
 
     if (!cohort) {
       throw new Error("Cohort not found");
     }
 
-    return cohort;
+    return cohort as GetCohort;
   } catch (error) {
     console.error(error);
     throw error;
@@ -351,19 +327,19 @@ export async function getCohortsByProgramId({
   programId: string;
 }): Promise<GetCohortByProgramId[]> {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
+    const cohorts = await getManyRecordsByStatus({
+      status: "ACTIVE",
       where: {
         program_id: programId,
-        status: "ACTIVE",
       },
       include: {
         program: true,
       },
     });
-    if (!cohorts) {
+    if (!cohorts.length) {
       throw new Error("No cohorts found");
     }
-    return cohorts;
+    return cohorts as GetCohortByProgramId[];
   } catch (error) {
     console.error(error);
     throw error;
@@ -376,19 +352,19 @@ export async function getCohortsByProgramIdWithoutMicrosite({
   programId: string;
 }): Promise<GetCohortByProgramId[]> {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
+    const cohorts = await getManyRecordsByStatus({
+      status: "ACTIVE",
       where: {
         program_id: programId,
-        status: "ACTIVE",
       },
       include: {
         program: true,
       },
     });
-    if (!cohorts) {
+    if (!cohorts.length) {
       throw new Error("No cohorts found");
     }
-    return cohorts;
+    return cohorts as GetCohortByProgramId[];
   } catch (error) {
     console.error(error);
     throw error;
@@ -408,18 +384,19 @@ export async function getLatestCohortByProgramId({
   programId,
 }: GetLatestCohortByProgramIdInput): Promise<GetLatestCohortByProgramIdOutput> {
   try {
-    const lastCohort = await primaryDB.cohort.findFirst({
+    const cohorts = await getManyRecordsByStatus({
+      status: "ACTIVE",
       where: {
         program_id: programId,
-        status: "ACTIVE",
       },
       include: GetCohortInclude,
       orderBy: {
         start_date: "desc",
       },
+      take: 1,
     });
-
-    return { data: lastCohort };
+    const lastCohort = cohorts[0] || null;
+    return { data: lastCohort as GetCohort | null };
   } catch (error) {
     throw error;
   }

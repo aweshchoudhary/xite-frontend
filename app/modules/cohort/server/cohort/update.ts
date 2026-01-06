@@ -5,6 +5,7 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 import { GetCohortInclude } from "./read-schema";
 import { getLoggedInUser, checkUserOwnsCohort } from "@/modules/user/utils";
+import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 
 export type UpdateProgramOutputData = PrimaryDB.ProgramGetPayload<object>;
 export type UpdateCohortInputData = PrimaryDB.CohortUpdateInput;
@@ -29,8 +30,8 @@ export async function updateCohort({
 
     const user = await getLoggedInUser();
 
-    const cohort = await primaryDB.cohort.update({
-      where: { id: cohortId },
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: {
         ...data,
         updated_by: {
@@ -78,8 +79,8 @@ export async function updateCohortFacultyList({
     }
 
     const user = await getLoggedInUser();
-    const updatedData = await primaryDB.cohort.update({
-      where: { id: cohortId },
+    const updatedData = await updateRecord({
+      recordId: cohortId,
       data: {
         faculty_section: {
           update: {
@@ -123,8 +124,8 @@ export async function updateCohortIndustryExpertsList({
     }
 
     const user = await getLoggedInUser();
-    const updatedData = await primaryDB.cohort.update({
-      where: { id: cohortId },
+    const updatedData = await updateRecord({
+      recordId: cohortId,
       data: {
         industry_experts_section: {
           update: {

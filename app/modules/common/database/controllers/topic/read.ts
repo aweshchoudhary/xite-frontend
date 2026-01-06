@@ -28,6 +28,7 @@ export async function getRecord({
  * Get multiple topic records
  */
 export type GetManyRecordsInput = {
+  where?: PrimaryDB.TopicWhereInput;
   include?: PrimaryDB.TopicInclude;
   select?: PrimaryDB.TopicSelect;
   orderBy?: PrimaryDB.TopicOrderByWithRelationInput;
@@ -38,6 +39,7 @@ export type GetManyRecordsInput = {
 export type GetManyRecordsOutput = PrimaryDB.TopicGetPayload<object>[];
 
 export async function getManyRecords({
+  where,
   include,
   select,
   orderBy,
@@ -47,7 +49,7 @@ export async function getManyRecords({
 }: GetManyRecordsInput): Promise<GetManyRecordsOutput> {
   try {
     const findManyInput: PrimaryDB.TopicFindManyArgs = {
-      where: {},
+      where: where || {},
       orderBy,
       cursor,
       take,

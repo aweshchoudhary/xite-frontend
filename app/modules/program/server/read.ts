@@ -3,6 +3,10 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_NAME } from "../contants";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
+import {
+  getManyRecords,
+  getManyRecordsByStatus,
+} from "@/modules/common/database/controllers/cohort/read";
 
 export type GetAllOutput = {
   data?: GetOne[];
@@ -88,12 +92,12 @@ export async function getCohortsByProgramId({
   programId,
 }: GetCohortsByProgramIdInput): Promise<GetCohortsByProgramIdOutput> {
   try {
-    const cohorts = await primaryDB.cohort.findMany({
+    const cohorts = await getManyRecords({
       where: {
         program_id: programId,
       },
     });
-    if (!cohorts) {
+    if (!cohorts.length) {
       throw new Error("No cohorts found");
     }
     return { data: cohorts };
@@ -124,7 +128,7 @@ export async function getLastCohortByProgramId({
   programId,
 }: GetLastCohortByProgramIdInput): Promise<GetLastCohortByProgramIdOutput> {
   try {
-    const lastCohort = await primaryDB.cohort.findFirst({
+    const cohorts = await getManyRecords({
       where: {
         program_id: programId,
       },
@@ -134,8 +138,9 @@ export async function getLastCohortByProgramId({
       orderBy: {
         cohort_num: "desc",
       },
+      take: 1,
     });
-
+    const lastCohort = cohorts[0] || null;
     return { data: lastCohort };
   } catch (error) {
     console.error(error);

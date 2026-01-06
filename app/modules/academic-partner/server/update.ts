@@ -1,8 +1,8 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { MODULE_PATH } from "../contants";
 import { revalidatePath } from "next/cache";
 import { getUser } from "@/modules/common/authentication/firebase/action";
+import { updateRecord } from "@/modules/common/database/controllers/academic-partner/update";
 
 export type UpdateOneOutput = PrimaryDB.AcademicPartnerGetPayload<object>;
 
@@ -15,8 +15,8 @@ export async function updateOne({
 }) {
   try {
     const session = await getUser();
-    const updatedData = await primaryDB.academicPartner.update({
-      where: { id },
+    const updatedData = await updateRecord({
+      recordId: id,
       data: {
         ...data,
         updated_by: {
