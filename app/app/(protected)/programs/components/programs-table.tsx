@@ -7,11 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@ui/table";
-import { getAll } from "@/modules/program/server/read";
+import { getAllAction } from "@/modules/program/components/forms/read/get-all-action";
 import Link from "next/link";
 
 export default async function ProgramsTable() {
-  const { data: programs } = await getAll({});
+  const { data: programs } = await getAllAction();
   return (
     <Table>
       <TableHeader>

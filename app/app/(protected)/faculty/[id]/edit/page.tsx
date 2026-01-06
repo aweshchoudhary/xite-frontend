@@ -1,6 +1,6 @@
 import UpdateForm from "@/modules/faculty/components/forms/update/form";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
-import { getOne } from "@/modules/faculty/server/read";
+import { getOneWithRelationsAction } from "@/modules/faculty/components/forms/read/get-one-with-relations-action";
 import { notFound } from "next/navigation";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
@@ -11,7 +11,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -32,7 +32,7 @@ export default async function EditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const currentData = await getOne({ id });
+  const { data: currentData } = await getOneWithRelationsAction(id);
 
   if (!currentData) {
     notFound();

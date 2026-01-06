@@ -1,5 +1,5 @@
 "use client";
-import { GetOne } from "@/modules/topic/server/read";
+import { GetOne } from "@/modules/topic/components/forms/read/get-one-with-relations-action";
 import { Button } from "@ui/button";
 import { Pencil, Trash } from "lucide-react";
 import Link from "next/link";

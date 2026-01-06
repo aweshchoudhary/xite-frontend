@@ -1,5 +1,5 @@
 "use client";
-import { GetOneOutput } from "@/modules/enterprise/server/read";
+import { GetOneOutput } from "@/modules/enterprise/components/forms/read/get-one-with-relations-action";
 import { MODULE_PATH } from "@/modules/enterprise/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";

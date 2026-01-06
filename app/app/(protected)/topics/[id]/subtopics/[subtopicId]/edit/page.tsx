@@ -1,7 +1,7 @@
 import UpdateForm from "@/modules/topic/components/forms/subtopic/update/form";
 import { MODULE_PATH } from "@/modules/topic/contants";
 import { notFound } from "next/navigation";
-import { getOne } from "@/modules/topic/server/read";
+import { getOneWithRelationsAction } from "@/modules/topic/components/forms/read/get-one-with-relations-action";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
 
@@ -11,7 +11,7 @@ export async function generateMetadata({
   params: Promise<{ id: string; subtopicId: string }>;
 }): Promise<Metadata> {
   const { id, subtopicId } = await params;
-  const { data: topic } = await getOne({ id });
+  const { data: topic } = await getOneWithRelationsAction(id);
 
   if (!topic) {
     return generateSEOMetadata({
@@ -41,7 +41,7 @@ export default async function EditSubTopicPage({
   params: Promise<{ id: string; subtopicId: string }>;
 }) {
   const { id, subtopicId } = await params;
-  const { data: topic } = await getOne({ id });
+  const { data: topic } = await getOneWithRelationsAction(id);
 
   if (!topic) {
     return notFound();
