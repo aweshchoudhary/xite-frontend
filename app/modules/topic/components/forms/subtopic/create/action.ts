@@ -32,7 +32,7 @@ export async function createAction(
       throw new Error(`Failed to create SubTopic`);
     }
 
-    revalidatePath(MODULE_PATH);
+    revalidatePath("/topics");
 
     return { data: createdData };
   } catch (error) {

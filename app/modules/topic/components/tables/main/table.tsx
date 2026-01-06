@@ -1,6 +1,5 @@
 "use server";
-import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
-import { columns } from "./schema";
+import TopicsGroupedTable from "./topics-grouped-table";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export default async function TopicTable() {
@@ -8,6 +7,9 @@ export default async function TopicTable() {
     include: {
       sub_topics: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
-  return <DataTableView data={data ?? []} columns={columns} />;
+  return <TopicsGroupedTable data={data ?? []} />;
 }

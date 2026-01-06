@@ -2,7 +2,6 @@
 import { Button } from "@ui/button";
 import { deleteAction } from "./action";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,8 +33,6 @@ export default function DeleteModal({
   onSuccess,
   onCancel,
 }: FormModalProps) {
-  const router = useRouter();
-
   const handleDelete = async () => {
     toast.promise(deleteActionHandler(recordId), {
       loading: "Deleting...",
@@ -85,4 +82,3 @@ export default function DeleteModal({
     </AlertDialog>
   );
 }
-

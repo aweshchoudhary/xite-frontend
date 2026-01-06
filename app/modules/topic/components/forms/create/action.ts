@@ -22,7 +22,7 @@ export async function createAction(
       throw new Error(`Failed to create ${MODULE_NAME}`);
     }
 
-    revalidatePath(MODULE_PATH);
+    revalidatePath("/topics");
 
     return { data: createdData };
   } catch (error) {
@@ -30,5 +30,3 @@ export async function createAction(
     return { error: `Failed to create ${MODULE_NAME}` };
   }
 }
-
-

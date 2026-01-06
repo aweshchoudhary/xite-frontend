@@ -1,5 +1,5 @@
 "use server";
-import { MODULE_NAME, MODULE_PATH } from "@/modules/topic/contants";
+import { MODULE_NAME } from "@/modules/topic/contants";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
@@ -11,11 +11,15 @@ type DeleteActionOutput = {
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
+    await primaryDB.subTopic.deleteMany({
+      where: { topic_id: id },
+    });
+
     const deletedData = await primaryDB.topic.delete({
       where: { id: id },
     });
 
-    revalidatePath(MODULE_PATH);
+    revalidatePath("/topics");
 
     return { data: deletedData };
   } catch (error) {
@@ -23,5 +27,3 @@ export async function deleteAction(id: string): Promise<DeleteActionOutput> {
     return { error: `Failed to delete ${MODULE_NAME}` };
   }
 }
-
-
