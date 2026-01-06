@@ -56,7 +56,19 @@ export default async function Home() {
 }
 
 const AllPrograms = async () => {
-  const programs = await primaryDB.program.findMany({});
+  const programs = await primaryDB.program.findMany({
+    select: {
+      id: true,
+      name: true,
+      status: true,
+      academic_partner: {
+        select: {
+          name: true,
+        },
+      },
+      updated_at: true,
+    },
+  });
   if (!programs || programs.length === 0)
     return (
       <div>
@@ -137,7 +149,18 @@ const AllCohorts = async () => {
 
       <div className="space-y-3">
         {sortedCohorts.slice(0, 4).map((cohort) => (
-          <ViewCohortCard key={cohort.id} cohort={cohort} />
+          <ViewCohortCard
+            key={cohort.id}
+            cohort={{
+              end_date: cohort.end_date,
+              id: cohort.id,
+              name: cohort.name,
+              program: cohort.program,
+              start_date: cohort.start_date,
+              status: cohort.status,
+              updated_at: cohort.updated_at,
+            }}
+          />
         ))}
       </div>
     </div>

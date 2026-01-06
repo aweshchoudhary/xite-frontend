@@ -1,10 +1,9 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
-import TableActions from "./table-actions";
 import Link from "next/link";
-import type { GetOne } from "@/modules/topic/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/topic/contants";
+import { GetOne } from "../../forms/read/action";
 
 export const columns: ColumnDef<GetOne>[] = [
   {
@@ -21,17 +20,6 @@ export const columns: ColumnDef<GetOne>[] = [
       </Link>
     ),
     enableHiding: false,
-  },
-  {
-    accessorKey: "description",
-    header: ({ column }) => {
-      return <ColumnSortBtn column={column} title="Description" />;
-    },
-    cell: ({ row }) => (
-      <div className="prose truncate line-clamp-1">
-        <p>{row.original.description || "-"}</p>
-      </div>
-    ),
   },
   {
     accessorKey: "sub_topics_count",

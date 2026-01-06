@@ -90,6 +90,7 @@ export type GetCohortForTable = PrimaryDB.CohortGetPayload<{
     start_date: true;
     end_date: true;
     program_id: true;
+    updated_at: true;
     program: {
       select: {
         id: true;
@@ -276,6 +277,7 @@ export async function getAllByStatus(
         start_date: true,
         end_date: true,
         program_id: true,
+        updated_at: true,
         program: {
           select: {
             id: true,

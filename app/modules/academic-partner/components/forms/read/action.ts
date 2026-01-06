@@ -20,6 +20,13 @@ export type GetOne = PrimaryDB.AcademicPartnerGetPayload<{
   };
 }>;
 
+export type GetAcademicPartnerForTable = PrimaryDB.AcademicPartnerGetPayload<{
+  include: {
+    programs: true;
+    faculties: true;
+  };
+}>;
+
 export async function getOneAction(recordId: string) {
   try {
     const permission = await checkPermission("AcademicPartners", "read");
