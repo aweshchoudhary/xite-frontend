@@ -260,12 +260,6 @@ export async function getAllByStatus(
   status: WorkStatus | "ALL"
 ): Promise<GetCohortForTable[]> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const whereClause: PrimaryDB.CohortWhereInput =
       status === "ALL" ? {} : { status };
     const cohorts = await primaryDB.cohort.findMany({
