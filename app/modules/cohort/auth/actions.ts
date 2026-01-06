@@ -1,8 +1,8 @@
 "use server";
 
-import { getCohort } from "../server/cohort/read";
+import { getCohortBasic } from "../server/cohort/read";
 
 export const getCohortByIdAction = async (id: string) => {
-  const cohort = await getCohort({ id });
+  const cohort = await getCohortBasic({ id });
   return cohort;
 };

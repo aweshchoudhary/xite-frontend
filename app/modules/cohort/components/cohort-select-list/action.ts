@@ -1,10 +1,10 @@
 "use server";
 
-import { getAllByStatus } from "../../server/cohort/read";
+import { getActiveCohortsForSelect } from "../../server/cohort/read";
 
 export async function getCohortListAction() {
   try {
-    const cohorts = await getAllByStatus("ACTIVE");
+    const cohorts = await getActiveCohortsForSelect();
     return cohorts;
   } catch (error) {
     throw error;

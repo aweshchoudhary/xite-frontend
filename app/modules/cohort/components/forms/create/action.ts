@@ -6,10 +6,10 @@ import {
 import { CreateSchema } from "../schema";
 import {
   getAll,
-  getCohortsByProgramId,
   getLastCohortByProgramId,
   getOne,
 } from "@/modules/program/server/read";
+import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
