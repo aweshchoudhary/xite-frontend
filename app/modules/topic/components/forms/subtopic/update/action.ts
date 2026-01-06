@@ -1,15 +1,13 @@
 "use server";
-import {
-  updateOne,
-  UpdateOneOutput,
-} from "@/modules/topic/server/subtopic/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_PATH } from "@/modules/topic/contants";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: PrimaryDB.SubTopicGetPayload<object>;
 };
 
 export async function updateAction(
@@ -17,9 +15,19 @@ export async function updateAction(
   id: string
 ): Promise<UpdateActionOutput> {
   try {
-    const updatedData = await updateOne({
-      id,
-      data,
+    const updatedData = await primaryDB.subTopic.update({
+      where: { id },
+      data: {
+        title: data.title,
+        description: data.description,
+        keywords: data.keywords,
+        taost_id: data.taost_id,
+        topic: {
+          connect: {
+            id: data.topic_id,
+          },
+        },
+      },
     });
 
     if (!updatedData) {

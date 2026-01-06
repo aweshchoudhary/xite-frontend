@@ -1,8 +1,5 @@
 "use server";
-import {
-  CreateCohortOutputData,
-  createCohort,
-} from "@/modules/cohort/server/cohort/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { CreateSchema } from "../schema";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLastCohortByProgramId, getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
@@ -13,7 +10,7 @@ import { ERROR_MESSAGES } from "@/modules/common/constant";
 
 export async function createCohortAction(
   data: CreateSchema
-): Promise<CreateCohortOutputData> {
+): Promise<PrimaryDB.CohortGetPayload<object>> {
   try {
     const permission = await checkPermission("Cohort", "write");
 
@@ -58,32 +55,34 @@ export async function createCohortAction(
       newCohortKey = program.program_key + "-cohort-1";
     }
 
-    const cohort = await createCohort({
-      ...rest,
-      cohort_num: newCohortNumber,
-      cohort_key: newCohortKey,
-      fees: {
-        create: fees.map(({ amount, currency_code }) => ({
-          amount,
-          currency: {
-            connectOrCreate: {
-              where: {
-                code: currency_code,
-              },
-              create: currencyToCreate.find(
-                (currency) => currency.code === currency_code
-              ) ?? {
-                code: currency_code,
-                name: currency_code,
-                symbol: currency_code,
+    const cohort = await primaryDB.cohort.create({
+      data: {
+        ...rest,
+        cohort_num: newCohortNumber,
+        cohort_key: newCohortKey,
+        fees: {
+          create: fees.map(({ amount, currency_code }) => ({
+            amount,
+            currency: {
+              connectOrCreate: {
+                where: {
+                  code: currency_code,
+                },
+                create: currencyToCreate.find(
+                  (currency) => currency.code === currency_code
+                ) ?? {
+                  code: currency_code,
+                  name: currency_code,
+                  symbol: currency_code,
+                },
               },
             },
+          })),
+        },
+        program: {
+          connect: {
+            id: program_id,
           },
-        })),
-      },
-      program: {
-        connect: {
-          id: program_id,
         },
       },
     });

@@ -23,4 +23,3 @@ export async function getOneAction(recordId: string) {
     throw error;
   }
 }
-
