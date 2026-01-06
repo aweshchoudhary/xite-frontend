@@ -40,12 +40,6 @@ export type GetAllForTableOutput = {
 
 export async function getAllForTableAction(): Promise<GetAllForTableOutput> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const cohorts = await primaryDB.cohort.findMany({
       select: {
         id: true,
@@ -86,12 +80,6 @@ export async function getAllByStatusForTableAction(
   status: WorkStatus | "ALL"
 ): Promise<GetAllForTableOutput> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const whereClause: PrimaryDB.CohortWhereInput =
       status === "ALL" ? {} : { status };
 
@@ -131,4 +119,3 @@ export async function getAllByStatusForTableAction(
     };
   }
 }
-

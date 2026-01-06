@@ -34,13 +34,7 @@ type ViewCohortCardProps = {
 };
 
 export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
-  const hasPermission = useHasPermission("Cohort", "update");
-  const isUserOwnsCohort = useCheckUserOwnsCohort(cohort.id);
   const [isOpen, setIsOpen] = useState(false);
-
-  if (!hasPermission) {
-    return null;
-  }
 
   return (
     <div className="bg-background border rounded-md">
@@ -70,7 +64,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
               : ""}
           </p>
         </div>
-        {cohort.status !== WorkStatus.ACTIVE && isUserOwnsCohort ? (
+        {cohort.status !== WorkStatus.ACTIVE ? (
           <div className="flex items-center gap-1">
             <PermissionGate resource="Cohort" action="update">
               <Link
