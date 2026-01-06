@@ -1,3 +1,5 @@
+"use server";
+
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { loginAction } from "@/modules/common/authentication/firebase/action";
 import { auth } from "../../../firebase/client";

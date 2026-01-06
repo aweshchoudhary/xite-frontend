@@ -1,3 +1,5 @@
+"use server";
+
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 type Input = {
