@@ -1,41 +1,40 @@
 "use server";
-import {
-  createOne,
-  CreateOneInput,
-  CreateOneOutput,
-} from "@/modules/program/server/create";
 import { ProgramCreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId, getAll } from "@/modules/program/server/read";
+import { getCohortsByProgramId } from "@/modules/program/server/read";
+import {
+  createRecord,
+  CreateRecordInput,
+  CreateRecordOutput,
+} from "@common-database/controllers/program/create";
+import { getManyRecords } from "@/modules/common/database/controllers/program/read";
 
 export async function createProgramAction(
   data: ProgramCreateSchema
-): Promise<CreateOneOutput> {
+): Promise<CreateRecordOutput> {
   try {
-    const { academic_partner_id, enterprise_id, ...rest } = data;
+    const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
     const program_key = rest.short_name?.toLowerCase().replace(/\s+/g, "-");
 
-    const createProgramData: CreateOneInput = {
-      data: {
-        ...rest,
-        short_name: rest.short_name,
-        program_key: program_key,
-        academic_partner: {
-          connect: { id: academic_partner_id },
-        },
+    const createRecordInput: CreateRecordInput = {
+      ...rest,
+      program_key,
+      academic_partner: {
+        connect: { id: academic_partner_id },
+      },
+      tags: {
+        connect: tags.map((tag) => ({ id: tag })),
       },
     };
 
     if (enterprise_id) {
-      createProgramData.data.enterprise = {
+      createRecordInput.enterprise = {
         connect: { id: enterprise_id },
       };
     }
 
-    const program = await createOne({
-      data: createProgramData.data,
-    });
+    const program = await createRecord(createRecordInput);
 
     if (!program) {
       throw new Error("Failed to create program");
@@ -51,8 +50,8 @@ export async function createProgramAction(
 
 export async function getProgramsAction() {
   try {
-    const programs = await getAll({});
-    return programs;
+    const records = await getManyRecords({});
+    return records;
   } catch (error) {
     throw error;
   }
@@ -60,8 +59,8 @@ export async function getProgramsAction() {
 
 export async function getCohortsCountAction(programId: string) {
   try {
-    const { data: cohorts } = await getCohortsByProgramId({ programId });
-    return cohorts?.length ?? 0;
+    const records = await getCohortsByProgramId({ programId });
+    return records?.data?.length ?? 0;
   } catch (error) {
     throw error;
   }

@@ -1,16 +1,16 @@
 import { primaryDB } from "../../prisma/connection";
 import { PrimaryDB } from "../../prisma/types";
 
-export type UpdateInput = {
+export type UpdateRecordInput = {
   recordId: string;
   data: PrimaryDB.ProgramUpdateInput;
 };
-export type UpdateOutput = PrimaryDB.ProgramGetPayload<object>;
+export type UpdateRecordOutput = PrimaryDB.ProgramGetPayload<object>;
 
-export async function update({
+export async function updateRecord({
   recordId,
   data,
-}: UpdateInput): Promise<UpdateOutput> {
+}: UpdateRecordInput): Promise<UpdateRecordOutput> {
   try {
     const updatedData = await primaryDB.program.update({
       where: { id: recordId },
