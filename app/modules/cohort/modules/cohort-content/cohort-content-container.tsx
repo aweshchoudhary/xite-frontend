@@ -61,13 +61,9 @@ export default function CohortContent({ data }: Props) {
           <TabsContent value="core-content" className={`mt-0`}>
             <CohortOverview data={data} />
           </TabsContent>
-          {data.status !== "DRAFT" ? (
-            <>
-              <TabsContent value="microsite-cms" className="mt-0">
-                <TemplatesContainer data={data} />
-              </TabsContent>
-            </>
-          ) : null}
+          <TabsContent value="microsite-cms" className="mt-0">
+            <TemplatesContainer data={data} />
+          </TabsContent>
         </div>
       </Tabs>
     </section>
