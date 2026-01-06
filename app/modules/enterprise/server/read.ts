@@ -9,6 +9,7 @@ export type GetOneOutput = PrimaryDB.EnterpriseGetPayload<{
         enterprise: true;
         academic_partner: true;
         cohorts: true;
+        tags: true;
       };
     };
   };
@@ -24,6 +25,7 @@ export async function getAll(): Promise<GetAllOutput> {
             enterprise: true,
             academic_partner: true,
             cohorts: true,
+            tags: true,
           },
         },
       },
@@ -50,6 +52,7 @@ export async function getOne({
             enterprise: true,
             academic_partner: true,
             cohorts: true,
+            tags: true,
           },
         },
       },

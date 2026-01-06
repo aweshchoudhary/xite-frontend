@@ -56,7 +56,10 @@ export default async function EditPage({ params }: EditPageProps) {
           <h1 className="h1 mb-10">{data.name}</h1>
         </div>
         <UpdateForm
-          currentData={data}
+          currentData={{
+            ...data,
+            tags: data.tags?.map((tag) => tag.id) || [],
+          }}
           successRedirectPath={`${MODULE_PATH}/${data.id}`}
           cancelRedirectPath={`${MODULE_PATH}/${data.id}`}
         />

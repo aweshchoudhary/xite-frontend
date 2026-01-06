@@ -255,7 +255,7 @@ export default function UpdateForm({
             )}
           />
         </div>
-        {form.watch("type") === ProgramType.CUSTOM && (
+        {form.getValues("type") === ProgramType.CUSTOM && (
           <div>
             <Controller
               control={form.control}

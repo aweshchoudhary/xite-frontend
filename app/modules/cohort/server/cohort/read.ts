@@ -134,6 +134,7 @@ export type GetCohortForTable = PrimaryDB.CohortGetPayload<{
     program: {
       include: {
         enterprise: true;
+        tags: true;
       };
     };
     fees: {
@@ -210,6 +211,7 @@ export async function getAllByStatus(status: WorkStatus | "ALL") {
           include: {
             academic_partner: true,
             enterprise: true,
+            tags: true,
           },
         },
         fees: {
