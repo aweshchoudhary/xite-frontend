@@ -1,6 +1,6 @@
 "use server";
 
-import { updateCohort } from "@/modules/cohort/server/cohort/update";
+import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant/errors";
 import { uploadFile } from "@/modules/common/services/file-upload";
@@ -16,8 +16,8 @@ export async function updateBannerAction(cohortId: string, banner: File) {
 
     const { fileUrl: banner_url } = await uploadFile(banner);
 
-    const cohort = await updateCohort({
-      cohortId,
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: {
         media_section: {
           update: {

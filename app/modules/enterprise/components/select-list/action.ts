@@ -1,9 +1,11 @@
-import { getAll } from "@/modules/enterprise/server/read";
+"use server";
+
+import { getManyRecords } from "@/modules/common/database/controllers/enterprise/read";
 
 export async function getEnterpriseListAction() {
   try {
-    const enterpriseList = await getAll();
-    return enterpriseList;
+    const enterpriseList = await getManyRecords({});
+    return { data: enterpriseList };
   } catch (error) {
     throw error;
   }

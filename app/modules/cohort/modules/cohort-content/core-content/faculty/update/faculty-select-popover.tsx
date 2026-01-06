@@ -13,7 +13,9 @@ import {
   CommandItem,
   CommandList,
 } from "@ui/command";
-import { GetAllOutput, getAll } from "@/modules/faculty/server/read";
+import { getAllAction } from "@/modules/faculty/components/forms/read/action";
+import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
+type GetAllOutput = GetOneOutput[];
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { addFacultyItemToSection } from "./action";
@@ -59,9 +61,9 @@ export default function FacultySelectPopover({
 
   React.useEffect(() => {
     const fetchFaculties = async () => {
-      const faculties = await getAll();
+      const { data: faculties } = await getAllAction();
       setFaculties(
-        faculties.filter((faculty) => !selectedFacultyIds?.includes(faculty.id))
+        (faculties || []).filter((faculty) => !selectedFacultyIds?.includes(faculty.id))
       );
     };
     setShowList(false);

@@ -1,6 +1,8 @@
-import { getAll } from "@/modules/faculty/server/read";
+"use server";
+
+import { getManyRecords } from "@/modules/common/database/controllers/faculty/read";
 
 export async function getFacultyList() {
-  const facultyList = await getAll();
-  return facultyList;
+  const facultyList = await getManyRecords({});
+  return { data: facultyList };
 }

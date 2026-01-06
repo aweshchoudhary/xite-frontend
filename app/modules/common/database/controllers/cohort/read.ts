@@ -1,3 +1,4 @@
+"use server";
 import { primaryDB } from "../../prisma/connection";
 import { Cohort, WorkStatus } from "../../prisma/generated/prisma";
 import { PrimaryDB } from "../../prisma/types";
@@ -114,4 +115,3 @@ export async function getManyRecordsByStatus({
     throw error;
   }
 }
-

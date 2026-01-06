@@ -1,13 +1,13 @@
 "use server";
 import { createCohort } from "@/modules/cohort/server/cohort/create";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/program/contants";
-import { updateOne } from "@/modules/program/server/update";
+import { updateRecord } from "@/modules/common/database/controllers/program/update";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function updateStatusAction(id: string) {
   try {
-    const { data } = await updateOne({
-      id,
+    const data = await updateRecord({
+      recordId: id,
       data: { status: "ACTIVE" },
     });
 

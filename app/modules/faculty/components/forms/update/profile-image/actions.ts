@@ -2,7 +2,7 @@
 
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { MODULE_PATH } from "@/modules/faculty/contants";
-import { updateOne } from "@/modules/faculty/server/update";
+import { updateRecord } from "@/modules/common/database/controllers/faculty/update";
 import { revalidatePath } from "next/cache";
 
 export async function updateProfileImage(facultyId: string, banner: File) {
@@ -13,8 +13,8 @@ export async function updateProfileImage(facultyId: string, banner: File) {
       throw new Error("Failed to upload profile image");
     }
 
-    const updatedData = await updateOne({
-      id: facultyId,
+    const updatedData = await updateRecord({
+      recordId: facultyId,
       data: { profile_image: profile_image.fileUrl },
     });
 

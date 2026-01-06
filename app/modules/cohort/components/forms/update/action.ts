@@ -1,8 +1,6 @@
 "use server";
-import {
-  updateCohort,
-  UpdateCohortInputData,
-} from "@/modules/cohort/server/cohort/update";
+import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
@@ -40,7 +38,7 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
     const feesToUpdate = fees.filter((fee) => fee.action === "update");
     const feesToDelete = fees.filter((fee) => fee.action === "delete");
 
-    const dataToUpdate: UpdateCohortInputData = {
+    const dataToUpdate: PrimaryDB.CohortUpdateInput = {
       ...rest,
       program: {
         connect: {
@@ -100,8 +98,8 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
       },
     };
 
-    const cohort = await updateCohort({
-      cohortId: recordId,
+    const cohort = await updateRecord({
+      recordId: recordId,
       data: dataToUpdate,
     });
 
@@ -127,8 +125,8 @@ export async function updateBannerAction(cohortId: string, banner: File) {
 
     const { fileUrl: banner_url } = await uploadFile(banner);
 
-    const cohort = await updateCohort({
-      cohortId,
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: {
         media_section: {
           update: {
@@ -160,8 +158,8 @@ export async function updateBrochureAction(cohortId: string, brochure: File) {
 
     const { fileUrl: brochure_url } = await uploadFile(brochure);
 
-    const cohort = await updateCohort({
-      cohortId,
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: {
         media_section: {
           update: {
@@ -194,8 +192,8 @@ export async function updateCohortStatusAction(
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohort = await updateCohort({
-      cohortId,
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: { status },
     });
 
@@ -224,8 +222,8 @@ export async function updateCohortChecklistAndStatusAction(
 
     const { fileUrl: checklist_file_url } = await uploadFile(checklistFile);
 
-    const cohort = await updateCohort({
-      cohortId,
+    const cohort = await updateRecord({
+      recordId: cohortId,
       data: {
         checklist_file_url,
         status: WorkStatus.ACTIVE,

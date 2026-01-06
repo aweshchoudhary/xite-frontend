@@ -1,5 +1,5 @@
 "use client";
-import { GetOneOutput } from "@/modules/faculty/server/read";
+import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
 import { useEffect, useState } from "react";
 import {
   Command,
@@ -15,7 +15,7 @@ import { getFacultyList } from "./actions";
 import { Button } from "@ui/button";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
-import { updateCohortFacultyList } from "../../server/cohort/update";
+import { updateCohortFacultyList } from "../forms/update/cohort-update-actions";
 import CreateModal from "@/modules/faculty/components/forms/create/modal";
 import { getImageUrl } from "@/modules/common/lib/utils";
 

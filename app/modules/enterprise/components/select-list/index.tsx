@@ -8,7 +8,7 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { GetOneOutput } from "@/modules/enterprise/server/read";
+import type { GetOneOutput } from "@/modules/enterprise/components/forms/read/action";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";

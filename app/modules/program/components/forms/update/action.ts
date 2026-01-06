@@ -1,34 +1,28 @@
 "use server";
-import {
-  updateOne,
-  UpdateOneInput,
-  UpdateOneOutput,
-} from "@/modules/program/server/update";
+import { updateRecord } from "@/modules/common/database/controllers/program/update";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId, getAll } from "@/modules/program/server/read";
+import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 
 export async function updateProgramAction(
   data: ProgramUpdateSchema,
   programId: string
-): Promise<UpdateOneOutput> {
+) {
   try {
     const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
-    const inputData: UpdateOneInput = {
-      id: programId,
-      data: {
-        ...rest,
-        academic_partner: {
-          connect: {
-            id: academic_partner_id,
-          },
+    const updateData: PrimaryDB.ProgramUpdateInput = {
+      ...rest,
+      academic_partner: {
+        connect: {
+          id: academic_partner_id,
         },
       },
     };
 
     if (enterprise_id) {
-      inputData.data.enterprise = {
+      updateData.enterprise = {
         connect: {
           id: enterprise_id,
         },
@@ -37,12 +31,15 @@ export async function updateProgramAction(
 
     // Handle tags - connect/disconnect ProgramTag records
     if (tags !== undefined) {
-      inputData.data.tags = {
+      updateData.tags = {
         set: tags.map((tagId) => ({ id: tagId })),
       };
     }
 
-    const program = await updateOne(inputData);
+    const program = await updateRecord({
+      recordId: programId,
+      data: updateData,
+    });
 
     if (!program) {
       throw new Error("Failed to update program");
@@ -60,8 +57,9 @@ export async function updateProgramAction(
 
 export async function getProgramsAction() {
   try {
-    const programs = await getAll({});
-    return programs;
+    const { getManyRecords } = await import("@/modules/common/database/controllers/program/read");
+    const programs = await getManyRecords({});
+    return { data: programs };
   } catch (error) {
     throw error;
   }

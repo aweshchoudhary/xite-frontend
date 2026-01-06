@@ -1,14 +1,14 @@
 "use server";
-import { updateOne, UpdateOneOutput } from "@/modules/faculty/server/update";
+import { updateRecord, UpdateRecordOutput } from "@/modules/common/database/controllers/faculty/update";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
-import { getOne } from "@/modules/faculty/server/read";
+import { getRecord } from "@/modules/common/database/controllers/faculty/read";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: UpdateRecordOutput;
 };
 
 export async function updateAction(
@@ -34,7 +34,10 @@ export async function updateAction(
       profile_image = null;
     }
 
-    const faculty = await getOne({ id });
+    const faculty = await getRecord({ 
+      recordId: id,
+      include: { subtopics: true }
+    });
     if (!faculty) {
       throw new Error(`Faculty not found`);
     }
@@ -50,8 +53,8 @@ export async function updateAction(
       (subtopic) => !validSubtopicIds.includes(subtopic.id)
     );
 
-    const updatedData = await updateOne({
-      id,
+    const updatedData = await updateRecord({
+      recordId: id,
       data: {
         ...rest,
         academic_partner: {

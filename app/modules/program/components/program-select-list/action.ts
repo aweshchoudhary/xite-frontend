@@ -1,10 +1,13 @@
+"use server";
+
 import { MODULE_NAME } from "@/modules/academic-partner/contants";
-import { getAll } from "@/modules/program/server/read";
+import { getManyRecordsByStatus } from "@/modules/common/database/controllers/program/read";
+import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 
 export async function getAllAction() {
   try {
-    const data = await getAll({ status: "ACTIVE" });
-    return data;
+    const data = await getManyRecordsByStatus({ status: ProgramStatus.ACTIVE });
+    return { data };
   } catch (error) {
     console.error(error);
     return {

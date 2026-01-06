@@ -10,7 +10,7 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { GetOne } from "@/modules/topic/server/read";
+import type { GetOne } from "@/modules/topic/components/forms/read/action";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";

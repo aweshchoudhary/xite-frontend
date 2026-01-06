@@ -1,3 +1,4 @@
+"use server";
 import { primaryDB } from "../../prisma/connection";
 import { PrimaryDB } from "../../prisma/types";
 

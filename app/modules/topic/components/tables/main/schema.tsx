@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOne } from "@/modules/topic/server/read";
+import type { GetOne } from "@/modules/topic/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/topic/contants";
 
 export const columns: ColumnDef<GetOne>[] = [

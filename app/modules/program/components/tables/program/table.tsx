@@ -2,7 +2,7 @@
 
 import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
 import { columns } from "./schema";
-import { getAll } from "@/modules/program/server/read";
+import { getManyRecords } from "@/modules/common/database/controllers/program/read";
 import { Badge } from "@ui/badge";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
@@ -15,20 +15,20 @@ type ProgramTableProps = {
 export default async function ProgramTable({
   status = "ALL",
 }: ProgramTableProps) {
-  const { data: programs } = await getAll({});
+  const programs = await getManyRecords({});
 
   // Precompute counts for all statuses including ALL
   const statusCounts: Record<string, number> = {
-    ALL: programs?.length ?? 0,
+    ALL: programs.length ?? 0,
   };
 
   for (const s of Object.values(ProgramStatus)) {
-    statusCounts[s] = programs?.filter((p) => p.status === s).length ?? 0;
+    statusCounts[s] = programs.filter((p) => p.status === s).length ?? 0;
   }
 
   // Filter programs based on selected status
   const filteredPrograms =
-    status === "ALL" ? programs : programs?.filter((p) => p.status === status);
+    status === "ALL" ? programs : programs.filter((p) => p.status === status);
 
   const statuses: (ProgramStatus | "ALL")[] = [
     "ALL",

@@ -1,5 +1,5 @@
 "use client";
-import { GetOne } from "@/modules/academic-partner/server/read";
+import type { GetOne } from "@/modules/academic-partner/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/academic-partner/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";

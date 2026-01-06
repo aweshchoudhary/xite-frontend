@@ -4,11 +4,8 @@ import {
   createCohort,
 } from "@/modules/cohort/server/cohort/create";
 import { CreateSchema } from "../schema";
-import {
-  getAll,
-  getLastCohortByProgramId,
-  getOne,
-} from "@/modules/program/server/read";
+import { getRecord } from "@/modules/common/database/controllers/program/read";
+import { getLastCohortByProgramId } from "@/modules/cohort/server/cohort/read";
 import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
@@ -53,7 +50,7 @@ export async function createCohortAction(
     } else {
       newCohortNumber = 1;
 
-      const { data: program } = await getOne({ id: program_id });
+      const program = await getRecord({ recordId: program_id });
       if (!program) {
         throw new Error("Program not found");
       }
@@ -110,8 +107,9 @@ export async function getProgramsAction() {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const programs = await getAll({});
-    return programs;
+    const { getManyRecords } = await import("@/modules/common/database/controllers/program/read");
+    const programs = await getManyRecords({});
+    return { data: programs };
   } catch (error) {
     throw error;
   }

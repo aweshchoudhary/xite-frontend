@@ -1,16 +1,16 @@
 "use server";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
-import { deleteOne, DeleteOneOutput } from "@/modules/faculty/server/delete";
+import { deleteRecord, DeleteRecordOutput } from "@/modules/common/database/controllers/faculty/delete";
 import { revalidatePath } from "next/cache";
 
 type DeleteActionOutput = {
   error?: string;
-  data?: DeleteOneOutput;
+  data?: DeleteRecordOutput;
 };
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
-    const deletedData = await deleteOne({ id });
+    const deletedData = await deleteRecord({ recordId: id });
 
     revalidatePath(MODULE_PATH);
 

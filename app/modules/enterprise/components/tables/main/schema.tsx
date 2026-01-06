@@ -3,7 +3,7 @@ import { Checkbox } from "@ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
-import { GetOneOutput } from "@/modules/enterprise/server/read";
+import type { GetOneOutput } from "@/modules/enterprise/components/forms/read/action";
 import Link from "next/link";
 import { MODULE_PATH } from "@/modules/enterprise/contants";
 

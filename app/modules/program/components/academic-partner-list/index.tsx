@@ -8,7 +8,7 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { GetOne } from "@/modules/academic-partner/server/read";
+import type { GetOne } from "@/modules/academic-partner/components/forms/read/action";
 import { cn, getImageUrl } from "@/modules/common/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { Button } from "@ui/button";

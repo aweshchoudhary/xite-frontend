@@ -1,3 +1,4 @@
+"use server";
 import { primaryDB } from "../../prisma/connection";
 import { Cohort } from "../../prisma/generated/prisma";
 

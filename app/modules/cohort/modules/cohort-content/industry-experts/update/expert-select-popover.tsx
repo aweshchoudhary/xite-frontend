@@ -13,7 +13,9 @@ import {
   CommandItem,
   CommandList,
 } from "@ui/command";
-import { GetAllOutput, getAll } from "@/modules/faculty/server/read";
+import { getAllAction } from "@/modules/faculty/components/forms/read/action";
+import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
+type GetAllOutput = GetOneOutput[];
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { addExpertItemToSection } from "./action";
@@ -59,9 +61,9 @@ export default function IndustryExpertsSelectPopover({
 
   React.useEffect(() => {
     const fetchExperts = async () => {
-      const experts = await getAll();
+      const { data: experts } = await getAllAction();
       setExperts(
-        experts.filter((expert) => !selectedExpertIds?.includes(expert.id))
+        (experts || []).filter((expert) => !selectedExpertIds?.includes(expert.id))
       );
     };
     setShowList(false);

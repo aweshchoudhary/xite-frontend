@@ -1,6 +1,6 @@
 "use client";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { GetOne } from "../../server/read";
+import type { GetOne } from "../forms/read/action";
 import { Badge } from "@ui/badge";
 import Link from "next/link";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";

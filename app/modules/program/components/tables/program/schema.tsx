@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOne } from "@/modules/program/server/read";
+import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";

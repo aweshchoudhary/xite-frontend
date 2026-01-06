@@ -1,3 +1,4 @@
+"use server";
 import { primaryDB } from "../../prisma/connection";
 import { Topic } from "../../prisma/generated/prisma";
 

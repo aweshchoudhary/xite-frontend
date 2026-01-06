@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOne } from "@/modules/academic-partner/server/read";
+import type { GetOne } from "@/modules/academic-partner/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/academic-partner/contants";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";

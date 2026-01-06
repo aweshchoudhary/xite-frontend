@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/modules/user/utils";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import { upsertSectionPosition } from "@/modules/cohort/server/cohort/update";
+import { upsertSectionPosition } from "@/modules/cohort/components/forms/update/cohort-update-actions";
 import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 
 export type UpdateActionResponse = {

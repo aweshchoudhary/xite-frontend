@@ -1,8 +1,8 @@
 "use server";
 import {
-  updateOne,
-  UpdateOneOutput,
-} from "@/modules/academic-partner/server/update";
+  updateRecord,
+  UpdateRecordOutput,
+} from "@/modules/common/database/controllers/academic-partner/update";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
@@ -10,7 +10,7 @@ import { uploadFile } from "@/modules/common/services/file-upload";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: UpdateRecordOutput;
 };
 
 export async function updateAction(
@@ -33,8 +33,8 @@ export async function updateAction(
       logo_url = null; // Remove the logo
     }
 
-    const updatedData = await updateOne({
-      id,
+    const updatedData = await updateRecord({
+      recordId: id,
       data: {
         ...rest,
         logo_url,

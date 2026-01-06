@@ -1,8 +1,10 @@
 "use server";
 
-import { getAll } from "@/modules/faculty/server/read";
+"use server";
+
+import { getManyRecords } from "@/modules/common/database/controllers/faculty/read";
 
 export async function getDataList() {
-  const dataList = await getAll(); // TODO: change to industry expert
-  return dataList;
+  const dataList = await getManyRecords({}); // TODO: change to industry expert
+  return { data: dataList };
 }

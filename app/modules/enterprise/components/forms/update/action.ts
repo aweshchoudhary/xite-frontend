@@ -1,12 +1,12 @@
 "use server";
-import { updateOne, UpdateOneOutput } from "@/modules/enterprise/server/update";
+import { updateRecord, UpdateRecordOutput } from "@/modules/common/database/controllers/enterprise/update";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: UpdateRecordOutput;
 };
 
 export async function updateAction(
@@ -14,8 +14,8 @@ export async function updateAction(
   id: string
 ): Promise<UpdateActionOutput> {
   try {
-    const updatedData = await updateOne({
-      id,
+    const updatedData = await updateRecord({
+      recordId: id,
       data,
     });
 

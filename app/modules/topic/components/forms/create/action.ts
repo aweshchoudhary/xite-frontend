@@ -1,22 +1,22 @@
 "use server";
 import {
-  createOne,
-  CreateOneOutput,
-} from "@/modules/topic/server/create";
+  createRecord,
+  CreateRecordOutput,
+} from "@/modules/common/database/controllers/topic/create";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/topic/contants";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateOneOutput;
+  data?: CreateRecordOutput;
 };
 
 export async function createAction(
   data: CreateSchema
 ): Promise<CreateActionOutput> {
   try {
-    const createdData = await createOne(data);
+    const createdData = await createRecord(data);
 
     if (!createdData) {
       throw new Error(`Failed to create ${MODULE_NAME}`);

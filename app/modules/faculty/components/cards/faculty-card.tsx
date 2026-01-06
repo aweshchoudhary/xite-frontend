@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
-import { GetOneOutput } from "../../server/read";
+import type { GetOneOutput } from "../forms/read/action";
 import Link from "next/link";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
