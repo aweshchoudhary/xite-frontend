@@ -86,6 +86,11 @@ export const isSectionsCompleted = (data: GetCohort): boolean => {
     !!data.benefits_section.title &&
     (data.benefits_section.benefits_items?.length ?? 0) > 0;
 
+  const isIndustryExpertsSectionCompleted =
+    !!data.industry_experts_section &&
+    !!data.industry_experts_section.title &&
+    (data.industry_experts_section.items?.length ?? 0) > 0;
+
   const isFacultySectionCompleted =
     !!data.faculty_section &&
     !!data.faculty_section.title &&
@@ -107,6 +112,7 @@ export const isSectionsCompleted = (data: GetCohort): boolean => {
     isCurriculumSectionCompleted &&
     isBenefitsSectionCompleted &&
     isFacultySectionCompleted &&
+    isIndustryExpertsSectionCompleted &&
     isWhoShouldApplySectionCompleted &&
     isMediaSectionComplete
   );

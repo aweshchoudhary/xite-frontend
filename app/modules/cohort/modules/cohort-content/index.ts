@@ -4,7 +4,7 @@ export { Container as CurriculumContainer } from "./core-content/curriculum/cont
 export { Container as WhoShouldApplyContainer } from "./core-content/who-should-apply/container";
 export { Container as TestimonialsContainer } from "./testimonials/container";
 export { Container as FacultyContainer } from "./core-content/faculty/container";
-export { Container as IndustryExpertsContainer } from "./industry-experts/container";
+export { Container as IndustryExpertsContainer } from "./core-content/industry-experts/container";
 export { Container as CertificationContainer } from "./certification/container";
 export { Container as CohortStatisticsContainer } from "./cohort-statistics/container";
 export { Container as MicrositeContainer } from "./microsite/container";

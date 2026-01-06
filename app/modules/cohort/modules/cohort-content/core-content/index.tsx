@@ -4,6 +4,7 @@ import { Container as CurriculumContainer } from "./curriculum/container";
 import { Container as BenefitsContainer } from "./benefits/container";
 import { Container as WhoShouldApplyContainer } from "./who-should-apply/container";
 import { Container as FacultyContainer } from "./faculty/container";
+import { Container as IndustryExpertsContainer } from "./industry-experts/container";
 import CohortContentMedia from "./media";
 
 type Props = {
@@ -25,6 +26,9 @@ export default function CohortDetails({ data }: Props) {
         </div>
         <div className="p-6 border rounded-lg bg-background">
           <FacultyContainer data={data} />
+        </div>
+        <div className="p-6 border rounded-lg bg-background">
+          <IndustryExpertsContainer data={data} />
         </div>
         <div className="p-6 border rounded-lg bg-background">
           <WhoShouldApplyContainer data={data} />
