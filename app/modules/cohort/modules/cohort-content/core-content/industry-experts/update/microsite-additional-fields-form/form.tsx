@@ -5,7 +5,7 @@ import { updateSchema, UpdateSchema } from "./schema";
 import { toast } from "sonner";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { updateAction } from "./actions";
-import MicrositeAdditionalFields from "../../../common/components/microsite-additional-fields-update";
+import MicrositeAdditionalFields from "../../../../common/components/microsite-additional-fields-update";
 import { useEffect } from "react";
 
 interface CreateFormProps extends FormBaseProps<UpdateSchema> {
@@ -50,13 +50,13 @@ export default function UpdateMicrositeAdditionalFieldsForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-5"
     >
-        <div className="space-y-2">
-          <MicrositeAdditionalFields
-            form={form}
-            top_desc_field_name="top_description"
-            bottom_desc_field_name="bottom_description"
-          />
-        </div>
+      <div className="space-y-2">
+        <MicrositeAdditionalFields
+          form={form}
+          top_desc_field_name="top_description"
+          bottom_desc_field_name="bottom_description"
+        />
+      </div>
     </form>
   );
 }

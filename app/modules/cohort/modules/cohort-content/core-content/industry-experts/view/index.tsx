@@ -2,7 +2,7 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import ExpertCard from "../expert-card";
 import Link from "next/link";
-import MicrositeAdditionalFieldsView from "../../common/components/microsite-additional-fields-view";
+import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
 
 export type Props = {
   data: PrimaryDB.CohortIndustryExpertsSectionGetPayload<{
