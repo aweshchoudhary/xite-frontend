@@ -11,6 +11,7 @@ export const getCohortByIdAction = async (id: string) => {
       cohort_key: true,
       status: true,
       program_id: true,
+      ownerId: true,
     },
   });
   return cohort;

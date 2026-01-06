@@ -26,8 +26,8 @@ import {
 import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import type {
   CohortSectionWithData,
-  GetCohortSectionOrderBySectionIdOutput,
 } from "@/modules/cohort/components/forms/read/get-sections-action";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import {
   getCohortSectionOrderBySectionIdAction,
   getCohortSectionsAction,
@@ -187,7 +187,7 @@ export const SectionFormField = ({
   sections,
 }: SectionFormFieldProps) => {
   const [currentSectionOrder, setCurrentSectionOrder] =
-    useState<GetCohortSectionOrderBySectionIdOutput | null>(null);
+    useState<PrimaryDB.CohortSectionOrderGetPayload<object> | null>(null);
   const sectionId = form.watch(`sections.${index}.id`);
   const [afterSectionId, setAfterSectionId] = useState<string | null>(null);
 

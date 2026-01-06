@@ -105,13 +105,6 @@ export async function getSectionOrderByCohortIdAction(
   try {
     const sectionOrders = await primaryDB.cohortSectionOrder.findMany({
       where: { cohort_id: cohortId },
-      select: {
-        id: true,
-        section_type: true,
-        section_id: true,
-        section_position: true,
-        cohort_id: true,
-      },
       orderBy: { section_position: "asc" },
     });
 

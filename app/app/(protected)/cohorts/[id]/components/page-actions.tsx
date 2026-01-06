@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
 } from "@ui/dropdown-menu";
 import { Pencil, TrashIcon, ChevronDownIcon } from "lucide-react";
-import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForDetailPage } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ export const HeaderActions = async ({
   data,
   id,
 }: {
-  data: GetCohort;
+  data: GetCohortForDetailPage;
   id: string;
 }) => {
   const updatePermission = await checkPermission("Cohort", "update");

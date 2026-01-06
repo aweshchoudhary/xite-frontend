@@ -34,12 +34,44 @@ export type GetCohortForDetailPage = PrimaryDB.CohortGetPayload<{
         items: true;
       };
     };
-    statistics_section: true;
+    statistics_section: {
+      include: {
+        work_experience_item: true;
+        industry_item: {
+          include: {
+            data_list: {
+              include: {
+                items: true;
+              };
+            };
+          };
+        };
+        designation_item: {
+          include: {
+            data_list: {
+              include: {
+                items: true;
+              };
+            };
+          };
+        };
+        company_item: true;
+      };
+    };
     faculty_section: {
       include: {
         items: {
           include: {
-            faculty: true;
+            faculty: {
+              include: {
+                academic_partner: true;
+                faculty_subject_areas: {
+                  include: {
+                    subject_area: true;
+                  };
+                };
+              };
+            };
           };
         };
       };
@@ -48,7 +80,16 @@ export type GetCohortForDetailPage = PrimaryDB.CohortGetPayload<{
       include: {
         items: {
           include: {
-            faculty: true;
+            faculty: {
+              include: {
+                academic_partner: true;
+                faculty_subject_areas: {
+                  include: {
+                    subject_area: true;
+                  };
+                };
+              };
+            };
           };
         };
       };
@@ -60,14 +101,31 @@ export type GetCohortForDetailPage = PrimaryDB.CohortGetPayload<{
       };
     };
     who_should_apply_section: true;
-    cohort_branding: true;
+    cohort_branding: {
+      include: {
+        primary_color: true;
+        secondary_color: true;
+        background_color: true;
+      };
+    };
     design_curriculum_section: {
       include: {
         items: {
           include: {
             objectives: true;
+            sessions: {
+              include: {
+                objectives: true;
+                sub_topic: true;
+              };
+            };
           };
         };
+      };
+    };
+    generic_sections: {
+      include: {
+        background: true;
       };
     };
   };
@@ -115,12 +173,44 @@ export async function getOneForDetailPageAction(
             items: true,
           },
         },
-        statistics_section: true,
+        statistics_section: {
+          include: {
+            work_experience_item: true,
+            industry_item: {
+              include: {
+                data_list: {
+                  include: {
+                    items: true,
+                  },
+                },
+              },
+            },
+            designation_item: {
+              include: {
+                data_list: {
+                  include: {
+                    items: true,
+                  },
+                },
+              },
+            },
+            company_item: true,
+          },
+        },
         faculty_section: {
           include: {
             items: {
               include: {
-                faculty: true,
+                faculty: {
+                  include: {
+                    academic_partner: true,
+                    faculty_subject_areas: {
+                      include: {
+                        subject_area: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -129,7 +219,16 @@ export async function getOneForDetailPageAction(
           include: {
             items: {
               include: {
-                faculty: true,
+                faculty: {
+                  include: {
+                    academic_partner: true,
+                    faculty_subject_areas: {
+                      include: {
+                        subject_area: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -141,7 +240,13 @@ export async function getOneForDetailPageAction(
           },
         },
         who_should_apply_section: true,
-        cohort_branding: true,
+        cohort_branding: {
+          include: {
+            primary_color: true,
+            secondary_color: true,
+            background_color: true,
+          },
+        },
         design_curriculum_section: {
           include: {
             items: {
@@ -155,6 +260,11 @@ export async function getOneForDetailPageAction(
                 },
               },
             },
+          },
+        },
+        generic_sections: {
+          include: {
+            background: true,
           },
         },
       },

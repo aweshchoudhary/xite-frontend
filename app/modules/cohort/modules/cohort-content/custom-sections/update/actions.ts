@@ -8,7 +8,6 @@ import { getLoggedInUser } from "@/modules/user/utils";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { upsertSectionPosition } from "@/modules/cohort/components/forms/update/cohort-update-actions";
-import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGenericSectionGetPayload<object>[];

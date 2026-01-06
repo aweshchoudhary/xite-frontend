@@ -44,11 +44,11 @@ export default function SelectList({
     try {
       await updateCohortIndustryExpertsList({
         cohortId: cohortId,
-        dataToAdd: selectedList.map((f) => f.id),
+        dataToAdd: selectedList.filter((f) => f?.id).map((f) => f!.id),
         dataToRemove:
           selectedFacultyList
-            ?.filter((f) => !selectedList.find((s) => s.id === f.id))
-            .map((f) => f.id) ?? [],
+            ?.filter((f) => f?.id && !selectedList.find((s) => s?.id === f?.id))
+            .map((f) => f!.id) ?? [],
       });
 
       toast.success("Industry Experts list saved");
@@ -62,7 +62,7 @@ export default function SelectList({
   useEffect(() => {
     const fetchDataList = async () => {
       const dataList = await getDataList();
-      setDataList(dataList);
+      setDataList(dataList.data);
     };
     fetchDataList();
     return () => {
@@ -93,43 +93,47 @@ export default function SelectList({
           <CommandInput placeholder="Type a command or search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            {dataList.map((data, index) => (
+            {dataList.map((data, index) => {
+              if (!data) return null;
+              return (
               <CommandItem
                 key={index}
                 onSelect={() => {
-                  if (selectedList.find((f) => f.id === data.id)) {
+                  if (!data?.id) return;
+                  if (selectedList.find((f) => f?.id === data.id)) {
                     setSelectedList(
-                      selectedList.filter((f) => f.id !== data.id)
+                      selectedList.filter((f) => f?.id !== data.id)
                     );
                   } else {
                     setSelectedList([...selectedList, data]);
                   }
                 }}
-                keywords={[data.name]}
+                keywords={[data?.name ?? ""]}
                 className="justify-between"
               >
                 <div className="flex items-center gap-2">
                   <Avatar className="border">
-                    {data.profile_image && (
+                    {data?.profile_image && (
                       <AvatarImage
                         src={getImageUrl(data.profile_image)}
-                        alt={data.name}
+                        alt={data?.name ?? ""}
                       />
                     )}
-                    <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{data?.name?.charAt(0) ?? ""}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p>{data.name}</p>
+                    <p>{data?.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {data.title}
+                      {data?.title}
                     </p>
                   </div>
                 </div>
-                {selectedList.find((f) => f.id === data.id) && (
+                {selectedList.find((f) => f?.id === data?.id) && (
                   <CheckIcon className="size-4" />
                 )}
               </CommandItem>
-            ))}
+              );
+            })}
           </CommandList>
           <div className="flex justify-end w-full p-5 gap-2">
             <div className="flex gap-2">

@@ -47,17 +47,11 @@ export const columns: ColumnDef<GetOne>[] = [
       row.original.academic_partner_id ? (
         <Link
           className="hover:underline gap-2 flex items-center"
-          href={`/academic-partners/${row.original.academic_partner?.id}`}
+          href={`/academic-partners/${row.original.academic_partner_id}`}
         >
           <Avatar className="size-7 border">
-            {row.original.academic_partner?.logo_url && (
-              <AvatarImage
-                src={getImageUrl(row.original.academic_partner?.logo_url)}
-                alt={row.original.academic_partner?.name}
-              />
-            )}
             <AvatarFallback className="uppercase">
-              {row.original.academic_partner?.name.slice(0, 2)}
+              {row.original.academic_partner?.name?.slice(0, 2) || "AP"}
             </AvatarFallback>
           </Avatar>
           {row.original.academic_partner?.name}
@@ -75,9 +69,9 @@ export const columns: ColumnDef<GetOne>[] = [
       row.original.enterprise_id ? (
         <Link
           className="hover:underline gap-2 flex items-center"
-          href={`/enterprises/${row.original.enterprise?.id}`}
+          href={`/enterprises/${row.original.enterprise_id}`}
         >
-          {row.original.enterprise?.name}
+          {row.original.enterprise_id}
         </Link>
       ) : (
         "NA"

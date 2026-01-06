@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
 export default function FacultyCard({ faculty }: { faculty: GetOneOutput }) {
+  if (!faculty) return null;
+  
   return (
     <Link
       href={`/faculty/${faculty.id}`}

@@ -36,7 +36,7 @@ export default function FacultySelectPopover({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [showList, setShowList] = React.useState(false);
-  const [faculties, setFaculties] = React.useState<GetAllOutput>([]);
+  const [faculties, setFaculties] = React.useState<NonNullable<GetOneOutput>[]>([]);
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelect = async (currentValue: string) => {
@@ -63,7 +63,9 @@ export default function FacultySelectPopover({
     const fetchFaculties = async () => {
       const { data: faculties } = await getAllAction();
       setFaculties(
-        (faculties || []).filter((faculty) => !selectedFacultyIds?.includes(faculty.id))
+        (faculties || []).filter((faculty): faculty is NonNullable<typeof faculty> => 
+          faculty !== null && !selectedFacultyIds?.includes(faculty.id)
+        )
       );
     };
     setShowList(false);
@@ -91,7 +93,7 @@ export default function FacultySelectPopover({
             className="w-fit justify-between"
           >
             {value
-              ? faculties.find((faculty) => faculty.id === value)?.name
+              ? faculties.find((faculty) => faculty.id === value)?.name || "Select Faculty"
               : "Select Faculty"}
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>

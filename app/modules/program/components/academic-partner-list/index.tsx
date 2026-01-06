@@ -8,7 +8,7 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import type { GetOne } from "@/modules/academic-partner/components/forms/read/action";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { cn, getImageUrl } from "@/modules/common/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { Button } from "@ui/button";
@@ -25,7 +25,7 @@ export default function AcademicPartnerSelect({
   };
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [academicPartners, setAcademicPartners] = useState<GetOne[]>([]);
+  const [academicPartners, setAcademicPartners] = useState<PrimaryDB.AcademicPartnerGetPayload<object>[]>([]);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(formField.value ?? "");

@@ -1,5 +1,5 @@
 "use client";
-import type { GetCohortForTable } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForTable } from "@/modules/cohort/components/forms/read/get-all-for-table-action";
 import { MODULE_PATH } from "@/modules/cohort/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";

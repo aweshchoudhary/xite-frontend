@@ -2,14 +2,14 @@
 import View from "./view";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { Badge } from "@ui/badge";
 import { useState } from "react";
 import Update from "./update";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
+import { GetCohortForDetailPage } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 
 type ContainerProps = {
-  data?: GetCohort;
+  data?: GetCohortForDetailPage;
 };
 
 export function Container({ data }: ContainerProps) {

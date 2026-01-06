@@ -13,6 +13,11 @@ export type GetOne = PrimaryDB.EnterpriseGetPayload<{
         name: true;
         status: true;
         program_key: true;
+        academic_partner: {
+          select: {
+            name: true;
+          };
+        };
       };
     };
   };
@@ -42,6 +47,11 @@ export async function getOneWithRelationsAction(
             name: true,
             status: true,
             program_key: true,
+            academic_partner: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },

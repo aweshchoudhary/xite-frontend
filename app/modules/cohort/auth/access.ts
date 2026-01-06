@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { getCohortByIdAction } from "./actions";
 import { useAuth } from "@/modules/common/authentication/firebase/use-auth-hook";
 
-export const useCheckUserOwnsCohort = (cohortId: string): boolean => {
+export const useCheckUserOwnsCohort = (cohortId?: string): boolean => {
   const [hasAccess, setHasAccess] = useState(false);
   const session = useAuth();
 
   useEffect(() => {
     const handleCheckUserOwnsCohort = async () => {
+      if (!cohortId) return setHasAccess(false);
+
       if (!session?.dbUser) return false;
 
       // const isAdmin = user.roles?.some((role) => role.role === "Admin");
@@ -19,7 +21,7 @@ export const useCheckUserOwnsCohort = (cohortId: string): boolean => {
       }
 
       const cohort = await getCohortByIdAction(cohortId);
-      if (cohort.ownerId === session?.dbUser?.id) {
+      if (cohort && cohort.ownerId === session?.dbUser?.id) {
         setHasAccess(true);
       }
     };

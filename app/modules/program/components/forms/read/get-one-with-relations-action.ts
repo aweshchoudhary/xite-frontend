@@ -10,7 +10,16 @@ export type GetOne = PrimaryDB.ProgramGetPayload<{
     academic_partner: true;
     enterprise: true;
     tags: true;
-    cohorts: true;
+    cohorts: {
+      include: {
+        program: {
+          select: {
+            id: true;
+            name: true;
+          };
+        };
+      };
+    };
   };
 }>;
 
@@ -35,7 +44,16 @@ export async function getOneWithRelationsAction(
         academic_partner: true,
         enterprise: true,
         tags: true,
-        cohorts: true,
+        cohorts: {
+          include: {
+            program: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 

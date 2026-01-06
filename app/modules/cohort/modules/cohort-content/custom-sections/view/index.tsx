@@ -6,7 +6,6 @@ import { getImageUrl } from "@/modules/common/lib/utils";
 import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import type {
   CohortSectionWithData,
-  GetCohortSectionOrderBySectionIdOutput,
 } from "@/modules/cohort/components/forms/read/get-sections-action";
 import {
   getCohortSectionOrderBySectionIdAction,
@@ -60,7 +59,7 @@ const CustomSectionView = ({
   );
 
   const [sectionOrder, setSectionOrder] =
-    useState<GetCohortSectionOrderBySectionIdOutput | null>(null);
+    useState<PrimaryDB.CohortSectionOrderGetPayload<object> | null>(null);
 
   useEffect(() => {
     const fetchCohortSections = async () => {
@@ -107,13 +106,13 @@ const CustomSectionView = ({
                 (sec) =>
                   sec.section_position ===
                   (sectionOrder?.section_position ?? 0) - 1
-              )?.data.title
+              )?.data?.title
                 ? `After ${
                     cohortSections.find(
                       (sec) =>
                         sec.section_position ===
                         (sectionOrder?.section_position ?? 0) - 1
-                    )?.data.title
+                    )?.data?.title
                   }`
                 : "First Section"}
             </strong>

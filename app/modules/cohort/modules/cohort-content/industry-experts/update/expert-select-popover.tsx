@@ -15,7 +15,6 @@ import {
 } from "@ui/command";
 import { getAllAction } from "@/modules/faculty/components/forms/read/action";
 import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
-type GetAllOutput = GetOneOutput[];
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { addExpertItemToSection } from "./action";
@@ -36,7 +35,7 @@ export default function IndustryExpertsSelectPopover({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [showList, setShowList] = React.useState(false);
-  const [experts, setExperts] = React.useState<GetAllOutput>([]);
+  const [experts, setExperts] = React.useState<NonNullable<GetOneOutput>[]>([]);
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelect = async (currentValue: string) => {
@@ -63,7 +62,9 @@ export default function IndustryExpertsSelectPopover({
     const fetchExperts = async () => {
       const { data: experts } = await getAllAction();
       setExperts(
-        (experts || []).filter((expert) => !selectedExpertIds?.includes(expert.id))
+        (experts || []).filter((expert): expert is NonNullable<typeof expert> => 
+          expert !== null && !selectedExpertIds?.includes(expert.id)
+        )
       );
     };
     setShowList(false);
@@ -91,7 +92,7 @@ export default function IndustryExpertsSelectPopover({
             className="w-fit justify-between"
           >
             {value
-              ? experts.find((expert) => expert.id === value)?.name
+              ? experts.find((expert) => expert.id === value)?.name || "Select Expert"
               : "Select Expert"}
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>

@@ -9,6 +9,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import type { GetOne } from "@/modules/program/components/forms/read/action";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ export default function ProgramSelect({
 }) {
   const [defaultOpen, setDefaultOpen] = useState(false);
 
-  const [programs, setPrograms] = useState<GetOne[]>([]);
+  const [programs, setPrograms] = useState<PrimaryDB.ProgramGetPayload<object>[]>([]);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(defaultValue);
@@ -82,7 +83,8 @@ export default function ProgramSelect({
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
                       onChange(currentValue);
-                      onObjectChange?.(program);
+                      // Note: program may not have academic_partner relation loaded
+                      onObjectChange?.(program as GetOne);
                     }}
                   >
                     <div className="flex items-center gap-2">

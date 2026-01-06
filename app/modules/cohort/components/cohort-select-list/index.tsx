@@ -10,11 +10,16 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import type { GetCohortByProgramId } from "@/modules/cohort/components/forms/read/get-by-program-id-action";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
 import { getCohortListAction } from "./action";
+
+type CohortListItem = {
+  id: string;
+  name: string | null;
+  cohort_key: string;
+};
 
 export default function CohortSelectList({
   onChange,
@@ -23,7 +28,7 @@ export default function CohortSelectList({
   onChange: (value: string) => void;
   defaultValue?: string | null;
 }) {
-  const [cohortList, setCohortList] = useState<GetCohortByProgramId[]>([]);
+  const [cohortList, setCohortList] = useState<CohortListItem[]>([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
