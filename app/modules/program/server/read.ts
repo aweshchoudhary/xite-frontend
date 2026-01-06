@@ -23,6 +23,7 @@ export async function getAll({
         enterprise: true,
         academic_partner: true,
         cohorts: true,
+        tags: true,
       },
     });
     return { data };
@@ -39,6 +40,7 @@ export type GetOne = PrimaryDB.ProgramGetPayload<{
     enterprise: true;
     academic_partner: true;
     cohorts: true;
+    tags: true;
   };
 }>;
 
@@ -59,6 +61,7 @@ export async function getOne({ id }: GetOneInput): Promise<GetOneOutput> {
         enterprise: true,
         academic_partner: true,
         cohorts: true,
+        tags: true,
       },
     });
     return { data };
@@ -138,6 +141,31 @@ export async function getLastCohortByProgramId({
     console.error(error);
     return {
       error: `Failed to get last cohort by program id ${MODULE_NAME}`,
+    };
+  }
+}
+
+export type GetAllProgramTagsOutput = {
+  data?: Array<{ id: string; name: string }>;
+  error?: string;
+};
+
+export async function getAllProgramTags(): Promise<GetAllProgramTagsOutput> {
+  try {
+    const tags = await primaryDB.programTag.findMany({
+      orderBy: {
+        name: "asc",
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return { data: tags };
+  } catch (error) {
+    console.error(error);
+    return {
+      error: "Failed to get all program tags",
     };
   }
 }

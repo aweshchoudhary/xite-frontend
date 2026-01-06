@@ -156,8 +156,8 @@ export default async function ProgramPage({
               <div className="flex max-w-xs flex-wrap gap-2">
                 {program.tags && program.tags.length > 0 ? (
                   program.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
+                    <Badge key={tag.id} variant="secondary">
+                      {tag.name}
                     </Badge>
                   ))
                 ) : (

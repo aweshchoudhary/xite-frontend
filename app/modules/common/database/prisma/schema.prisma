@@ -58,8 +58,8 @@ model Program {
   id                  String          @id @default(uuid())
   name                String
   description         String?
-  tags                String[]
   program_key         String          @unique
+  tags                ProgramTag[]
   short_name          String          @default("Program")
   status              ProgramStatus   @default(DRAFT)
   type                ProgramType     @default(OPEN)
@@ -75,6 +75,14 @@ model Program {
   updated_by_id       String?
 
   @@unique([program_key, id])
+}
+
+model ProgramTag {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  programs   Program[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
 
 model List {

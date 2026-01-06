@@ -13,7 +13,7 @@ export async function updateProgramAction(
   programId: string
 ): Promise<UpdateOneOutput> {
   try {
-    const { academic_partner_id, enterprise_id, ...rest } = data;
+    const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
     const inputData: UpdateOneInput = {
       id: programId,
@@ -32,6 +32,13 @@ export async function updateProgramAction(
         connect: {
           id: enterprise_id,
         },
+      };
+    }
+
+    // Handle tags - connect/disconnect ProgramTag records
+    if (tags !== undefined) {
+      inputData.data.tags = {
+        set: tags.map((tagId) => ({ id: tagId })),
       };
     }
 
