@@ -1,4 +1,4 @@
-import { getCohort } from "@/modules/cohort/server/cohort/read";
+import { getCohort } from "@/modules/cohort/components/forms/read/action";
 import { main as processKBDocuments } from "@/modules/cohort/server/service/kb-document";
 import { updateCommonApiKb } from "@/modules/cohort/server/service/update-applications-kb/common-api";
 import { NextResponse } from "next/server";

@@ -1,6 +1,6 @@
 "use client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
 import { Badge } from "@ui/badge";
 import CohortOverview from "./core-content";

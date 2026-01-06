@@ -5,7 +5,7 @@ import Update from "./update";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
 import { Badge } from "@ui/badge";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
 
 type ContainerProps = {

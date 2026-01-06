@@ -6,7 +6,7 @@ import {
   getAll,
   getAllByStatus,
   GetCohortForTable,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/action";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import Link from "next/link";
 import { enumDisplay } from "@/modules/common/lib/enum-display";

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import {
   Select,
   SelectContent,

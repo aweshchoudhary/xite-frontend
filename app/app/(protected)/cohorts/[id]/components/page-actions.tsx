@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
 } from "@ui/dropdown-menu";
 import { Pencil, TrashIcon, ChevronDownIcon } from "lucide-react";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import Link from "next/link";
 

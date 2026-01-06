@@ -1,4 +1,4 @@
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { Container } from "./container";
 
 export default function CohortCertification({ data }: { data: GetCohort }) {

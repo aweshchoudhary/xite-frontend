@@ -2,7 +2,7 @@
 import { updateRecord } from "@/modules/common/database/controllers/program/update";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
+import { getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 
 export async function updateProgramAction(

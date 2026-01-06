@@ -5,8 +5,7 @@ import {
 } from "@/modules/cohort/server/cohort/create";
 import { CreateSchema } from "../schema";
 import { getRecord } from "@/modules/common/database/controllers/program/read";
-import { getLastCohortByProgramId } from "@/modules/cohort/server/cohort/read";
-import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
+import { getLastCohortByProgramId, getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";

@@ -11,15 +11,25 @@ export type GetRecordInput = {
   include?: PrimaryDB.CohortInclude;
   select?: PrimaryDB.CohortSelect;
 };
-export type GetRecordOutput = PrimaryDB.CohortGetPayload<object> | null;
+// export type GetRecordOutput = Cohort | null;
 
-export async function getRecord({
-  recordId,
-}: GetRecordInput): Promise<GetRecordOutput> {
+export async function getRecord({ recordId, include, select }: GetRecordInput) {
   try {
-    const record = await primaryDB.cohort.findUnique({
-      where: { id: recordId },
-    });
+    const findUniqueInput: PrimaryDB.CohortFindUniqueArgs = {
+      where: {
+        id: recordId,
+      },
+    };
+
+    if (include) {
+      findUniqueInput.include = include;
+    }
+
+    if (select) {
+      findUniqueInput.select = select;
+    }
+
+    const record = await primaryDB.cohort.findUnique(findUniqueInput);
     return record;
   } catch (error) {
     throw error;

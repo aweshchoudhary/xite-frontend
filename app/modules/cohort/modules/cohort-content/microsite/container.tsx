@@ -4,13 +4,15 @@ import View from "./view";
 import Update from "./update";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import {
+import type {
   CohortSectionWithData,
   GetCohort,
   GetSectionOrderByCohortIdOutput,
+} from "@/modules/cohort/components/forms/read/action";
+import {
   getCohortSections,
   getSectionOrderByCohortId,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/action";
 
 import { Container as BrandingContainer } from "../branding/container";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";

@@ -1,5 +1,5 @@
 "use client";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { useEffect, useState, useCallback } from "react";
 import {
   IMicrosite,

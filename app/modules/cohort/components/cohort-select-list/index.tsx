@@ -10,7 +10,7 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { GetCohortByProgramId } from "@/modules/cohort/server/cohort/read";
+import type { GetCohortByProgramId } from "@/modules/cohort/components/forms/read/action";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";

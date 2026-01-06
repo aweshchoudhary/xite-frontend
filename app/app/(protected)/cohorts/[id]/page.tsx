@@ -1,5 +1,5 @@
 "use server";
-import { getCohort } from "@/modules/cohort/server/cohort/read";
+import { getCohort } from "@/modules/cohort/components/forms/read/action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { Loader, Book, Key, Calendar, User } from "lucide-react";
@@ -52,6 +52,8 @@ export default async function Page({
 
   const { id } = await params;
   const data = await getCohort({ id });
+
+  console.log({ data });
 
   if (!data) {
     notFound();

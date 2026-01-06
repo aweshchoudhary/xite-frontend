@@ -1,17 +1,18 @@
 "use server";
 
-import { primaryDB } from "@/modules/common/database/prisma/connection";
-import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
-import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import {
   getRecord,
   getManyRecords,
   getManyRecordsByStatus,
 } from "@/modules/common/database/controllers/cohort/read";
-
-// ============================================================================
-// Types
-// ============================================================================
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import {
+  WorkStatus,
+  CohortSectionType,
+} from "@/modules/common/database/prisma/generated/prisma";
+import { checkPermission } from "@/modules/common/authentication/access-control/lib";
+import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 /**
  * Full cohort with all relations - for detail pages
@@ -56,7 +57,7 @@ export type GetCohort = PrimaryDB.CohortGetPayload<{
       include: {
         items: {
           include: {
-            industry_expert: true;
+            faculty: true;
           };
         };
       };
@@ -75,7 +76,13 @@ export type GetCohort = PrimaryDB.CohortGetPayload<{
       };
     };
   };
-}>;
+}> & {
+  industry_experts_section?: {
+    items?: Array<{
+      faculty?: unknown;
+    }>;
+  };
+};
 
 /**
  * Minimal cohort data for table view
@@ -118,67 +125,26 @@ export type GetCohortByProgramId = PrimaryDB.CohortGetPayload<{
 }>;
 
 /**
- * Minimal cohort data for card view
- */
-export type GetCohortForCard = PrimaryDB.CohortGetPayload<{
-  select: {
-    id: true;
-    name: true;
-    status: true;
-    start_date: true;
-    end_date: true;
-  };
-}>;
-
-/**
- * Basic cohort for auth checks
- */
-export type GetCohortBasic = PrimaryDB.CohortGetPayload<{
-  select: {
-    id: true;
-    ownerId: true;
-    status: true;
-  };
-}>;
-
-/**
- * Cohort section with data
- */
-export type CohortSectionWithData = {
-  id: string;
-  section_type: string;
-  section_position: number;
-  section_id: string;
-  data: any;
-};
-
-/**
- * Section order output
- */
-export type GetCohortSectionOrderBySectionIdOutput =
-  PrimaryDB.CohortSectionOrderGetPayload<object> | null;
-
-/**
- * Section order by cohort output
- */
-export type GetSectionOrderByCohortIdOutput =
-  PrimaryDB.CohortSectionOrderGetPayload<object>[];
-
-// ============================================================================
-// Functions
-// ============================================================================
-
-/**
- * Get full cohort with all relations - for detail pages
+ * Get a full cohort with all relations
  */
 export async function getCohort({
   id,
+  accessCheck = true,
 }: {
   id: string;
+  accessCheck?: boolean;
 }): Promise<GetCohort | null> {
   try {
-    const cohort = await primaryDB.cohort.findUnique({
-      where: { id },
+    if (accessCheck) {
+      const permission = await checkPermission("Cohort", "read");
+
+      if (!permission) {
+        throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+      }
+    }
+
+    const cohort = await getRecord({
+      recordId: id,
       include: {
         program: {
           include: {
@@ -218,7 +184,7 @@ export async function getCohort({
           include: {
             items: {
               include: {
-                industry_expert: true,
+                faculty: true,
               },
             },
           },
@@ -239,19 +205,69 @@ export async function getCohort({
       },
     });
 
-    return cohort as GetCohort | null;
+    return cohort;
   } catch (error) {
     throw error;
   }
 }
 
 /**
- * Get cohorts for table view - minimal data only
+ * Get all cohorts for table view
+ */
+export async function getAll(): Promise<GetCohortForTable[]> {
+  try {
+    const permission = await checkPermission("Cohort", "read");
+
+    if (!permission) {
+      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+    }
+
+    const cohorts = await getManyRecords({
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        start_date: true,
+        end_date: true,
+        program_id: true,
+        program: {
+          select: {
+            id: true,
+            name: true,
+            enterprise_id: true,
+            enterprise: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+
+    return cohorts as unknown as GetCohortForTable[];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Get cohorts by status
  */
 export async function getAllByStatus(
   status: WorkStatus | "ALL"
 ): Promise<GetCohortForTable[]> {
   try {
+    const permission = await checkPermission("Cohort", "read");
+
+    if (!permission) {
+      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+    }
+
     const cohorts = await getManyRecordsByStatus({
       status,
       select: {
@@ -280,103 +296,14 @@ export async function getAllByStatus(
       },
     });
 
-    return cohorts as GetCohortForTable[];
+    return cohorts as unknown as GetCohortForTable[];
   } catch (error) {
     throw error;
   }
 }
 
 /**
- * Get active cohorts for select lists - minimal data
- */
-export async function getActiveCohortsForSelect(): Promise<
-  GetCohortByProgramId[]
-> {
-  try {
-    const cohorts = await getManyRecordsByStatus({
-      status: "ACTIVE",
-      select: {
-        id: true,
-        name: true,
-        status: true,
-        cohort_key: true,
-        program_id: true,
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    return cohorts as GetCohortByProgramId[];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Get all cohorts - minimal data for counts
- */
-export async function getAll(): Promise<GetCohortForTable[]> {
-  try {
-    const cohorts = await getManyRecords({
-      select: {
-        id: true,
-        name: true,
-        status: true,
-        start_date: true,
-        end_date: true,
-        program_id: true,
-        program: {
-          select: {
-            id: true,
-            name: true,
-            enterprise_id: true,
-            enterprise: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    return cohorts as GetCohortForTable[];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Get cohorts for card view - minimal data
- */
-export async function getCohortsForCard(): Promise<GetCohortForCard[]> {
-  try {
-    const cohorts = await getManyRecords({
-      select: {
-        id: true,
-        name: true,
-        status: true,
-        start_date: true,
-        end_date: true,
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    return cohorts as GetCohortForCard[];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- * Get cohorts by program ID - minimal data for select lists
+ * Get cohorts by program ID
  */
 export async function getCohortsByProgramId({
   programId,
@@ -384,6 +311,12 @@ export async function getCohortsByProgramId({
   programId: string;
 }): Promise<{ data: GetCohortByProgramId[] }> {
   try {
+    const permission = await checkPermission("Cohort", "read");
+
+    if (!permission) {
+      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+    }
+
     const cohorts = await getManyRecords({
       where: {
         program_id: programId,
@@ -407,28 +340,80 @@ export async function getCohortsByProgramId({
 }
 
 /**
- * Get basic cohort data - for auth checks
+ * Get last cohort by program ID
  */
-export async function getCohortBasic({
-  id,
+export async function getLastCohortByProgramId({
+  programId,
 }: {
-  id: string;
-}): Promise<GetCohortBasic | null> {
+  programId: string;
+}): Promise<{
+  data: PrimaryDB.CohortGetPayload<{
+    include: {
+      program: {
+        select: {
+          program_key: true;
+        };
+      };
+    };
+    select: {
+      cohort_num: true;
+    };
+  }> | null;
+}> {
   try {
-    const cohort = await getRecord({
-      recordId: id,
-      select: {
-        id: true,
-        ownerId: true,
-        status: true,
+    const permission = await checkPermission("Cohort", "read");
+
+    if (!permission) {
+      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
+    }
+
+    const cohorts = await getManyRecords({
+      where: {
+        program_id: programId,
       },
+      select: {
+        cohort_num: true,
+        program: {
+          select: {
+            program_key: true,
+          },
+        },
+      },
+      orderBy: {
+        cohort_num: "desc",
+      },
+      take: 1,
     });
 
-    return cohort as GetCohortBasic | null;
+    return {
+      data: (cohorts[0] || null) as unknown as PrimaryDB.CohortGetPayload<{
+        include: {
+          program: {
+            select: {
+              program_key: true;
+            };
+          };
+        };
+        select: {
+          cohort_num: true;
+        };
+      }> | null,
+    };
   } catch (error) {
     throw error;
   }
 }
+
+/**
+ * Section with data for cohort content
+ */
+export type CohortSectionWithData = {
+  id: string;
+  section_type: CohortSectionType;
+  section_id: string;
+  section_position: number;
+  data: PrimaryDB.CohortGenericSectionGetPayload<object> | null;
+};
 
 /**
  * Get cohort sections with their data
@@ -442,94 +427,35 @@ export async function getCohortSections(
       orderBy: { section_position: "asc" },
     });
 
-    const sectionsWithData: CohortSectionWithData[] = [];
-
-    for (const order of sectionOrders) {
-      let sectionData: any = null;
-
-      switch (order.section_type) {
-        case "overview_section":
-          sectionData = await primaryDB.cohortOverviewSection.findUnique({
+    const sections = await Promise.all(
+      sectionOrders.map(async (order) => {
+        let data = null;
+        if (order.section_type === "custom_section") {
+          data = await primaryDB.cohortGenericSection.findUnique({
             where: { id: order.section_id },
           });
-          break;
-        case "benefits_section":
-          sectionData = await primaryDB.cohortBenefitsSection.findUnique({
-            where: { id: order.section_id },
-            include: { benefits_items: true },
-          });
-          break;
-        case "design_curriculum_section":
-          sectionData = await primaryDB.designCohortCurriculumSection.findUnique({
-            where: { id: order.section_id },
-            include: { items: true },
-          });
-          break;
-        case "faculty_section":
-          sectionData = await primaryDB.cohortFacultySection.findUnique({
-            where: { id: order.section_id },
-            include: {
-              items: {
-                include: { faculty: true },
-              },
-            },
-          });
-          break;
-        case "industry_experts_section":
-          sectionData =
-            await primaryDB.cohortIndustryExpertsSection.findUnique({
-              where: { id: order.section_id },
-              include: {
-                items: {
-                  include: { industry_expert: true },
-                },
-              },
-            });
-          break;
-        case "statistics_section":
-          sectionData = await primaryDB.cohortStatisticsSection.findUnique({
-            where: { id: order.section_id },
-          });
-          break;
-        case "certification_section":
-          sectionData = await primaryDB.cohortCertificationSection.findUnique({
-            where: { id: order.section_id },
-          });
-          break;
-        case "testimonial_section":
-          sectionData = await primaryDB.cohortTestimonialSection.findUnique({
-            where: { id: order.section_id },
-            include: { items: true },
-          });
-          break;
-        case "who_should_apply_section":
-          sectionData = await primaryDB.cohortWhoShouldApplySection.findUnique({
-            where: { id: order.section_id },
-          });
-          break;
-        case "custom_section":
-          sectionData = await primaryDB.cohortGenericSection.findUnique({
-            where: { id: order.section_id },
-          });
-          break;
-      }
-
-      if (sectionData) {
-        sectionsWithData.push({
+        }
+        return {
           id: order.id,
           section_type: order.section_type,
-          section_position: order.section_position,
           section_id: order.section_id,
-          data: sectionData,
-        });
-      }
-    }
+          section_position: order.section_position,
+          data,
+        };
+      })
+    );
 
-    return sectionsWithData;
+    return sections;
   } catch (error) {
     throw error;
   }
 }
+
+/**
+ * Output type for section order by section ID
+ */
+export type GetCohortSectionOrderBySectionIdOutput =
+  PrimaryDB.CohortSectionOrderGetPayload<object> | null;
 
 /**
  * Get section order by section ID
@@ -549,6 +475,12 @@ export async function getCohortSectionOrderBySectionId(
 }
 
 /**
+ * Output type for section order by cohort ID
+ */
+export type GetSectionOrderByCohortIdOutput =
+  PrimaryDB.CohortSectionOrderGetPayload<object>[];
+
+/**
  * Get section order by cohort ID
  */
 export async function getSectionOrderByCohortId(
@@ -565,4 +497,3 @@ export async function getSectionOrderByCohortId(
     throw error;
   }
 }
-

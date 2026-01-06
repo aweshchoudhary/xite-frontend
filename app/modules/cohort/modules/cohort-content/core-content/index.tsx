@@ -1,4 +1,4 @@
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { Container as OverviewContainer } from "./overview/container";
 import { Container as CurriculumContainer } from "./curriculum/container";
 import { Container as BenefitsContainer } from "./benefits/container";

@@ -1,7 +1,5 @@
-import {
-  CohortSectionWithData,
-  getCohortSections,
-} from "@/modules/cohort/server/cohort/read";
+import type { CohortSectionWithData } from "@/modules/cohort/components/forms/read/action";
+import { getCohortSections } from "@/modules/cohort/components/forms/read/action";
 import { useEffect, useState } from "react";
 
 export default function SectionOrder({ cohort_id }: { cohort_id: string }) {

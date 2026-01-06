@@ -1,4 +1,4 @@
-import { getAllByStatus } from "@/modules/cohort/server/cohort/read";
+import { getAllByStatus } from "@/modules/cohort/components/forms/read/action";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {

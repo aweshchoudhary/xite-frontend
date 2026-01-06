@@ -3,13 +3,15 @@ import MicrositeAdditionalFieldsView from "../../common/components/microsite-add
 import { ImageIcon, TableOfContentsIcon } from "lucide-react";
 import Image from "next/image";
 import { getImageUrl } from "@/modules/common/lib/utils";
-import {
+import type {
   CohortSectionWithData,
   GetCohort,
   GetCohortSectionOrderBySectionIdOutput,
+} from "@/modules/cohort/components/forms/read/action";
+import {
   getCohortSectionOrderBySectionId,
   getCohortSections,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/action";
 import { useEffect, useState } from "react";
 
 type Props = {

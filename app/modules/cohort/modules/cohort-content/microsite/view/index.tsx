@@ -5,7 +5,7 @@ import { cn } from "@/modules/common/lib/utils";
 import { buttonVariants } from "@ui/button";
 import Link from "next/link";
 import { LinkIcon } from "lucide-react";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import SectionOrder from "./section-order";
 
 type Props = {

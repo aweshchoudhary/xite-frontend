@@ -23,13 +23,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/select";
-import {
+import type {
   CohortSectionWithData,
   GetCohort,
   GetCohortSectionOrderBySectionIdOutput,
+} from "@/modules/cohort/components/forms/read/action";
+import {
   getCohortSectionOrderBySectionId,
   getCohortSections,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/action";
 import { useEffect, useState } from "react";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
 import { Field, FieldError } from "@ui/field";

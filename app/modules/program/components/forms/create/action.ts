@@ -1,7 +1,7 @@
 "use server";
 import { ProgramCreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId } from "@/modules/cohort/server/cohort/read";
+import { getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
 import {
   createRecord,
   CreateRecordInput,
