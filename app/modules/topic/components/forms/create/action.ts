@@ -1,22 +1,22 @@
 "use server";
-import {
-  createRecord,
-  CreateRecordOutput,
-} from "@/modules/common/database/controllers/topic/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/topic/contants";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateRecordOutput;
+  data?: PrimaryDB.TopicGetPayload<object>;
 };
 
 export async function createAction(
   data: CreateSchema
 ): Promise<CreateActionOutput> {
   try {
-    const createdData = await createRecord(data);
+    const createdData = await primaryDB.topic.create({
+      data: data as PrimaryDB.TopicCreateInput,
+    });
 
     if (!createdData) {
       throw new Error(`Failed to create ${MODULE_NAME}`);

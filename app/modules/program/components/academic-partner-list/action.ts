@@ -1,10 +1,10 @@
 "use server";
 
-import { getManyRecords } from "@/modules/common/database/controllers/academic-partner/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function getAcademicPartnersAction() {
   try {
-    const academicPartners = await getManyRecords({});
+    const academicPartners = await primaryDB.academicPartner.findMany({});
     return { data: academicPartners };
   } catch (error) {
     throw error;

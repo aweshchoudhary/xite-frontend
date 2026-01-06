@@ -1,10 +1,8 @@
 "use server";
 
-"use server";
-
-import { getManyRecords } from "@/modules/common/database/controllers/faculty/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function getDataList() {
-  const dataList = await getManyRecords({}); // TODO: change to industry expert
+  const dataList = await primaryDB.faculty.findMany({}); // TODO: change to industry expert
   return { data: dataList };
 }

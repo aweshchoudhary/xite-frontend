@@ -1,6 +1,6 @@
 "use server";
 
-import { updateRecord } from "@common-database/controllers/cohort/update";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant/errors";
 import { uploadFile } from "@/modules/common/services/file-upload";
@@ -16,8 +16,8 @@ export async function updateUniversityLogoAction(cohortId: string, logo: File) {
 
     const { fileUrl: logo_url } = await uploadFile(logo);
 
-    const cohort = await updateRecord({
-      recordId: cohortId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: {
         media_section: {
           update: {

@@ -2,7 +2,7 @@
 
 import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
 import { columns } from "./schema";
-import { getManyRecords } from "@/modules/common/database/controllers/program/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { Badge } from "@ui/badge";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
@@ -15,7 +15,7 @@ type ProgramTableProps = {
 export default async function ProgramTable({
   status = "ALL",
 }: ProgramTableProps) {
-  const programs = await getManyRecords({});
+  const programs = await primaryDB.program.findMany({});
 
   // Precompute counts for all statuses including ALL
   const statusCounts: Record<string, number> = {

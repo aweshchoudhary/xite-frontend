@@ -1,6 +1,5 @@
 "use server";
 
-import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
 import { revalidatePath } from "next/cache";

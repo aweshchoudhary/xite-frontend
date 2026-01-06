@@ -1,5 +1,6 @@
 "use server";
-import { createRecord, CreateRecordOutput } from "@/modules/common/database/controllers/faculty/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
@@ -7,7 +8,7 @@ import { uploadFile } from "@/modules/common/services/file-upload";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateRecordOutput;
+  data?: PrimaryDB.FacultyGetPayload<object>;
 };
 
 export async function createAction(
@@ -33,7 +34,8 @@ export async function createAction(
         ?.filter((st) => st.sub_topic_id)
         .map((st) => st.sub_topic_id) ?? [];
 
-    const createdData = await createRecord({
+    const createdData = await primaryDB.faculty.create({
+      data: {
       ...rest,
       profile_image,
       academic_partner: {

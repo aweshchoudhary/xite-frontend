@@ -8,7 +8,7 @@ import { getLoggedInUser } from "@/modules/user/utils";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
 import { upsertSectionPosition } from "@/modules/cohort/components/forms/update/cohort-update-actions";
-import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGenericSectionGetPayload<object>[];
@@ -44,8 +44,8 @@ export const updateAction = async ({
     // Disconnect and delete old sections (keep as is)
     await Promise.all(
       currentSections.map(async (section) => {
-        await updateRecord({
-          recordId: cohort_id,
+        await primaryDB.cohort.update({
+          where: { id: cohort_id },
           data: { generic_sections: { disconnect: { id: section.id } } },
         });
         await primaryDB.cohortSectionOrder.deleteMany({

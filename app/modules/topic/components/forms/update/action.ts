@@ -1,15 +1,13 @@
 "use server";
-import {
-  updateRecord,
-  UpdateRecordOutput,
-} from "@/modules/common/database/controllers/topic/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/topic/contants";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateRecordOutput;
+  data?: PrimaryDB.TopicGetPayload<object>;
 };
 
 export async function updateAction(
@@ -17,9 +15,9 @@ export async function updateAction(
   id: string
 ): Promise<UpdateActionOutput> {
   try {
-    const updatedData = await updateRecord({
-      recordId: id,
-      data,
+    const updatedData = await primaryDB.topic.update({
+      where: { id: id },
+      data: data as PrimaryDB.TopicUpdateInput,
     });
 
     if (!updatedData) {

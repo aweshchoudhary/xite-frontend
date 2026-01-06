@@ -3,7 +3,7 @@ import { cn } from "@/modules/common/lib/utils";
 import { ArrowRight, Settings } from "lucide-react";
 import Link from "next/link";
 import { getAllByStatus } from "@/modules/cohort/components/forms/read/action";
-import { getManyRecords as getAllProgramsByStatus } from "@/modules/common/database/controllers/program/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Separator } from "@ui/separator";
 import ViewCard from "@/modules/program/components/view/view-card";
@@ -56,7 +56,7 @@ export default async function Home() {
 }
 
 const AllPrograms = async () => {
-  const programs = await getAllProgramsByStatus({});
+  const programs = await primaryDB.program.findMany({});
   if (!programs || programs.length === 0)
     return (
       <div>

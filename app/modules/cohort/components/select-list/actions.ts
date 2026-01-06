@@ -1,8 +1,8 @@
 "use server";
 
-import { getManyRecords } from "@/modules/common/database/controllers/faculty/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function getFacultyList() {
-  const facultyList = await getManyRecords({});
+  const facultyList = await primaryDB.faculty.findMany({});
   return { data: facultyList };
 }

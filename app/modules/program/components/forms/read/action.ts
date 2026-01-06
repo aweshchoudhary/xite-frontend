@@ -1,10 +1,11 @@
 "use server";
 
-import { getRecord } from "@/modules/common/database/controllers/program/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
 
-export type GetOne = Awaited<ReturnType<typeof getRecord>>;
+export type GetOne = PrimaryDB.ProgramGetPayload<object> | null;
 
 export async function getOneAction(recordId: string) {
   try {
@@ -14,7 +15,9 @@ export async function getOneAction(recordId: string) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const program = await getRecord({ recordId });
+    const program = await primaryDB.program.findUnique({
+      where: { id: recordId },
+    });
     return { data: program };
   } catch (error) {
     throw error;

@@ -1,10 +1,11 @@
 "use server";
 
-import { getRecord, getManyRecords } from "@/modules/common/database/controllers/faculty/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
 
-export type GetOneOutput = Awaited<ReturnType<typeof getRecord>>;
+export type GetOneOutput = PrimaryDB.FacultyGetPayload<object> | null;
 
 export async function getOneAction(recordId: string) {
   try {
@@ -14,7 +15,9 @@ export async function getOneAction(recordId: string) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const faculty = await getRecord({ recordId });
+    const faculty = await primaryDB.faculty.findUnique({
+      where: { id: recordId },
+    });
     return { data: faculty };
   } catch (error) {
     throw error;
@@ -29,7 +32,7 @@ export async function getAllAction() {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const faculties = await getManyRecords({});
+    const faculties = await primaryDB.faculty.findMany({});
     return { data: faculties };
   } catch (error) {
     throw error;

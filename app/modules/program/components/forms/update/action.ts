@@ -1,9 +1,9 @@
 "use server";
-import { updateRecord } from "@/modules/common/database/controllers/program/update";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function updateProgramAction(
   data: ProgramUpdateSchema,
@@ -36,8 +36,8 @@ export async function updateProgramAction(
       };
     }
 
-    const program = await updateRecord({
-      recordId: programId,
+    const program = await primaryDB.program.update({
+      where: { id: programId },
       data: updateData,
     });
 
@@ -57,8 +57,7 @@ export async function updateProgramAction(
 
 export async function getProgramsAction() {
   try {
-    const { getManyRecords } = await import("@/modules/common/database/controllers/program/read");
-    const programs = await getManyRecords({});
+    const programs = await primaryDB.program.findMany({});
     return { data: programs };
   } catch (error) {
     throw error;

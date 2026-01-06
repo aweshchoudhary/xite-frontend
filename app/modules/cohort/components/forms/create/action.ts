@@ -4,7 +4,7 @@ import {
   createCohort,
 } from "@/modules/cohort/server/cohort/create";
 import { CreateSchema } from "../schema";
-import { getRecord } from "@/modules/common/database/controllers/program/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLastCohortByProgramId, getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
@@ -49,7 +49,9 @@ export async function createCohortAction(
     } else {
       newCohortNumber = 1;
 
-      const program = await getRecord({ recordId: program_id });
+      const program = await primaryDB.program.findUnique({
+        where: { id: program_id },
+      });
       if (!program) {
         throw new Error("Program not found");
       }
@@ -106,8 +108,7 @@ export async function getProgramsAction() {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const { getManyRecords } = await import("@/modules/common/database/controllers/program/read");
-    const programs = await getManyRecords({});
+    const programs = await primaryDB.program.findMany({});
     return { data: programs };
   } catch (error) {
     throw error;

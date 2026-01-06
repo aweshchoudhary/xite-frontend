@@ -1,6 +1,6 @@
 "use server";
-import { updateRecord } from "@/modules/common/database/controllers/cohort/update";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
@@ -98,8 +98,8 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
       },
     };
 
-    const cohort = await updateRecord({
-      recordId: recordId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: recordId },
       data: dataToUpdate,
     });
 
@@ -125,8 +125,8 @@ export async function updateBannerAction(cohortId: string, banner: File) {
 
     const { fileUrl: banner_url } = await uploadFile(banner);
 
-    const cohort = await updateRecord({
-      recordId: cohortId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: {
         media_section: {
           update: {
@@ -158,8 +158,8 @@ export async function updateBrochureAction(cohortId: string, brochure: File) {
 
     const { fileUrl: brochure_url } = await uploadFile(brochure);
 
-    const cohort = await updateRecord({
-      recordId: cohortId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: {
         media_section: {
           update: {
@@ -192,8 +192,8 @@ export async function updateCohortStatusAction(
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohort = await updateRecord({
-      recordId: cohortId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: { status },
     });
 
@@ -222,8 +222,8 @@ export async function updateCohortChecklistAndStatusAction(
 
     const { fileUrl: checklist_file_url } = await uploadFile(checklistFile);
 
-    const cohort = await updateRecord({
-      recordId: cohortId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: {
         checklist_file_url,
         status: WorkStatus.ACTIVE,

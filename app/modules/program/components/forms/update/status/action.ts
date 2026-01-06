@@ -1,13 +1,13 @@
 "use server";
 import { createCohort } from "@/modules/cohort/server/cohort/create";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/program/contants";
-import { updateRecord } from "@/modules/common/database/controllers/program/update";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function updateStatusAction(id: string) {
   try {
-    const data = await updateRecord({
-      recordId: id,
+    const data = await primaryDB.program.update({
+      where: { id: id },
       data: { status: "ACTIVE" },
     });
 

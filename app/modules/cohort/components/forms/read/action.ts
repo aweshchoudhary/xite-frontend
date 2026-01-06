@@ -1,10 +1,5 @@
 "use server";
 
-import {
-  getRecord,
-  getManyRecords,
-  getManyRecordsByStatus,
-} from "@/modules/common/database/controllers/cohort/read";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import {
   WorkStatus,
@@ -81,7 +76,7 @@ export type GetCohort = PrimaryDB.CohortGetPayload<{
     items?: Array<{
       faculty?: unknown;
     }>;
-  };
+  } | null;
 };
 
 /**
@@ -143,8 +138,10 @@ export async function getCohort({
       }
     }
 
-    const cohort = await getRecord({
-      recordId: id,
+    const cohort = await primaryDB.cohort.findUnique({
+      where: {
+        id: id,
+      },
       include: {
         program: {
           include: {
@@ -205,7 +202,7 @@ export async function getCohort({
       },
     });
 
-    return cohort;
+    return cohort as GetCohort | null;
   } catch (error) {
     throw error;
   }
@@ -222,7 +219,7 @@ export async function getAll(): Promise<GetCohortForTable[]> {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohorts = await getManyRecords({
+    const cohorts = await primaryDB.cohort.findMany({
       select: {
         id: true,
         name: true,
@@ -268,8 +265,10 @@ export async function getAllByStatus(
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohorts = await getManyRecordsByStatus({
-      status,
+    const whereClause: PrimaryDB.CohortWhereInput =
+      status === "ALL" ? {} : { status };
+    const cohorts = await primaryDB.cohort.findMany({
+      where: whereClause,
       select: {
         id: true,
         name: true,
@@ -317,7 +316,7 @@ export async function getCohortsByProgramId({
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohorts = await getManyRecords({
+    const cohorts = await primaryDB.cohort.findMany({
       where: {
         program_id: programId,
       },
@@ -367,7 +366,7 @@ export async function getLastCohortByProgramId({
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohorts = await getManyRecords({
+    const cohorts = await primaryDB.cohort.findMany({
       where: {
         program_id: programId,
       },

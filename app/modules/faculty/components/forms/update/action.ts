@@ -1,14 +1,14 @@
 "use server";
-import { updateRecord, UpdateRecordOutput } from "@/modules/common/database/controllers/faculty/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
-import { getRecord } from "@/modules/common/database/controllers/faculty/read";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateRecordOutput;
+  data?: PrimaryDB.FacultyGetPayload<object>;
 };
 
 export async function updateAction(
@@ -34,8 +34,8 @@ export async function updateAction(
       profile_image = null;
     }
 
-    const faculty = await getRecord({ 
-      recordId: id,
+    const faculty = await primaryDB.faculty.findUnique({
+      where: { id: id },
       include: { subtopics: true }
     });
     if (!faculty) {
@@ -53,8 +53,8 @@ export async function updateAction(
       (subtopic) => !validSubtopicIds.includes(subtopic.id)
     );
 
-    const updatedData = await updateRecord({
-      recordId: id,
+    const updatedData = await primaryDB.faculty.update({
+      where: { id: id },
       data: {
         ...rest,
         academic_partner: {
