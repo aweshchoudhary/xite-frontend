@@ -99,7 +99,12 @@ export default async function Page({
             <div className="space-y-3">
               {data.programs.map((program) => (
                 <div key={program.id}>
-                  <ViewCard program={program} />
+                  <ViewCard
+                    program={{
+                      ...program,
+                      academic_partner: { name: data.name },
+                    }}
+                  />
                 </div>
               ))}
               {data.programs.length === 0 && (

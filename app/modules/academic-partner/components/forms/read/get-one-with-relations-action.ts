@@ -35,7 +35,7 @@ export async function getOneWithRelationsAction(
   id: string
 ): Promise<GetOneOutput> {
   try {
-    const permission = await checkPermission("AcademicPartner", "read");
+    const permission = await checkPermission("AcademicPartners", "read");
 
     if (!permission) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
@@ -71,4 +71,3 @@ export async function getOneWithRelationsAction(
     };
   }
 }
-

@@ -63,7 +63,11 @@ export type GetCohortForDetailPage = PrimaryDB.CohortGetPayload<{
     cohort_branding: true;
     design_curriculum_section: {
       include: {
-        items: true;
+        items: {
+          include: {
+            objectives: true;
+          };
+        };
       };
     };
   };
@@ -92,11 +96,11 @@ export async function getOneForDetailPageAction(
             enterprise: true,
           },
         },
-    fees: {
-      include: {
-        currency: true,
-      },
-    },
+        fees: {
+          include: {
+            currency: true,
+          },
+        },
         owner: true,
         media_section: true,
         microsite_section: true,
@@ -140,7 +144,17 @@ export async function getOneForDetailPageAction(
         cohort_branding: true,
         design_curriculum_section: {
           include: {
-            items: true,
+            items: {
+              include: {
+                objectives: true,
+                sessions: {
+                  include: {
+                    objectives: true,
+                    sub_topic: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -154,4 +168,3 @@ export async function getOneForDetailPageAction(
     };
   }
 }
-

@@ -5,11 +5,24 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
 
-export type GetOne = PrimaryDB.AcademicPartnerGetPayload<object> | null;
+export type GetOne = PrimaryDB.AcademicPartnerGetPayload<{
+  include: {
+    programs: {
+      include: {
+        academic_partner: {
+          select: {
+            name: true;
+          };
+        };
+      };
+    };
+    faculties: true;
+  };
+}>;
 
 export async function getOneAction(recordId: string) {
   try {
-    const permission = await checkPermission("AcademicPartner", "read");
+    const permission = await checkPermission("AcademicPartners", "read");
 
     if (!permission) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
@@ -17,6 +30,10 @@ export async function getOneAction(recordId: string) {
 
     const academicPartner = await primaryDB.academicPartner.findUnique({
       where: { id: recordId },
+      include: {
+        programs: true,
+        faculties: true,
+      },
     });
     return { data: academicPartner };
   } catch (error) {
@@ -26,7 +43,7 @@ export async function getOneAction(recordId: string) {
 
 export async function getAllAction() {
   try {
-    const permission = await checkPermission("AcademicPartner", "read");
+    const permission = await checkPermission("AcademicPartners", "read");
 
     if (!permission) {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
@@ -38,4 +55,3 @@ export async function getAllAction() {
     throw error;
   }
 }
-
