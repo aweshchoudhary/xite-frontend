@@ -11,9 +11,13 @@ interface Props {
 }
 
 export default function PermissionGate({ resource, action, children }: Props) {
-  const { user, roles } = useAuth();
+  const { roles, loading } = useAuth();
 
-  if (!user || roles.length === 0) return null;
+  // Don't render anything while loading to avoid flash of content
+  if (loading) return null;
+
+  // If no roles, user is not authenticated or has no permissions
+  if (!roles || roles.length === 0) return null;
 
   const allowed = hasPermission(roles, resource, action);
 
