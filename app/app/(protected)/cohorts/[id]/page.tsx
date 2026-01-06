@@ -99,21 +99,6 @@ export default async function Page({
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar className="size-4" strokeWidth={1.5} /> Cohort
-                Start-End Date
-              </div>
-              <div>
-                {data.start_date
-                  ? format(data.start_date, "MMM d, yyyy")
-                  : "Not Set"}{" "}
-                -{" "}
-                {data.end_date
-                  ? format(data.end_date, "MMM d, yyyy")
-                  : "Not Set"}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
                 <Calendar className="size-4" strokeWidth={1.5} /> Marketing
                 Start-End Date
               </div>
@@ -127,6 +112,22 @@ export default async function Page({
                   : "Not Set"}
               </div>
             </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Calendar className="size-4" strokeWidth={1.5} /> Cohort
+                Start-End Date
+              </div>
+              <div>
+                {data.start_date
+                  ? format(data.start_date, "MMM d, yyyy")
+                  : "Not Set"}{" "}
+                -{" "}
+                {data.end_date
+                  ? format(data.end_date, "MMM d, yyyy")
+                  : "Not Set"}
+              </div>
+            </div>
+
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <User className="size-4" strokeWidth={1.5} />

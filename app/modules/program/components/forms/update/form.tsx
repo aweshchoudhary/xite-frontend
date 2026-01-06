@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -24,7 +24,10 @@ import EnterpriseSelect from "@/modules/enterprise/components/select-list";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 import { Badge } from "@ui/badge";
-import { X } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
+import { Checkbox } from "@ui/checkbox";
+import { getProgramTagsAction } from "./get-program-tags-action";
 
 type UpdateFormProps = FormUpdateBaseProps<ProgramUpdateSchema>;
 
@@ -34,9 +37,23 @@ export default function UpdateForm({
   successRedirectPath,
 }: UpdateFormProps) {
   const router = useRouter();
+
+  // Transform currentData tags from ProgramTag objects to tag IDs
+  const transformedCurrentData = useMemo(() => {
+    return {
+      ...currentData,
+      tags:
+        currentData.tags
+          ?.map((tag: { id?: string; name?: string } | string) =>
+            typeof tag === "string" ? tag : tag.id || ""
+          )
+          .filter((id): id is string => Boolean(id)) || [],
+    };
+  }, [currentData]);
+
   const form = useForm({
     resolver: zodResolver(programUpdateSchema),
-    defaultValues: currentData,
+    defaultValues: transformedCurrentData,
   });
 
   const { closeModal, setDefaultValues, redirect } = useFormState();
@@ -45,6 +62,19 @@ export default function UpdateForm({
     () => getRequiredFields(programUpdateSchema),
     []
   );
+
+  const [programTags, setProgramTags] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [tagsPopoverOpen, setTagsPopoverOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const tags = await getProgramTagsAction();
+      setProgramTags(tags);
+    };
+    fetchTags();
+  }, []);
 
   const handleSubmit = async (data: ProgramUpdateSchema) => {
     try {
@@ -66,25 +96,30 @@ export default function UpdateForm({
   };
 
   useEffect(() => {
-    setDefaultValues(currentData);
-  }, [currentData, setDefaultValues]);
+    setDefaultValues(transformedCurrentData);
+  }, [transformedCurrentData, setDefaultValues]);
 
-  const tags = form.watch("tags") || [];
-
-  const addTag = () => {
-    const input = document.getElementById("tag-input") as HTMLInputElement;
-    const value = input?.value?.trim();
-    if (value && !tags.includes(value)) {
-      form.setValue("tags", [...tags, value]);
-      input.value = "";
-    }
+  const toggleTag = (
+    tagId: string,
+    currentTags: string[],
+    onChange: (value: string[]) => void
+  ) => {
+    const newTags = currentTags.includes(tagId)
+      ? currentTags.filter((id: string) => id !== tagId)
+      : [...currentTags, tagId];
+    onChange(newTags);
   };
 
-  const removeTag = (tag: string) => {
-    form.setValue(
-      "tags",
-      tags.filter((t) => t !== tag)
-    );
+  const removeTag = (
+    tagId: string,
+    currentTags: string[],
+    onChange: (value: string[]) => void
+  ) => {
+    onChange(currentTags.filter((id: string) => id !== tagId));
+  };
+
+  const getTagName = (tagId: string) => {
+    return programTags.find((tag) => tag.id === tagId)?.name || tagId;
   };
 
   return (
@@ -242,40 +277,85 @@ export default function UpdateForm({
           </div>
         )}
         <div className="col-span-2 xl:col-span-3">
-          <Field>
-            <FieldLabel>Tags</FieldLabel>
-            <div className="flex gap-2">
-              <Input
-                id="tag-input"
-                placeholder="Add tag"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addTag();
-                  }
-                }}
-              />
-              <Button type="button" onClick={addTag}>
-                Add
-              </Button>
-            </div>
-            {tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="gap-1">
-                    {tag}
-                    <button
+          <Controller
+            control={form.control}
+            name="tags"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Tags</FieldLabel>
+                <Popover
+                  open={tagsPopoverOpen}
+                  onOpenChange={setTagsPopoverOpen}
+                >
+                  <PopoverTrigger asChild>
+                    <Button
                       type="button"
-                      onClick={() => removeTag(tag)}
-                      className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                      variant="outline"
+                      className="w-full justify-between"
                     >
-                      <X className="size-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
+                      <span>
+                        {(field.value?.length || 0) > 0
+                          ? `${field.value?.length || 0} tag(s) selected`
+                          : "Select tags"}
+                      </span>
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <div className="max-h-60 overflow-auto p-2">
+                      {programTags.length === 0 ? (
+                        <div className="py-6 text-center text-sm text-muted-foreground">
+                          No tags available
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {programTags.map((tag) => (
+                            <label
+                              key={tag.id}
+                              className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent cursor-pointer"
+                            >
+                              <Checkbox
+                                checked={field.value?.includes(tag.id) || false}
+                                onCheckedChange={() =>
+                                  toggleTag(
+                                    tag.id,
+                                    field.value || [],
+                                    field.onChange
+                                  )
+                                }
+                              />
+                              <span className="text-sm">{tag.name}</span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {(field.value?.length || 0) > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {field.value?.map((tagId) => (
+                      <Badge key={tagId} variant="secondary" className="gap-1">
+                        {getTagName(tagId)}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeTag(tagId, field.value || [], field.onChange)
+                          }
+                          className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
-          </Field>
+          />
         </div>
       </div>
 
