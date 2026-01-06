@@ -1,4 +1,4 @@
-import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { Container as OverviewContainer } from "./overview/container";
 import { Container as CurriculumContainer } from "./curriculum/container";
 import { Container as BenefitsContainer } from "./benefits/container";

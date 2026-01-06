@@ -2,7 +2,7 @@
 import View from "./view";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { Badge } from "@ui/badge";
 import { useState } from "react";
 import Update from "./update";

@@ -3,15 +3,15 @@ import MicrositeAdditionalFieldsView from "../../common/components/microsite-add
 import { ImageIcon, TableOfContentsIcon } from "lucide-react";
 import Image from "next/image";
 import { getImageUrl } from "@/modules/common/lib/utils";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import type {
   CohortSectionWithData,
-  GetCohort,
   GetCohortSectionOrderBySectionIdOutput,
-} from "@/modules/cohort/components/forms/read/action";
+} from "@/modules/cohort/components/forms/read/get-sections-action";
 import {
-  getCohortSectionOrderBySectionId,
-  getCohortSections,
-} from "@/modules/cohort/components/forms/read/action";
+  getCohortSectionOrderBySectionIdAction,
+  getCohortSectionsAction,
+} from "@/modules/cohort/components/forms/read/get-sections-action";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -64,11 +64,11 @@ const CustomSectionView = ({
 
   useEffect(() => {
     const fetchCohortSections = async () => {
-      const cohortSections = await getCohortSections(cohortData.id);
-      setCohortSections(cohortSections);
+      const { data: cohortSectionsData } = await getCohortSectionsAction(cohortData.id);
+      setCohortSections(cohortSectionsData || []);
 
-      const sectionOrder = await getCohortSectionOrderBySectionId(section.id);
-      setSectionOrder(sectionOrder);
+      const { data: sectionOrderData } = await getCohortSectionOrderBySectionIdAction(section.id);
+      setSectionOrder(sectionOrderData);
     };
     fetchCohortSections();
   }, [cohortData.id]);

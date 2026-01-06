@@ -3,10 +3,10 @@
 import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
 import { columns } from "./schema";
 import {
-  getAll,
-  getAllByStatus,
+  getAllForTableAction,
+  getAllByStatusForTableAction,
   GetCohortForTable,
-} from "@/modules/cohort/components/forms/read/action";
+} from "@/modules/cohort/components/forms/read/get-all-for-table-action";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import Link from "next/link";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
@@ -19,8 +19,8 @@ interface CohortTableProps {
 export default async function CohortTable({
   status = "ALL",
 }: CohortTableProps) {
-  const cohorts: GetCohortForTable[] = await getAllByStatus(status);
-  const allCohorts: GetCohortForTable[] = await getAll();
+  const { data: cohorts = [] } = await getAllByStatusForTableAction(status);
+  const { data: allCohorts = [] } = await getAllForTableAction();
 
   // Precompute counts
   const statusCounts: Record<string, number> = {

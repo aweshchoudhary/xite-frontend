@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@ui/input";
-import { updateBrochureAction } from "../action";
+import { updateBrochureOnlyAction as updateBrochureAction } from "../update-brochure-only-action";
 import { toast } from "sonner";
 
 export default function BrochureUpdate({ cohortId }: { cohortId: string }) {

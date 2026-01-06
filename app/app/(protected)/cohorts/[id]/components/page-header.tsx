@@ -1,7 +1,7 @@
 import UserSelectPopover from "@/modules/cohort/components/assign-user-list/assign-user-list";
 import { PageBreadcrumb } from "./page-breadcrumbs";
 import { HeaderActions } from "./page-actions";
-import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { checkUserOwnsCohort } from "@/modules/user/utils";
 
 export const PageHeader = async ({ data }: { data: GetCohort }) => {

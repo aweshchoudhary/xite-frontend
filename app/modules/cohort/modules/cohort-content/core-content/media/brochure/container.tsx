@@ -1,6 +1,6 @@
 "use client";
 import View from "./view";
-import type { GetCohort } from "@/modules/cohort/components/forms/read/action";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import BrochureUpdate from "./upload";
 import { FileText } from "lucide-react";
 

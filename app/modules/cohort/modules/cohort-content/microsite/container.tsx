@@ -4,15 +4,11 @@ import View from "./view";
 import Update from "./update";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import type {
   CohortSectionWithData,
-  GetCohort,
-  GetSectionOrderByCohortIdOutput,
-} from "@/modules/cohort/components/forms/read/action";
-import {
-  getCohortSections,
-  getSectionOrderByCohortId,
-} from "@/modules/cohort/components/forms/read/action";
+} from "@/modules/cohort/components/forms/read/get-sections-action";
+import { getCohortSectionsAction } from "@/modules/cohort/components/forms/read/get-sections-action";
 
 import { Container as BrandingContainer } from "../branding/container";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
@@ -33,8 +29,8 @@ export function Container({ data, previewDomain }: ContainerProps) {
 
   useEffect(() => {
     const fetchSectionOrder = async () => {
-      const sectionOrder = await getCohortSections(data?.id || "");
-      setSectionOrder(sectionOrder);
+      const { data: sectionOrderData } = await getCohortSectionsAction(data?.id || "");
+      setSectionOrder(sectionOrderData || []);
     };
     fetchSectionOrder();
   }, [data?.id]);

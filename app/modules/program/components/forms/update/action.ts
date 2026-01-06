@@ -1,7 +1,7 @@
 "use server";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId } from "@/modules/cohort/components/forms/read/action";
+import { getCohortsCountAction } from "@/modules/cohort/components/forms/create/get-cohorts-count-action";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 
@@ -64,11 +64,4 @@ export async function getProgramsAction() {
   }
 }
 
-export async function getCohortsCountAction(programId: string) {
-  try {
-    const { data: cohorts } = await getCohortsByProgramId({ programId });
-    return cohorts?.length ?? 0;
-  } catch (error) {
-    throw error;
-  }
-}
+export { getCohortsCountAction } from "@/modules/cohort/components/forms/create/get-cohorts-count-action";

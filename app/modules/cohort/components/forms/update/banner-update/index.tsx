@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@ui/input";
-import { updateBannerAction } from "../action";
+import { updateBannerOnlyAction as updateBannerAction } from "../update-banner-only-action";
 import { toast } from "sonner";
 
 export default function BannerUpdate({ cohortId }: { cohortId: string }) {
