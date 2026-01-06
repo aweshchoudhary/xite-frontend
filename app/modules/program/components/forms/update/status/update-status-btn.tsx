@@ -2,7 +2,7 @@
 import { Button } from "@ui/button";
 import { updateStatusAction } from "./action";
 import { toast } from "sonner";
-import { GetOne } from "@/modules/program/server/read";
+import type { GetOne } from "@/modules/program/components/forms/read/action";
 
 export default function UpdateStatusBtn({ program }: { program: GetOne }) {
   const handleUpdateStatus = async () => {

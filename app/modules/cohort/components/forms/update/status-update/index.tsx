@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import { useState, useEffect, useCallback } from "react";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import {
   Select,
   SelectContent,
@@ -10,10 +10,7 @@ import {
 } from "@ui/select";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { toast } from "sonner";
-import {
-  updateCohortStatusAction,
-  updateCohortChecklistAndStatusAction,
-} from "../action";
+import { updateStatusOnlyAction as updateCohortStatusAction } from "../update-status-only-action";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { Badge } from "@ui/badge";
 import { isSectionsCompleted } from "@/modules/cohort/modules/cohort-content/cohort-content-container";
@@ -25,15 +22,38 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@ui/dialog";
-import { Input } from "@ui/input";
 import { Button } from "@ui/button";
+import { Checkbox } from "@ui/checkbox";
 import { Label } from "@ui/label";
+
+interface ChecklistState {
+  finalBrochure: boolean;
+  ecAutomation: boolean;
+  marketingCampaigns: boolean;
+  cohortIdSalesforce: boolean;
+  emailsConfiguration: {
+    autoMailers: boolean;
+    welcomeMail: boolean;
+    offerLetter: boolean;
+  };
+  paymentPage: boolean;
+}
 
 export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
   const [status, setStatus] = useState(cohort.status);
-  const [showChecklistDialog, setShowChecklistDialog] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [checklist, setChecklist] = useState<ChecklistState>({
+    finalBrochure: false,
+    ecAutomation: false,
+    marketingCampaigns: false,
+    cohortIdSalesforce: false,
+    emailsConfiguration: {
+      autoMailers: false,
+      welcomeMail: false,
+      offerLetter: false,
+    },
+    paymentPage: false,
+  });
 
   const validateCohort = useCallback(() => {
     const {
@@ -67,80 +87,95 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
     return errors;
   }, [cohort]);
 
-  const validateFile = (file: File): boolean => {
-    const allowedTypes = [
-      "application/pdf",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
-      "application/msword", // .doc
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
-      "application/vnd.ms-excel", // .xls
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-    ];
-
-    const allowedExtensions = [
-      ".pdf",
-      ".docx",
-      ".doc",
-      ".xlsx",
-      ".xls",
-      ".jpg",
-      ".jpeg",
-      ".png",
-      ".gif",
-      ".webp",
-    ];
-
-    const fileExtension = file.name
-      .toLowerCase()
-      .substring(file.name.lastIndexOf("."));
-
+  const isChecklistComplete = useCallback(() => {
     return (
-      allowedTypes.includes(file.type) ||
-      allowedExtensions.includes(fileExtension)
+      checklist.finalBrochure &&
+      checklist.ecAutomation &&
+      checklist.marketingCampaigns &&
+      checklist.cohortIdSalesforce &&
+      checklist.emailsConfiguration.autoMailers &&
+      checklist.emailsConfiguration.welcomeMail &&
+      checklist.emailsConfiguration.offerLetter &&
+      checklist.paymentPage
     );
+  }, [checklist]);
+
+  const handleChecklistChange = (
+    key: keyof ChecklistState,
+    value?: boolean
+  ) => {
+    if (key === "emailsConfiguration") {
+      // This won't be called directly, handled separately
+      return;
+    }
+    setChecklist((prev) => ({
+      ...prev,
+      [key]: value ?? !prev[key],
+    }));
   };
 
-  const handleFileUpload = async () => {
-    const file = fileInputRef.current?.files?.[0];
-    if (!file) {
-      toast.error("Please select a file");
-      return;
-    }
+  const handleEmailSubChecklistChange = (
+    subKey: keyof ChecklistState["emailsConfiguration"],
+    value?: boolean
+  ) => {
+    setChecklist((prev) => ({
+      ...prev,
+      emailsConfiguration: {
+        ...prev.emailsConfiguration,
+        [subKey]: value ?? !prev.emailsConfiguration[subKey],
+      },
+    }));
+  };
 
-    if (!validateFile(file)) {
+  const handleConfirmActivation = async () => {
+    if (!isChecklistComplete()) {
       toast.error(
-        "Invalid file type. Please upload a PDF, DOCX, Excel sheet, or image file."
+        "Please complete all checklist items before activating the cohort"
       );
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("File size must be less than 10MB");
-      return;
-    }
-
-    setIsUploading(true);
     try {
-      await updateCohortChecklistAndStatusAction(cohort.id, file);
-      toast.success(
-        `Checklist uploaded and status updated to ${enumDisplay(
-          WorkStatus.ACTIVE
-        )}`
-      );
-      setShowChecklistDialog(false);
-      // Update local status to reflect the change
-      setStatus(WorkStatus.ACTIVE);
+      await updateCohortStatusAction(cohort.id, WorkStatus.ACTIVE);
+      toast.success(`Status updated to ${enumDisplay(WorkStatus.ACTIVE)}`);
+      setShowConfirmationDialog(false);
+      // Reset checklist for next time
+      setChecklist({
+        finalBrochure: false,
+        ecAutomation: false,
+        marketingCampaigns: false,
+        cohortIdSalesforce: false,
+        emailsConfiguration: {
+          autoMailers: false,
+          welcomeMail: false,
+          offerLetter: false,
+        },
+        paymentPage: false,
+      });
     } catch (error) {
-      toast.error("Failed to upload checklist file");
+      toast.error("Failed to activate cohort");
       console.error(error);
-    } finally {
-      setIsUploading(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+    }
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    if (!open) {
+      setShowConfirmationDialog(false);
+      // Reset status to current cohort status if dialog is closed
+      setStatus(cohort.status);
+      // Reset checklist
+      setChecklist({
+        finalBrochure: false,
+        ecAutomation: false,
+        marketingCampaigns: false,
+        cohortIdSalesforce: false,
+        emailsConfiguration: {
+          autoMailers: false,
+          welcomeMail: false,
+          offerLetter: false,
+        },
+        paymentPage: false,
+      });
     }
   };
 
@@ -167,8 +202,8 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
           return;
         }
 
-        // Validation passed, show checklist dialog
-        setShowChecklistDialog(true);
+        // Validation passed, show confirmation dialog
+        setShowConfirmationDialog(true);
         return;
       }
 
@@ -178,14 +213,6 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
     };
     fn();
   }, [status, cohort, validateCohort]);
-
-  const handleDialogClose = (open: boolean) => {
-    if (!open) {
-      setShowChecklistDialog(false);
-      // Reset status to current cohort status if dialog is closed
-      setStatus(cohort.status);
-    }
-  };
 
   return (
     <>
@@ -215,41 +242,200 @@ export default function CohortStatusUpdate({ cohort }: { cohort: GetCohort }) {
         </SelectContent>
       </Select>
 
-      <Dialog open={showChecklistDialog} onOpenChange={handleDialogClose}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog open={showConfirmationDialog} onOpenChange={handleDialogClose}>
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Upload Checklist File</DialogTitle>
+            <DialogTitle>Confirm Cohort Activation</DialogTitle>
             <DialogDescription>
-              Please upload a checklist file (PDF, DOCX, Excel sheet, or image)
-              to activate this cohort.
+              Please confirm that all the following items are completed before
+              activating this cohort.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="checklist-file">Checklist File</Label>
-              <Input
-                id="checklist-file"
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,.docx,.doc,.xlsx,.xls,image/*"
-                disabled={isUploading}
-              />
-              <p className="text-xs text-muted-foreground">
-                Accepted formats: PDF, DOCX, Excel (XLSX, XLS), Images (JPG,
-                PNG, GIF, WEBP). Max size: 10MB
-              </p>
+            <div className="space-y-3">
+              {/* Final Brochure */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="final-brochure"
+                  checked={checklist.finalBrochure}
+                  onCheckedChange={(checked) =>
+                    handleChecklistChange("finalBrochure", checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor="final-brochure"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  Final Brochure added
+                </Label>
+              </div>
+
+              {/* EC Automation */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ec-automation"
+                  checked={checklist.ecAutomation}
+                  onCheckedChange={(checked) =>
+                    handleChecklistChange("ecAutomation", checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor="ec-automation"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  EC Automation
+                </Label>
+              </div>
+
+              {/* Marketing campaigns */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="marketing-campaigns"
+                  checked={checklist.marketingCampaigns}
+                  onCheckedChange={(checked) =>
+                    handleChecklistChange(
+                      "marketingCampaigns",
+                      checked as boolean
+                    )
+                  }
+                />
+                <Label
+                  htmlFor="marketing-campaigns"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  Marketing campaigns configured
+                </Label>
+              </div>
+
+              {/* Cohort Id Salesforce */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="cohort-id-salesforce"
+                  checked={checklist.cohortIdSalesforce}
+                  onCheckedChange={(checked) =>
+                    handleChecklistChange(
+                      "cohortIdSalesforce",
+                      checked as boolean
+                    )
+                  }
+                />
+                <Label
+                  htmlFor="cohort-id-salesforce"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  Cohort Id added to Salesforce
+                </Label>
+              </div>
+
+              {/* Emails configuration with sub-checkboxes */}
+              <div className="space-y-2 pl-6">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="emails-configuration"
+                    checked={
+                      checklist.emailsConfiguration.autoMailers &&
+                      checklist.emailsConfiguration.welcomeMail &&
+                      checklist.emailsConfiguration.offerLetter
+                    }
+                    onCheckedChange={(checked) => {
+                      const value = checked as boolean;
+                      handleEmailSubChecklistChange("autoMailers", value);
+                      handleEmailSubChecklistChange("welcomeMail", value);
+                      handleEmailSubChecklistChange("offerLetter", value);
+                    }}
+                  />
+                  <Label
+                    htmlFor="emails-configuration"
+                    className="text-sm font-normal cursor-pointer"
+                  >
+                    Emails configuration
+                  </Label>
+                </div>
+                <div className="space-y-2 pl-6">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="auto-mailers"
+                      checked={checklist.emailsConfiguration.autoMailers}
+                      onCheckedChange={(checked) =>
+                        handleEmailSubChecklistChange(
+                          "autoMailers",
+                          checked as boolean
+                        )
+                      }
+                    />
+                    <Label
+                      htmlFor="auto-mailers"
+                      className="text-sm font-normal cursor-pointer"
+                    >
+                      Auto mailers (Brevo)
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="welcome-mail"
+                      checked={checklist.emailsConfiguration.welcomeMail}
+                      onCheckedChange={(checked) =>
+                        handleEmailSubChecklistChange(
+                          "welcomeMail",
+                          checked as boolean
+                        )
+                      }
+                    />
+                    <Label
+                      htmlFor="welcome-mail"
+                      className="text-sm font-normal cursor-pointer"
+                    >
+                      Welcome mail
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="offer-letter"
+                      checked={checklist.emailsConfiguration.offerLetter}
+                      onCheckedChange={(checked) =>
+                        handleEmailSubChecklistChange(
+                          "offerLetter",
+                          checked as boolean
+                        )
+                      }
+                    />
+                    <Label
+                      htmlFor="offer-letter"
+                      className="text-sm font-normal cursor-pointer"
+                    >
+                      Offer letter
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment page */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="payment-page"
+                  checked={checklist.paymentPage}
+                  onCheckedChange={(checked) =>
+                    handleChecklistChange("paymentPage", checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor="payment-page"
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  Payment page
+                </Label>
+              </div>
             </div>
           </div>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => handleDialogClose(false)}
-              disabled={isUploading}
-            >
+            <Button variant="outline" onClick={() => handleDialogClose(false)}>
               Cancel
             </Button>
-            <Button onClick={handleFileUpload} disabled={isUploading}>
-              {isUploading ? "Uploading..." : "Upload & Activate"}
+            <Button
+              onClick={handleConfirmActivation}
+              disabled={!isChecklistComplete()}
+            >
+              Activate Cohort
             </Button>
           </DialogFooter>
         </DialogContent>

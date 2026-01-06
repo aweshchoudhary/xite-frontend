@@ -1,12 +1,8 @@
 "use server";
-import {
-  updateCohort,
-  UpdateCohortInputData,
-} from "@/modules/cohort/server/cohort/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { uploadFile } from "@/modules/common/services/file-upload";
-import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
@@ -40,7 +36,7 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
     const feesToUpdate = fees.filter((fee) => fee.action === "update");
     const feesToDelete = fees.filter((fee) => fee.action === "delete");
 
-    const dataToUpdate: UpdateCohortInputData = {
+    const dataToUpdate: PrimaryDB.CohortUpdateInput = {
       ...rest,
       program: {
         connect: {
@@ -100,8 +96,8 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
       },
     };
 
-    const cohort = await updateCohort({
-      cohortId: recordId,
+    const cohort = await primaryDB.cohort.update({
+      where: { id: recordId },
       data: dataToUpdate,
     });
 
@@ -112,133 +108,6 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
     revalidatePath("/cohorts");
     revalidatePath(`/cohorts/${recordId}/edit`);
     revalidatePath(`/cohorts/${recordId}`);
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function updateBannerAction(cohortId: string, banner: File) {
-  try {
-    const permission = await checkPermission("Cohort", "update");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const { fileUrl: banner_url } = await uploadFile(banner);
-
-    const cohort = await updateCohort({
-      cohortId,
-      data: {
-        media_section: {
-          update: {
-            banner_image_url: banner_url,
-          },
-        },
-      },
-    });
-
-    if (!cohort) {
-      throw new Error("Failed to update cohort");
-    }
-
-    revalidatePath(`/cohorts/${cohortId}`);
-    revalidatePath(`/cohorts/${cohortId}/edit`);
-    revalidatePath(`/cohorts/${cohortId}`);
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function updateBrochureAction(cohortId: string, brochure: File) {
-  try {
-    const permission = await checkPermission("Cohort", "update");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const { fileUrl: brochure_url } = await uploadFile(brochure);
-
-    const cohort = await updateCohort({
-      cohortId,
-      data: {
-        media_section: {
-          update: {
-            brochure_url: brochure_url,
-          },
-        },
-      },
-    });
-
-    if (!cohort) {
-      throw new Error("Failed to update cohort");
-    }
-
-    revalidatePath(`/cohorts/${cohortId}`);
-    revalidatePath(`/cohorts/${cohortId}/edit`);
-    revalidatePath(`/cohorts/${cohortId}`);
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function updateCohortStatusAction(
-  cohortId: string,
-  status: WorkStatus
-) {
-  try {
-    const permission = await checkPermission("Cohort", "update");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const cohort = await updateCohort({
-      cohortId,
-      data: { status },
-    });
-
-    if (!cohort) {
-      throw new Error("Failed to update cohort");
-    }
-
-    revalidatePath(`/cohorts/${cohortId}`);
-    revalidatePath(`/cohorts/${cohortId}/edit`);
-    revalidatePath(`/cohorts/${cohortId}`);
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function updateCohortChecklistAndStatusAction(
-  cohortId: string,
-  checklistFile: File
-) {
-  try {
-    const permission = await checkPermission("Cohort", "update");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const { fileUrl: checklist_file_url } = await uploadFile(checklistFile);
-
-    const cohort = await updateCohort({
-      cohortId,
-      data: {
-        checklist_file_url,
-        status: WorkStatus.ACTIVE,
-      },
-    });
-
-    if (!cohort) {
-      throw new Error("Failed to update cohort");
-    }
-
-    revalidatePath(`/cohorts/${cohortId}`);
-    revalidatePath(`/cohorts/${cohortId}/edit`);
-    revalidatePath(`/cohorts/${cohortId}`);
   } catch (error) {
     throw error;
   }

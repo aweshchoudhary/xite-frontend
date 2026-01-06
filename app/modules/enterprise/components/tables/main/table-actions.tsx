@@ -1,5 +1,5 @@
 "use client";
-import { GetOneOutput } from "@/modules/enterprise/server/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { MODULE_PATH } from "@/modules/enterprise/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { useRouter } from "next/navigation";
 
-export default function TableActions({ row }: { row: Row<GetOneOutput> }) {
+export default function TableActions({ row }: { row: Row<PrimaryDB.EnterpriseGetPayload<object>> }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
 

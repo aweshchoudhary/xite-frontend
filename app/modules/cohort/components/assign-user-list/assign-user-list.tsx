@@ -16,7 +16,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@ui/dialog";
-import { GetAllOutput, GetOne, getAll } from "@/modules/user/server/read";
+import {
+  GetAllUsersOutput,
+  GetOneUser,
+  getAllUsersAction,
+} from "./get-all-users-action";
 import { assignUserToCohort } from "./action";
 type Props = {
   children?: React.ReactNode;
@@ -32,8 +36,10 @@ export default function UserSelectPopover({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(selectedUserId);
   const [showList, setShowList] = React.useState(false);
-  const [users, setUsers] = React.useState<GetAllOutput["data"]>([]);
-  const [selectedUser, setSelectedUser] = React.useState<GetOne | null>(null);
+  const [users, setUsers] = React.useState<GetAllUsersOutput["data"]>([]);
+  const [selectedUser, setSelectedUser] = React.useState<GetOneUser | null>(
+    null
+  );
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelect = async (currentValue: string) => {
@@ -58,7 +64,7 @@ export default function UserSelectPopover({
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const users = await getAll();
+        const users = await getAllUsersAction();
         setUsers(
           users.data?.filter((user) => user.id !== selectedUserId) || []
         );

@@ -1,4 +1,7 @@
-import { GetOne, getOne } from "@/modules/topic/server/read";
+import {
+  GetOne,
+  getOneWithRelationsAction,
+} from "@/modules/topic/components/forms/read/get-one-with-relations-action";
 import { Button } from "@ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +30,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -63,7 +66,7 @@ export default async function TopicPage({
 
   const { id } = await params;
 
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return notFound();

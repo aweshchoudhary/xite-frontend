@@ -1,6 +1,6 @@
 import UpdateCohortForm from "@/modules/cohort/components/forms/update/form";
 import { MODULE_PATH } from "@/modules/cohort/contants";
-import { getCohort } from "@/modules/cohort/server/cohort/read";
+import { getOneForDetailPageAction } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { notFound } from "next/navigation";
@@ -22,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const cohort = await getCohort({ id });
+  const { data: cohort } = await getOneForDetailPageAction(id);
 
   if (!cohort) {
     return generateSEOMetadata({
@@ -46,7 +46,7 @@ export default async function EditCohortPage({ params }: EditProgramPageProps) {
   }
 
   const { id } = await params;
-  const cohort = await getCohort({ id });
+  const { data: cohort } = await getOneForDetailPageAction(id);
 
   if (!cohort) {
     return notFound();

@@ -1,6 +1,5 @@
 "use client";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { GetOne } from "../../server/read";
 import { Badge } from "@ui/badge";
 import Link from "next/link";
 import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
@@ -13,9 +12,24 @@ import { cn } from "@/modules/common/lib/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function ViewCard({ program }: { program: GetOne }) {
+export default function ViewCard({
+  program,
+}: {
+  program: {
+    id: string;
+    name: string;
+    status: ProgramStatus;
+    academic_partner: {
+      name: string;
+    };
+  };
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
+  if (!program) {
+    return null;
+  }
   return (
     <div className="bg-background border rounded-md">
       <div className="px-4 py-5 flex items-center gap-4  justify-between">
@@ -35,10 +49,12 @@ export default function ViewCard({ program }: { program: GetOne }) {
         </Badge>
       </div>
       <div className="px-4 py-2 border-t flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-1 text-muted-foreground truncate text-xs">
-          <School className="size-4" strokeWidth={1.5} />{" "}
-          {program.academic_partner.name}
-        </div>
+        {program?.academic_partner && (
+          <div className="flex items-center gap-1 text-muted-foreground truncate text-xs">
+            <School className="size-4" strokeWidth={1.5} />{" "}
+            {program.academic_partner.name}
+          </div>
+        )}
         {program.status !== ProgramStatus.ACTIVE ? (
           <div className="flex items-center gap-1">
             <PermissionGate resource="Program" action="update">

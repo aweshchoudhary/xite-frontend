@@ -1,21 +1,20 @@
 "use server";
-import { MODULE_PATH } from "@/modules/topic/contants";
-import {
-  deleteOne,
-  DeleteOneOutput,
-} from "@/modules/topic/server/subtopic/delete";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 
 type DeleteActionOutput = {
   error?: string;
-  data?: DeleteOneOutput;
+  data?: PrimaryDB.SubTopicGetPayload<object>;
 };
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
-    const deletedData = await deleteOne({ id });
+    const deletedData = await primaryDB.subTopic.delete({
+      where: { id },
+    });
 
-    revalidatePath(MODULE_PATH);
+    revalidatePath("/topics");
 
     return { data: deletedData };
   } catch (error) {
@@ -23,4 +22,3 @@ export async function deleteAction(id: string): Promise<DeleteActionOutput> {
     return { error: `Failed to delete SubTopic` };
   }
 }
-

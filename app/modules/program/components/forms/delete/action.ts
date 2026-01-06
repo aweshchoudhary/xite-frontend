@@ -1,11 +1,13 @@
 "use server";
 import { MODULE_PATH } from "@/modules/program/contants";
-import { deleteOne } from "@/modules/program/server/delete";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 
 export async function deleteOneAction(programId: string) {
   try {
-    const deletedData = await deleteOne({ id: programId });
+    const deletedData = await primaryDB.program.delete({
+      where: { id: programId },
+    });
 
     revalidatePath(MODULE_PATH);
 

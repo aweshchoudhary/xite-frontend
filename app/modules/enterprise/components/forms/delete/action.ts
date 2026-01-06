@@ -1,16 +1,19 @@
 "use server";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
-import { deleteOne, DeleteOneOutput } from "@/modules/enterprise/server/delete";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 
 type DeleteActionOutput = {
   error?: string;
-  data?: DeleteOneOutput;
+  data?: PrimaryDB.EnterpriseGetPayload<object>;
 };
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
-    const deletedData = await deleteOne({ id });
+    const deletedData = await primaryDB.enterprise.delete({
+      where: { id: id },
+    });
 
     revalidatePath(MODULE_PATH);
 

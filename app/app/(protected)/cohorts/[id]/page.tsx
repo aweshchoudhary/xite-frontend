@@ -1,5 +1,5 @@
 "use server";
-import { getCohort } from "@/modules/cohort/server/cohort/read";
+import { getOneForDetailPageAction } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { Loader, Book, Key, Calendar, User } from "lucide-react";
@@ -20,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = await getCohort({ id });
+  const { data } = await getOneForDetailPageAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -51,7 +51,7 @@ export default async function Page({
   }
 
   const { id } = await params;
-  const data = await getCohort({ id });
+  const { data } = await getOneForDetailPageAction(id);
 
   if (!data) {
     notFound();

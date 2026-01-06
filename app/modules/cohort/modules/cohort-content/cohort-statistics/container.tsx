@@ -4,12 +4,7 @@ import View from "./view";
 import Update from "./update";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@ui/accordion";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { Badge } from "@ui/badge";
 import { Switch } from "@ui/switch";
 import { toast } from "sonner";
@@ -37,9 +32,9 @@ export function Container({ data }: ContainerProps) {
   const isCompleted =
     !!st?.title && wiCompleted && iiCompleted && diCompleted && ciCompleted;
 
-  if (!data) return null;
-
   const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id);
+
+  if (!data) return null;
 
   return (
     <div className="group relative bg-background p-5 rounded-xl transition-all duration-200">

@@ -2,8 +2,8 @@ import { buttonVariants } from "@ui/button";
 import { cn } from "@/modules/common/lib/utils";
 import { ArrowRight, Settings } from "lucide-react";
 import Link from "next/link";
-import { getAllByStatus } from "@/modules/cohort/server/cohort/read";
-import { getAll as getAllProgramsByStatus } from "@/modules/program/server/read";
+import { getAllByStatus } from "@/modules/cohort/components/forms/read/action";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Separator } from "@ui/separator";
 import ViewCard from "@/modules/program/components/view/view-card";
@@ -56,8 +56,20 @@ export default async function Home() {
 }
 
 const AllPrograms = async () => {
-  const programs = await getAllProgramsByStatus({});
-  if (!programs.data || programs.data.length === 0)
+  const programs = await primaryDB.program.findMany({
+    select: {
+      id: true,
+      name: true,
+      status: true,
+      academic_partner: {
+        select: {
+          name: true,
+        },
+      },
+      updated_at: true,
+    },
+  });
+  if (!programs || programs.length === 0)
     return (
       <div>
         <h1 className="text-lg mb-5">All Programs</h1>
@@ -70,7 +82,7 @@ const AllPrograms = async () => {
     );
 
   // Sort programs by updated_at (most recently updated first)
-  const sortedPrograms = [...programs.data].sort((a, b) => {
+  const sortedPrograms = [...programs].sort((a, b) => {
     const dateA = a.updated_at?.getTime() || 0;
     const dateB = b.updated_at?.getTime() || 0;
     return dateB - dateA; // Descending order
@@ -137,7 +149,18 @@ const AllCohorts = async () => {
 
       <div className="space-y-3">
         {sortedCohorts.slice(0, 4).map((cohort) => (
-          <ViewCohortCard key={cohort.id} cohort={cohort} />
+          <ViewCohortCard
+            key={cohort.id}
+            cohort={{
+              end_date: cohort.end_date,
+              id: cohort.id,
+              name: cohort.name,
+              program: cohort.program,
+              start_date: cohort.start_date,
+              status: cohort.status,
+              updated_at: cohort.updated_at,
+            }}
+          />
         ))}
       </div>
     </div>

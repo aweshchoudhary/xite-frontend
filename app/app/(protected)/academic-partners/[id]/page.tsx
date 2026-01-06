@@ -1,4 +1,7 @@
-import { GetOne, getOne } from "@/modules/academic-partner/server/read";
+import {
+  GetOne,
+  getOneWithRelationsAction,
+} from "@/modules/academic-partner/components/forms/read/get-one-with-relations-action";
 import { Button } from "@ui/button";
 import { ChevronDownIcon, MapPin, Pencil, TrashIcon } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +37,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -65,7 +68,7 @@ export default async function Page({
 
   const { id } = await params;
 
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return notFound();
@@ -96,7 +99,12 @@ export default async function Page({
             <div className="space-y-3">
               {data.programs.map((program) => (
                 <div key={program.id}>
-                  <ViewCard program={program} />
+                  <ViewCard
+                    program={{
+                      ...program,
+                      academic_partner: { name: data.name },
+                    }}
+                  />
                 </div>
               ))}
               {data.programs.length === 0 && (

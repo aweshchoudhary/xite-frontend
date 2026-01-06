@@ -1,12 +1,13 @@
 "use server";
-import { updateOne, UpdateOneOutput } from "@/modules/enterprise/server/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: PrimaryDB.EnterpriseGetPayload<object>;
 };
 
 export async function updateAction(
@@ -14,9 +15,9 @@ export async function updateAction(
   id: string
 ): Promise<UpdateActionOutput> {
   try {
-    const updatedData = await updateOne({
-      id,
-      data,
+    const updatedData = await primaryDB.enterprise.update({
+      where: { id: id },
+      data: data as PrimaryDB.EnterpriseUpdateInput,
     });
 
     if (!updatedData) {

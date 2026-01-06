@@ -27,6 +27,7 @@
       "@ui/*": ["./modules/common/components/ui/*"],
       "@common-lib/*": ["./modules/common/lib/*"],
       "@common-hooks/*": ["./modules/common/hooks/*"],
+      "@common-database/*": ["./modules/common/database/*"],
     }
   },
   "include": [

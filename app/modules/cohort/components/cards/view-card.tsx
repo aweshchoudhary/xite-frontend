@@ -19,7 +19,18 @@ import { useState } from "react";
 import { useCheckUserOwnsCohort } from "../../auth/access";
 
 type ViewCohortCardProps = {
-  cohort: Cohort;
+  cohort: {
+    id: string;
+    name: string | null;
+    status: WorkStatus;
+    start_date: Date | null;
+    end_date: Date | null;
+    program: {
+      id: string | null;
+      name: string | null;
+    } | null;
+    updated_at: Date | null;
+  };
 };
 
 export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {

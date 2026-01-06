@@ -1,5 +1,5 @@
 "use client";
-import { GetOneOutput } from "@/modules/faculty/server/read";
+import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
 import { useEffect, useState } from "react";
 import {
   Command,
@@ -15,7 +15,7 @@ import { getFacultyList } from "./actions";
 import { Button } from "@ui/button";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
-import { updateCohortFacultyList } from "../../server/cohort/update";
+import { updateCohortFacultyList } from "../forms/update/cohort-update-actions";
 import CreateModal from "@/modules/faculty/components/forms/create/modal";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
@@ -42,10 +42,10 @@ export default function SelectList({
     try {
       await updateCohortFacultyList({
         cohortId,
-        facultyToAdd: selectedList.map((f) => f.id),
+        facultyToAdd: selectedList.filter((f) => f?.id).map((f) => f!.id),
         facultyToRemove: selectedFacultyList
-          .filter((f) => !selectedList.find((s) => s.id === f.id))
-          .map((f) => f.id),
+          .filter((f) => f?.id && !selectedList.find((s) => s?.id === f?.id))
+          .map((f) => f!.id),
       });
 
       toast.success("Faculty list saved");
@@ -60,7 +60,7 @@ export default function SelectList({
     const fetchFacultyList = async () => {
       try {
         const list = await getFacultyList();
-        setFacultyList(list);
+        setFacultyList(list.data);
       } catch (error) {
         console.error("Failed to fetch faculty list", error);
       }
@@ -92,45 +92,48 @@ export default function SelectList({
           <CommandInput placeholder="Search faculty by name..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            {facultyList.map((faculty) => (
+            {facultyList.map((faculty) => {
+              if (!faculty?.id) return null;
+              return (
               <CommandItem
                 key={faculty.id}
                 onSelect={() => {
-                  if (selectedList.some((f) => f.id === faculty.id)) {
+                  if (selectedList.some((f) => f?.id === faculty.id)) {
                     setSelectedList(
-                      selectedList.filter((f) => f.id !== faculty.id)
+                      selectedList.filter((f) => f?.id !== faculty.id)
                     );
                   } else {
                     setSelectedList([...selectedList, faculty]);
                   }
                 }}
-                keywords={[faculty.name]}
+                keywords={[faculty?.name ?? ""]}
                 className="justify-between"
               >
                 <div className="flex items-center gap-2">
                   <Avatar className="border">
-                    {faculty.profile_image ? (
+                    {faculty?.profile_image ? (
                       <AvatarImage
                         src={getImageUrl(faculty.profile_image)}
-                        alt={faculty.name || "Faculty"}
+                        alt={faculty?.name || "Faculty"}
                       />
                     ) : null}
                     <AvatarFallback>
-                      {faculty.name?.charAt(0).toUpperCase() || "?"}
+                      {faculty?.name?.charAt(0).toUpperCase() || "?"}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p>{faculty.name}</p>
+                    <p>{faculty?.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {faculty.title}
+                      {faculty?.title}
                     </p>
                   </div>
                 </div>
-                {selectedList.some((f) => f.id === faculty.id) && (
+                {selectedList.some((f) => f?.id === faculty?.id) && (
                   <CheckIcon className="size-4" />
                 )}
               </CommandItem>
-            ))}
+              );
+            })}
           </CommandList>
           <div className="flex justify-end w-full p-5 gap-2">
             <Button variant="outline" onClick={() => setOpen(false)}>

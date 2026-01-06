@@ -1,6 +1,6 @@
 import UpdateForm from "@/modules/program/components/forms/update/form";
 import { MODULE_PATH } from "@/modules/program/contants";
-import { getOne } from "@/modules/program/server/read";
+import { getOneWithRelationsAction } from "@/modules/program/components/forms/read/get-one-with-relations-action";
 import { notFound } from "next/navigation";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
@@ -22,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -39,7 +39,7 @@ export async function generateMetadata({
 export default async function EditPage({ params }: EditPageProps) {
   const permission = await checkPermission("Program", "update");
   const { id } = await params;
-  const { data } = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return notFound();
@@ -56,7 +56,10 @@ export default async function EditPage({ params }: EditPageProps) {
           <h1 className="h1 mb-10">{data.name}</h1>
         </div>
         <UpdateForm
-          currentData={data}
+          currentData={{
+            ...data,
+            tags: data.tags?.map((tag) => tag.id) || [],
+          }}
           successRedirectPath={`${MODULE_PATH}/${data.id}`}
           cancelRedirectPath={`${MODULE_PATH}/${data.id}`}
         />

@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOne } from "@/modules/program/server/read";
+import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
@@ -47,17 +47,11 @@ export const columns: ColumnDef<GetOne>[] = [
       row.original.academic_partner_id ? (
         <Link
           className="hover:underline gap-2 flex items-center"
-          href={`/academic-partners/${row.original.academic_partner?.id}`}
+          href={`/academic-partners/${row.original.academic_partner_id}`}
         >
           <Avatar className="size-7 border">
-            {row.original.academic_partner?.logo_url && (
-              <AvatarImage
-                src={getImageUrl(row.original.academic_partner?.logo_url)}
-                alt={row.original.academic_partner?.name}
-              />
-            )}
             <AvatarFallback className="uppercase">
-              {row.original.academic_partner?.name.slice(0, 2)}
+              {row.original.academic_partner?.name?.slice(0, 2) || "AP"}
             </AvatarFallback>
           </Avatar>
           {row.original.academic_partner?.name}
@@ -75,9 +69,9 @@ export const columns: ColumnDef<GetOne>[] = [
       row.original.enterprise_id ? (
         <Link
           className="hover:underline gap-2 flex items-center"
-          href={`/enterprises/${row.original.enterprise?.id}`}
+          href={`/enterprises/${row.original.enterprise_id}`}
         >
-          {row.original.enterprise?.name}
+          {row.original.enterprise_id}
         </Link>
       ) : (
         "NA"

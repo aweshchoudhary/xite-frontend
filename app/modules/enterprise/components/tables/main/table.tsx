@@ -1,9 +1,9 @@
 "use server";
 import DataTableView from "@/modules/common/components/global/data-table/data-table-view";
 import { columns } from "./schema";
-import { getAll } from "@/modules/enterprise/server/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export default async function EnterpriseTable() {
-  const data = await getAll();
+  const data = await primaryDB.enterprise.findMany({});
   return <DataTableView data={data} columns={columns} />;
 }

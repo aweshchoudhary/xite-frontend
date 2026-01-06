@@ -1,19 +1,22 @@
 "use server";
-import { createOne, CreateOneOutput } from "@/modules/enterprise/server/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateOneOutput;
+  data?: PrimaryDB.EnterpriseGetPayload<object>;
 };
 
 export async function createAction(
   data: CreateSchema
 ): Promise<CreateActionOutput> {
   try {
-    const createdData = await createOne(data);
+    const createdData = await primaryDB.enterprise.create({
+      data: data as PrimaryDB.EnterpriseCreateInput,
+    });
 
     if (!createdData) {
       throw new Error(`Failed to create ${MODULE_NAME}`);

@@ -23,13 +23,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/select";
-import {
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
+import type {
   CohortSectionWithData,
-  GetCohort,
-  GetCohortSectionOrderBySectionIdOutput,
-  getCohortSectionOrderBySectionId,
-  getCohortSections,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/get-sections-action";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import {
+  getCohortSectionOrderBySectionIdAction,
+  getCohortSectionsAction,
+} from "@/modules/cohort/components/forms/read/get-sections-action";
 import { useEffect, useState } from "react";
 import FormColorPicker from "@/modules/common/components/global/form/form-color-picker";
 import { Field, FieldError } from "@ui/field";
@@ -98,8 +100,8 @@ export default function CreateForm({
 
   useEffect(() => {
     const fetchCohortSections = async () => {
-      const cohortSections = await getCohortSections(cohortData.id);
-      setCohortSections(cohortSections);
+      const { data: cohortSectionsData } = await getCohortSectionsAction(cohortData.id);
+      setCohortSections(cohortSectionsData || []);
     };
     fetchCohortSections();
   }, [cohortData]);
@@ -185,7 +187,7 @@ export const SectionFormField = ({
   sections,
 }: SectionFormFieldProps) => {
   const [currentSectionOrder, setCurrentSectionOrder] =
-    useState<GetCohortSectionOrderBySectionIdOutput | null>(null);
+    useState<PrimaryDB.CohortSectionOrderGetPayload<object> | null>(null);
   const sectionId = form.watch(`sections.${index}.id`);
   const [afterSectionId, setAfterSectionId] = useState<string | null>(null);
 
@@ -195,13 +197,13 @@ export const SectionFormField = ({
 
     const fetchOrders = async () => {
       try {
-        const [current] = await Promise.all([
-          getCohortSectionOrderBySectionId(sectionId),
+        const [{ data: currentData }] = await Promise.all([
+          getCohortSectionOrderBySectionIdAction(sectionId),
         ]);
 
-        if (isMounted) {
-          setCurrentSectionOrder(current);
-          getAfterSectionId(current.section_position);
+        if (isMounted && currentData) {
+          setCurrentSectionOrder(currentData);
+          getAfterSectionId(currentData.section_position);
         }
       } catch (error) {
         console.error("Error fetching section order:", error);

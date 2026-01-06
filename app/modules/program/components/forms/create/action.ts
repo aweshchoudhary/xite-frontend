@@ -1,40 +1,36 @@
 "use server";
-import {
-  createOne,
-  CreateOneInput,
-  CreateOneOutput,
-} from "@/modules/program/server/create";
 import { ProgramCreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsByProgramId, getAll } from "@/modules/program/server/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 export async function createProgramAction(
   data: ProgramCreateSchema
-): Promise<CreateOneOutput> {
+): Promise<PrimaryDB.ProgramGetPayload<object>> {
   try {
-    const { academic_partner_id, enterprise_id, ...rest } = data;
+    const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
     const program_key = rest.short_name?.toLowerCase().replace(/\s+/g, "-");
 
-    const createProgramData: CreateOneInput = {
-      data: {
-        ...rest,
-        short_name: rest.short_name,
-        program_key: program_key,
-        academic_partner: {
-          connect: { id: academic_partner_id },
-        },
+    const createData: PrimaryDB.ProgramCreateInput = {
+      ...rest,
+      program_key,
+      academic_partner: {
+        connect: { id: academic_partner_id },
+      },
+      tags: {
+        connect: tags.map((tag) => ({ id: tag })),
       },
     };
 
     if (enterprise_id) {
-      createProgramData.data.enterprise = {
+      createData.enterprise = {
         connect: { id: enterprise_id },
       };
     }
 
-    const program = await createOne({
-      data: createProgramData.data,
+    const program = await primaryDB.program.create({
+      data: createData,
     });
 
     if (!program) {
@@ -51,17 +47,8 @@ export async function createProgramAction(
 
 export async function getProgramsAction() {
   try {
-    const programs = await getAll({});
-    return programs;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getCohortsCountAction(programId: string) {
-  try {
-    const { data: cohorts } = await getCohortsByProgramId({ programId });
-    return cohorts?.length ?? 0;
+    const records = await primaryDB.program.findMany({});
+    return records;
   } catch (error) {
     throw error;
   }

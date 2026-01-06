@@ -1,15 +1,8 @@
 "use server";
-import {
-  CreateCohortOutputData,
-  createCohort,
-} from "@/modules/cohort/server/cohort/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { CreateSchema } from "../schema";
-import {
-  getAll,
-  getCohortsByProgramId,
-  getLastCohortByProgramId,
-  getOne,
-} from "@/modules/program/server/read";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { getLastCohortForCreateAction } from "./get-last-cohort-for-create-action";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
@@ -17,7 +10,7 @@ import { ERROR_MESSAGES } from "@/modules/common/constant";
 
 export async function createCohortAction(
   data: CreateSchema
-): Promise<CreateCohortOutputData> {
+): Promise<PrimaryDB.CohortGetPayload<object>> {
   try {
     const permission = await checkPermission("Cohort", "write");
 
@@ -39,53 +32,48 @@ export async function createCohortAction(
         }
       });
     });
-    const lastCohort = await getLastCohortByProgramId({
-      programId: program_id,
-    });
+    const { data: lastCohort } = await getLastCohortForCreateAction(program_id);
 
     let newCohortNumber = 0;
     let newCohortKey = "";
 
-    if (lastCohort.data) {
-      newCohortNumber = lastCohort.data.cohort_num + 1;
-      newCohortKey =
-        lastCohort.data.program.program_key + "-cohort-" + newCohortNumber;
+    if (lastCohort) {
+      newCohortNumber = lastCohort.cohort_num + 1;
+      newCohortKey = lastCohort.program_key + "-cohort-" + newCohortNumber;
     } else {
       newCohortNumber = 1;
-
-      const { data: program } = await getOne({ id: program_id });
-      if (!program) {
-        throw new Error("Program not found");
-      }
-      newCohortKey = program.program_key + "-cohort-1";
+      // This should not happen as getLastCohortForCreateAction handles the case
+      throw new Error("Failed to get program key");
     }
 
-    const cohort = await createCohort({
-      ...rest,
-      cohort_num: newCohortNumber,
-      cohort_key: newCohortKey,
-      fees: {
-        create: fees.map(({ amount, currency_code }) => ({
-          amount,
-          currency: {
-            connectOrCreate: {
-              where: {
-                code: currency_code,
-              },
-              create: currencyToCreate.find(
-                (currency) => currency.code === currency_code
-              ) ?? {
-                code: currency_code,
-                name: currency_code,
-                symbol: currency_code,
+    const cohort = await primaryDB.cohort.create({
+      data: {
+        ...rest,
+        cohort_num: newCohortNumber,
+        cohort_key: newCohortKey,
+        fees: {
+          create: fees.map(({ amount, currency_code }) => ({
+            amount,
+            currency: {
+              connectOrCreate: {
+                where: {
+                  code: currency_code,
+                },
+                create: currencyToCreate.find(
+                  (currency) => currency.code === currency_code
+                ) ?? {
+                  code: currency_code,
+                  name: currency_code,
+                  symbol: currency_code,
+                },
               },
             },
+          })),
+        },
+        program: {
+          connect: {
+            id: program_id,
           },
-        })),
-      },
-      program: {
-        connect: {
-          id: program_id,
         },
       },
     });
@@ -110,38 +98,8 @@ export async function getProgramsAction() {
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const programs = await getAll({});
-    return programs;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getCohortsCountAction(programId: string) {
-  try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const { data: cohorts } = await getCohortsByProgramId({ programId });
-    return cohorts?.length ?? 0;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function getLastCohortByProgramIdAction(programId: string) {
-  try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
-    const lastCohort = await getLastCohortByProgramId({ programId });
-    return lastCohort;
+    const programs = await primaryDB.program.findMany({});
+    return { data: programs };
   } catch (error) {
     throw error;
   }

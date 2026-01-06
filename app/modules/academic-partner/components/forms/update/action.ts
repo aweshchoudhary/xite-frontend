@@ -1,8 +1,6 @@
 "use server";
-import {
-  updateOne,
-  UpdateOneOutput,
-} from "@/modules/academic-partner/server/update";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
@@ -10,7 +8,7 @@ import { uploadFile } from "@/modules/common/services/file-upload";
 
 type UpdateActionOutput = {
   error?: string;
-  data?: UpdateOneOutput;
+  data?: PrimaryDB.AcademicPartnerGetPayload<object>;
 };
 
 export async function updateAction(
@@ -33,12 +31,12 @@ export async function updateAction(
       logo_url = null; // Remove the logo
     }
 
-    const updatedData = await updateOne({
-      id,
+    const updatedData = await primaryDB.academicPartner.update({
+      where: { id: id },
       data: {
         ...rest,
         logo_url,
-      },
+      } as PrimaryDB.AcademicPartnerUpdateInput,
     });
 
     if (!updatedData) {

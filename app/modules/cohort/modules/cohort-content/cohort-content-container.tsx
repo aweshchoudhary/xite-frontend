@@ -1,6 +1,6 @@
 "use client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { FileText, Globe, Check, TriangleAlert } from "lucide-react";
 import { Badge } from "@ui/badge";
 import CohortOverview from "./core-content";
@@ -61,13 +61,9 @@ export default function CohortContent({ data }: Props) {
           <TabsContent value="core-content" className={`mt-0`}>
             <CohortOverview data={data} />
           </TabsContent>
-          {data.status !== "DRAFT" ? (
-            <>
-              <TabsContent value="microsite-cms" className="mt-0">
-                <TemplatesContainer data={data} />
-              </TabsContent>
-            </>
-          ) : null}
+          <TabsContent value="microsite-cms" className="mt-0">
+            <TemplatesContainer data={data} />
+          </TabsContent>
         </div>
       </Tabs>
     </section>

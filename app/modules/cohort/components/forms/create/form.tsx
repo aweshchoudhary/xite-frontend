@@ -2,7 +2,7 @@
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
-import { createCohortAction, getLastCohortByProgramIdAction } from "./action";
+import { createCohortAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
@@ -16,10 +16,12 @@ import { Plus, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
-import { GetOne, getOne } from "@/modules/program/server/read";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@ui/field";
+import { getOneAction } from "@/modules/program/components/forms/read/action";
+import type { GetOne } from "@/modules/program/components/forms/read/action";
+import { Field, FieldError, FieldLabel } from "@ui/field";
+import { getLastCohortByProgramIdAction } from "../read/get-by-program-id-action";
 
-interface CreateFormProps extends FormBaseProps<CreateSchema> {}
+type CreateFormProps = FormBaseProps<CreateSchema>;
 
 export default function CreateForm({
   defaultValues,
@@ -29,10 +31,7 @@ export default function CreateForm({
   cancelRedirectPath,
 }: CreateFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const requiredFields = useMemo(
-    () => getRequiredFields(createSchema),
-    []
-  );
+  const requiredFields = useMemo(() => getRequiredFields(createSchema), []);
 
   const {
     program_id,
@@ -130,7 +129,7 @@ export default function CreateForm({
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: program } = await getOne({ id: programId });
+      const { data: program } = await getOneAction(programId);
       setProgram(program);
 
       form.setValue("program_id", programId);
@@ -167,272 +166,274 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-8"
     >
-        {!form.watch("program_id") ? (
-          <div>
-            <Controller
-              name="program_id"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel
-                    htmlFor={field.name}
-                    isRequired={requiredFields.includes("program_id")}
-                  >
-                    Program
-                  </FieldLabel>
-                  <ProgramSelect
-                    onChange={(value) => {
-                      field.onChange(value);
-                      setProgramId(value);
-                    }}
-                    onObjectChange={(value) => {
+      {!form.watch("program_id") ? (
+        <div>
+          <Controller
+            name="program_id"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor={field.name}
+                  isRequired={requiredFields.includes("program_id")}
+                >
+                  Program
+                </FieldLabel>
+                <ProgramSelect
+                  onChange={(value) => {
+                    field.onChange(value);
+                    setProgramId(value);
+                  }}
+                  onObjectChange={(value) => {
+                    if (value) {
                       setProgramId(value.id);
-                    }}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
+                    }
+                  }}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+      ) : null}
+
+      {form.watch("program_id") ? (
+        <div>
+          <div className="mb-10">
+            <FieldLabel className="mb-2">Selected Program</FieldLabel>
+            <Input
+              value={program?.name}
+              readOnly
+              className="cursor-not-allowed"
             />
           </div>
-        ) : null}
-
-        {form.watch("program_id") ? (
-          <div>
-            <div className="mb-10">
-              <FieldLabel className="mb-2">Selected Program</FieldLabel>
-              <Input
-                value={program?.name}
-                readOnly
-                className="cursor-not-allowed"
+          <div className="grid lg:grid-cols-3 grid-cols-2 gap-x-4 gap-y-7">
+            <div>
+              <Controller
+                control={form.control}
+                name="name"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel isRequired={requiredFields.includes("name")}>
+                      Name
+                    </FieldLabel>
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
               />
             </div>
-            <div className="grid lg:grid-cols-3 grid-cols-2 gap-x-4 gap-y-7">
-              <div>
-                <Controller
-                  control={form.control}
-                  name="name"
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel isRequired={requiredFields.includes("name")}>
-                        Name
-                      </FieldLabel>
-                      <Input
-                        type="text"
-                        placeholder="Name"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-              <div>
-                <Controller
-                  control={form.control}
-                  name="format"
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel isRequired={requiredFields.includes("format")}>
-                        Format
-                      </FieldLabel>
-                      <Input
-                        type="text"
-                        placeholder="Online, In-Class, Hybrid"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-              <div>
-                <Controller
-                  control={form.control}
-                  name="duration"
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel
-                        isRequired={requiredFields.includes("duration")}
-                      >
-                        Duration
-                      </FieldLabel>
-                      <Input
-                        type="text"
-                        placeholder="2 weeks, 6 months, etc."
-                        {...field}
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-              <div>
-                <Controller
-                  control={form.control}
-                  name="location"
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel
-                        isRequired={requiredFields.includes("location")}
-                      >
-                        Location
-                      </FieldLabel>
-                      <Input
-                        type="text"
-                        placeholder="Oxford, Dubai, New York, etc."
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
+            <div>
+              <Controller
+                control={form.control}
+                name="format"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel isRequired={requiredFields.includes("format")}>
+                      Format
+                    </FieldLabel>
+                    <Input
+                      type="text"
+                      placeholder="Online, In-Class, Hybrid"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+            <div>
+              <Controller
+                control={form.control}
+                name="duration"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      isRequired={requiredFields.includes("duration")}
+                    >
+                      Duration
+                    </FieldLabel>
+                    <Input
+                      type="text"
+                      placeholder="2 weeks, 6 months, etc."
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+            <div>
+              <Controller
+                control={form.control}
+                name="location"
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      isRequired={requiredFields.includes("location")}
+                    >
+                      Location
+                    </FieldLabel>
+                    <Input
+                      type="text"
+                      placeholder="Oxford, Dubai, New York, etc."
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
 
-              <div>
-                <Controller
-                  control={form.control}
-                  name="start_date"
-                  render={({ field, fieldState }) => (
-                    <Field>
-                      <FieldLabel>Cohort Dates (Start and End)</FieldLabel>
-                      <DateRangePickerField form={form} />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-              <div>
-                <Controller
-                  control={form.control}
-                  name="max_cohort_size"
-                  render={({ field, fieldState }) => (
-                    <Field>
-                      <FieldLabel>Max Cohort Size (Optional)</FieldLabel>
-                      <Input
-                        type="number"
-                        min={0}
-                        {...field}
-                        value={field?.value?.toString() || ""}
-                        placeholder="Max Cohort Size"
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+            <div>
+              <Controller
+                control={form.control}
+                name="start_date"
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel>Cohort Dates (Start and End)</FieldLabel>
+                    <DateRangePickerField form={form} />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+            <div>
+              <Controller
+                control={form.control}
+                name="max_cohort_size"
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel>Max Cohort Size (Optional)</FieldLabel>
+                    <Input
+                      type="number"
+                      min={0}
+                      {...field}
+                      value={field?.value?.toString() || ""}
+                      placeholder="Max Cohort Size"
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+            <div className="col-span-2">
+              <FieldLabel className="mb-2">Fees</FieldLabel>
+              <div className="space-y-2 p-5 rounded-lg border-2 border-dashed bg-background">
+                {feeArray.fields.map((field, index) => (
+                  <div key={field.id} className="flex gap-2 items-end">
+                    <div className="flex-1">
+                      <Controller
+                        control={form.control}
+                        name={`fees.${index}.amount`}
+                        render={({ field, fieldState }) => (
+                          <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel
+                              isRequired={requiredFields.includes("fees")}
+                            >
+                              Fee
+                            </FieldLabel>
+                            <Input
+                              type="number"
+                              {...field}
+                              placeholder="Fee"
+                              value={field?.value?.toString() || ""}
+                              onChange={(e) =>
+                                field.onChange(Number(e.target.value))
+                              }
+                              min={0}
+                            />
+                          </Field>
+                        )}
                       />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </div>
-              <div className="col-span-2">
-                <FieldLabel className="mb-2">Fees</FieldLabel>
-                <div className="space-y-2 p-5 rounded-lg border-2 border-dashed bg-background">
-                  {feeArray.fields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 items-end">
-                      <div className="flex-1">
-                        <Controller
-                          control={form.control}
-                          name={`fees.${index}.amount`}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <FieldLabel
-                                isRequired={requiredFields.includes("fees")}
-                              >
-                                Fee
-                              </FieldLabel>
-                              <Input
-                                type="number"
-                                {...field}
-                                placeholder="Fee"
-                                value={field?.value?.toString() || ""}
-                                onChange={(e) =>
-                                  field.onChange(Number(e.target.value))
-                                }
-                                min={0}
-                              />
-                            </Field>
-                          )}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Controller
-                          control={form.control}
-                          name={`fees.${index}.currency_code`}
-                          render={({ field, fieldState }) => (
-                            <Field>
-                              <FieldLabel>Currency</FieldLabel>
-                              <CurrencySelect formField={field} />
-                              {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                              )}
-                            </Field>
-                          )}
-                        />
-                      </div>
-                      <div>
-                        <Button
-                          variant="ghost"
-                          className="text-destructive hover:text-destructive/80"
-                          size="icon"
-                          onClick={() => feeArray.remove(index)}
-                        >
-                          <Trash />
-                        </Button>
-                      </div>
                     </div>
-                  ))}
-                  {feeArray.fields.length === 0 && (
+                    <div className="flex-1">
+                      <Controller
+                        control={form.control}
+                        name={`fees.${index}.currency_code`}
+                        render={({ field, fieldState }) => (
+                          <Field>
+                            <FieldLabel>Currency</FieldLabel>
+                            <CurrencySelect formField={field} />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </Field>
+                        )}
+                      />
+                    </div>
                     <div>
-                      <p className="text-muted-foreground text-sm">
-                        No fees added
-                      </p>
+                      <Button
+                        variant="ghost"
+                        className="text-destructive hover:text-destructive/80"
+                        size="icon"
+                        onClick={() => feeArray.remove(index)}
+                      >
+                        <Trash />
+                      </Button>
                     </div>
-                  )}
-                </div>
-                <Button
-                  variant="outline"
-                  className="mt-2"
-                  type="button"
-                  size="sm"
-                  onClick={() =>
-                    feeArray.append({ currency_code: "", amount: 0 })
-                  }
-                >
-                  <Plus className="size-5" />
-                  Add Fee
-                </Button>
+                  </div>
+                ))}
+                {feeArray.fields.length === 0 && (
+                  <div>
+                    <p className="text-muted-foreground text-sm">
+                      No fees added
+                    </p>
+                  </div>
+                )}
               </div>
+              <Button
+                variant="outline"
+                className="mt-2"
+                type="button"
+                size="sm"
+                onClick={() =>
+                  feeArray.append({ currency_code: "", amount: 0 })
+                }
+              >
+                <Plus className="size-5" />
+                Add Fee
+              </Button>
             </div>
           </div>
-        ) : null}
+        </div>
+      ) : null}
 
-        <footer className="flex justify-end gap-2">
-          <Button
-            variant="outline"
-            type="button"
-            onClick={handleCancel}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Cohort"}
-          </Button>
-        </footer>
+      <footer className="flex justify-end gap-2">
+        <Button
+          variant="outline"
+          type="button"
+          onClick={handleCancel}
+          disabled={isSubmitting}
+        >
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Creating..." : "Create Cohort"}
+        </Button>
+      </footer>
     </form>
   );
 }

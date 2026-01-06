@@ -1,15 +1,14 @@
 "use client";
-import { Checkbox } from "@ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOne } from "@/modules/academic-partner/server/read";
+import type { GetAcademicPartnerForTable } from "@/modules/academic-partner/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/academic-partner/contants";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
-export const columns: ColumnDef<GetOne>[] = [
+export const columns: ColumnDef<GetAcademicPartnerForTable>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -43,7 +42,7 @@ export const columns: ColumnDef<GetOne>[] = [
     },
     cell: ({ row }) => (
       <div className="prose  prose-a:text-blue-800 truncate line-clamp-1">
-        <p>{row.original.programs.length}</p>
+        <p>{row.original.programs?.length ?? 0}</p>
       </div>
     ),
   },
@@ -54,7 +53,7 @@ export const columns: ColumnDef<GetOne>[] = [
     },
     cell: ({ row }) => (
       <div className="prose  prose-a:text-blue-800 truncate line-clamp-1">
-        <p>{row.original.faculties.length}</p>
+        <p>{row.original.faculties?.length ?? 0}</p>
       </div>
     ),
   },

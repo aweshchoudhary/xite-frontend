@@ -1,8 +1,6 @@
 "use server";
-import {
-  createOne,
-  CreateOneOutput,
-} from "@/modules/academic-partner/server/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
@@ -10,7 +8,7 @@ import { uploadFile } from "@/modules/common/services/file-upload";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateOneOutput;
+  data?: PrimaryDB.AcademicPartnerGetPayload<object>;
 };
 
 export async function createAction(
@@ -24,9 +22,11 @@ export async function createAction(
       logo_url = (await uploadFile(logo_file)).fileUrl;
     }
 
-    const createdData = await createOne({
-      ...rest,
-      logo_url,
+    const createdData = await primaryDB.academicPartner.create({
+      data: {
+        ...rest,
+        logo_url,
+      },
     });
 
     if (!createdData) {

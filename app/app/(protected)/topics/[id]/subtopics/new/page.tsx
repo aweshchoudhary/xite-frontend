@@ -3,7 +3,7 @@ import { MODULE_PATH } from "@/modules/topic/contants";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { notFound } from "next/navigation";
-import { getOne } from "@/modules/topic/server/read";
+import { getOneAction } from "@/modules/topic/components/forms/read/action";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
 
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { data: topic } = await getOne({ id });
+  const { data: topic } = await getOneAction(id);
 
   if (!topic) {
     return generateSEOMetadata({
@@ -43,7 +43,7 @@ export default async function NewSubTopicPage({
   }
 
   const { id } = await params;
-  const { data: topic } = await getOne({ id });
+  const { data: topic } = await getOneAction(id);
 
   if (!topic) {
     return notFound();

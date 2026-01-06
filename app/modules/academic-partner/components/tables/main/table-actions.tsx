@@ -1,5 +1,5 @@
 "use client";
-import { GetOne } from "@/modules/academic-partner/server/read";
+import type { GetAcademicPartnerForTable } from "@/modules/academic-partner/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/academic-partner/contants";
 import DeleteModal from "../../forms/delete/modal";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { useRouter } from "next/navigation";
 
-export default function TableActions({ row }: { row: Row<GetOne> }) {
+export default function TableActions({ row }: { row: Row<GetAcademicPartnerForTable> }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
 

@@ -1,4 +1,7 @@
-import { getOne, GetOneOutput as GetOne } from "@/modules/faculty/server/read";
+import {
+  GetOne,
+  getOneWithRelationsAction,
+} from "@/modules/faculty/components/forms/read/get-one-with-relations-action";
 import { Button } from "@ui/button";
 import {
   ChevronDownIcon,
@@ -43,7 +46,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -77,7 +80,7 @@ export default async function Page({
 
   const { id } = await params;
 
-  const data = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return notFound();

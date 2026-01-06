@@ -1,6 +1,6 @@
 "use client";
 import View from "./view";
-import { GetCohort } from "@/modules/cohort/server/cohort/read";
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 
 type Props = {
   data: GetCohort;

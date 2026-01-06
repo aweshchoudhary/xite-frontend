@@ -1,7 +1,7 @@
 import {
-  getOne,
-  GetOneOutput as GetOne,
-} from "@/modules/enterprise/server/read";
+  GetOne,
+  getOneWithRelationsAction,
+} from "@/modules/enterprise/components/forms/read/get-one-with-relations-action";
 import { Button } from "@ui/button";
 import { ChevronDownIcon, Pencil, TrashIcon } from "lucide-react";
 import Link from "next/link";
@@ -35,7 +35,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return generateSEOMetadata({
@@ -65,7 +65,7 @@ export default async function Page({
 
   const { id } = await params;
 
-  const data = await getOne({ id });
+  const { data } = await getOneWithRelationsAction(id);
 
   if (!data) {
     return notFound();

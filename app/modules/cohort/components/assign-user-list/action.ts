@@ -1,4 +1,6 @@
-import { updateCohort } from "../../server/cohort/update";
+"use server";
+
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 type Input = {
   cohortId: string;
@@ -12,8 +14,8 @@ type Output = {
 
 export async function assignUserToCohort({ cohortId, userId }: Input) {
   try {
-    await updateCohort({
-      cohortId,
+    await primaryDB.cohort.update({
+      where: { id: cohortId },
       data: { owner: { connect: { id: userId } } },
     });
     return { success: true, message: "User assigned to cohort" };

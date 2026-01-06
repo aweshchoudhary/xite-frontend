@@ -8,7 +8,8 @@ import {
 } from "@ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { GetOneOutput } from "@/modules/enterprise/server/read";
+import type { GetOneOutput } from "@/modules/enterprise/components/forms/read/action";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
@@ -24,16 +25,20 @@ export default function EnterpriseSelect({
   };
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [enterpriseList, setEnterpriseList] = useState<GetOneOutput[]>([]);
+  const [enterpriseList, setEnterpriseList] = useState<NonNullable<GetOneOutput>[]>([]);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(formField.value ?? "");
 
   useEffect(() => {
     const fetchEnterpriseList = async () => {
-      const enterpriseList = await getEnterpriseListAction();
+      const { data: enterpriseList } = await getEnterpriseListAction();
 
-      setEnterpriseList(enterpriseList);
+      setEnterpriseList(
+        (enterpriseList || []).filter((enterprise): enterprise is NonNullable<typeof enterprise> => 
+          enterprise !== null
+        )
+      );
     };
     fetchEnterpriseList();
   }, []);

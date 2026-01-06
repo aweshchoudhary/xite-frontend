@@ -1,4 +1,7 @@
-import { GetOne, getOne } from "@/modules/program/server/read";
+import {
+  GetOne,
+  getOneWithRelationsAction,
+} from "@/modules/program/components/forms/read/get-one-with-relations-action";
 import { Button, buttonVariants } from "@ui/button";
 import {
   AlignJustify,
@@ -49,7 +52,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const { data: program } = await getOne({ id });
+  const { data: program } = await getOneWithRelationsAction(id);
 
   if (!program) {
     return generateSEOMetadata({
@@ -79,7 +82,7 @@ export default async function ProgramPage({
 
   const { id } = await params;
 
-  const { data: program } = await getOne({ id });
+  const { data: program } = await getOneWithRelationsAction(id);
 
   if (!program) {
     return notFound();

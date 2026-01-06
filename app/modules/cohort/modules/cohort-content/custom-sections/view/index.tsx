@@ -3,13 +3,14 @@ import MicrositeAdditionalFieldsView from "../../common/components/microsite-add
 import { ImageIcon, TableOfContentsIcon } from "lucide-react";
 import Image from "next/image";
 import { getImageUrl } from "@/modules/common/lib/utils";
-import {
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
+import type {
   CohortSectionWithData,
-  GetCohort,
-  GetCohortSectionOrderBySectionIdOutput,
-  getCohortSectionOrderBySectionId,
-  getCohortSections,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/get-sections-action";
+import {
+  getCohortSectionOrderBySectionIdAction,
+  getCohortSectionsAction,
+} from "@/modules/cohort/components/forms/read/get-sections-action";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -58,15 +59,15 @@ const CustomSectionView = ({
   );
 
   const [sectionOrder, setSectionOrder] =
-    useState<GetCohortSectionOrderBySectionIdOutput | null>(null);
+    useState<PrimaryDB.CohortSectionOrderGetPayload<object> | null>(null);
 
   useEffect(() => {
     const fetchCohortSections = async () => {
-      const cohortSections = await getCohortSections(cohortData.id);
-      setCohortSections(cohortSections);
+      const { data: cohortSectionsData } = await getCohortSectionsAction(cohortData.id);
+      setCohortSections(cohortSectionsData || []);
 
-      const sectionOrder = await getCohortSectionOrderBySectionId(section.id);
-      setSectionOrder(sectionOrder);
+      const { data: sectionOrderData } = await getCohortSectionOrderBySectionIdAction(section.id);
+      setSectionOrder(sectionOrderData);
     };
     fetchCohortSections();
   }, [cohortData.id]);
@@ -105,13 +106,13 @@ const CustomSectionView = ({
                 (sec) =>
                   sec.section_position ===
                   (sectionOrder?.section_position ?? 0) - 1
-              )?.data.title
+              )?.data?.title
                 ? `After ${
                     cohortSections.find(
                       (sec) =>
                         sec.section_position ===
                         (sectionOrder?.section_position ?? 0) - 1
-                    )?.data.title
+                    )?.data?.title
                   }`
                 : "First Section"}
             </strong>

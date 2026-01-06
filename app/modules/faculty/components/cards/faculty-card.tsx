@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
-import { GetOneOutput } from "../../server/read";
+import type { GetOneOutput } from "../forms/read/action";
 import Link from "next/link";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
 export default function FacultyCard({ faculty }: { faculty: GetOneOutput }) {
+  if (!faculty) return null;
+  
   return (
     <Link
       href={`/faculty/${faculty.id}`}

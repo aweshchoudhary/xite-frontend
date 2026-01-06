@@ -1,19 +1,19 @@
 "use server";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
-import {
-  deleteOne,
-  DeleteOneOutput,
-} from "@/modules/academic-partner/server/delete";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 
 type DeleteActionOutput = {
   error?: string;
-  data?: DeleteOneOutput;
+  data?: PrimaryDB.AcademicPartnerGetPayload<object>;
 };
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
-    const deletedData = await deleteOne({ id });
+    const deletedData = await primaryDB.academicPartner.delete({
+      where: { id: id },
+    });
 
     revalidatePath(MODULE_PATH);
 

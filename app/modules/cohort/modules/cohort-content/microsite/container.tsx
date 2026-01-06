@@ -4,13 +4,11 @@ import View from "./view";
 import Update from "./update";
 import { Button } from "@ui/button";
 import { Pencil } from "lucide-react";
-import {
+import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
+import type {
   CohortSectionWithData,
-  GetCohort,
-  GetSectionOrderByCohortIdOutput,
-  getCohortSections,
-  getSectionOrderByCohortId,
-} from "@/modules/cohort/server/cohort/read";
+} from "@/modules/cohort/components/forms/read/get-sections-action";
+import { getCohortSectionsAction } from "@/modules/cohort/components/forms/read/get-sections-action";
 
 import { Container as BrandingContainer } from "../branding/container";
 import { useCheckUserOwnsCohort } from "@/modules/cohort/auth/access";
@@ -31,8 +29,8 @@ export function Container({ data, previewDomain }: ContainerProps) {
 
   useEffect(() => {
     const fetchSectionOrder = async () => {
-      const sectionOrder = await getCohortSections(data?.id || "");
-      setSectionOrder(sectionOrder);
+      const { data: sectionOrderData } = await getCohortSectionsAction(data?.id || "");
+      setSectionOrder(sectionOrderData || []);
     };
     fetchSectionOrder();
   }, [data?.id]);
@@ -75,15 +73,17 @@ export function Container({ data, previewDomain }: ContainerProps) {
                   data?.microsite_section?.visibility_end_date || null,
                 custom_domain: data?.microsite_section?.custom_domain || null,
                 cohort_id: data?.id || "",
-                sections: sectionOrder.map((section) => ({
-                  id: section.id,
-                  section_position: section.section_position,
-                  section_type: section.section_type,
-                  section_id: section.section_id,
-                  section_title: section.data.title,
-                  section_data: section.data,
-                  data: section.data,
-                })),
+                sections: sectionOrder
+                  .filter((section) => section.data !== null)
+                  .map((section) => ({
+                    id: section.id,
+                    section_position: section.section_position,
+                    section_type: section.section_type,
+                    section_id: section.section_id,
+                    section_title: section.data!.title,
+                    section_data: section.data!,
+                    data: section.data!,
+                  })),
               }}
               onCancel={() => setIsUpdating(false)}
               onSuccess={() => setIsUpdating(false)}

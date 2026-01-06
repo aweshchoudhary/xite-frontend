@@ -1,26 +1,29 @@
 "use server";
-import {
-  createOne,
-  CreateOneOutput,
-} from "@/modules/topic/server/subtopic/create";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_PATH } from "@/modules/topic/contants";
 
 type CreateActionOutput = {
   error?: string;
-  data?: CreateOneOutput;
+  data?: PrimaryDB.SubTopicGetPayload<object>;
 };
 
 export async function createAction(
   data: CreateSchema
 ): Promise<CreateActionOutput> {
   try {
-    const createdData = await createOne({
-      ...data,
-      topic: {
-        connect: {
-          id: data.topic_id,
+    const createdData = await primaryDB.subTopic.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        keywords: data.keywords,
+        taost_id: data.taost_id,
+        topic: {
+          connect: {
+            id: data.topic_id,
+          },
         },
       },
     });
@@ -29,7 +32,7 @@ export async function createAction(
       throw new Error(`Failed to create SubTopic`);
     }
 
-    revalidatePath(MODULE_PATH);
+    revalidatePath("/topics");
 
     return { data: createdData };
   } catch (error) {

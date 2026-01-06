@@ -4,12 +4,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import ColumnSortBtn from "@/modules/common/components/global/data-table/column-sort-btn";
 import TableActions from "./table-actions";
 import Link from "next/link";
-import { GetOneOutput } from "@/modules/faculty/server/read";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { MODULE_PATH } from "@/modules/faculty/contants";
 import { getImageUrl } from "@/modules/common/lib/utils";
 
-export const columns: ColumnDef<GetOneOutput>[] = [
+export const columns: ColumnDef<PrimaryDB.FacultyGetPayload<object>>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {

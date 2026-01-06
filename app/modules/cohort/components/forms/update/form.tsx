@@ -15,8 +15,8 @@ import CurrencySelect from "@/modules/common/components/global/currency-select/c
 import { Plus, Trash } from "lucide-react";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import ProgramSelect from "@/modules/program/components/program-select-list";
-import { GetOne } from "@/modules/program/server/read";
-import { getOne } from "@/modules/program/server/read";
+import { getOneAction } from "@/modules/program/components/forms/read/action";
+import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
 
@@ -84,7 +84,7 @@ export default function UpdateForm({
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: program } = await getOne({ id: programId });
+      const { data: program } = await getOneAction(programId);
       setProgram(program);
 
       form.setValue("program_id", programId);

@@ -1,15 +1,15 @@
 "use server";
 
 import { uploadFile } from "@/modules/common/services/file-upload";
-import { updateOne } from "@/modules/academic-partner/server/update";
+import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
 
 export async function updateAcademyLogo(academyId: string, image: File) {
   try {
     const { fileUrl } = await uploadFile(image);
 
-    const updatedData = await updateOne({
-      id: academyId,
+    const updatedData = await primaryDB.academicPartner.update({
+      where: { id: academyId },
       data: { logo_url: fileUrl },
     });
 
