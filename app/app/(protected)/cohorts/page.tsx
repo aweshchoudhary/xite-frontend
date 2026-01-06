@@ -35,7 +35,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const { status = "ALL" } = await searchParams;
-  const permission = await checkPermission("Program", "read");
+  const permission = await checkPermission("Cohort", "read");
 
   if (!permission) {
     return <UnauthorizedPageError />;
