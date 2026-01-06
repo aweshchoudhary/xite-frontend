@@ -2,7 +2,7 @@
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "../schema";
-import { createCohortAction, getLastCohortByProgramIdAction } from "./action";
+import { createCohortAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
@@ -19,6 +19,7 @@ import { getRequiredFields } from "@/modules/common/lib/zod-required-field-check
 import { getOneAction } from "@/modules/program/components/forms/read/action";
 import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { Field, FieldError, FieldLabel } from "@ui/field";
+import { getLastCohortByProgramIdAction } from "../read/get-by-program-id-action";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 

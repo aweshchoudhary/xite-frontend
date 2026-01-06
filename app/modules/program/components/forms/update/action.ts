@@ -1,7 +1,6 @@
 "use server";
 import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
-import { getCohortsCountAction } from "@/modules/cohort/components/forms/create/get-cohorts-count-action";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 
@@ -63,5 +62,3 @@ export async function getProgramsAction() {
     throw error;
   }
 }
-
-export { getCohortsCountAction } from "@/modules/cohort/components/forms/create/get-cohorts-count-action";

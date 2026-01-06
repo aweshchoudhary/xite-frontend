@@ -24,8 +24,9 @@ export async function createAction(
 
     const createdData = await primaryDB.academicPartner.create({
       data: {
-      ...rest,
-      logo_url,
+        ...rest,
+        logo_url,
+      },
     });
 
     if (!createdData) {

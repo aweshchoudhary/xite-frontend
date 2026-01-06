@@ -3,7 +3,6 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { CreateSchema } from "../schema";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLastCohortForCreateAction } from "./get-last-cohort-for-create-action";
-import { getCohortsByProgramIdAction } from "@/modules/cohort/components/forms/read/get-by-program-id-action";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
@@ -33,17 +32,14 @@ export async function createCohortAction(
         }
       });
     });
-    const { data: lastCohort } = await getLastCohortForCreateAction(
-      program_id
-    );
+    const { data: lastCohort } = await getLastCohortForCreateAction(program_id);
 
     let newCohortNumber = 0;
     let newCohortKey = "";
 
     if (lastCohort) {
       newCohortNumber = lastCohort.cohort_num + 1;
-      newCohortKey =
-        lastCohort.program_key + "-cohort-" + newCohortNumber;
+      newCohortKey = lastCohort.program_key + "-cohort-" + newCohortNumber;
     } else {
       newCohortNumber = 1;
       // This should not happen as getLastCohortForCreateAction handles the case
@@ -108,6 +104,3 @@ export async function getProgramsAction() {
     throw error;
   }
 }
-
-export { getCohortsCountAction } from "./get-cohorts-count-action";
-export { getLastCohortForCreateAction as getLastCohortByProgramIdAction } from "./get-last-cohort-for-create-action";
