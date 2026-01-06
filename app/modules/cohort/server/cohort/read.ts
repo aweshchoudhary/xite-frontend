@@ -9,7 +9,11 @@ import { GetCohortInclude } from "./read-schema";
 
 export type GetCohort = PrimaryDB.CohortGetPayload<{
   include: {
-    program: true;
+    program: {
+      include: {
+        tags: true;
+      };
+    };
     overview_section: true;
     benefits_section: {
       include: {
@@ -242,7 +246,11 @@ export async function getAll() {
     const cohorts = await primaryDB.cohort.findMany({
       where: {},
       include: {
-        program: true,
+        program: {
+          include: {
+            tags: true,
+          },
+        },
         fees: {
           include: {
             currency: true,
