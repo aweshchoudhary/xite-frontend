@@ -15,7 +15,11 @@ type ProgramTableProps = {
 export default async function ProgramTable({
   status = "ALL",
 }: ProgramTableProps) {
-  const programs = await primaryDB.program.findMany({});
+  const programs = await primaryDB.program.findMany({
+    include: {
+      academic_partner: true,
+    },
+  });
 
   // Precompute counts for all statuses including ALL
   const statusCounts: Record<string, number> = {

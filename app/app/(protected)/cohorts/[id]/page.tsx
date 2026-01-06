@@ -53,8 +53,6 @@ export default async function Page({
   const { id } = await params;
   const data = await getCohort({ id });
 
-  console.log({ data });
-
   if (!data) {
     notFound();
   }
