@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
 import { primaryDB } from "../../database/prisma/connection";
@@ -69,7 +70,8 @@ export async function logoutAction() {
   cookieStore.delete("session");
 }
 
-export async function getUser(): Promise<
+// Memoize getUser within a single request to avoid duplicate calls
+const getUserCached = cache(async (): Promise<
   | {
       dbUser: DbUser;
       user: UserRecord;
@@ -77,7 +79,7 @@ export async function getUser(): Promise<
     }
   | null
   | undefined
-> {
+> => {
   try {
     const cookieStore = await cookies();
     const session = cookieStore.get("session");
@@ -119,14 +121,18 @@ export async function getUser(): Promise<
       dbUser: dbUser,
     };
 
-    // 6️⃣ Cache (short TTL is enough)
-    await setCache(cacheKey, payload, 300); // 5 minutes
+    // 6️⃣ Cache with longer TTL for better performance (10 minutes)
+    await setCache(cacheKey, payload, 600); // 10 minutes
 
     return payload;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user:", error);
     return null;
   }
+});
+
+export async function getUser() {
+  return getUserCached();
 }
 
 export async function getUserRoles(): Promise<UserRole[]> {

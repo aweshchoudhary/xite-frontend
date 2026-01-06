@@ -3,8 +3,6 @@
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
-import { checkPermission } from "@/modules/common/authentication/access-control/lib";
-import { ERROR_MESSAGES } from "@/modules/common/constant";
 
 /**
  * Minimal cohort data for table view
