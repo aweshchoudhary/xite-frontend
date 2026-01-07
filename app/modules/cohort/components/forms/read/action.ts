@@ -5,8 +5,6 @@ import {
   WorkStatus,
   CohortSectionType,
 } from "@/modules/common/database/prisma/generated/prisma";
-import { checkPermission } from "@/modules/common/authentication/access-control/lib";
-import { ERROR_MESSAGES } from "@/modules/common/constant";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 
 /**
@@ -131,9 +129,18 @@ export async function getCohort({
   accessCheck?: boolean;
 }): Promise<GetCohort | null> {
   try {
-    const cohort = await primaryDB.cohort.findUnique({
+    const cohort = await primaryDB.cohort.findFirst({
       where: {
-        id: id,
+        OR: [
+          {
+            id: id,
+          },
+          {
+            microsite_section: {
+              custom_domain: id,
+            },
+          },
+        ],
       },
       include: {
         program: {
