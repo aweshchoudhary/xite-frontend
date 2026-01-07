@@ -131,14 +131,6 @@ export async function getCohort({
   accessCheck?: boolean;
 }): Promise<GetCohort | null> {
   try {
-    if (accessCheck) {
-      const permission = await checkPermission("Cohort", "read");
-
-      if (!permission) {
-        throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-      }
-    }
-
     const cohort = await primaryDB.cohort.findUnique({
       where: {
         id: id,
@@ -214,12 +206,6 @@ export async function getCohort({
  */
 export async function getAll(): Promise<GetCohortForTable[]> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const cohorts = await primaryDB.cohort.findMany({
       select: {
         id: true,
@@ -306,12 +292,6 @@ export async function getCohortsByProgramId({
   programId: string;
 }): Promise<{ data: GetCohortByProgramId[] }> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const cohorts = await primaryDB.cohort.findMany({
       where: {
         program_id: programId,
@@ -356,12 +336,6 @@ export async function getLastCohortByProgramId({
   }> | null;
 }> {
   try {
-    const permission = await checkPermission("Cohort", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const cohorts = await primaryDB.cohort.findMany({
       where: {
         program_id: programId,
