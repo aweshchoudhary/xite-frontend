@@ -71,65 +71,67 @@ export async function logoutAction() {
 }
 
 // Memoize getUser within a single request to avoid duplicate calls
-const getUserCached = cache(async (): Promise<
-  | {
-      dbUser: DbUser;
-      user: UserRecord;
-      roles: UserRole[];
+const getUserCached = cache(
+  async (): Promise<
+    | {
+        dbUser: DbUser;
+        user: UserRecord;
+        roles: UserRole[];
+      }
+    | null
+    | undefined
+  > => {
+    try {
+      const cookieStore = await cookies();
+      const session = cookieStore.get("session");
+
+      if (!session) return null;
+
+      // 1️⃣ Verify session
+      const decodedToken = await adminAuth().verifySessionCookie(session.value);
+      const uid = decodedToken.uid;
+
+      // 2️⃣ Session-aware cache key
+      const cacheKey = `auth:user:${uid}`;
+
+      // 3️⃣ Check Redis
+      const cached = await getCache<{
+        user: UserRecord;
+        roles: UserRole[];
+        dbUser: DbUser;
+      }>(cacheKey);
+
+      if (cached) {
+        return cached;
+      }
+
+      // 4️⃣ Fetch from Firebase
+      const user = await adminAuth().getUser(uid);
+
+      // 5️⃣ Fetch roles from DB
+      const dbUser = await primaryDB.user.findUnique({
+        where: { email: user.email },
+        include: { roles: true },
+      });
+
+      if (!dbUser || !dbUser.roles) return null;
+
+      const payload = {
+        user: user.toJSON() as UserRecord,
+        roles: dbUser.roles,
+        dbUser: dbUser,
+      };
+
+      // 6️⃣ Cache with longer TTL for better performance (10 minutes)
+      await setCache(cacheKey, payload, 600); // 10 minutes
+
+      return payload;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return null;
     }
-  | null
-  | undefined
-> => {
-  try {
-    const cookieStore = await cookies();
-    const session = cookieStore.get("session");
-
-    if (!session) return null;
-
-    // 1️⃣ Verify session
-    const decodedToken = await adminAuth().verifySessionCookie(session.value);
-    const uid = decodedToken.uid;
-
-    // 2️⃣ Session-aware cache key
-    const cacheKey = `auth:user:${uid}`;
-
-    // 3️⃣ Check Redis
-    const cached = await getCache<{
-      user: UserRecord;
-      roles: UserRole[];
-      dbUser: DbUser;
-    }>(cacheKey);
-
-    if (cached) {
-      return cached;
-    }
-
-    // 4️⃣ Fetch from Firebase
-    const user = await adminAuth().getUser(uid);
-
-    // 5️⃣ Fetch roles from DB
-    const dbUser = await primaryDB.user.findUnique({
-      where: { email: user.email },
-      include: { roles: true },
-    });
-
-    if (!dbUser || !dbUser.roles) return null;
-
-    const payload = {
-      user: user.toJSON() as UserRecord,
-      roles: dbUser.roles,
-      dbUser: dbUser,
-    };
-
-    // 6️⃣ Cache with longer TTL for better performance (10 minutes)
-    await setCache(cacheKey, payload, 600); // 10 minutes
-
-    return payload;
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    return null;
   }
-});
+);
 
 export async function getUser() {
   return getUserCached();
