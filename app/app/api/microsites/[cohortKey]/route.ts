@@ -1,5 +1,5 @@
-import { getCohort } from "@/modules/cohort/components/forms/read/action";
 import { NextRequest, NextResponse } from "next/server";
+import { getCohortByMicrosite } from "./action";
 
 export async function GET(
   request: NextRequest,
@@ -30,7 +30,9 @@ export async function GET(
       );
     }
 
-    const data = await getCohort({ id: cohortKey, accessCheck: false });
+    const data = await getCohortByMicrosite({
+      id: cohortKey,
+    });
     if (!data) {
       return NextResponse.json(
         { error: "Microsite not found", data: null },
