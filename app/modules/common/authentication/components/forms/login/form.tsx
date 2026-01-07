@@ -4,13 +4,19 @@ import { Button } from "@ui/button";
 import { loginFormAction } from "./action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../../firebase/client";
 
 export default function LoginForm() {
   const router = useRouter();
 
-  const loginAction = async () => {
+  const handleLogin = async () => {
     try {
-      await loginFormAction();
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+
+      await loginFormAction(idToken);
       toast.success("Login successful");
       router.push("/");
     } catch (error) {
@@ -24,7 +30,7 @@ export default function LoginForm() {
         variant="secondary"
         className="text-lg px-5 py-3 bg-white"
         size="lg"
-        onClick={loginAction}
+        onClick={handleLogin}
       >
         Continue with Google
       </Button>
