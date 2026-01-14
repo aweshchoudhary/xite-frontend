@@ -11,6 +11,15 @@ import { Input } from "@/modules/common/components/ui/input";
 import { updateAction } from "./action";
 import { Button } from "@/modules/common/components/ui/button";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/modules/common/components/ui/select";
+import { PaymentMethod } from "@/modules/common/database/prisma/generated/prisma";
+import { enumDisplay } from "@/modules/common/lib/enum-display";
 
 export default function Form() {
   const form = useForm<UpdateSchema>({
@@ -55,7 +64,30 @@ export default function Form() {
           )}
         />
 
-        <Button type="submit">Update Legacy Program ID</Button>
+        <Controller
+          control={form.control}
+          name="payment_method"
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel isRequired={true}>Payment Method</FieldLabel>
+              <Select {...field}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a payment method" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(PaymentMethod).map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {enumDisplay(method)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Button type="submit">Update</Button>
       </div>
     </form>
   );
