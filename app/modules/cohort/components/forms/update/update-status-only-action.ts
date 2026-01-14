@@ -33,6 +33,8 @@ export async function updateStatusOnlyAction(
     revalidatePath(`/cohorts/${cohortId}`);
     revalidatePath(`/cohorts/${cohortId}/edit`);
 
+    await sendEventToAutomations(cohortId);
+
     return { success: true };
   } catch (error) {
     console.error(error);
@@ -43,3 +45,23 @@ export async function updateStatusOnlyAction(
   }
 }
 
+export async function sendEventToAutomations(cohortId: string) {
+  try {
+    const resp = await fetch(
+      `${process.env.AUTOMATIONS_API_URL}/automations/xite/cohort-active`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.AUTOMATIONS_API_KEY}`,
+        },
+        body: JSON.stringify({ cohortId }),
+      }
+    );
+
+    return { resp };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

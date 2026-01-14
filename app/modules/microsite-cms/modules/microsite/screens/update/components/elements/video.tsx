@@ -24,8 +24,6 @@ export default function VideoElement({
       : undefined
   );
 
-  console.log(videoUrl);
-
   return (
     <div className="space-y-5">
       {videoUrl ? (

@@ -32,6 +32,20 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
           },
         },
         overview_section: true,
+        design_curriculum_section: {
+          include: {
+            items: {
+              include: {
+                objectives: true,
+                sessions: {
+                  include: {
+                    objectives: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
         cohort_num: "desc",

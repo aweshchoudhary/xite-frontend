@@ -84,8 +84,6 @@ export default async function ProgramPage({
 
   const { data: program } = await getOneWithRelationsAction(id);
 
-  console.log(program);
-
   if (!program) {
     return notFound();
   }

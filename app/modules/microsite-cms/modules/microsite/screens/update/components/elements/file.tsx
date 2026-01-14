@@ -24,8 +24,6 @@ export default function FileElement({
       : undefined
   );
 
-  console.log(fileUrl);
-
   return (
     <div className="space-y-5">
       {/* No preview for files direct download option */}

@@ -20,11 +20,6 @@ export default function MicrositeAdditionalFields({
     bottom_desc: form.getValues(bottom_desc_field_name) ? true : false,
   });
 
-  console.log({
-    top_desc: form.getValues(top_desc_field_name),
-    bottom_desc: form.getValues(bottom_desc_field_name),
-  });
-
   return (
     <div className="p-5 bg-muted/50 rounded-lg border-2 border-dashed mt-5">
       <h2>Microsite Section Fields (Optional)</h2>
