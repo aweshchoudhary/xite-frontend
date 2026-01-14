@@ -1,16 +1,23 @@
 import { z } from "zod";
-import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
+import {
+  PaymentMethod,
+  ProgramType,
+} from "@/modules/common/database/prisma/generated/prisma";
 
 // Base schema (pure and extendable)
 export const programBaseSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().optional().nullable(),
-  type: z.nativeEnum(ProgramType).default(ProgramType.OPEN),
+  type: z.enum(ProgramType).default(ProgramType.OPEN),
   academic_partner_id: z.string(),
   enterprise_id: z.string().optional().nullable(),
   short_name: z.string(),
   program_key: z.string(),
   tags: z.array(z.string()).default([]),
+  payment_method: z
+    .enum(PaymentMethod)
+    .default(PaymentMethod.stripe_us)
+    .optional(),
 });
 
 // Separate conditional validation logic

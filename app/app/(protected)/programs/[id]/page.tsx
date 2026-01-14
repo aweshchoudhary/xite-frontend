@@ -42,6 +42,7 @@ import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import { isUserAdmin } from "@/modules/user/utils";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -215,8 +216,13 @@ const HeaderActions = async ({
 }) => {
   const updatePermission = await checkPermission("Program", "update");
   const deletePermission = await checkPermission("Program", "delete");
+  const admin = await isUserAdmin();
 
-  return program.status !== "ACTIVE" ? (
+  if (program.status === "ACTIVE" && !admin) {
+    return null;
+  }
+
+  return (
     <>
       {updatePermission && <UpdateStatusBtn program={program} />}
       <DropdownMenu>
@@ -241,7 +247,7 @@ const HeaderActions = async ({
         </DropdownMenuContent>
       </DropdownMenu>
     </>
-  ) : null;
+  );
 };
 
 const PageHeader = async ({ program }: { program: GetOne }) => {

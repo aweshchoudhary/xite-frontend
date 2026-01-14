@@ -16,7 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/select";
-import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
+import {
+  PaymentMethod,
+  ProgramType,
+} from "@/modules/common/database/prisma/generated/prisma";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import { FormUpdateBaseProps } from "@/modules/common/components/global/form/types/form-props";
@@ -276,6 +279,41 @@ export default function UpdateForm({
             />
           </div>
         )}
+
+        <div>
+          <Controller
+            control={form.control}
+            name="payment_method"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  isRequired={requiredFields.includes("payment_method")}
+                >
+                  Payment Method
+                </FieldLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="uppercase w-full">
+                    <SelectValue placeholder="Select Payment Method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.values(PaymentMethod).map((type) => (
+                      <SelectItem
+                        className="uppercase w-full"
+                        key={type}
+                        value={type}
+                      >
+                        {enumDisplay(type)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
         <div className="col-span-2 xl:col-span-3">
           <Controller
             control={form.control}
