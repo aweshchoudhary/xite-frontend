@@ -6,6 +6,7 @@ import UnauthorizedPageError from "@/modules/common/components/global/error/unau
 import { notFound } from "next/navigation";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import { isUserAdmin } from "@/modules/user/utils";
 
 interface EditProgramPageProps {
   params: Promise<{
@@ -41,18 +42,19 @@ export async function generateMetadata({
 
 export default async function EditCohortPage({ params }: EditProgramPageProps) {
   const permission = await checkPermission("Cohort", "update");
-  if (!permission) {
-    return <UnauthorizedPageError />;
-  }
-
   const { id } = await params;
   const { data: cohort } = await getOneForDetailPageAction(id);
+  const isAdmin = await isUserAdmin();
+
+  if (!permission || !isAdmin) {
+    return <UnauthorizedPageError />;
+  }
 
   if (!cohort) {
     return notFound();
   }
 
-  if (cohort.status === "ACTIVE") {
+  if (cohort.status === "ACTIVE" && !isAdmin) {
     return (
       <UnauthorizedPageError message="Cohort is active. You cannot edit it." />
     );
