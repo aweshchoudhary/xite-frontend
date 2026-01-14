@@ -46,18 +46,12 @@ export default async function EditCohortPage({ params }: EditProgramPageProps) {
   const { data: cohort } = await getOneForDetailPageAction(id);
   const isAdmin = await isUserAdmin();
 
-  if (!permission || !isAdmin) {
+  if (!permission && !isAdmin) {
     return <UnauthorizedPageError />;
   }
 
   if (!cohort) {
     return notFound();
-  }
-
-  if (cohort.status === "ACTIVE" && !isAdmin) {
-    return (
-      <UnauthorizedPageError message="Cohort is active. You cannot edit it." />
-    );
   }
 
   return (
