@@ -1,10 +1,9 @@
-import { getCohort } from "@/modules/cohort/components/forms/read/action";
 import { NextResponse } from "next/server";
-import { getCohortByMicrosite } from "../../microsites/[cohortKey]/action";
+import { getCohortByCohortOrProgramId } from "./action";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ cohortId: string }> }
+  { params }: { params: Promise<{ key: string }> }
 ) {
   const authHeader =
     request.headers.get("Authorization") ||
@@ -22,9 +21,9 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { cohortId } = await params;
+  const { key } = await params;
 
-  const cohort = await getCohortByMicrosite({ id: cohortId });
+  const cohort = await getCohortByCohortOrProgramId(key);
 
   if (!cohort) {
     return NextResponse.json({ error: "Cohort not found" }, { status: 404 });

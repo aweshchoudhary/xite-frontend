@@ -1,5 +1,5 @@
-import { getAllByStatus } from "@/modules/cohort/components/forms/read/action";
 import { NextResponse } from "next/server";
+import { getCohortsAction } from "./action";
 
 export async function GET(request: Request) {
   const authHeader =
@@ -18,6 +18,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const allActiveCohorts = await getAllByStatus("ACTIVE");
-  return NextResponse.json({ data: allActiveCohorts }, { status: 200 });
+  const data = await getCohortsAction();
+  return NextResponse.json({ data }, { status: 200 });
 }

@@ -6,6 +6,7 @@ import { checkPermission } from "@/modules/common/authentication/access-control/
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import { isUserAdmin } from "@/modules/user/utils";
 
 interface EditPageProps {
   params: Promise<{
@@ -38,6 +39,7 @@ export async function generateMetadata({
 }
 export default async function EditPage({ params }: EditPageProps) {
   const permission = await checkPermission("Program", "update");
+  const admin = await isUserAdmin();
   const { id } = await params;
   const { data } = await getOneWithRelationsAction(id);
 
@@ -45,7 +47,7 @@ export default async function EditPage({ params }: EditPageProps) {
     return notFound();
   }
 
-  if (!permission || data?.status === "ACTIVE") {
+  if (!permission || (data?.status === "ACTIVE" && !admin)) {
     return <UnauthorizedPageError />;
   }
 

@@ -54,13 +54,21 @@ enum ProgramType {
   EXTERNAL
 }
 
+enum PaymentMethod {
+  stripe_us
+  stripe_sg
+  razorpay
+}
+
 model Program {
   id                  String          @id @default(uuid())
   name                String
   description         String?
   program_key         String          @unique
+  program_sf_key      String?         @unique
   tags                ProgramTag[]
   short_name          String          @default("Program")
+  payment_method      PaymentMethod   @default(stripe_us)
   status              ProgramStatus   @default(DRAFT)
   type                ProgramType     @default(OPEN)
   enterprise_id       String?

@@ -25,8 +25,6 @@ export default function ImageElement({
       : undefined
   );
 
-  console.log(imageUrl);
-
   return (
     <div className="space-y-5">
       {imageUrl ? (
