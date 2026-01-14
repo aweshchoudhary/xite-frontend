@@ -337,5 +337,3 @@ export async function main() {
     console.error("Error during data import:", error);
   }
 }
-
-main();

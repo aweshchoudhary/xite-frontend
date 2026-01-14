@@ -39,7 +39,7 @@ export async function generateMetadata({
 }
 export default async function EditPage({ params }: EditPageProps) {
   const permission = await checkPermission("Program", "update");
-  const admin = await isUserAdmin();
+  const isAdmin = await isUserAdmin();
   const { id } = await params;
   const { data } = await getOneWithRelationsAction(id);
 
@@ -47,7 +47,7 @@ export default async function EditPage({ params }: EditPageProps) {
     return notFound();
   }
 
-  if (!permission || (data?.status === "ACTIVE" && !admin)) {
+  if (!permission && !isAdmin) {
     return <UnauthorizedPageError />;
   }
 
