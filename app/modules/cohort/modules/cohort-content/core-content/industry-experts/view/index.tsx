@@ -1,28 +1,11 @@
-import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import ExpertCard from "../expert-card";
 import Link from "next/link";
 import MicrositeAdditionalFieldsView from "../../../common/components/microsite-additional-fields-view";
+import type { GetCohortForDetailPage } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 
 export type Props = {
-  data: PrimaryDB.CohortIndustryExpertsSectionGetPayload<{
-    include: {
-      items: {
-        include: {
-          faculty: {
-            include: {
-              academic_partner: true;
-              expert_subject_areas: {
-                include: {
-                  subject_area: true;
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-  }>;
+  data: GetCohortForDetailPage["industry_experts_section"] | null;
 };
 
 export default function View({ data }: Props) {

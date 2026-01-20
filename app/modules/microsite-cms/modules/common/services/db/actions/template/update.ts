@@ -41,9 +41,9 @@ function syncMicrositeWithTemplate(
   newTemplate: ITemplate
 ) {
   microsite.globalSections = syncSections(
-    oldTemplate.globalSections,
-    newTemplate.globalSections,
-    microsite.globalSections
+    oldTemplate?.globalSections || [],
+    newTemplate?.globalSections || [],
+    microsite?.globalSections || []
   );
 
   const oldPagesMap = new Map(oldTemplate.pages.map((p) => [p.slug, p]));
