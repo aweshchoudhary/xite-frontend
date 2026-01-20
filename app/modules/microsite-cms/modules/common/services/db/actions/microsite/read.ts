@@ -23,7 +23,9 @@ export async function getMicrositeById(id: string) {
 
 export async function getMicrositeByDomain(domain: string) {
   await connectDB();
-  return JSON.parse(JSON.stringify(await MicrositeModel.findOne({ domain }).lean()));
+  // find one which contains/includes the domain
+  console.log("domain", domain);
+  return JSON.parse(JSON.stringify(await MicrositeModel.findOne({ domain: { $regex: domain, $options: 'i' } }).lean()));
 }
 
 export async function getMicrositesByCohortId(cohortId: string) {
