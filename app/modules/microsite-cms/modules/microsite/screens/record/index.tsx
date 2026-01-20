@@ -1,5 +1,4 @@
-import { Field, FieldGroup, FieldLabel } from "@ui/field";
-import { Input } from "@ui/input";
+"use client";
 import {
   IMicrosite,
   ITemplate,
@@ -12,6 +11,8 @@ import { buttonVariants } from "@ui/button";
 import { Button } from "@ui/button";
 import { Badge } from "@ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface RecordViewProps {
   microsite: IMicrosite;
@@ -24,30 +25,27 @@ export default function RecordView({
   template,
   onEdit,
 }: RecordViewProps) {
+
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>(searchParams.get("sub-tab") || "common");
+  const router = useRouter();
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value);
+    // current url with query params
+    const url = new URL(window.location.href);
+    url.searchParams.set("sub-tab", value);
+    window.history.pushState({}, "", url.toString());
+  };
+
   if (!microsite) {
     return <div>Microsite not found</div>;
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">
-        {microsite.title || "Microsite"}
-      </h1>
       <div className="space-y-10">
         <div className="flex items-end gap-5 justify-between">
-          <FieldGroup className="max-w-xs">
-            <Field>
-              <FieldLabel htmlFor="microsite-title">Title</FieldLabel>
-              <Input
-                id="microsite-title"
-                value={microsite.title || ""}
-                readOnly
-                className="bg-muted"
-                aria-label="Microsite title"
-              />
-            </Field>
-          </FieldGroup>
-          <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Badge variant={"outline"}>Template: {template.name}</Badge>
             </div>
@@ -71,12 +69,11 @@ export default function RecordView({
                 Edit
               </a>
             )}
-          </div>
         </div>
 
-        <Tabs defaultValue="common" className="w-full space-y-3">
+        <Tabs value={activeTab} onValueChange={onTabChange} className="w-full space-y-3">
           <TabsList aria-label="Microsite content sections">
-            <TabsTrigger value="common">Common</TabsTrigger>
+            <TabsTrigger value="common">Global Sections</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
             <TabsTrigger value="branding">Branding</TabsTrigger>
           </TabsList>

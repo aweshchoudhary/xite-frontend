@@ -94,11 +94,6 @@ const MicrositeSchema = new mongoose.Schema(
     },
 
     title: { type: String },
-    status: {
-      type: String,
-      enum: ["draft", "active", "archived"],
-      default: "draft",
-    },
 
     globalSections: { type: [SectionValueSchema], default: [] },
     pages: { type: [PageValueSchema], default: [] },

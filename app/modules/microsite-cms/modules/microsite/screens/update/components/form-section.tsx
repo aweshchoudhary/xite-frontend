@@ -85,23 +85,19 @@ const FormSectionItem = ({
     `Section ${index + 1}`;
 
   return (
-    <div className="w-full relative p-8 space-y-6 bg-background shadow-xs rounded-xl border border-border/50">
+    <div className="w-full relative p-5 space-y-6 bg-background shadow-xs rounded-xl border border-border/50">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            Section {index + 1}
-          </p>
-          <p className="text-sm text-muted-foreground">{sectionTitle}</p>
+          <p className="text-base font-semibold underline underline-offset-4">{sectionTitle}</p>
         </div>
-        <Layers className="size-4 text-muted-foreground" />
       </div>
 
-      <FieldGroup className="grid grid-cols-3 gap-5">
+      <FieldGroup className="grid grid-cols-5 gap-5">
         <Controller
           name={`${fieldArrayName}.${index}.title`}
           control={form.control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid} className="col-span-2">
               <FieldLabel
                 htmlFor={`section-key-${index}`}
                 className="flex items-center gap-2"
@@ -121,7 +117,7 @@ const FormSectionItem = ({
           name={`${fieldArrayName}.${index}.key`}
           control={form.control}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid} className="col-span-2">
               <FieldLabel
                 htmlFor={`section-key-${index}`}
                 className="flex items-center gap-2"

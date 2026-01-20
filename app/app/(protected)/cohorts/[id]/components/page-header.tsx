@@ -2,10 +2,11 @@ import UserSelectPopover from "@/modules/cohort/components/assign-user-list/assi
 import { PageBreadcrumb } from "./page-breadcrumbs";
 import { HeaderActions } from "./page-actions";
 import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
-import { checkUserOwnsCohort } from "@/modules/user/utils";
+import { checkUserOwnsCohort, isUserAdmin } from "@/modules/user/utils";
 
 export const PageHeader = async ({ data }: { data: GetCohort }) => {
   const isUserBelongsToCohort = await checkUserOwnsCohort(data.id);
+  const isAdmin = await isUserAdmin();
 
   return (
     <section>
@@ -18,7 +19,7 @@ export const PageHeader = async ({ data }: { data: GetCohort }) => {
               </div>
               <h1 className="h1 font-medium text-primary">{data.name}</h1>
             </div>
-            {isUserBelongsToCohort && (
+            {isUserBelongsToCohort || isAdmin ? (
               <div className="flex items-center gap-2">
                 <UserSelectPopover
                   cohortId={data.id}
@@ -26,7 +27,7 @@ export const PageHeader = async ({ data }: { data: GetCohort }) => {
                 />
                 <HeaderActions data={data} id={data.id} />
               </div>
-            )}
+            ): null}
           </div>
           <hr className="border-gray-200" />
         </div>

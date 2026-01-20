@@ -146,8 +146,13 @@ export async function getOneForDetailPageAction(
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    const cohort = await primaryDB.cohort.findUnique({
-      where: { id },
+    const cohort = await primaryDB.cohort.findFirst({
+      where: { 
+        OR: [
+          { id: id },
+          {cohort_key: id},
+        ]
+       },
       include: {
         program: {
           include: {
