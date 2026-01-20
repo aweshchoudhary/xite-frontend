@@ -39,7 +39,7 @@ export interface ITemplate {
   type?: TemplateType;
   description?: string;
   pages: ITemplatePage[];
-  globalSections: ITemplateSection[];
+  globalSections?: ITemplateSection[];
   createdAt?: string;
   updatedAt?: string;
 }

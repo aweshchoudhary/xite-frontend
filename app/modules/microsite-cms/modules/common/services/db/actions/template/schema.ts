@@ -40,9 +40,7 @@ export const TemplateFormSchema = z.object({
   type: z.enum(["generic", "program-specific"]).optional(),
   description: z.string().optional(),
   pages: z.array(PageSchema).min(1, "At least one page is required"),
-  globalSections: z
-    .array(GlobalSectionSchema)
-    .min(2, "At least two global sections are required"),
+  globalSections: z.array(GlobalSectionSchema).optional(),
 });
 
 export type TemplateFormInput = z.infer<typeof TemplateFormSchema>;

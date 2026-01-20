@@ -29,15 +29,15 @@ export default function FormElement({
     <div className="grid grid-cols-2 items-center gap-5">
       <FieldGroup>
         <Controller
-          name={`${fieldArrayName}.${index}.type`}
+          name={`${fieldArrayName}.${index}`}
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={`element-type-${index}`}>
+              <FieldLabel htmlFor={`${fieldArrayName}.${index}.type`}>
                 Element Type
               </FieldLabel>
-              <Select onValueChange={field.onChange}>
-                <SelectTrigger>
+              <Select onValueChange={field.onChange} value={field.value?.type}>
+                <SelectTrigger id={`${fieldArrayName}.${index}.type`}>
                   <SelectValue placeholder="Select a type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -62,7 +62,7 @@ export default function FormElement({
             <Field data-invalid={fieldState.invalid}>
               <div className="flex items-center gap-2">
                 <Checkbox
-                  id={`${field.name}-${index}`}
+                  id={`${fieldArrayName}.${index}.required`}
                   checked={!!field.value}
                   aria-invalid={fieldState.invalid}
                   onCheckedChange={(checked) => {
@@ -70,7 +70,7 @@ export default function FormElement({
                     field.onChange(isTrue);
                   }}
                 />
-                <FieldLabel htmlFor={`${field.name}-${index}`}>
+                <FieldLabel htmlFor={`${fieldArrayName}.${index}.required`}>
                   Required
                 </FieldLabel>
               </div>

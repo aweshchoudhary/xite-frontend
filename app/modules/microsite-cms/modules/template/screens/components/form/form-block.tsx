@@ -135,12 +135,12 @@ const FormBlockItem = ({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={`block-title-${index}`}>
+                  <FieldLabel htmlFor={`${fieldArrayName}.${index}.title`}>
                     Block Title
                   </FieldLabel>
                   <Input
                     {...field}
-                    id={`block-title-${index}`}
+                    id={`${fieldArrayName}.${index}.title`}
                     aria-invalid={fieldState.invalid}
                     onChange={(e) => {
                       field.onChange(e);
@@ -176,12 +176,12 @@ const FormBlockItem = ({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={`block-key-${index}`}>
+                  <FieldLabel htmlFor={`${fieldArrayName}.${index}.key`}>
                     Block Key
                   </FieldLabel>
                   <Input
                     {...field}
-                    id={`block-key-${index}`}
+                    id={`${fieldArrayName}.${index}.key`}
                     aria-invalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
@@ -200,7 +200,7 @@ const FormBlockItem = ({
                   <div className="flex items-center gap-2">
                     {" "}
                     <Checkbox
-                      id={`block-repeatable-${index}`}
+                      id={`${fieldArrayName}.${index}.repeatable`}
                       checked={!!field.value}
                       aria-invalid={fieldState.invalid}
                       onCheckedChange={(checked) => {
@@ -209,7 +209,7 @@ const FormBlockItem = ({
                         field.onChange(isTrue);
                       }}
                     />
-                    <FieldLabel htmlFor={`block-repeatable-${index}`}>
+                    <FieldLabel htmlFor={`${fieldArrayName}.${index}.repeatable`}>
                       Repeatable
                     </FieldLabel>
                   </div>

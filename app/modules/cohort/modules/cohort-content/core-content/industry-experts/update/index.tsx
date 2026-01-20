@@ -77,22 +77,6 @@ export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
           </ExpertSelectPopover>
         </div>
       )}
-
-      <br />
-      <br />
-      <hr />
-      <br />
-
-      <UpdateMicrositeAdditionalFieldsForm
-        defaultValues={{
-          bottom_description: data?.bottom_description,
-          top_description: data?.top_description,
-          id: data?.id,
-        }}
-        saveForm={saveForm}
-        onSuccess={onSuccess}
-        onCancel={onCancel}
-      />
     </div>
   );
 }

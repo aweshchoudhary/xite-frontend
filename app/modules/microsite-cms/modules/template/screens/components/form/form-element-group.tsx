@@ -130,12 +130,12 @@ const FormElementGroupItem = ({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={`element-title-${index}`}>
+                  <FieldLabel htmlFor={`${fieldArrayName}.${index}.title`}>
                     Element Title
                   </FieldLabel>
                   <Input
                     {...field}
-                    id={`element-title-${index}`}
+                    id={`${fieldArrayName}.${index}.title`}
                     aria-invalid={fieldState.invalid}
                     onChange={(e) => {
                       field.onChange(e);
@@ -159,12 +159,12 @@ const FormElementGroupItem = ({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={`element-key-${index}`}>
+                  <FieldLabel htmlFor={`${fieldArrayName}.${index}.key`}>
                     Element Key
                   </FieldLabel>
                   <Input
                     {...field}
-                    id={`element-key-${index}`}
+                    id={`${fieldArrayName}.${index}.key`}
                     aria-invalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (

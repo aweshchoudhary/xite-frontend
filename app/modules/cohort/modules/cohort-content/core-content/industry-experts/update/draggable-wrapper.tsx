@@ -84,7 +84,7 @@ export function SortableGrid({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={rectSortingStrategy}>
-        <div className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6">
           {items.map((item) => (
             <SortableItem
               key={item.id}
