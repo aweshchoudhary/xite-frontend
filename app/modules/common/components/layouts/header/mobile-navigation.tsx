@@ -11,10 +11,19 @@ export default function MobileNavigation() {
   const pathname = usePathname();
   const { roles } = useAuth();
 
-  // Filter links based on permissions once, using useMemo to prevent recalculation
   const filteredLinks = useMemo(() => {
-    return links.filter((link) => hasPermission(roles, link.resource, "read"));
+    return links.filter((link) => {
+      if (link.url === "/cms") {
+        return (
+          hasPermission(roles, "Template", "read") &&
+          hasPermission(roles, "Microsite", "read")
+        );
+      }
+  
+      return hasPermission(roles, link.resource, "read");
+    });
   }, [roles]);
+  
 
   const isActive = (url: string, exact: boolean = false) => {
     if (exact) {

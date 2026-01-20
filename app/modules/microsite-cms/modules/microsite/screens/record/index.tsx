@@ -104,6 +104,12 @@ export default function RecordView({
                     title="Global Sections"
                   />
                 )}
+
+                {microsite.globalSections.length === 0 && (
+                  <div className="p-3 space-y-5 rounded-lg">
+                    <p className="text-sm text-muted-foreground">Nothing to show here.</p>
+                  </div>
+                )}
             </div>
           </TabsContent>
           <TabsContent value="pages">

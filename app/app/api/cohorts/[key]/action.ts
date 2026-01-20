@@ -20,6 +20,29 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
         ],
       },
       include: {
+        fees: {
+          include: {
+            currency: true
+          }
+        },
+        faculty_section: {
+          include: {
+            items: {
+              include: {
+                faculty: true
+              }
+            }
+          }
+        },
+        industry_experts_section: {
+          include: {
+            items: {
+              include: {
+                faculty: true
+              }
+            }
+          }
+        },
         program: {
           include: {
             academic_partner: true,
@@ -35,11 +58,17 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
         design_curriculum_section: {
           include: {
             items: {
+              orderBy: {
+                position: "asc",
+              },
               include: {
                 objectives: true,
                 sessions: {
                   include: {
                     objectives: true,
+                  },
+                  orderBy: {
+                    position: "asc",
                   },
                 },
               },
