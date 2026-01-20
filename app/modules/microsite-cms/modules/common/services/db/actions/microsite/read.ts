@@ -16,6 +16,24 @@ export async function getMicrosites(type?: TemplateType) {
   return JSON.parse(JSON.stringify(items));
 }
 
+function normalizeDomain(input: string) {
+  try {
+    // If protocol missing, add dummy one so URL can parse it
+    const url = input.startsWith("http")
+      ? new URL(input)
+      : new URL(`https://${input}`);
+
+    return url.hostname.replace(/^www\./, "");
+  } catch {
+    // fallback (for malformed input)
+    return input
+      .replace(/^https?:\/\//, "")
+      .replace(/^www\./, "")
+      .split("/")[0];
+  }
+}
+
+
 export async function getMicrositeById(id: string) {
   await connectDB();
   return JSON.parse(JSON.stringify(await MicrositeModel.findById(id).lean()));
@@ -23,10 +41,33 @@ export async function getMicrositeById(id: string) {
 
 export async function getMicrositeByDomain(domain: string) {
   await connectDB();
-  // find one which contains/includes the domain
-  console.log("domain", domain);
-  return JSON.parse(JSON.stringify(await MicrositeModel.findOne({ domain: { $regex: domain, $options: 'i' } }).lean()));
+
+  const normalized = normalizeDomain(domain);
+  console.log("normalized domain:", normalized);
+
+  return await MicrositeModel.findOne({
+    $expr: {
+      $regexMatch: {
+        input: {
+          $replaceAll: {
+            input: {
+              $replaceAll: {
+                input: "$domain",
+                find: "https://",
+                replacement: ""
+              }
+            },
+            find: "http://",
+            replacement: ""
+          }
+        },
+        regex: normalized,
+        options: "i"
+      }
+    }
+  }).lean();
 }
+
 
 export async function getMicrositesByCohortId(cohortId: string) {
   await connectDB();
