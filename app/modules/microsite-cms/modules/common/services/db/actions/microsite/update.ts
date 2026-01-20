@@ -94,7 +94,7 @@ const uploadImages = async (
 
     // Process blocks from global sections
     for (const section of data.globalSections) {
-      const templateSection = template.globalSections.find(
+      const templateSection = template?.globalSections?.find(
         (s: ITemplateSection) => s.key === section.key
       );
 

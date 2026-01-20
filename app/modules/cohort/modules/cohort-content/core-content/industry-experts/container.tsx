@@ -99,7 +99,7 @@ export function Container({ data }: ContainerProps) {
         {isUpdating ? (
           <Update
             cohortId={data.id}
-            data={data?.industry_experts_section}
+            data={data.industry_experts_section ?? null}
             onSuccess={() => {
               setIsUpdating(false);
               setSaveForm(false);
@@ -111,7 +111,7 @@ export function Container({ data }: ContainerProps) {
             saveForm={saveForm}
           />
         ) : (
-          <View data={data?.industry_experts_section} />
+          <View data={data.industry_experts_section ?? null} />
         )}
       </div>
     </div>

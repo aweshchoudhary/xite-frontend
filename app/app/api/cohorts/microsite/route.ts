@@ -3,7 +3,6 @@ import { getCohortByDomain } from "./action";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ domain: string }> }
 ) {
   const authHeader =
     request.headers.get("Authorization") ||

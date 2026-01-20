@@ -1,31 +1,14 @@
-import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import Title from "../title";
 import { Button } from "@ui/button";
 import ExpertSelectPopover from "./expert-select-popover";
 import { SortableGrid } from "./draggable-wrapper";
 import UpdateMicrositeAdditionalFieldsForm from "./microsite-additional-fields-form/form";
+import type { GetCohortForDetailPage } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 
 type Props = {
   cohortId: string;
-  data: PrimaryDB.CohortIndustryExpertsSectionGetPayload<{
-    include: {
-      items: {
-        include: {
-          faculty: {
-            include: {
-              academic_partner: true;
-              faculty_subject_areas: {
-                include: {
-                  subject_area: true;
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-  }>;
+  data: GetCohortForDetailPage["industry_experts_section"] | null;
   onSuccess: () => void;
   onCancel: () => void;
   saveForm: boolean;
@@ -60,7 +43,7 @@ export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
                   name: name,
                   profile_image: profile_image || "",
                   description: description || "",
-                  sectionId: data.id,
+                  sectionId: data?.id || "",
                 })
               ) || []
           }
@@ -70,7 +53,7 @@ export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
         <div className="text-center py-12 text-muted-foreground bg-muted/30 rounded-lg border-2 border-dashed">
           <GraduationCap className="size-12 mx-auto mb-4 opacity-50" />
           <p className="text-lg font-medium">No expert added yet</p>
-          <ExpertSelectPopover sectionId={data.id} position={0}>
+          <ExpertSelectPopover sectionId={data?.id || ""} position={0}>
             <Button variant="outline" size="sm">
               Add Expert
             </Button>
