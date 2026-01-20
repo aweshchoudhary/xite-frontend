@@ -53,7 +53,7 @@ export default function RecordView({
             
             <div>
               <Link
-                href={microsite.domain ? microsite.domain : `https://${template._id}.xedinstitute.org/${microsite.cohortId}`}
+                href={microsite.domain ? microsite.domain.startsWith("http") ? microsite.domain : `https://${microsite.domain}` : `https://${template._id}.xedinstitute.org/${microsite.cohortId}`}
                 target="_blank"
                 className={cn(
                   buttonVariants({ variant: "default", size: "sm" })
