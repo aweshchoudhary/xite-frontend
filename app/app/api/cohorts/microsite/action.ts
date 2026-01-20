@@ -1,24 +1,18 @@
 import { primaryDB } from "@/modules/common/database/prisma/connection";
-import { getMicrositeByCohortId } from "@/modules/microsite-cms/modules/common/services/db";
+import { getMicrositeByDomain } from "@/modules/microsite-cms/modules/common/services/db";
 
-export const getCohortByCohortOrProgramId = async (key: string) => {
+export const getCohortByDomain = async (domain: string) => {
   try {
+
+    const microsite = await getMicrositeByDomain(domain);
+
+    if(!microsite) {
+      return null;
+    }
+
     const cohort = await primaryDB.cohort.findFirst({
       where: {
-        OR: [
-          { id: key },
-          { cohort_key: key },
-          {
-            program: {
-              program_key: key,
-            },
-          },
-          {
-            program: {
-              program_sf_key: key,
-            },
-          },
-        ],
+        cohort_key: microsite.cohortId,
       },
       include: {
         fees: {
@@ -83,11 +77,6 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
       },
     });
 
-    let microsite = null;
-
-    if(cohort?.cohort_key) {
-      microsite = await getMicrositeByCohortId({cohortId: cohort?.cohort_key});
-    }
 
     return {...cohort, microsite};
   } catch (error) {
