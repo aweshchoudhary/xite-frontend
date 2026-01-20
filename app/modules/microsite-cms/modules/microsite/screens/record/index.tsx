@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import slugify from "slugify";
 
 interface RecordViewProps {
   microsite: IMicrosite;
@@ -53,7 +54,7 @@ export default function RecordView({
             
             <div>
               <Link
-                href={microsite.domain ? microsite.domain.startsWith("http") ? microsite.domain : `https://${microsite.domain}` : `https://${template._id}.xedinstitute.org/${microsite.cohortId}`}
+                href={microsite.domain ? microsite.domain.startsWith("http") ? microsite.domain : `https://${microsite.domain}` : `https://${slugify(template.name, { lower: true })}.xedinstitute.org/${microsite.cohortId}`}
                 target="_blank"
                 className={cn(
                   buttonVariants({ variant: "default", size: "sm" })
