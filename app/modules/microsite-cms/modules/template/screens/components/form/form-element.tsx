@@ -29,14 +29,14 @@ export default function FormElement({
     <div className="grid grid-cols-2 items-center gap-5">
       <FieldGroup>
         <Controller
-          name={`${fieldArrayName}.${index}`}
+          name={`${fieldArrayName}.${index}.type`}
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={`${fieldArrayName}.${index}.type`}>
                 Element Type
               </FieldLabel>
-              <Select onValueChange={field.onChange} value={field.value?.type}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <SelectTrigger id={`${fieldArrayName}.${index}.type`}>
                   <SelectValue placeholder="Select a type" />
                 </SelectTrigger>
