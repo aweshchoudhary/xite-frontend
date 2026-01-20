@@ -13,6 +13,7 @@ import { Badge } from "@ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 interface RecordViewProps {
   microsite: IMicrosite;
@@ -49,6 +50,18 @@ export default function RecordView({
             <div className="flex items-center gap-2">
               <Badge variant={"outline"}>Template: {template.name}</Badge>
             </div>
+            
+            <div>
+              <Link
+                href={microsite.domain ? microsite.domain : `https://${template._id}.xedinstitute.org/${microsite.cohortId}`}
+                target="_blank"
+                className={cn(
+                  buttonVariants({ variant: "default", size: "sm" })
+                )}
+                aria-label="Edit microsite"
+              >
+                Preview
+              </Link>
             {onEdit ? (
               <Button
                 variant="default"
@@ -69,6 +82,7 @@ export default function RecordView({
                 Edit
               </a>
             )}
+            </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full space-y-3">

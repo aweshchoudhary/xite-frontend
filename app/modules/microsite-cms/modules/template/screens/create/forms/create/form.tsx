@@ -28,6 +28,7 @@ import {
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
 import { TemplateType } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import slugify from "slugify";
 
 export default function CreateForm() {
   const searchParams = useSearchParams();
