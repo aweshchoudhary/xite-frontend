@@ -51,7 +51,7 @@ export async function updateMicrosite({
 
   microsite.title = data.title || "Page";
   microsite.status = data.status ?? "draft";
-  microsite.domain = data.domain;
+  microsite.domain = data.domain + ".xedinstitute.org";
 
   microsite.globalSections = data.globalSections;
   microsite.pages = data.pages;
