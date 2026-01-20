@@ -42,7 +42,7 @@ export default function ImageElement({
           </div>
         </Label>
       ) : null}
-      <Button type="button" onClick={() => inputRef.current?.click()}>
+      <Button type="button" className="mb-0!" onClick={() => inputRef.current?.click()}>
         <Upload className="size-4" /> Image
       </Button>
       <Input

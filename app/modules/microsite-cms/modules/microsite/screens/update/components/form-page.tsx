@@ -68,10 +68,7 @@ const FormPageItem = ({ form, index, templatePage }: FormPageItemProps) => {
     <div className="w-full relative p-8 space-y-6 bg-background shadow-xs rounded-xl border border-border/50">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            Page {index + 1}
-          </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-lg font-semibold">
             {templatePage?.title ||
               form.getValues(`pages.${index}.meta.title`) ||
               form.getValues(`pages.${index}.name`) ||

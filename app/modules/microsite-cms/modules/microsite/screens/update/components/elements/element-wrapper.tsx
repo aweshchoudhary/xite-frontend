@@ -39,7 +39,7 @@ export default function ElementWrapper({
               htmlFor={`${field.name}-${index}-${element.key}`}
               className="flex items-center gap-1.5"
             >
-              {label || element.title} ({type})
+              {label || element.title}
               {element.required && <span className="text-destructive">*</span>}
             </FieldLabel>
 

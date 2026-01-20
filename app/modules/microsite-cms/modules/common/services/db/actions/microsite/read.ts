@@ -21,6 +21,11 @@ export async function getMicrositeById(id: string) {
   return JSON.parse(JSON.stringify(await MicrositeModel.findById(id).lean()));
 }
 
+export async function getMicrositeByDomain(domain: string) {
+  await connectDB();
+  return JSON.parse(JSON.stringify(await MicrositeModel.findOne({ domain }).lean()));
+}
+
 export async function getMicrositesByCohortId(cohortId: string) {
   await connectDB();
   return JSON.parse(

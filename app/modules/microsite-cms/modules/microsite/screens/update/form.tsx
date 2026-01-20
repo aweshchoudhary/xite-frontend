@@ -19,9 +19,9 @@ import FormBranding from "./components/form-branding";
 import { toast } from "sonner";
 import { updateMicrosite } from "@microsite-cms/common/services/db/actions/microsite/update";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 export interface UpdateFormProps {
   microsite: IMicrosite;
   template: ITemplate;
@@ -34,6 +34,8 @@ export default function UpdateForm({
   onSaveSuccess,
 }: UpdateFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>(searchParams.get("sub-tab") || "common");
 
   const requiredFields = useMemo(() => getRequiredFields(MicrositeSchema), []);
 
@@ -70,7 +72,7 @@ export default function UpdateForm({
 
         // Validate all the required elements in the microsite
         fields.globalSections.forEach((section, sectionIndex) => {
-          const templateSection = template.globalSections.find(
+          const templateSection = template.globalSections?.find(
             (s) => s.key === section.key
           );
           section.blocks.forEach((block, blockIndex) => {
@@ -161,6 +163,14 @@ export default function UpdateForm({
     router.push(redirect_path);
   }
 
+  const onTabChange = (value: string) => {
+    setActiveTab(value);
+    // current url with query params
+    const url = new URL(window.location.href);
+    url.searchParams.set("sub-tab", value);
+    window.history.pushState({}, "", url.toString());
+  };
+
   return (
     <div className="space-y-6">
       {Object.entries(form.formState.errors).length > 0 && (
@@ -209,13 +219,13 @@ export default function UpdateForm({
           </FieldGroup>
         </div>
 
-        <Tabs defaultValue="global" className="w-full space-y-3">
+        <Tabs value={activeTab} onValueChange={onTabChange} className="w-full space-y-3">
           <TabsList>
-            <TabsTrigger value="global">Global Sections</TabsTrigger>
+            <TabsTrigger value="common">Global Sections</TabsTrigger>
             <TabsTrigger value="pages">Pages</TabsTrigger>
             <TabsTrigger value="branding">Branding</TabsTrigger>
           </TabsList>
-          <TabsContent value="global">
+          <TabsContent value="common">
             <div className="bg-primary/5 p-8 space-y-5 rounded-lg">
               <FormSection
                 form={form}

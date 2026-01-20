@@ -16,12 +16,19 @@ export default function CohortContent({ data }: Props) {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const defaultValue = tab || "core-content";
+
+  const onTabChange = (value: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", value);
+    window.history.pushState({}, "", url.toString());
+  };
+
   return (
     <section className="space-y-6 w-full">
       <div className="flex items-center gap-2 justify-between">
         <h2 className="text-lg font-semibold">Cohort Content</h2>
       </div>
-      <Tabs defaultValue={defaultValue} className="w-full">
+      <Tabs defaultValue={defaultValue} onValueChange={onTabChange} className="w-full">
         <div className="bg-background rounded-lg px-4 border py-3">
           <TabsList className="w-full grid grid-cols-2 gap-1 bg-transparent h-auto p-0">
             <TabsTrigger

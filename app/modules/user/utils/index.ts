@@ -24,12 +24,19 @@ export const checkUserOwnsCohort = async (cohortId: string) => {
   const isAdmin = await isUserAdmin();
   if (isAdmin) return true;
 
-  const user = await getLoggedInUser();
+  const loggedInUser = await getLoggedInUser();
   const cohort = await primaryDB.cohort.findUnique({
     where: { id: cohortId },
     select: {
       ownerId: true,
     },
   });
-  return cohort?.ownerId === user?.user?.uid;
+
+  const user = await primaryDB.user.findUnique({
+    where: { email: loggedInUser?.user?.email },
+  });
+
+  if (!user) return false;
+  
+  return cohort?.ownerId === user?.id;
 };

@@ -58,7 +58,7 @@ export default function CreateForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      title: cohort_key,
       cohortId: cohort_key,
       templateId: "",
       type: defaultType || (type_key as TemplateType) || "generic",
@@ -165,40 +165,6 @@ export default function CreateForm({
               )}
             />
           </FieldGroup>
-
-          {showOtherFields && (
-            <>
-              <input
-                type="hidden"
-                {...form.register("cohortId")}
-                value={cohort_key}
-              />
-              <FieldGroup>
-                <Controller
-                  name="title"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel
-                        htmlFor="form-rhf-demo-title"
-                        isRequired={requiredFields.includes("title")}
-                      >
-                        Title
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id="form-rhf-demo-title"
-                        aria-invalid={fieldState.invalid}
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-            </>
-          )}
         </div>
 
         <div className="flex gap-2 justify-end">

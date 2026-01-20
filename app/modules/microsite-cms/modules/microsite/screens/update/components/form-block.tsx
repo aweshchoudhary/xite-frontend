@@ -37,7 +37,7 @@ export default function FormBlock({
         <h2 className="text-muted-foreground font-medium">Blocks</h2>
       </header>
 
-      <div className="space-y-5 p-8 bg-accent/40 rounded-lg border-2 border-dashed border-border/50">
+      <div className="space-y-5 p-3 bg-accent/40 rounded-lg border-2 border-dashed border-border/50">
         {blockFields.fields.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground">
             <Square className="size-10 mx-auto mb-2 opacity-50" />
@@ -86,29 +86,15 @@ const FormBlockItem = ({
 
   return (
     <div className="w-full p-5 relative group/block-item border border-border/50 shadow-xs bg-background rounded-lg space-y-5">
+      {templateBlock.type ==="group" ?
       <div className="flex items-center justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            Block {index + 1}
+           <p className="text-base font-semibold">
+            {templateBlock.title}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Badge
-            variant="outline"
-            className="text-[11px] uppercase tracking-wide"
-          >
-            {blockType === "group" ? "Group block" : "Single block"}
-          </Badge>
-          {isRepeatable && (
-            <Badge
-              variant="secondary"
-              className="text-[11px] uppercase tracking-wide"
-            >
-              Repeatable
-            </Badge>
-          )}
-        </div>
       </div>
+      :null}
 
       <div className="space-y-5">
         {blockType === "single" && !isRepeatable && (

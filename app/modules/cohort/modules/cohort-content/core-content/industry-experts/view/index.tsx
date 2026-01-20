@@ -35,11 +35,11 @@ export default function View({ data }: Props) {
       </div>
 
       {data?.items && data.items.length > 0 ? (
-        <div className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6">
           {data.items
             .sort((a, b) => a.position - b.position)
             .map(({ faculty: item }) => (
-              <Link href={`/faculty/${item.id}`}>
+              <Link key={item.id} href={`/faculty/${item.id}`}>
                 <ExpertCard
                   profile_image={item.profile_image || ""}
                   name={item.name}
