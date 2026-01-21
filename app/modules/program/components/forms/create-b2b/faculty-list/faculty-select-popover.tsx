@@ -20,10 +20,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@ui/dialog";
 
+type FacultyItem = {
+  facultyId: string;
+  position: number;
+};
+
 type Props = {
   children?: React.ReactNode;
   onSelect: (facultyId: string) => void;
-  selectedFacultyIds: string[];
+  selectedFacultyIds: FacultyItem[];
 };
 
 export default function FacultySelectPopover({
@@ -53,10 +58,11 @@ export default function FacultySelectPopover({
   React.useEffect(() => {
     const fetchFaculties = async () => {
       const { data: faculties } = await getAllAction();
+      const selectedIds = selectedFacultyIds.map((item) => item.facultyId);
       setFaculties(
         (faculties || []).filter(
           (faculty): faculty is NonNullable<typeof faculty> =>
-            faculty !== null && !selectedFacultyIds?.includes(faculty.id)
+            faculty !== null && !selectedIds.includes(faculty.id)
         )
       );
     };

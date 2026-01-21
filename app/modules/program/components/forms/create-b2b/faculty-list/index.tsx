@@ -1,12 +1,16 @@
 "use client";
 
-import { GraduationCap, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@ui/button";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import FacultySelectPopover from "./faculty-select-popover";
 import { SortableGrid } from "./draggable-wrapper";
 import { ControllerRenderProps } from "react-hook-form";
-import { CreateSchema } from "../schema";
+
+type FacultyItem = {
+  facultyId: string;
+  position: number;
+};
 
 type Props = {
   field: ControllerRenderProps<any, "faculties">;
@@ -15,20 +19,23 @@ type Props = {
 };
 
 export default function FacultyList({ field, fieldState, isRequired }: Props) {
-  const faculties = (field.value || []) as string[];
+  const faculties = (field.value || []) as FacultyItem[];
 
   const handleAddFaculty = (facultyId: string) => {
-    const newFaculties = [...faculties, facultyId];
+    const newPosition = faculties.length + 1;
+    const newFaculties = [...faculties, { facultyId, position: newPosition }];
     field.onChange(newFaculties);
   };
 
   const handleRemoveFaculty = (facultyId: string) => {
-    const newFaculties = faculties.filter((id) => id !== facultyId);
+    const newFaculties = faculties
+      .filter((item) => item.facultyId !== facultyId)
+      .map((item, index) => ({ ...item, position: index + 1 }));
     field.onChange(newFaculties);
   };
 
-  const handleReorder = (reorderedIds: string[]) => {
-    field.onChange(reorderedIds);
+  const handleReorder = (reorderedFaculties: FacultyItem[]) => {
+    field.onChange(reorderedFaculties);
   };
 
   return (
@@ -48,14 +55,13 @@ export default function FacultyList({ field, fieldState, isRequired }: Props) {
 
       {faculties.length > 0 ? (
         <SortableGrid
-          facultyIds={faculties}
+          faculties={faculties}
           onRemove={handleRemoveFaculty}
           onReorder={handleReorder}
         />
       ) : (
         <div className="text-center py-12 text-muted-foreground bg-muted/30 rounded-lg border-2 border-dashed">
           <p className="text-lg font-medium">No faculty added yet</p>
-          
         </div>
       )}
 

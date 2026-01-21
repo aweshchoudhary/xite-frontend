@@ -79,10 +79,16 @@ Dialog for selecting faculty:
 
 ## Schema
 
-The faculty list is stored as an array of UUIDs in the form schema:
+The faculty list is stored as an array of objects with `facultyId` and `position` in the form schema:
 
 ```typescript
-faculties: z.array(z.uuid()).min(1)
+faculties: z.array(z.object({
+  facultyId: z.uuid(),
+  position: z.number(),
+})).min(1)
 ```
 
-This requires at least one faculty member to be added to the program.
+This requires at least one faculty member to be added to the program. The position field maintains the order of faculty members, which is automatically updated when:
+- Adding a new faculty (gets the next position)
+- Removing a faculty (all positions are recalculated)
+- Reordering faculties via drag-and-drop (positions are updated based on new order)

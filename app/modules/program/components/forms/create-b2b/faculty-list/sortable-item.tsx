@@ -17,10 +17,11 @@ type FacultyData = {
 
 type Props = {
   facultyId: string;
+  position: number;
   onRemove: (facultyId: string) => void;
 };
 
-export function SortableItem({ facultyId, onRemove }: Props) {
+export function SortableItem({ facultyId, position, onRemove }: Props) {
   const [facultyData, setFacultyData] = useState<FacultyData | null>(null);
   const [loading, setLoading] = useState(true);
 

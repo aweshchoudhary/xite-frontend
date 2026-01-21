@@ -29,7 +29,7 @@ export async function createProgramAction(
 
       const cohort = await tx.cohort.create({
         data: {
-          name: data.program_name,
+          name: data.program_name + " - Cohort 1",
           program_id: program.id,
           cohort_key: data.program_key + "-cohort-1",
           start_date: data.cohort_start_date,

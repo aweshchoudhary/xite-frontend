@@ -19,21 +19,26 @@ import {
 
 import { SortableItem } from "./sortable-item";
 
+type FacultyItem = {
+  facultyId: string;
+  position: number;
+};
+
 type Props = {
-  facultyIds: string[];
+  faculties: FacultyItem[];
   onRemove: (facultyId: string) => void;
-  onReorder: (reorderedIds: string[]) => void;
+  onReorder: (reorderedFaculties: FacultyItem[]) => void;
 };
 
 /**
  * A grid that allows sorting faculty items via drag-and-drop.
  */
-export function SortableGrid({ facultyIds, onRemove, onReorder }: Props) {
-  const [items, setItems] = useState(facultyIds);
+export function SortableGrid({ faculties, onRemove, onReorder }: Props) {
+  const [items, setItems] = useState(faculties);
 
   useEffect(() => {
-    setItems(facultyIds);
-  }, [facultyIds]);
+    setItems(faculties);
+  }, [faculties]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -50,12 +55,18 @@ export function SortableGrid({ facultyIds, onRemove, onReorder }: Props) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = items.findIndex((id) => id === active.id);
-      const newIndex = items.findIndex((id) => id === over.id);
+      const oldIndex = items.findIndex((item) => item.facultyId === active.id);
+      const newIndex = items.findIndex((item) => item.facultyId === over.id);
       const newOrder = arrayMove(items, oldIndex, newIndex);
 
-      setItems(newOrder);
-      onReorder(newOrder);
+      // Update positions based on new array order
+      const updatedItems = newOrder.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+
+      setItems(updatedItems);
+      onReorder(updatedItems);
     }
   }
 
@@ -65,12 +76,16 @@ export function SortableGrid({ facultyIds, onRemove, onReorder }: Props) {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={items} strategy={rectSortingStrategy}>
+      <SortableContext 
+        items={items.map((item) => item.facultyId)} 
+        strategy={rectSortingStrategy}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {items.map((facultyId) => (
+          {items.map((item) => (
             <SortableItem
-              key={facultyId}
-              facultyId={facultyId}
+              key={item.facultyId}
+              facultyId={item.facultyId}
+              position={item.position}
               onRemove={onRemove}
             />
           ))}
