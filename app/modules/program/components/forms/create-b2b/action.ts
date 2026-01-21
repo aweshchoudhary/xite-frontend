@@ -14,6 +14,8 @@ export async function createProgramAction(
           name: data.program_name,
           short_name: data.program_short_name,
           program_key: data.program_key,
+          proposal: data.proposal || null,
+          type: "CUSTOM",
           academic_partner: {
             connect: {
               id: data.academic_partner_id,

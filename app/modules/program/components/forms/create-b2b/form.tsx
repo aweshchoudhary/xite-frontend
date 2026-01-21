@@ -18,12 +18,13 @@ import TextEditor from "@/modules/common/components/global/rich-editor/text-edit
 import Curriculum from "./curriculum";
 import { Badge } from "@/modules/common/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/common/components/ui/popover";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, FileText } from "lucide-react";
 import { getProgramTagsAction } from "../update/get-program-tags-action";
 import { Checkbox } from "@/modules/common/components/ui/checkbox";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import EnterpriseSelect from "../../enterprise-partner-list";
 import FacultyList from "./faculty-list";
+import { uploadFile } from "@/modules/common/services/file-upload";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -46,6 +47,8 @@ export default function CreateForm({
     Array<{ id: string; name: string }>
   >([]);
   const [tagsPopoverOpen, setTagsPopoverOpen] = useState(false);
+  const [isUploadingProposal, setIsUploadingProposal] = useState(false);
+  const [proposalFileName, setProposalFileName] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -100,6 +103,51 @@ export default function CreateForm({
 
   const getTagName = (tagId: string) => {
     return programTags.find((tag) => tag.id === tagId)?.name || tagId;
+  };
+
+  const handleProposalUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      // Validate file type
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ];
+      
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Please upload a PDF, Word document, or Excel file");
+        e.target.value = '';
+        return;
+      }
+
+      // Validate file size (10MB max)
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File size must be less than 10MB");
+        e.target.value = '';
+        return;
+      }
+
+      setIsUploadingProposal(true);
+      const { fileUrl, filename } = await uploadFile(file);
+      form.setValue("proposal", fileUrl);
+      setProposalFileName(filename);
+      toast.success("Proposal uploaded successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to upload proposal");
+    } finally {
+      setIsUploadingProposal(false);
+    }
+  };
+
+  const handleRemoveProposal = () => {
+    form.setValue("proposal", undefined);
+    setProposalFileName(null);
   };
 
   return (
@@ -193,6 +241,56 @@ export default function CreateForm({
                   Enterprise Partner
                 </FieldLabel>
                 <EnterpriseSelect formField={field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        
+        <div className="col-span-2 lg:col-span-3">
+          <Controller
+            control={form.control}
+            name="proposal"
+            render={({ fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("proposal")}>
+                  Proposal Document
+                </FieldLabel>
+                <div className="space-y-2">
+                  {proposalFileName ? (
+                    <div className="flex items-center gap-2 p-3 border border-input rounded-lg bg-background">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm flex-1 truncate">{proposalFileName}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRemoveProposal}
+                        className="h-7 px-2"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <Input
+                        type="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx"
+                        onChange={handleProposalUpload}
+                        disabled={isUploadingProposal}
+                        className="cursor-pointer"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Accepted formats: PDF, Word (.doc, .docx), Excel (.xls, .xlsx). Max size: 10MB
+                      </p>
+                    </div>
+                  )}
+                  {isUploadingProposal && (
+                    <p className="text-xs text-muted-foreground">Uploading...</p>
+                  )}
+                </div>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

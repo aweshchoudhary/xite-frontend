@@ -77,6 +77,7 @@ model Program {
   academic_partner    AcademicPartner @relation(fields: [academic_partner_id], references: [id])
   key_features        List[]
   cohorts             Cohort[]
+  proposal            String?
   created_at          DateTime        @default(now())
   updated_at          DateTime        @updatedAt
   updated_by          User?           @relation(fields: [updated_by_id], references: [id])

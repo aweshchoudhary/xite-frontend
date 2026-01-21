@@ -302,6 +302,7 @@ const Session = ({
                         null
                       );
                     }}
+                    defaultValue={field.value || null}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -326,6 +327,7 @@ const Session = ({
                       onChange={field.onChange}
                       topicId={topicId}
                       disabled={!topicId}
+                      defaultValue={field.value || null}
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

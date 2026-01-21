@@ -9,15 +9,14 @@ import {
 import ProgramsTable from "@/modules/program/components/tables/program/table";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
-import { ProgramStatus } from "@/modules/common/database/prisma/generated/prisma";
-import { buttonVariants } from "@ui/button";
-import { cn } from "@/modules/common/lib/utils";
+import { ProgramStatus, ProgramType } from "@/modules/common/database/prisma/generated/prisma";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/program/contants";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/modules/common/components/ui/dropdown-menu";
 import { Button } from "@/modules/microsite-cms/modules/common/ui/button";
+import ProgramTypeTabs from "@/modules/program/components/program-type-tabs";
 
 // Force dynamic rendering since we use searchParams and auth
 export const dynamic = "force-dynamic";
@@ -31,11 +30,12 @@ export const metadata = generateSEOMetadata({
 interface PageProps {
   searchParams: Promise<{
     status?: ProgramStatus;
+    type?: ProgramType;
   }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const { status = "ALL" } = await searchParams;
+  const { status = "ALL", type } = await searchParams;
   const permission = await checkPermission("Program", "read");
 
   if (!permission) {
@@ -44,8 +44,9 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <div className="spacing space-y-10">
       <PageHeader />
-      <section>
-        <ProgramsTable status={status} />
+      <section className="space-y-6">
+        <ProgramTypeTabs currentType={type} />
+        <ProgramsTable status={status} type={type} />
       </section>
     </div>
   );
