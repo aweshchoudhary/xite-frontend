@@ -1,6 +1,6 @@
 import { upload } from "../connection";
 
-type customMetadata = Object;
+type customMetadata = object;
 
 type UploadFileProps = {
   file: File;
