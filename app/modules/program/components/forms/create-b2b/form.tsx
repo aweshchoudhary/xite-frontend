@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
 import { Field, FieldError, FieldLabel } from "@ui/field";
@@ -16,6 +16,14 @@ import slugify from "slugify";
 import { DatePickerField } from "@/modules/common/components/global/form/date-form-field";
 import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
 import Curriculum from "./curriculum";
+import { Badge } from "@/modules/common/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/modules/common/components/ui/popover";
+import { ChevronDown, X } from "lucide-react";
+import { getProgramTagsAction } from "../update/get-program-tags-action";
+import { Checkbox } from "@/modules/common/components/ui/checkbox";
+import AcademicPartnerSelect from "../../academic-partner-list";
+import EnterpriseSelect from "../../enterprise-partner-list";
+import { FieldDescription } from "@/modules/microsite-cms/modules/common/components/ui/field";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -33,6 +41,19 @@ export default function CreateForm({
 
   const { closeModal, redirect } = useFormState();
   const router = useRouter();
+
+  const [programTags, setProgramTags] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [tagsPopoverOpen, setTagsPopoverOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const tags = await getProgramTagsAction();
+      setProgramTags(tags);
+    };
+    fetchTags();
+  }, []);
 
   const requiredFields = useMemo(
     () => getRequiredFields(createSchema),
@@ -60,20 +81,27 @@ export default function CreateForm({
 
   const tags = useWatch({ control: form.control, name: "tags" }) || [];
 
-  const addTag = () => {
-    const input = document.getElementById("tag-input") as HTMLInputElement;
-    const value = input?.value?.trim();
-    if (value && !tags.includes(value)) {
-      form.setValue("tags", [...tags, value]);
-      input.value = "";
-    }
+  const toggleTag = (
+    tagId: string,
+    currentTags: string[],
+    onChange: (value: string[]) => void
+  ) => {
+    const newTags = currentTags.includes(tagId)
+      ? currentTags.filter((id: string) => id !== tagId)
+      : [...currentTags, tagId];
+    onChange(newTags);
   };
 
-  const removeTag = (tag: string) => {
-    form.setValue(
-      "tags",
-      tags.filter((t) => t !== tag)
-    );
+  const removeTag = (
+    tagId: string,
+    currentTags: string[],
+    onChange: (value: string[]) => void
+  ) => {
+    onChange(currentTags.filter((id: string) => id !== tagId));
+  };
+
+  const getTagName = (tagId: string) => {
+    return programTags.find((tag) => tag.id === tagId)?.name || tagId;
   };
 
   return (
@@ -139,6 +167,42 @@ export default function CreateForm({
             )}
           />
         </div>
+        
+        <div>
+          <Controller
+            control={form.control}
+            name="academic_partner_id"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("academic_partner_id")}>
+                  Academic Partner
+                </FieldLabel>
+                <AcademicPartnerSelect formField={field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="enterprise_id"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("enterprise_id")}>
+                  Enterprise Partner
+                </FieldLabel>
+                <EnterpriseSelect formField={field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+
       </div>
       </div>
       <hr />
@@ -235,7 +299,88 @@ export default function CreateForm({
 
       <hr />
 
-      <div>
+      <div className="space-y-5">
+        <div className="max-w-sm">
+        <Controller
+            control={form.control}
+            name="tags"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Tags</FieldLabel>
+                <Popover
+                  open={tagsPopoverOpen}
+                  onOpenChange={setTagsPopoverOpen}
+                >
+                  <PopoverTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between"
+                    >
+                      <span>
+                        {(field.value?.length || 0) > 0
+                          ? `${field.value?.length || 0} tag(s) selected`
+                          : "Select tags"}
+                      </span>
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <div className="max-h-60 overflow-auto p-2">
+                      {programTags.length === 0 ? (
+                        <div className="py-6 text-center text-sm text-muted-foreground">
+                          No tags available
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {programTags.map((tag) => (
+                            <label
+                              key={tag.id}
+                              className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent cursor-pointer"
+                            >
+                              <Checkbox
+                                checked={field.value?.includes(tag.id) || false}
+                                onCheckedChange={() =>
+                                  toggleTag(
+                                    tag.id,
+                                    field.value || [],
+                                    field.onChange
+                                  )
+                                }
+                              />
+                              <span className="text-sm">{tag.name}</span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {(field.value?.length || 0) > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {field.value?.map((tagId) => (
+                      <Badge key={tagId} variant="secondary" className="gap-1">
+                        {getTagName(tagId)}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeTag(tagId, field.value || [], field.onChange)
+                          }
+                          className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
       <div>
           <Controller
             control={form.control}
@@ -257,6 +402,9 @@ export default function CreateForm({
 
       <div>
         <Curriculum form={form} />
+        {form.formState.errors.curriculum?.items && (
+          <FieldError errors={[form.formState.errors.curriculum?.items]} />
+        )}
       </div>
 
       <footer className="flex justify-end gap-2">

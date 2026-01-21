@@ -24,7 +24,7 @@ export default async function NewCohortPage() {
     <div className="spacing max-w-4xl mx-auto">
       <section>
         <div className="mb-10">
-          <h1 className="h1">New B2BProgram</h1>
+          <h1 className="h1">New B2B Program</h1>
         </div>
       </section>
       <section>
