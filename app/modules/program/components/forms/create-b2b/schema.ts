@@ -43,8 +43,8 @@ export const createSchema = z.object({
  overview_description: z.string(),
  enterprise_id: z.uuid(),
  academic_partner_id: z.uuid(),
- tags: z.array(z.string()),
- assigned_to: z.uuid(),
+ tags: z.array(z.string()).optional(),
+//  assigned_to: z.uuid(),
  faculties: z.array(z.uuid()).min(1),
  curriculum: curriculumSchema,
 });

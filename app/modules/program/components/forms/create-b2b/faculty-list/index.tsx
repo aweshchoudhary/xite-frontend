@@ -36,14 +36,14 @@ export default function FacultyList({ field, fieldState, isRequired }: Props) {
       <div className="flex items-center justify-between mb-3">
         <FieldLabel isRequired={isRequired}>Faculty Members</FieldLabel>
         <FacultySelectPopover
-          onSelect={handleAddFaculty}
-          selectedFacultyIds={faculties}
-        >
-          <Button type="button" variant="outline" size="sm">
-            <Plus className="size-4 mr-1" />
-            Add Faculty
-          </Button>
-        </FacultySelectPopover>
+            onSelect={handleAddFaculty}
+            selectedFacultyIds={faculties}
+          >
+            <Button type="button" variant="outline" size="sm">
+              <Plus className="size-4 mr-1" />
+              Add Faculty
+            </Button>
+          </FacultySelectPopover>
       </div>
 
       {faculties.length > 0 ? (
@@ -54,18 +54,8 @@ export default function FacultyList({ field, fieldState, isRequired }: Props) {
         />
       ) : (
         <div className="text-center py-12 text-muted-foreground bg-muted/30 rounded-lg border-2 border-dashed">
-          <GraduationCap className="size-12 mx-auto mb-4 opacity-50" />
           <p className="text-lg font-medium">No faculty added yet</p>
-          <p className="text-sm mb-4">Add faculty members to this program</p>
-          <FacultySelectPopover
-            onSelect={handleAddFaculty}
-            selectedFacultyIds={faculties}
-          >
-            <Button type="button" variant="outline" size="sm">
-              <Plus className="size-4 mr-1" />
-              Add Faculty
-            </Button>
-          </FacultySelectPopover>
+          
         </div>
       )}
 

@@ -401,7 +401,6 @@ export default function CreateForm({
       <hr />
 
       <div>
-        <h2 className="text-sm text-muted-foreground mb-5">Faculty Members</h2>
         <Controller
           control={form.control}
           name="faculties"
