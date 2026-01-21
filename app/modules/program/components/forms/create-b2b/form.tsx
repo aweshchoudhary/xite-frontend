@@ -1,5 +1,5 @@
 "use client";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchema, CreateSchema } from "./schema";
 import { createProgramAction } from "./action";
@@ -23,7 +23,7 @@ import { getProgramTagsAction } from "../update/get-program-tags-action";
 import { Checkbox } from "@/modules/common/components/ui/checkbox";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import EnterpriseSelect from "../../enterprise-partner-list";
-import { FieldDescription } from "@/modules/microsite-cms/modules/common/components/ui/field";
+import FacultyList from "./faculty-list";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -32,11 +32,11 @@ export default function CreateForm({
   successRedirectPath,
   defaultValues,
 }: CreateFormProps) {
-  const form = useForm({
+  const form = useForm<CreateSchema>({
     resolver: zodResolver(createSchema),
     defaultValues: {
       ...defaultValues,
-    },
+    } as Partial<CreateSchema>,
   });
 
   const { closeModal, redirect } = useFormState();
@@ -78,8 +78,6 @@ export default function CreateForm({
     redirect(router, cancelRedirectPath);
     closeModal();
   };
-
-  const tags = useWatch({ control: form.control, name: "tags" }) || [];
 
   const toggleTag = (
     tagId: string,
@@ -398,6 +396,23 @@ export default function CreateForm({
             )}
           />
         </div>
+      </div>
+
+      <hr />
+
+      <div>
+        <h2 className="text-sm text-muted-foreground mb-5">Faculty Members</h2>
+        <Controller
+          control={form.control}
+          name="faculties"
+          render={({ field, fieldState }) => (
+            <FacultyList
+              field={field}
+              fieldState={fieldState}
+              isRequired={requiredFields.includes("faculties")}
+            />
+          )}
+        />
       </div>
 
       <div>

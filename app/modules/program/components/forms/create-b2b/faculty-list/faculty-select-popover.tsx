@@ -1,0 +1,134 @@
+"use client";
+
+import * as React from "react";
+import { ChevronsUpDownIcon } from "lucide-react";
+
+import { getImageUrl } from "@/modules/common/lib/utils";
+import { Button } from "@ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@ui/command";
+import { getAllAction } from "@/modules/faculty/components/forms/read/action";
+import type { GetOneOutput } from "@/modules/faculty/components/forms/read/action";
+type GetAllOutput = GetOneOutput[];
+import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTrigger } from "@ui/dialog";
+
+type Props = {
+  children?: React.ReactNode;
+  onSelect: (facultyId: string) => void;
+  selectedFacultyIds: string[];
+};
+
+export default function FacultySelectPopover({
+  children,
+  onSelect,
+  selectedFacultyIds,
+}: Props) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const [showList, setShowList] = React.useState(false);
+  const [faculties, setFaculties] = React.useState<NonNullable<GetOneOutput>[]>(
+    []
+  );
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const handleSelect = async (currentValue: string) => {
+    try {
+      onSelect(currentValue);
+      setValue("");
+      setOpen(false);
+      toast.success("Faculty added successfully");
+    } catch (error) {
+      toast.error("Failed to add faculty");
+    }
+  };
+
+  React.useEffect(() => {
+    const fetchFaculties = async () => {
+      const { data: faculties } = await getAllAction();
+      setFaculties(
+        (faculties || []).filter(
+          (faculty): faculty is NonNullable<typeof faculty> =>
+            faculty !== null && !selectedFacultyIds?.includes(faculty.id)
+        )
+      );
+    };
+    setShowList(false);
+    fetchFaculties();
+  }, [selectedFacultyIds]);
+
+  const handleDeboucedValueChange = React.useCallback((value: string) => {
+    setTimeout(() => {
+      if (value) setShowList(true);
+      else setShowList(false);
+      scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  }, []);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {children ? (
+          children
+        ) : (
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-fit justify-between"
+          >
+            {value
+              ? faculties.find((faculty) => faculty.id === value)?.name ||
+                "Select Faculty"
+              : "Select Faculty"}
+            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className="w-fit p-3 shadow">
+        <Command>
+          <CommandInput
+            onValueChange={handleDeboucedValueChange}
+            placeholder="Search Faculty..."
+          />
+          {/* don't show list data initially only after the search value is changed */}
+          {showList && (
+            <CommandList ref={scrollRef}>
+              <CommandEmpty>No Faculty found.</CommandEmpty>
+              <CommandGroup>
+                {faculties.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    value={item.id}
+                    onSelect={(currentValue) => {
+                      handleSelect(currentValue);
+                      setValue(currentValue === value ? "" : currentValue);
+                    }}
+                    keywords={[item.name]}
+                  >
+                    <Avatar className="size-7 mr-2">
+                      <AvatarImage
+                        loading="lazy"
+                        src={getImageUrl(item.profile_image)}
+                      />
+                      <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    {item.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          )}
+        </Command>
+      </DialogContent>
+    </Dialog>
+  );
+}
