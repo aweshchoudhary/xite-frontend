@@ -28,7 +28,7 @@ export const moduleSchema = z.object({
   });
   
 export const curriculumSchema = z.object({
- items: z.array(moduleSchema),
+ items: z.array(moduleSchema).min(1),
 });
 
 export const createSchema = z.object({
@@ -44,7 +44,7 @@ export const createSchema = z.object({
  enterprise_id: z.uuid(),
  tags: z.array(z.string()),
  assigned_to: z.uuid(),
- faculties: z.array(z.uuid()),
+ faculties: z.array(z.uuid()).min(1),
  curriculum: curriculumSchema,
 });
 

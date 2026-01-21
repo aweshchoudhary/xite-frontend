@@ -76,7 +76,6 @@ import {
 // --- Styles ---
 import "@tiptap-templates/simple/simple-editor.scss";
 
-import content from "@tiptap-templates/simple/data/content.json";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -289,7 +288,7 @@ export function SimpleEditor({
         <EditorContent
           editor={editor}
           role="presentation"
-          className="simple-editor-content [&>div]:p-5!"
+          className="simple-editor-content [&>div]:p-5! max-w-none!"
         />
       </EditorContext.Provider>
     </div>

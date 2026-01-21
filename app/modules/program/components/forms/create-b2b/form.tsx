@@ -1,32 +1,23 @@
 "use client";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { programCreateSchema, ProgramCreateSchema } from "../schema";
+import { createSchema, CreateSchema } from "./schema";
 import { createProgramAction } from "./action";
 import { toast } from "sonner";
 import { useFormState } from "./context";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/select";
-import { ProgramType } from "@/modules/common/database/prisma/generated/prisma";
-import { enumDisplay } from "@/modules/common/lib/enum-display";
-import AcademicPartnerSelect from "../../academic-partner-list";
-import EnterpriseSelect from "@/modules/enterprise/components/select-list";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { FormBaseProps } from "@/modules/common/components/global/form/types/form-props";
 import { useRouter } from "next/navigation";
 import { Field, FieldError, FieldLabel } from "@ui/field";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";
-import { Badge } from "@ui/badge";
-import { X } from "lucide-react";
+import slugify from "slugify";
+import { DatePickerField } from "@/modules/common/components/global/form/date-form-field";
+import TextEditor from "@/modules/common/components/global/rich-editor/text-editor";
+import Curriculum from "./curriculum";
 
-type CreateFormProps = FormBaseProps<ProgramCreateSchema>;
+type CreateFormProps = FormBaseProps<CreateSchema>;
 
 export default function CreateForm({
   cancelRedirectPath,
@@ -34,12 +25,9 @@ export default function CreateForm({
   defaultValues,
 }: CreateFormProps) {
   const form = useForm({
-    resolver: zodResolver(programCreateSchema),
+    resolver: zodResolver(createSchema),
     defaultValues: {
       ...defaultValues,
-      description: defaultValues?.description,
-      type: defaultValues?.type ?? ProgramType.OPEN,
-      tags: defaultValues?.tags ?? [],
     },
   });
 
@@ -47,11 +35,11 @@ export default function CreateForm({
   const router = useRouter();
 
   const requiredFields = useMemo(
-    () => getRequiredFields(programCreateSchema),
+    () => getRequiredFields(createSchema),
     []
   );
 
-  const handleSubmit = async (data: ProgramCreateSchema) => {
+  const handleSubmit = async (data: CreateSchema) => {
     toast.promise(submitHandler(data), {
       loading: "Creating program...",
       success: "Program created successfully",
@@ -59,7 +47,7 @@ export default function CreateForm({
     });
   };
 
-  const submitHandler = async (data: ProgramCreateSchema) => {
+  const submitHandler = async (data: CreateSchema) => {
     await createProgramAction(data);
     redirect(router, successRedirectPath);
     closeModal();
@@ -70,15 +58,7 @@ export default function CreateForm({
     closeModal();
   };
 
-  useEffect(() => {
-    if (form.getValues("type") === ProgramType.CUSTOM) {
-      form.setValue("enterprise_id", "");
-    } else {
-      form.setValue("enterprise_id", undefined);
-    }
-  }, [form.getValues("type")]);
-
-  const tags = form.watch("tags") || [];
+  const tags = useWatch({ control: form.control, name: "tags" }) || [];
 
   const addTag = () => {
     const input = document.getElementById("tag-input") as HTMLInputElement;
@@ -102,17 +82,22 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-8"
     >
-      <div className="grid grid-cols-2 gap-4">
+      <div>
+        <h2 className="text-sm text-muted-foreground mb-5">Program Details</h2>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <Controller
             control={form.control}
-            name="name"
+            name="program_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel isRequired={requiredFields.includes("name")}>
+                <FieldLabel isRequired={requiredFields.includes("program_name")}>
                   Name
                 </FieldLabel>
-                <Input placeholder="Name" {...field} />
+                <Input {...field} onChange={(e) => {
+                  field.onChange(e);
+                  form.setValue("program_key", slugify(e.target.value, { lower: true }));
+                }} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -123,23 +108,13 @@ export default function CreateForm({
         <div>
           <Controller
             control={form.control}
-            name="short_name"
+            name="program_short_name"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel isRequired={requiredFields.includes("short_name")}>
-                  Program Short Name
+                <FieldLabel isRequired={requiredFields.includes("program_short_name")}>
+                  Short Name
                 </FieldLabel>
-                <Input
-                  placeholder="e.g. Oxford SELP, MR Ross"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    form.setValue(
-                      "program_key",
-                      e.target.value.toLowerCase().replace(/ /g, "-")
-                    );
-                  }}
-                />
+                <Input {...field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -147,56 +122,130 @@ export default function CreateForm({
             )}
           />
         </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="program_key"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("program_key")}>
+                  Program Key
+                </FieldLabel>
+                <Input {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+      </div>
+      </div>
+      <hr />
+      <div>
+        <h2 className="text-sm text-muted-foreground mb-5">Cohort Details</h2>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <Controller
+            control={form.control}
+            name="cohort_start_date"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("cohort_start_date")}>
+                  Start Date
+                </FieldLabel>
+                <DatePickerField formField={field}/>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="cohort_end_date"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("cohort_end_date")}>
+                  End Date
+                </FieldLabel>
+                <DatePickerField formField={field}/>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="cohort_format"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("cohort_format")}>
+                  Format
+                </FieldLabel>
+                <Input {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="cohort_duration"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("cohort_duration")}>
+                  Duration
+                </FieldLabel>
+                <Input {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="cohort_location"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("cohort_location")}>
+                  Location
+                </FieldLabel>
+                <Input {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+      </div>
+      </div>
 
-        <div>
-          <Controller
-            control={form.control}
-            name="type"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel isRequired={requiredFields.includes("type")}>
-                  Type
-                </FieldLabel>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                  }}
-                >
-                  <SelectTrigger className="w-full capitalize">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent className="w-full">
-                    {Object.values(ProgramType).map((type) => (
-                      <SelectItem
-                        key={type}
-                        value={type}
-                        className="capitalize"
-                      >
-                        {enumDisplay(type)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </div>
+      <hr />
 
-        <div>
+      <div>
+      <div>
           <Controller
             control={form.control}
-            name="academic_partner_id"
+            name="overview_description"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  isRequired={requiredFields.includes("academic_partner_id")}
-                >
-                  Academic Partner
+                <FieldLabel isRequired={requiredFields.includes("overview_description")}>
+                  Overview Description
                 </FieldLabel>
-                <AcademicPartnerSelect formField={field} />
+                <TextEditor placeholder="Overview Description" formField={field} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -204,63 +253,10 @@ export default function CreateForm({
             )}
           />
         </div>
-        {form.watch("type") === ProgramType.CUSTOM && (
-          <div className="col-span-2">
-            <Controller
-              control={form.control}
-              name="enterprise_id"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel
-                    isRequired={requiredFields.includes("enterprise_id")}
-                  >
-                    Enterprise
-                  </FieldLabel>
-                  <EnterpriseSelect formField={field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-        )}
-        <div className="col-span-2">
-          <Field>
-            <FieldLabel>Tags</FieldLabel>
-            <div className="flex gap-2">
-              <Input
-                id="tag-input"
-                placeholder="Add tag"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addTag();
-                  }
-                }}
-              />
-              <Button type="button" onClick={addTag}>
-                Add
-              </Button>
-            </div>
-            {tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="gap-1">
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => removeTag(tag)}
-                      className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
-                    >
-                      <X className="size-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </Field>
-        </div>
+      </div>
+
+      <div>
+        <Curriculum form={form} />
       </div>
 
       <footer className="flex justify-end gap-2">
