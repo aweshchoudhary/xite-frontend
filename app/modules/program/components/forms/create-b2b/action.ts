@@ -40,7 +40,7 @@ export async function createProgramAction(
         },
       });
 
-      const curriculumSection = await tx.cohortOverviewSection.create({
+      const curriculumSection = await tx.designCohortCurriculumSection.create({
         data: {
           cohort: {
             connect: {
@@ -48,7 +48,6 @@ export async function createProgramAction(
             }
           },
           title: "Overview",
-          description: data.overview_description,
         },
       });
 
@@ -71,22 +70,20 @@ export async function createProgramAction(
               }
             },
             sessions: {
-              createMany: {
-                data: item.sessions.map((session)=>({
-                  title: session.title,
-                  position: session.position,
-                  overview: session.overview || "",
-                  objectives: {
-                    createMany: {
-                      data: session.objectives.map((objective)=>({
-                        description: objective.description || "",
-                        position: objective.position,
-                      })),
-                    }
-                  },
-                  sub_topic_id: session.sub_topic_id || null,
-                }))
-              }
+              create: item.sessions.map((session)=>({
+                title: session.title,
+                position: session.position,
+                overview: session.overview || "",
+                objectives: {
+                  createMany: {
+                    data: session.objectives.map((objective)=>({
+                      description: objective.description || "",
+                      position: objective.position,
+                    })),
+                  }
+                },
+                sub_topic_id: session.sub_topic_id || null,
+              }))
             }
           }
         })
@@ -96,9 +93,12 @@ export async function createProgramAction(
         data: {
           title: "Faculty",
           items: {
-            connect: data.faculties.map((faculty) => ({
-              id: faculty,
-            })),
+            createMany: {
+              data: data.faculties.map((faculty) => ({
+                facultyId: faculty.facultyId,
+                position: faculty.position,
+              })),
+            }
           },
           cohort: {
             connect: {
