@@ -13,10 +13,10 @@ import { cn, getImageUrl } from "@/modules/common/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";
-import { getAcademicPartnersAction } from "./action";
+import { getDataListAction } from "./action";
 import CreateModal from "@/modules/academic-partner/components/forms/create/modal";
 
-export default function AcademicPartnerSelect({
+export default function EnterpriseSelect({
   formField,
 }: {
   formField: {
@@ -25,18 +25,18 @@ export default function AcademicPartnerSelect({
   };
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [academicPartners, setAcademicPartners] = useState<PrimaryDB.AcademicPartnerGetPayload<object>[]>([]);
+  const [academicPartners, setEnterprises] = useState<PrimaryDB.EnterpriseGetPayload<object>[]>([]);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(formField.value ?? "");
 
   useEffect(() => {
-    const fetchAcademicPartners = async () => {
-      const { data: academicPartners } = await getAcademicPartnersAction();
+    const fetchEnterprises = async () => {
+      const { data: academicPartners } = await getDataListAction();
 
-      setAcademicPartners(academicPartners ?? []);
+      setEnterprises(academicPartners ?? []);
     };
-    fetchAcademicPartners();
+    fetchEnterprises();
   }, []);
 
   return (
@@ -56,11 +56,6 @@ export default function AcademicPartnerSelect({
                     academicPartner.id === value && (
                       <div key={value} className="flex items-center gap-2 truncate">
                         <Avatar className="size-7">
-                          {academicPartner.logo_url && (
-                            <AvatarImage
-                              src={getImageUrl(academicPartner.logo_url)}
-                            />
-                          )}
                           <AvatarFallback>
                             {academicPartner.name[0]}
                           </AvatarFallback>
@@ -95,11 +90,6 @@ export default function AcademicPartnerSelect({
                   >
                     <div className="flex items-center gap-2">
                       <Avatar className="size-7">
-                        {academicPartner.logo_url && (
-                          <AvatarImage
-                            src={getImageUrl(academicPartner.logo_url)}
-                          />
-                        )}
                         <AvatarFallback>
                           {academicPartner.name[0]}
                         </AvatarFallback>

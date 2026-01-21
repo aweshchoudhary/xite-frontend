@@ -16,6 +16,8 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/program/contants";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/modules/common/components/ui/dropdown-menu";
+import { Button } from "@/modules/microsite-cms/modules/common/ui/button";
 
 // Force dynamic rendering since we use searchParams and auth
 export const dynamic = "force-dynamic";
@@ -64,10 +66,28 @@ const PageHeader = async () => {
               </h1>
             </div>
             <div>
-              <Link href="/programs/new" className={cn(buttonVariants({}))}>
-                <Plus className="size-4" />
-                {MODULE_NAME}
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button>
+                    <Plus className="size-4" />
+                    {MODULE_NAME}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <Link href="/programs/new">
+                      B2C
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <Link href="/programs/new/b2b">
+                      B2B
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <hr className="border-gray-200" />
