@@ -3,11 +3,8 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 
-export async function createProgramAction(
-  data: CreateSchema
-): Promise<void> {
+export async function createProgramAction(data: CreateSchema): Promise<void> {
   try {
-
     await primaryDB.$transaction(async (tx) => {
       const program = await tx.program.create({
         data: {
@@ -19,12 +16,12 @@ export async function createProgramAction(
           academic_partner: {
             connect: {
               id: data.academic_partner_id,
-            }
+            },
           },
           enterprise: {
             connect: {
               id: data.enterprise_id,
-            }
+            },
           },
         },
       });
@@ -42,14 +39,26 @@ export async function createProgramAction(
         },
       });
 
+      await tx.cohortOverviewSection.create({
+        data: {
+          cohort: {
+            connect: {
+              id: cohort.id,
+            },
+          },
+          title: "Overview",
+          description: data.overview_description,
+        },
+      });
+
       const curriculumSection = await tx.designCohortCurriculumSection.create({
         data: {
           cohort: {
             connect: {
               id: cohort.id,
-            }
+            },
           },
-          title: "Overview",
+          title: "Curriculum",
         },
       });
 
@@ -61,7 +70,7 @@ export async function createProgramAction(
             parent_section: {
               connect: {
                 id: curriculumSection.id,
-              }
+              },
             },
             objectives: {
               createMany: {
@@ -69,26 +78,26 @@ export async function createProgramAction(
                   description: objective.description || "",
                   position: objective.position,
                 })),
-              }
+              },
             },
             sessions: {
-              create: item.sessions.map((session)=>({
+              create: item.sessions.map((session) => ({
                 title: session.title,
                 position: session.position,
                 overview: session.overview || "",
                 objectives: {
                   createMany: {
-                    data: session.objectives.map((objective)=>({
+                    data: session.objectives.map((objective) => ({
                       description: objective.description || "",
                       position: objective.position,
                     })),
-                  }
+                  },
                 },
                 sub_topic_id: session.sub_topic_id || null,
-              }))
-            }
-          }
-        })
+              })),
+            },
+          },
+        });
       }
 
       await tx.cohortFacultySection.create({
@@ -100,16 +109,15 @@ export async function createProgramAction(
                 facultyId: faculty.facultyId,
                 position: faculty.position,
               })),
-            }
+            },
           },
           cohort: {
             connect: {
               id: cohort.id,
-            }
+            },
           },
         },
       });
-
     });
 
     revalidatePath("/programs");

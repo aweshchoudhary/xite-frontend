@@ -1,0 +1,63 @@
+image: docker:24
+
+options:
+  size: 2x
+
+pipelines:
+
+  # --------------------------------------
+  # STEP 1: CI – Run on Pull Requests
+  # --------------------------------------
+  pull-requests:
+    main:
+      - step:
+          name: CI – Build & Smoke Test (PR)
+          services:
+            - docker
+          script:
+            - echo "🔹 Building Docker image for PR validation"
+            - docker build -t harvard-elp:pr-test .
+
+            - echo "🔹 Running container smoke test"
+            - docker run -d --name harvard-elp-test -p 3000:3000 harvard-elp:pr-test
+
+            - sleep 10
+            - docker ps | grep harvard-elp-test
+
+            - echo "🔹 Container logs"
+            - docker logs harvard-elp-test
+
+            - docker stop harvard-elp-test
+            - docker rm harvard-elp-test
+
+  # --------------------------------------
+  # STEP 2: CD – Deploy on merge to main
+  # --------------------------------------
+  branches:
+    main:
+      - step:
+          name: CD – Deploy to GCP VM (Production)
+          deployment: production
+          script:
+            - apk add --no-cache openssh
+
+            - ssh -o StrictHostKeyChecking=no bitbucket_deploy@$VM_IP << 'EOF'
+                set -e
+
+                APP_DIR=/home/containers/microsites/harvard-elp
+
+                echo "🔹 Switching to app directory"
+                cd $APP_DIR
+
+                echo "🔹 Pulling latest code"
+                git pull origin main
+
+                echo "🔹 Building Docker image"
+                docker compose build
+
+                echo "🔹 Starting container"
+                docker compose up -d
+
+                echo "🔹 Cleaning old images"
+                docker image prune -f
+              EOF

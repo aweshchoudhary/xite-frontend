@@ -146,7 +146,7 @@ export default function CreateForm({
   };
 
   const handleRemoveProposal = () => {
-    form.setValue("proposal", undefined);
+    form.setValue("proposal", "");
     setProposalFileName(null);
   };
 
@@ -154,11 +154,15 @@ export default function CreateForm({
     <form
       autoComplete="off"
       onSubmit={form.handleSubmit(handleSubmit)}
-      className="space-y-8"
+      className="space-y-6"
     >
-      <div>
-        <h2 className="text-sm text-muted-foreground mb-5">Program Details</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Section 1: Program Details */}
+      <section className="border border-border rounded-lg bg-card">
+        <div className="px-6 py-4 border-b border-border bg-muted/30">
+          <h2 className="text-lg font-semibold text-foreground">Program Details</h2>
+        </div>
+        <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
           <Controller
             control={form.control}
@@ -249,7 +253,7 @@ export default function CreateForm({
           />
         </div>
         
-        <div className="col-span-2 lg:col-span-3">
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
           <Controller
             control={form.control}
             name="proposal"
@@ -260,15 +264,15 @@ export default function CreateForm({
                 </FieldLabel>
                 <div className="space-y-2">
                   {proposalFileName ? (
-                    <div className="flex items-center gap-2 p-3 border border-input rounded-lg bg-background">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm flex-1 truncate">{proposalFileName}</span>
+                    <div className="flex items-center gap-3 p-3 border border-border rounded-lg bg-muted/20">
+                      <FileText className="h-5 w-5 text-primary" />
+                      <span className="text-sm flex-1 truncate font-medium">{proposalFileName}</span>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
                         onClick={handleRemoveProposal}
-                        className="h-7 px-2"
+                        className="h-8 px-2 hover:bg-destructive/10 hover:text-destructive"
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -280,15 +284,14 @@ export default function CreateForm({
                         accept=".pdf,.doc,.docx,.xls,.xlsx"
                         onChange={handleProposalUpload}
                         disabled={isUploadingProposal}
-                        className="cursor-pointer"
                       />
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mt-2">
                         Accepted formats: PDF, Word (.doc, .docx), Excel (.xls, .xlsx). Max size: 10MB
                       </p>
                     </div>
                   )}
                   {isUploadingProposal && (
-                    <p className="text-xs text-muted-foreground">Uploading...</p>
+                    <p className="text-xs text-primary animate-pulse">Uploading...</p>
                   )}
                 </div>
                 {fieldState.invalid && (
@@ -298,13 +301,17 @@ export default function CreateForm({
             )}
           />
         </div>
+        </div>
+        </div>
+      </section>
 
-      </div>
-      </div>
-      <hr />
-      <div>
-        <h2 className="text-sm text-muted-foreground mb-5">Cohort Details</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Section 2: Cohort Details */}
+      <section className="border border-border rounded-lg bg-card">
+        <div className="px-6 py-4 border-b border-border bg-muted/30">
+          <h2 className="text-lg font-semibold text-foreground">Cohort Details</h2>
+        </div>
+        <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
           <Controller
             control={form.control}
@@ -390,13 +397,17 @@ export default function CreateForm({
             )}
           />
         </div>
-      </div>
-      </div>
+        </div>
+        </div>
+      </section>
 
-      <hr />
-
-      <div className="space-y-5">
-        <div className="max-w-sm">
+      {/* Section 3: Other Details */}
+      <section className="border border-border rounded-lg bg-card">
+        <div className="px-6 py-4 border-b border-border bg-muted/30">
+          <h2 className="text-lg font-semibold text-foreground">Other Details</h2>
+        </div>
+        <div className="p-6 space-y-6">
+        <div className="max-w-md">
         <Controller
             control={form.control}
             name="tags"
@@ -477,7 +488,8 @@ export default function CreateForm({
             )}
           />
         </div>
-      <div>
+        
+        <div>
           <Controller
             control={form.control}
             name="overview_description"
@@ -494,37 +506,36 @@ export default function CreateForm({
             )}
           />
         </div>
-      </div>
 
-      <hr />
+        <div className="pt-4 border-t border-border">
+          <Controller
+            control={form.control}
+            name="faculties"
+            render={({ field, fieldState }) => (
+              <FacultyList
+                field={field}
+                fieldState={fieldState}
+                isRequired={requiredFields.includes("faculties")}
+              />
+            )}
+          />
+        </div>
 
-      <div>
-        <Controller
-          control={form.control}
-          name="faculties"
-          render={({ field, fieldState }) => (
-            <FacultyList
-              field={field}
-              fieldState={fieldState}
-              isRequired={requiredFields.includes("faculties")}
-            />
+        <div className="pt-4 border-t border-border">
+          <Curriculum form={form} />
+          {form.formState.errors.curriculum?.items && (
+            <FieldError errors={[form.formState.errors.curriculum?.items]} />
           )}
-        />
-      </div>
+        </div>
+        </div>
+      </section>
 
-      <div>
-        <Curriculum form={form} />
-        {form.formState.errors.curriculum?.items && (
-          <FieldError errors={[form.formState.errors.curriculum?.items]} />
-        )}
-      </div>
-
-      <footer className="flex justify-end gap-2">
+      <footer className="flex justify-end gap-3 pt-6 border-t border-border">
         <Button variant="outline" type="button" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          {form.formState.isSubmitting ? "Creating..." : "Create"}
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Creating..." : "Create Program"}
         </Button>
       </footer>
     </form>
