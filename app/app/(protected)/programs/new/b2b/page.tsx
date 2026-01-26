@@ -21,19 +21,17 @@ export default async function NewCohortPage() {
   }
 
   return (
-    <div className="spacing max-w-4xl mx-auto">
-      <section>
-        <div className="mb-10">
-          <h1 className="h1">New B2B Program</h1>
+    <div className="spacing max-w-5xl mx-auto">
+      <section className="mb-8">
+        <div className="border-b border-border pb-6">
+          <h1 className="text-3xl font-semibold text-foreground">New B2B Program</h1>
         </div>
       </section>
       <section>
-        <div>
-          <CreateForm
-            cancelRedirectPath={MODULE_PATH}
-            successRedirectPath={MODULE_PATH}
-          />
-        </div>
+        <CreateForm
+          cancelRedirectPath={MODULE_PATH}
+          successRedirectPath={MODULE_PATH}
+        />
       </section>
     </div>
   );
