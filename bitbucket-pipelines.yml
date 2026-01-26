@@ -39,8 +39,6 @@ pipelines:
           name: CD – Deploy to GCP VM (Production)
           deployment: production
           script:
-            - apk add --no-cache openssh
-
             - ssh -o StrictHostKeyChecking=no bitbucket_deploy@$VM_IP << 'EOF'
                 set -e
 
