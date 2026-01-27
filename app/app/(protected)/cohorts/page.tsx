@@ -37,6 +37,8 @@ export default async function Page({ searchParams }: PageProps) {
   const { status = "ALL" } = await searchParams;
   const permission = await checkPermission("Cohort", "read");
 
+  // invalidate cache
+
   if (!permission) {
     return <UnauthorizedPageError />;
   }

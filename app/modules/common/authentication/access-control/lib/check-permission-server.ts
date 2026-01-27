@@ -5,8 +5,9 @@ import { getUserRole } from "./get-user-role-server";
 
 export async function checkPermission(
   resource: Resource,
-  action: Action
+  action: Action,
 ): Promise<boolean> {
   const userRoles = await getUserRole();
+  console.log("userRoles", userRoles);
   return hasPermission(userRoles, resource, action);
 }

@@ -26,16 +26,9 @@ export async function getOneAction(recordId: string) {
 
 export async function getAllAction() {
   try {
-    const permission = await checkPermission("Faculty", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
-
     const faculties = await primaryDB.faculty.findMany({});
     return { data: faculties };
   } catch (error) {
     throw error;
   }
 }
-
