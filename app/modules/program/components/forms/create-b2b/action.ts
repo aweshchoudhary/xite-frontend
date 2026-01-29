@@ -16,6 +16,12 @@ export async function createProgramAction(data: CreateSchema): Promise<void> {
           program_key: data.program_key,
           proposal: data.proposal || null,
           type: "CUSTOM",
+          tags: {
+            connect: data.tags?.map((tag) => ({
+              id: tag,
+            })),
+          },
+          status: "ACTIVE",
           academic_partner: {
             connect: {
               id: data.academic_partner_id,

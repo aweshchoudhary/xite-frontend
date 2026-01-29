@@ -23,6 +23,9 @@ export const getCohortsAction = async () => {
           },
         },
       },
+      orderBy: {
+        updated_at: "desc",
+      },
     });
 
     return cohorts;

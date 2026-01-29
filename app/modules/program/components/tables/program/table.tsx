@@ -21,6 +21,9 @@ export default async function ProgramTable({
     include: {
       academic_partner: true,
     },
+    orderBy: {
+      updated_at: "desc",
+    },
   });
 
   // Apply type filter first if specified

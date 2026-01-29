@@ -41,8 +41,7 @@ export function DatePickerField({ formField }: { formField?: DateFormField }) {
           onSelect={(date) => {
             setDate(date);
             formField?.onChange?.(date ?? undefined);
-          }}
-          captionLayout="dropdown"
+          }}          
         />
       </PopoverContent>
     </Popover>

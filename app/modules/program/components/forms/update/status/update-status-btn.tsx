@@ -27,9 +27,9 @@ export default function UpdateStatusBtn({ program }: { program: GetOne }) {
     });
   };
 
-  return (
+  return program.status !== "ACTIVE" ? (
     <Button type="button" onClick={handleUpdateStatus} variant="success">
       Make Active
     </Button>
-  );
+  ) : null;
 }
