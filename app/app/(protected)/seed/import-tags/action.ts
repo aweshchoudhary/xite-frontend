@@ -1,3 +1,4 @@
+"use server";
 /**
  * Temporary script to seed ProgramTag table with master data
  *
