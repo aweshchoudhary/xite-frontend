@@ -87,7 +87,6 @@ export default function CohortDetails({ data }: Props) {
               <FacultyContainer data={data} />
           </TabsContent>
           <TabsContent value="industry-experts" className="mt-0">
-           
               <IndustryExpertsContainer data={data} />
           </TabsContent>
           <TabsContent value="who-should-apply" className="mt-0">

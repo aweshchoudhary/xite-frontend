@@ -90,10 +90,9 @@ export const isSectionsCompleted = (data: GetCohort): boolean => {
     !!data.benefits_section.title &&
     (data.benefits_section.benefits_items?.length ?? 0) > 0;
 
-  const isIndustryExpertsSectionCompleted =
-    !!data.industry_experts_section &&
+  const isIndustryExpertsSectionCompleted = data.industry_experts_section?.is_section_visible ? (!!data.industry_experts_section &&
     !!data.industry_experts_section.title &&
-    (data.industry_experts_section.items?.length ?? 0) > 0;
+    (data.industry_experts_section.items?.length ?? 0) > 0): true;
 
   const isFacultySectionCompleted =
     !!data.faculty_section &&

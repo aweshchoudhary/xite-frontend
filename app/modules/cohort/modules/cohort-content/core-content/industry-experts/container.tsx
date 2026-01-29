@@ -19,8 +19,9 @@ export function Container({ data }: ContainerProps) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [saveForm, setSaveForm] = useState(false);
   const isCompleted =
+  data?.industry_experts_section?.is_section_visible ? (
     data?.industry_experts_section?.title &&
-    data?.industry_experts_section?.items.length > 0;
+    data?.industry_experts_section?.items.length > 0) : true;
 
     
     const isUserHasCohortAccess = useCheckUserOwnsCohort(data?.id ?? "");
@@ -30,9 +31,9 @@ export function Container({ data }: ContainerProps) {
   return (
     <div className="group">
       <div className="flex items-center justify-between mb-5">
-        <Badge variant={isCompleted ? "success" : "destructive"}>
+        {data?.industry_experts_section?.is_section_visible ? <Badge variant={isCompleted ? "success" : "destructive"}>
           {isCompleted ? "Completed" : "Incomplete"}
-        </Badge>
+        </Badge>: "Hidden"}
         {isUserHasCohortAccess && data?.status !== "ACTIVE" ? (
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2 pr-5">
@@ -52,7 +53,7 @@ export function Container({ data }: ContainerProps) {
                     {
                       loading: "Updating visibility...",
                       success: "Visibility updated",
-                      error: "Failed to update visibility",
+                      error: "Failed to update visibility " + data?.industry_experts_section?.id,
                     }
                   );
                 }}

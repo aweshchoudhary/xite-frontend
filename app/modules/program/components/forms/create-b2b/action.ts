@@ -129,6 +129,17 @@ export async function createProgramAction(data: CreateSchema): Promise<void> {
         },
       });
 
+      await tx.cohortIndustryExpertsSection.create({
+        data: {
+          cohort: {
+            connect: {
+              id: cohort.id,
+            },
+          },
+          title: "Industry Experts",
+        },
+      });
+
       await tx.cohortBenefitsSection.create({
         data: {
           cohort: {

@@ -9,6 +9,8 @@ export async function updateSectionVisibilityAction({
   recordId: string;
   isVisible: boolean;
 }) {
+  console.log({ recordId, isVisible });
+
   await primaryDB.cohortIndustryExpertsSection.update({
     where: { id: recordId },
     data: {
