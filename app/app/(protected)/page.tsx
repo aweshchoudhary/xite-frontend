@@ -23,7 +23,7 @@ export default async function Home() {
     <div className="spacing space-y-5">
       <section>
         <div className="space-y-5">
-            <h2 className="text-2xl font-bold text-primary pb-5">
+            <h2 className="text-2xl font-semibold text-primary pb-5">
                 <Link href="/dashboard">
                   Dashboard
                 </Link>

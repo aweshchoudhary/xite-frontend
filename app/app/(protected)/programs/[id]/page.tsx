@@ -8,10 +8,8 @@ import {
   ChevronDownIcon,
   Key,
   Layers,
-  Loader,
   Pencil,
   Plus,
-  School,
   Tag,
   TrashIcon,
 } from "lucide-react";
@@ -43,6 +41,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
 import { isUserAdmin } from "@/modules/user/utils";
+import ProgramActivityList from "@/modules/program/components/program-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -90,119 +90,96 @@ export default async function ProgramPage({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader program={program} />
-      <section className="">
-        <div className="py-5 mb-10 px-10 bg-background rounded-md border">
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <Loader className="size-4" strokeWidth={1.5} /> Status
-              </div>
-              <div>
-                <Badge
-                  variant={program.status === "ACTIVE" ? "success" : "outline"}
-                  className="capitalize"
-                >
-                  {enumDisplay(program.status)}
-                </Badge>
-              </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <School className="size-4" strokeWidth={1.5} /> Academic Partner
-              </div>
-              <div className="flex items-center gap-2">
-                <Avatar className="size-7">
-                  {program.academic_partner.logo_url && (
-                    <AvatarImage
-                      src={program.academic_partner.logo_url ?? ""}
-                    />
-                  )}
-                  <AvatarFallback className="text-sm">
-                    {program.academic_partner.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="font-medium">{program.academic_partner.name}</p>
-              </div>
-            </div>
 
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <Layers className="size-4" strokeWidth={1.5} /> Type
-              </div>
-              <div>
-                <Badge className="capitalize">
-                  {enumDisplay(program.type)}
-                </Badge>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        {/* Left sidebar: program details (no academic partner) */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Layers className="size-3.5" /> Type
+              </p>
+              <Badge className="capitalize text-xs">{enumDisplay(program.type)}</Badge>
             </div>
-
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <Key className="size-4" strokeWidth={1.5} /> Program Key
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Key className="size-3.5" /> Program Key
+              </p>
               <CopyText value={program.program_key}>
-                {program.program_key}
+                <span className="text-sm font-mono truncate block">
+                  {program.program_key}
+                </span>
               </CopyText>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <AlignJustify className="size-4" strokeWidth={1.5} /> Total
-                Cohorts
-              </div>
-              <div>{program.cohorts.length}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <AlignJustify className="size-3.5" /> Total Cohorts
+              </p>
+              <span className="text-sm">{program.cohorts.length}</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <Tag className="size-4" strokeWidth={1.5} /> Tags
-              </div>
-              <div className="flex max-w-xs flex-wrap gap-2">
-                {program.tags && program.tags.length > 0 ? (
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Tag className="size-3.5" /> Tags
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {program.tags?.length ? (
                   program.tags.map((tag) => (
-                    <Badge key={tag.id} variant="secondary">
+                    <Badge key={tag.id} variant="secondary" className="text-xs">
                       {tag.name}
                     </Badge>
                   ))
                 ) : (
-                  <span className="text-muted-foreground text-sm">No tags</span>
+                  <span className="text-muted-foreground text-xs">No tags</span>
                 )}
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-start xl:gap-15 gap-10">
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="h2">Cohorts</h2>
-              {program.status === "ACTIVE" && (
-                <Link
-                  href={`/cohorts/new?program_id=${id}`}
-                  className={cn(buttonVariants({ variant: "outline" }))}
-                >
-                  <Plus className="size-4" /> Cohort
-                </Link>
-              )}
-            </div>
-            <div className="space-y-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {program.cohorts.map((cohort) => (
-                  <div key={cohort.id}>
-                    <ViewCohortCard cohort={cohort} />
-                  </div>
-                ))}
-              </div>
-              {program.cohorts.length === 0 && (
-                <div className="w-full flex items-center justify-center min-h-50 rounded-lg bg-background border-2 border-spacing-3 border-dashed">
-                  No cohorts found{" "}
-                  {program.status !== "ACTIVE" &&
-                    ", Please activate the program to create cohorts"}
-                </div>
-              )}
-            </div>
+        </aside>
+
+        {/* Middle: cohort list (wider) */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-foreground">Cohorts</h2>
+            {program.status === "ACTIVE" && (
+              <Link
+                href={`/cohorts/new?program_id=${id}`}
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
+                <Plus className="size-4" /> Cohort
+              </Link>
+            )}
           </div>
-        </div>
-      </section>
+          {program.cohorts.length > 0 ? (
+            <div>
+              {program.cohorts.map((cohort) => (
+                <ViewCohortCard key={cohort.id} cohort={cohort} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-dashed bg-muted/30 py-12 text-center text-sm text-muted-foreground">
+              No cohorts found
+              {program.status !== "ACTIVE" &&
+                " — activate the program to create cohorts"}
+            </div>
+          )}
+        </main>
+
+        {/* Right: program activity (plain list) */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <ProgramActivityList programId={id} />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }
@@ -251,24 +228,50 @@ const HeaderActions = async ({
 };
 
 const PageHeader = async ({ program }: { program: GetOne }) => {
+  const partner = program.academic_partner;
+  const partnerHref = partner?.id ? `/academic-partners/${partner.id}` : null;
+
   return (
     <section>
-      <div>
-        <div className="space-y-10">
-          <div className="flex items-center justify-between">
-            <div className="space-y-3">
-              <div>
-                <PageBreadcrumb title={program.name} />
-              </div>
-              <h1 className="h1 font-medium text-primary">{program.name}</h1>
-            </div>
-            <div className="flex items-center gap-2">
-              <HeaderActions program={program} id={program.id} />
-            </div>
+      <PageBreadcrumb title={program.name} />
+      <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
+        <div className="flex items-center gap-4 min-w-0">
+          <div>
+            <h1 className="text-2xl font-semibold text-primary truncate">
+              {program.name}
+            </h1>
+            {partner && (
+              <Link
+                href={partnerHref ?? "#"}
+                className={cn(
+                  "inline-flex items-center gap-2 mt-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors",
+                  !partnerHref && "pointer-events-none"
+                )}
+              >
+                <Avatar className="size-5">
+                  {partner.logo_url && (
+                    <AvatarImage src={partner.logo_url} alt={partner.name} />
+                  )}
+                  <AvatarFallback className="text-xs bg-muted">
+                    {partner.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="truncate">{partner.name}</span>
+              </Link>
+            )}
           </div>
-          <hr className="border-gray-200" />
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <Badge
+            variant={program.status === "ACTIVE" ? "success" : "outline"}
+            className="capitalize"
+          >
+            {enumDisplay(program.status)}
+          </Badge>
+          <HeaderActions program={program} id={program.id} />
         </div>
       </div>
+      <div className="border-t mt-6" />
     </section>
   );
 };

@@ -56,7 +56,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
   return (
     <Card className="transition-colors">
       <CardHeader className="flex flex-row items-start justify-between gap-3 pb-2">
-        <div className="flex min-w-0 flex-1 items-start gap-3">
+        <div className="flex min-w-0 flex-1 items-center gap-6">
           <div className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border">
             {cohort.media_section?.university_logo_url ? (
               <Image
@@ -71,7 +71,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
             )}
           </div>
           <div className="min-w-0 flex-1 space-y-1">
-            <h2 className="font-semibold leading-tight">
+            <h2 className="font-semibold text-base leading-tight">
               <Link
                 className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded"
                 href={`/cohorts/${cohort.id}`}

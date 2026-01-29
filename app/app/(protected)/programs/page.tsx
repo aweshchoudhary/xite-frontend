@@ -6,16 +6,23 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
+import { Button } from "@ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@ui/dropdown-menu";
+import { Card, CardContent} from "@ui/card";
+import { Separator } from "@ui/separator";
 import ProgramsTable from "@/modules/program/components/tables/program/table";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import { ProgramStatus, ProgramType } from "@/modules/common/database/prisma/generated/prisma";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/program/contants";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/modules/common/components/ui/dropdown-menu";
-import { Button } from "@/modules/microsite-cms/modules/common/ui/button";
 import ProgramTypeTabs from "@/modules/program/components/program-type-tabs";
 
 // Force dynamic rendering since we use searchParams and auth
@@ -42,11 +49,15 @@ export default async function Page({ searchParams }: PageProps) {
     return <UnauthorizedPageError />;
   }
   return (
-    <div className="spacing space-y-10">
+    <div className="space-y-8">
       <PageHeader />
       <section className="space-y-6">
         <ProgramTypeTabs currentType={type} />
-        <ProgramsTable status={status} type={type} />
+        <Card>
+          <CardContent>
+            <ProgramsTable status={status} type={type} />
+          </CardContent>
+        </Card>
       </section>
     </div>
   );
@@ -54,45 +65,31 @@ export default async function Page({ searchParams }: PageProps) {
 
 const PageHeader = async () => {
   return (
-    <section>
-      <div>
-        <div className="space-y-10">
-          <div className="flex items-center justify-between">
-            <div className="space-y-3">
-              <div>
-                <PageBreadcrumb />
-              </div>
-              <h1 className="h1 font-medium text-primary">
-                All {MODULE_NAME_PLURAL}
-              </h1>
-            </div>
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button>
-                    <Plus className="size-4" />
-                    {MODULE_NAME}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
-                    <Link href="/programs/new">
-                      B2C
-                    </Link>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem asChild>
-                    <Link href="/programs/new/b2b">
-                      B2B
-                    </Link>
-                  </DropdownMenuItem>
-                  
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-          <hr className="border-gray-200" />
+    <section className="space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-2">
+          <PageBreadcrumb />
+          <h2 className="text-2xl font-semibold text-primary">
+            {MODULE_NAME_PLURAL}
+          </h2>
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="gap-2">
+              <Plus className="size-4" />
+              {MODULE_NAME}
+              <ChevronDown className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem asChild>
+              <Link href="/programs/new">B2C</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/programs/new/b2b">B2B</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </section>
   );

@@ -3,52 +3,62 @@ import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/program/contants";
 import DeleteModal from "../../forms/delete/modal";
 import { Can } from "@/modules/common/authentication/access-control/abilities/can";
+import { useAbility } from "@/modules/common/authentication/access-control/hooks/use-ability";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { Button } from "@ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@ui/dropdown-menu";
 import { Row } from "@tanstack/react-table";
 import Link from "next/link";
 import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { useRouter } from "next/navigation";
 
 export default function TableActions({ row }: { row: Row<GetOne> }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
+  const { ability, loading } = useAbility();
+
+  const canUpdate = ability?.can("update", "Program");
+  const canDelete = ability?.can("delete", "Program");
+  const showActions = !loading && (canUpdate || canDelete);
+
+  if (!showActions) {
+    return null;
+  }
 
   return (
     <>
-      {row.original.status !== "ACTIVE" ? (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-fit">
-            <Can I="update" a="Program">
-              <div>
-                <Link
-                  href={`${MODULE_PATH}/${row.original.id}/edit`}
-                  className="flex items-center gap-2 capitalize w-full py-2 px-4 hover:bg-accent rounded-md"
-                >
-                  <Pencil className="size-4" strokeWidth={1.5} />
-                  Edit
-                </Link>
-              </div>
-            </Can>
-            <Can I="delete" a="Program">
-              <button
-                onClick={() => setIsDeleteModalOpen(true)}
-                className="text-destructive flex items-center w-full gap-2 py-2 px-4 hover:bg-accent rounded-md cursor-pointer"
-              >
-                <Trash className="size-4 text-destructive" strokeWidth={1.5} />
-                Delete
-              </button>
-            </Can>
-          </PopoverContent>
-        </Popover>
-      ) : null}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-40">
+          <Can I="update" a="Program">
+            <DropdownMenuItem asChild>
+              <Link href={`${MODULE_PATH}/${row.original.id}/edit`} className="flex cursor-pointer items-center gap-2">
+                <Pencil className="size-4" strokeWidth={1.5} />
+                Edit
+              </Link>
+            </DropdownMenuItem>
+          </Can>
+          <Can I="delete" a="Program">
+            <DropdownMenuItem
+              className="cursor-pointer text-destructive focus:text-destructive"
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              <Trash className="size-4" strokeWidth={1.5} />
+              Delete
+            </DropdownMenuItem>
+          </Can>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <DeleteModal
         recordId={row.original.id}
         noTrigger

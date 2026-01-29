@@ -47,8 +47,8 @@ export default async function ProgramTable({
   ];
 
   const leftActionArea = (
-    <div className="flex items-center gap-2 overflow-x-auto">
-      Status:
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-sm font-medium text-muted-foreground">Status:</span>
       {statuses.map((value) => {
         const params = new URLSearchParams();
         params.set("status", value);

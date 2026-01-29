@@ -18,17 +18,28 @@ export interface RecentActivity {
   finalValue?: Record<string, unknown> | null;
 }
 
+export interface RecentActivityFilters {
+  recordId?: string;
+  recordType?: string;
+}
+
 /**
- * Get recent activities for dashboard
- * Accessible to all authenticated users (not admin-only)
+ * Get recent activities for dashboard or for a specific entity (e.g. program).
+ * Accessible to all authenticated users (not admin-only).
+ * When filters.recordId and filters.recordType are provided, returns activity for that entity only.
  */
 export async function getRecentActivitiesAction(
   limit: number = 10,
+  filters?: RecentActivityFilters,
 ): Promise<RecentActivity[]> {
   try {
     await dbConnect();
 
-    const data = await AuditLogModel.find()
+    const query: Record<string, unknown> = {};
+    if (filters?.recordId) query.recordId = filters.recordId;
+    if (filters?.recordType) query.recordType = filters.recordType;
+
+    const data = await AuditLogModel.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
       .select(
