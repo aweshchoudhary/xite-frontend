@@ -8,7 +8,6 @@ import {
   BookOpen,
   CalendarDays,
   Clock,
-  GraduationCap,
   PencilIcon,
   TrashIcon,
 } from "lucide-react";

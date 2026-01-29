@@ -15,7 +15,6 @@ import {
   CalendarClock,
   GraduationCap,
   PencilIcon,
-  School,
   TrashIcon,
   Users,
 } from "lucide-react";
