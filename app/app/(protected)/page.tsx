@@ -80,12 +80,17 @@ const AllPrograms = async () => {
       id: true,
       name: true,
       status: true,
+      type: true,
+      updated_at: true,
       academic_partner: {
         select: {
           name: true,
+          logo_url: true,
         },
       },
-      updated_at: true,
+      _count: {
+        select: { cohorts: true },
+      },
     },
   });
   if (!programs || programs.length === 0)

@@ -5,4 +5,6 @@ alwaysApply: true
 - Always follow the plan in .cursor folders
 - Always use the updated docs and latest stable version of the libraries
 - Always use the modular folder structured (modules, modules/cohort, modules/program, modules/common, etc)
-
+- Keep seperate layers, Fronted, Action, Database, etc.
+- Keep the code simple and clean
+- If feature is taking more code complete, seperate major logic in separate files
