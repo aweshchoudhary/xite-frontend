@@ -1,15 +1,13 @@
-import PageHeader from "@/modules/common/components/global/page-header";
 import AuditLogTable from "@/modules/audit-log/components/tables/main/table";
+import DetailPageHeader from "@/modules/common/components/layouts/detail-page-header";
 import { Suspense } from "react";
-import { Shield } from "lucide-react";
 
 export default function AuditLogsPage() {
   return (
     <div className="flex flex-col gap-4">
-      <PageHeader
+      <DetailPageHeader
         title="Audit Logs"
-        description="Track all system changes and user activities across the platform"
-        icon={Shield}
+        subtitle="Track all system changes and user activities across the platform"
       />
 
       <Suspense
