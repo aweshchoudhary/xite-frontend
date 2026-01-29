@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { MODULE_NAME, MODULE_NAME_PLURAL } from "@/modules/enterprise/contants";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
+// import "@/scripts/seed-program-tags"
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";

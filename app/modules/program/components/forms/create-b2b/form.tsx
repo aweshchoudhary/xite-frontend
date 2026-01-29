@@ -18,13 +18,16 @@ import TextEditor from "@/modules/common/components/global/rich-editor/text-edit
 import Curriculum from "./curriculum";
 import { Badge } from "@/modules/common/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/common/components/ui/popover";
-import { ChevronDown, X, FileText } from "lucide-react";
+import { ChevronDown, X, FileText, Info } from "lucide-react";
 import { getProgramTagsAction } from "../update/get-program-tags-action";
 import { Checkbox } from "@/modules/common/components/ui/checkbox";
 import AcademicPartnerSelect from "../../academic-partner-list";
 import EnterpriseSelect from "../../enterprise-partner-list";
 import FacultyList from "./faculty-list";
 import { uploadFile } from "@/modules/common/services/file-upload";
+import { FieldDescription } from "@/modules/microsite-cms/modules/common/components/ui/field";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/modules/common/components/ui/tooltip";
+import { Alert, AlertDescription, AlertTitle } from "@/modules/microsite-cms/modules/common/components/ui/alert";
 
 type CreateFormProps = FormBaseProps<CreateSchema>;
 
@@ -156,6 +159,21 @@ export default function CreateForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       className="space-y-6"
     >
+
+      {/* <Alert variant="destructive">
+        <AlertTitle className="flex items-center gap-2 text-xl">
+          <Info className="size-5" /> Validation Issues
+        </AlertTitle>
+        <AlertDescription>
+          <ul className="list-disc list-inside pl-5 text-base">
+            {Object.entries(form.formState.errors).map(([key, value]) => (
+            
+              <li key={key}><strong>{key}</strong>: {value?.message}</li>
+           ))}
+          </ul>
+        </AlertDescription>
+      </Alert> */}
+      
       {/* Section 1: Program Details */}
       <section className="border border-border rounded-lg bg-card">
         <div className="px-6 py-4 border-b border-border bg-muted/30">
@@ -203,24 +221,6 @@ export default function CreateForm({
         <div>
           <Controller
             control={form.control}
-            name="program_key"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel isRequired={requiredFields.includes("program_key")}>
-                  Program Key
-                </FieldLabel>
-                <Input {...field} />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </div>
-        
-        <div>
-          <Controller
-            control={form.control}
             name="academic_partner_id"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
@@ -252,6 +252,36 @@ export default function CreateForm({
             )}
           />
         </div>
+        <div>
+          <Controller
+            control={form.control}
+            name="program_key"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel isRequired={requiredFields.includes("program_key")}>
+                  Program Key
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="size-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      A unique identifier for the program. It will be used in the systems to identify the program.
+                    </TooltipContent>
+                  </Tooltip>
+                </FieldLabel>
+                <Input {...field} />
+                <FieldDescription>
+                  Ex: hdfc-leader, freshworks-innovation 
+                </FieldDescription>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        
+        
         
         <div className="col-span-1 md:col-span-2 lg:col-span-3">
           <Controller

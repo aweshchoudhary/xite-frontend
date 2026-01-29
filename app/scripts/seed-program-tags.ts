@@ -1,6 +1,6 @@
 /**
  * Temporary script to seed ProgramTag table with master data
- * 
+ *
  * Run this script with: npx tsx app/scripts/seed-program-tags.ts
  * or: ts-node app/scripts/seed-program-tags.ts
  */
@@ -18,7 +18,7 @@ const PROGRAM_TAGS = [
   "Mini-MBA",
 ];
 
-async function seedProgramTags() {
+export async function seedProgramTags() {
   console.log("Starting ProgramTag seeding...");
 
   try {
@@ -57,5 +57,3 @@ seedProgramTags()
     console.error("Script failed:", error);
     process.exit(1);
   });
-
-

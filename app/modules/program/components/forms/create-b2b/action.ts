@@ -2,9 +2,12 @@
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
+import { getUser } from "@/modules/common/authentication/firebase/action";
 
 export async function createProgramAction(data: CreateSchema): Promise<void> {
   try {
+    const currentUser = await getUser();
+
     await primaryDB.$transaction(async (tx) => {
       const program = await tx.program.create({
         data: {
@@ -36,6 +39,7 @@ export async function createProgramAction(data: CreateSchema): Promise<void> {
           format: data.cohort_format,
           duration: data.cohort_duration,
           location: data.cohort_location,
+          ownerId: currentUser?.dbUser.id,
         },
       });
 
@@ -116,6 +120,39 @@ export async function createProgramAction(data: CreateSchema): Promise<void> {
               id: cohort.id,
             },
           },
+        },
+      });
+
+      await tx.cohortBenefitsSection.create({
+        data: {
+          cohort: {
+            connect: {
+              id: cohort.id,
+            },
+          },
+          title: "Benefits",
+        },
+      });
+
+      await tx.cohortMediaSection.create({
+        data: {
+          cohort: {
+            connect: {
+              id: cohort.id,
+            },
+          },
+          title: "Media",
+        },
+      });
+
+      await tx.cohortWhoShouldApplySection.create({
+        data: {
+          cohort: {
+            connect: {
+              id: cohort.id,
+            },
+          },
+          title: "Who Should Apply",
         },
       });
     });
