@@ -51,7 +51,7 @@ export default function ViewCard({ program }: ProgramCardProps) {
   const cohortCount = program._count?.cohorts ?? 0;
 
   return (
-    <Card className="transition-colors pb-0">
+    <Card className="transition-colors">
       <CardHeader className="flex flex-row items-start justify-between gap-3 pb-2">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <div className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border">
@@ -78,7 +78,6 @@ export default function ViewCard({ program }: ProgramCardProps) {
             </h2>
             {program.academic_partner && (
               <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
-                <School className="size-3.5 shrink-0" strokeWidth={1.5} />
                 <span className="truncate">{program.academic_partner.name}</span>
               </div>
             )}
@@ -116,7 +115,7 @@ export default function ViewCard({ program }: ProgramCardProps) {
               <PermissionGate resource="Program" action="update">
                 <Link
                   href={`/programs/${program.id}/edit`}
-                  className="text-muted-foreground hover:text-foreground ml-0.5 inline-flex items-center gap-1"
+                  className=" hover:underline text-foreground ml-0.5 inline-flex items-center gap-1"
                   title="Edit program"
                 >
                   <PencilIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
@@ -127,8 +126,8 @@ export default function ViewCard({ program }: ProgramCardProps) {
           )}
         </div>
         {program.status !== ProgramStatus.ACTIVE && (
-          <div className="flex justify-end pt-2">
             <PermissionGate resource="Program" action="delete">
+          <div className="flex justify-end pt-2">
               <DeleteProgramModal
                 recordId={program.id}
                 isOpen={isOpen}
@@ -152,8 +151,8 @@ export default function ViewCard({ program }: ProgramCardProps) {
                   </Button>
                 }
               />
-            </PermissionGate>
           </div>
+            </PermissionGate>
         )}
       </CardContent>
     </Card>

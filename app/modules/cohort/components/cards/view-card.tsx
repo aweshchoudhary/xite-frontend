@@ -3,6 +3,7 @@ import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 import { Card, CardContent, CardHeader } from "@ui/card";
 import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
+import { getImageUrl } from "@/modules/common/lib/utils";
 import {
   BookOpen,
   CalendarDays,
@@ -11,6 +12,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { format, formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import DeleteCohortModal from "../forms/delete/modal";
@@ -30,6 +32,9 @@ type ViewCohortCardProps = {
       name: string | null;
     } | null;
     updated_at: Date | null;
+    media_section?: {
+      university_logo_url: string | null;
+    } | null;
   };
 };
 
@@ -49,11 +54,21 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
       : null;
 
   return (
-    <Card className="transition-colors hover:bg-muted/30">
+    <Card className="transition-colors">
       <CardHeader className="flex flex-row items-start justify-between gap-3 pb-2">
         <div className="flex min-w-0 flex-1 items-start gap-3">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <BookOpen className="size-4" strokeWidth={1.5} />
+          <div className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border">
+            {cohort.media_section?.university_logo_url ? (
+              <Image
+                src={getImageUrl(cohort.media_section.university_logo_url)}
+                alt={cohort.name ?? "Cohort"}
+                width={36}
+                height={36}
+                className="size-4/5 object-contain"
+              />
+            ) : (
+              <BookOpen className="size-4 text-muted-foreground" strokeWidth={1.5} />
+            )}
           </div>
           <div className="min-w-0 flex-1 space-y-1">
             <h2 className="font-semibold leading-tight">
@@ -64,17 +79,6 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
                 {cohort.name ?? "Unnamed cohort"}
               </Link>
             </h2>
-            {cohort.program?.name && (
-              <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
-                <GraduationCap className="size-3.5 shrink-0" strokeWidth={1.5} />
-                <Link
-                  href={cohort.program.id ? `/programs/${cohort.program.id}` : "#"}
-                  className="truncate hover:text-foreground hover:underline"
-                >
-                  {cohort.program.name}
-                </Link>
-              </div>
-            )}
           </div>
         </div>
         <Badge
@@ -101,7 +105,7 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
               <PermissionGate resource="Cohort" action="update">
                 <Link
                   href={`/cohorts/${cohort.id}/edit`}
-                  className="text-muted-foreground hover:text-foreground ml-0.5 inline-flex items-center gap-1"
+                  className="text-foreground hover:underline ml-0.5 inline-flex items-center gap-1"
                   title="Edit cohort"
                 >
                   <PencilIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
@@ -112,8 +116,8 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
           )}
         </div>
         {cohort.status !== WorkStatus.ACTIVE && (
-          <div className="flex justify-end pt-2">
             <PermissionGate resource="Cohort" action="delete">
+          <div className="flex justify-end pt-2">
               <DeleteCohortModal
                 recordId={cohort.id}
                 trigger={
@@ -135,8 +139,8 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
                   setIsOpen(false);
                 }}
               />
-            </PermissionGate>
           </div>
+            </PermissionGate>
         )}
       </CardContent>
     </Card>

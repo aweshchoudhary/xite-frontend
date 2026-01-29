@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import type { LucideIcon } from "lucide-react";
+import { isUserAdmin } from "@/modules/user/utils";
 
 const MAX_CHANGES_DISPLAY = 3;
 const SKIP_KEYS = new Set(["id", "created_at", "updated_at", "createdAt", "updatedAt", "password", "token"]);
@@ -120,11 +121,11 @@ const actionColors: Record<string, string> = {
 
 export default async function RecentActivity() {
   const activities = await getRecentActivitiesAction(10);
-  const isAdmin = await checkPermission("all", "manage");
+  const isAdmin = await isUserAdmin();
 
   if (!activities || activities.length === 0) {
     return (
-      <div>
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Recent Activity</h2>
           {isAdmin && (
@@ -136,7 +137,6 @@ export default async function RecentActivity() {
             </Link>
           )}
         </div>
-        <Separator className="my-3" />
         <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8 rounded-lg">
           <div className="flex flex-col items-center justify-center gap-2 text-center">
             <Activity className="size-8 text-muted-foreground/50" />
@@ -155,7 +155,7 @@ export default async function RecentActivity() {
   }
 
   return (
-    <div>
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Recent Activity</h2>
         {isAdmin && (
@@ -168,7 +168,6 @@ export default async function RecentActivity() {
         )}
       </div>
 
-      <Separator className="my-3" />
 
       <div className="space-y-2">
         {activities.map((activity) => {

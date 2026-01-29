@@ -1,6 +1,4 @@
-import { buttonVariants } from "@ui/button";
-import { cn } from "@/modules/common/lib/utils";
-import { ArrowRight, Settings } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getAllByStatus } from "@/modules/cohort/components/forms/read/action";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
@@ -25,25 +23,12 @@ export default async function Home() {
     <div className="spacing space-y-5">
       <section>
         <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <div>
-                <Link href="/dashboard" className="text-muted-foreground">
+            <h2 className="text-2xl font-bold text-primary pb-5">
+                <Link href="/dashboard">
                   Dashboard
                 </Link>
-              </div>
-            </div>
-            <div>
-              <Link
-                href="/settings"
-                className={cn(buttonVariants({ variant: "outline" }))}
-              >
-                <Settings />
-                Settings
-              </Link>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
+            </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
             <div>
               <AllPrograms />
             </div>
@@ -53,9 +38,8 @@ export default async function Home() {
             <div>
               <Suspense
                 fallback={
-                  <div>
+                  <div className="space-y-3">
                     <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
-                    <Separator className="mb-3" />
                     <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8">
                       <div className="flex items-center justify-center h-full">
                         <p className="text-muted-foreground text-sm">Loading activity...</p>
@@ -97,7 +81,7 @@ const AllPrograms = async () => {
     return (
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-lg">All Programs</h1>
+          <h1 className="text-lg">Programs</h1>
           <Link
             href="/programs"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
@@ -127,9 +111,9 @@ const AllPrograms = async () => {
   });
 
   return (
-    <div>
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg">All Programs</h1>
+        <h1 className="text-lg">Programs</h1>
         <Link
           href="/programs"
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
@@ -138,7 +122,6 @@ const AllPrograms = async () => {
         </Link>
       </div>
 
-      <Separator className="my-3" />
 
       <div className="space-y-3">
         {sortedPrograms.slice(0, 4).map((program) => (
@@ -154,9 +137,9 @@ const AllCohorts = async () => {
 
   if (!cohorts || cohorts.length === 0)
     return (
-      <div>
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-lg">All Cohorts</h1>
+          <h1 className="text-lg">Cohorts</h1>
           <Link
             href="/cohorts"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
@@ -164,7 +147,6 @@ const AllCohorts = async () => {
             View All <ArrowRight className="size-4" strokeWidth={1.5} />
           </Link>
         </div>
-        <Separator className="my-3" />
         <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8 rounded-lg">
           <div className="flex flex-col items-center justify-center gap-2 text-center">
             <p className="text-sm font-medium text-muted-foreground">
@@ -180,15 +162,15 @@ const AllCohorts = async () => {
 
   // Sort cohorts by start_date (earliest first)
   const sortedCohorts = [...cohorts].sort((a, b) => {
-    const dateA = a.start_date?.getTime() || 0;
-    const dateB = b.start_date?.getTime() || 0;
+    const dateA = a.updated_at?.getTime() || 0;
+    const dateB = b.updated_at?.getTime() || 0;
     return dateA - dateB; // Ascending order
   });
 
   return (
-    <div>
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg">All Cohorts</h1>
+        <h1 className="text-lg">Cohorts</h1>
         <Link
           href="/cohorts"
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
@@ -197,7 +179,6 @@ const AllCohorts = async () => {
         </Link>
       </div>
 
-      <Separator className="my-3" />
 
       <div className="space-y-3">
         {sortedCohorts.slice(0, 4).map((cohort) => (
@@ -206,6 +187,7 @@ const AllCohorts = async () => {
             cohort={{
               end_date: cohort.end_date,
               id: cohort.id,
+              media_section: cohort.media_section,
               name: cohort.name,
               program: cohort.program,
               start_date: cohort.start_date,

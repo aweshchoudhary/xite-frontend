@@ -102,6 +102,11 @@ export type GetCohortForTable = PrimaryDB.CohortGetPayload<{
         };
       };
     };
+    media_section: {
+      select: {
+        university_logo_url: true;
+      };
+    };
   };
 }>;
 
@@ -250,7 +255,7 @@ export async function getAll(): Promise<GetCohortForTable[]> {
  * Get cohorts by status
  */
 export async function getAllByStatus(
-  status: WorkStatus | "ALL"
+  status: WorkStatus | "ALL",
 ): Promise<GetCohortForTable[]> {
   try {
     const whereClause: PrimaryDB.CohortWhereInput =
@@ -276,6 +281,11 @@ export async function getAllByStatus(
                 name: true,
               },
             },
+          },
+        },
+        media_section: {
+          select: {
+            university_logo_url: true,
           },
         },
       },
@@ -395,7 +405,7 @@ export type CohortSectionWithData = {
  * Get cohort sections with their data
  */
 export async function getCohortSections(
-  cohortId: string
+  cohortId: string,
 ): Promise<CohortSectionWithData[]> {
   try {
     const sectionOrders = await primaryDB.cohortSectionOrder.findMany({
@@ -418,7 +428,7 @@ export async function getCohortSections(
           section_position: order.section_position,
           data,
         };
-      })
+      }),
     );
 
     return sections;
@@ -437,7 +447,7 @@ export type GetCohortSectionOrderBySectionIdOutput =
  * Get section order by section ID
  */
 export async function getCohortSectionOrderBySectionId(
-  sectionId: string
+  sectionId: string,
 ): Promise<GetCohortSectionOrderBySectionIdOutput> {
   try {
     const sectionOrder = await primaryDB.cohortSectionOrder.findFirst({
@@ -460,7 +470,7 @@ export type GetSectionOrderByCohortIdOutput =
  * Get section order by cohort ID
  */
 export async function getSectionOrderByCohortId(
-  cohortId: string
+  cohortId: string,
 ): Promise<GetSectionOrderByCohortIdOutput> {
   try {
     const sectionOrders = await primaryDB.cohortSectionOrder.findMany({
