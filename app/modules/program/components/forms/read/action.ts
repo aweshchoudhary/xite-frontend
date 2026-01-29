@@ -12,6 +12,11 @@ export type GetOne = PrimaryDB.ProgramGetPayload<{
         name: true;
       };
     };
+    enterprise: {
+      select: {
+        name: true;
+      };
+    };
   };
 }>;
 

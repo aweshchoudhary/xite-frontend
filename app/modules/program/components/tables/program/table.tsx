@@ -20,6 +20,7 @@ export default async function ProgramTable({
   const programs = await primaryDB.program.findMany({
     include: {
       academic_partner: true,
+      enterprise: true,
     },
     orderBy: {
       updated_at: "desc",

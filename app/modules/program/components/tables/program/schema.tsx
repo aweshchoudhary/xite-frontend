@@ -6,8 +6,7 @@ import Link from "next/link";
 import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { Badge } from "@ui/badge";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
-import { getImageUrl } from "@/modules/common/lib/utils";
+import { Avatar, AvatarFallback } from "@ui/avatar";
 
 export const columns: ColumnDef<GetOne>[] = [
   {
@@ -71,7 +70,7 @@ export const columns: ColumnDef<GetOne>[] = [
           className="hover:underline gap-2 flex items-center"
           href={`/enterprises/${row.original.enterprise_id}`}
         >
-          {row.original.enterprise_id}
+          {row.original.enterprise?.name}
         </Link>
       ) : (
         "NA"
