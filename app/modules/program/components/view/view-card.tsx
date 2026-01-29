@@ -68,7 +68,7 @@ export default function ViewCard({ program }: ProgramCardProps) {
             )}
           </div>
           <div className="min-w-0 flex-1 space-y-1">
-            <h2 className="font-semibold leading-tight">
+            <h2 className="font-semibold text-base leading-tight">
               <Link
                 className="hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded"
                 href={`/programs/${program.id}`}
