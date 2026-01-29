@@ -26,7 +26,7 @@ export default function UpdateForm({
   successRedirectPath,
   defaultValues,
 }: UpdateFormProps) {
-  const form = useForm({
+  const form = useForm<UpdateSchema>({
     resolver: zodResolver(updateSchema),
     defaultValues,
   });

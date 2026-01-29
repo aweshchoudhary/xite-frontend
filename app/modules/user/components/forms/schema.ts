@@ -9,7 +9,7 @@ export const baseSchema = z.object({
     .optional()
     .nullable(),
   roles: z.array(z.string()).min(1, "At least one role is required"),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 
 export const createSchema = baseSchema;
