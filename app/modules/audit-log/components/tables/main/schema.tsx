@@ -34,20 +34,20 @@ export interface AuditLog {
 }
 
 const actionTypeColors: Record<string, string> = {
-  CREATE: "bg-green-500",
-  UPDATE: "bg-blue-500",
-  DELETE: "bg-red-500",
-  APPROVE: "bg-purple-500",
-  REJECT: "bg-orange-500",
-  ARCHIVED: "bg-gray-500",
-  RESTORE: "bg-cyan-500",
-  PUBLISH: "bg-indigo-500",
-  UNPUBLISH: "bg-yellow-500",
+  CREATE: "bg-green-700",
+  UPDATE: "bg-primary",
+  DELETE: "bg-red-700",
+  APPROVE: "bg-purple-700",
+  REJECT: "bg-orange-700",
+  ARCHIVED: "bg-gray-700",
+  RESTORE: "bg-cyan-700",
+  PUBLISH: "bg-indigo-700",
+  UNPUBLISH: "bg-yellow-700",
 };
 
 const databaseTypeColors: Record<string, string> = {
-  postgresql: "bg-blue-600",
-  mongodb: "bg-green-600",
+  postgresql: "bg-primary",
+  mongodb: "bg-green-700",
 };
 
 function DataViewDialog({ title, data }: { title: string; data: any }) {
