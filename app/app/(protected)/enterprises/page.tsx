@@ -53,7 +53,7 @@ const PageHeader = async () => {
                 <PageBreadcrumb />
               </div>
               <h1 className="h1 font-medium text-primary">
-                All {MODULE_NAME_PLURAL}
+            {MODULE_NAME_PLURAL}
               </h1>
             </div>
             <div>
@@ -63,7 +63,6 @@ const PageHeader = async () => {
               </Link>
             </div>
           </div>
-          <hr className="border-gray-200" />
         </div>
       </div>
     </section>
