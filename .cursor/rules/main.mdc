@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+- Always follow the plan in .cursor folders
+- Always use the updated docs and latest stable version of the libraries
+- Always use the modular folder structured (modules, modules/cohort, modules/program, modules/common, etc)
+
