@@ -109,7 +109,7 @@ export default function View({ data }: Props) {
       </div>
 
       {data?.items && data.items.length > 0 ? (
-        <div className="rounded-lg border">
+        <div>
           <Table className="w-full">
             <TableHeader>
               <TableRow>
@@ -172,7 +172,7 @@ export default function View({ data }: Props) {
                   </TableCell>
                   <TableCell>
                     {item.academic_partner ? (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 w-44 truncate">
                         <Avatar className="size-9">
                           {item.academic_partner.logo_url ? (
                             <AvatarImage
@@ -184,7 +184,7 @@ export default function View({ data }: Props) {
                             {item.academic_partner.name.slice(0, 2)}
                           </AvatarFallback>
                         </Avatar>
-                        <span>{item.academic_partner.name}</span>
+                        <p >{item.academic_partner.name}</p>
                       </div>
                     ) : (
                       <span className="text-muted-foreground">-</span>

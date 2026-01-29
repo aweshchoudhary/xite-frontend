@@ -72,39 +72,31 @@ export default function CohortDetails({ data }: Props) {
 
         <div className="mt-6">
           <TabsContent value="overview" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <OverviewContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="curriculum" className="mt-0">
-            <div className="px-4 py-6 border rounded-lg bg-background min-w-0">
               <CurriculumContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="benefits" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <BenefitsContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="faculty" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <FacultyContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="industry-experts" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <IndustryExpertsContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="who-should-apply" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <WhoShouldApplyContainer data={data} />
-            </div>
           </TabsContent>
           <TabsContent value="media" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+           
               <CohortContentMedia data={data} />
-            </div>
           </TabsContent>
         </div>
       </Tabs>

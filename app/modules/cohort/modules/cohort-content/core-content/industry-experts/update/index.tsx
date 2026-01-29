@@ -1,9 +1,10 @@
+"use client";
+
 import { GraduationCap } from "lucide-react";
 import Title from "../title";
 import { Button } from "@ui/button";
 import ExpertSelectPopover from "./expert-select-popover";
-import { SortableGrid } from "./draggable-wrapper";
-import UpdateMicrositeAdditionalFieldsForm from "./microsite-additional-fields-form/form";
+import { SortableTable } from "./draggable-wrapper";
 import type { GetCohortForDetailPage } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 
 type Props = {
@@ -27,25 +28,22 @@ export default function Update({ data, onSuccess, onCancel, saveForm }: Props) {
       </div>
 
       {data?.items && data.items.length > 0 ? (
-        <SortableGrid
+        <SortableTable
           initialItems={
             data?.items
               .sort((a, b) => a.position - b.position)
-              .map(
-                ({
-                  id,
-                  position,
-                  faculty: { description, profile_image, name },
-                }) => ({
-                  itemId: id,
-                  id: position,
-                  position: position,
-                  name: name,
-                  profile_image: profile_image || "",
-                  description: description || "",
-                  sectionId: data?.id || "",
-                })
-              ) || []
+              .map(({ id, position, faculty }) => ({
+                itemId: id,
+                id: position,
+                position: position,
+                name: faculty.name,
+                profile_image: faculty.profile_image || "",
+                description: faculty.description || "",
+                title: faculty.title || "",
+                academic_partner: faculty.academic_partner,
+                sectionId: data?.id || "",
+                facultyId: faculty.id,
+              })) || []
           }
           selectedExpertIds={data?.items.map((item) => item.faculty.id) || []}
         />

@@ -110,7 +110,7 @@ export function SortableTableRow({
         </TableCell>
         <TableCell>
           {item.academic_partner ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-40 truncate">
               <Avatar className="size-9">
                 {item.academic_partner.logo_url ? (
                   <AvatarImage

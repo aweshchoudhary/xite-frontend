@@ -72,7 +72,7 @@ export default async function Page({
     <div className="spacing space-y-6 mx-auto">
       <PageHeader data={data} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Left sidebar: cohort details */}
         <aside className="lg:col-span-3 shrink-0">
           <div className="space-y-4 border rounded-lg p-4 bg-card">

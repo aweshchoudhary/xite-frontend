@@ -89,7 +89,7 @@ export function SortableTable({
   }
 
   return (
-    <div className="rounded-lg border">
+    <div >
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -101,7 +101,7 @@ export function SortableTable({
               <TableRow>
                 <TableHead className="w-[60px]"></TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Academic Partner</TableHead>
+                <TableHead className="w-20 truncate">Academic Partner</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>

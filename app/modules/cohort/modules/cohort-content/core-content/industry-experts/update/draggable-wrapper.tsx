@@ -14,27 +14,38 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  rectSortingStrategy,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { SortableItem } from "./sortable-item";
+import { SortableTableRow } from "./sortable-item";
 import { updateCardOrder } from "./action";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@ui/table";
+import { PrimaryDB } from "@/modules/common/database/prisma/types";
 
 interface Item {
   id: number;
   name: string;
   profile_image: string;
   description: string;
+  title: string;
   position: number;
   itemId: string;
   sectionId: string;
+  facultyId: string;
+  academic_partner: PrimaryDB.AcademicPartner | null;
 }
 
 /**
- * A grid that allows sorting items via drag-and-drop.
+ * A table that allows sorting items via drag-and-drop.
  * @param initialItems The initial array of items to display and sort.
  */
-export function SortableGrid({
+export function SortableTable({
   initialItems,
   selectedExpertIds,
 }: {
@@ -78,22 +89,38 @@ export function SortableGrid({
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext items={items} strategy={rectSortingStrategy}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6">
-          {items.map((item) => (
-            <SortableItem
-              key={item.id}
-              item={item}
-              selectedExpertIds={selectedExpertIds}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="rounded-lg border">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[60px]"></TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Academic Partner</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item, index) => (
+                <SortableTableRow
+                  key={item.id}
+                  item={item}
+                  selectedExpertIds={selectedExpertIds}
+                  isLast={index === items.length - 1}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </SortableContext>
+      </DndContext>
+    </div>
   );
 }
+
+// Keep the old export for backward compatibility
+export { SortableTable as SortableGrid };
