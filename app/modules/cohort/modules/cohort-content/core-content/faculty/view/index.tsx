@@ -158,6 +158,8 @@ export default function View({ data }: Props) {
                           <AvatarImage
                             src={getImageUrl(item.profile_image)}
                             alt={item.name}
+                            width={100}
+                            height={100}
                           />
                         ) : null}
                         <AvatarFallback className="uppercase">

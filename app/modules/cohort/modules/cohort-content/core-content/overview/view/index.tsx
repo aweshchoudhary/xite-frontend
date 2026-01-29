@@ -13,7 +13,7 @@ export default function CohortContentDetailsOverviewView({ data }: Props) {
         </h3>
       </div>
       <div
-        className="prose max-w-none"
+        className="prose prose-sm max-w-none"
         dangerouslySetInnerHTML={{
           __html:
             data?.description ||

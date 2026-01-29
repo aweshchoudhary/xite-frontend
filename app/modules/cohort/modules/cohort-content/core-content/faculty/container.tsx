@@ -60,6 +60,7 @@ export function Container({ data }: ContainerProps) {
                 <Button
                   onClick={() => {
                     setSaveForm(true);
+                    setIsUpdating(false);
                   }}
                   size={"sm"}
                 >

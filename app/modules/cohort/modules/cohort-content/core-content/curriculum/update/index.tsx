@@ -129,9 +129,9 @@ const Item = ({ form, index, items }: ItemProps) => {
   });
 
   return (
-    <div className="bg-gray-50 border p-5 rounded-xl">
-      <div className="mb-5 pb-3 border-b flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Module #{index + 1}</h2>
+    <div className="border p-5 rounded-xl">
+      <div className="mb-5 flex items-center justify-between">
+        <h2 className="font-semibold">Module #{index + 1}</h2>
         <Button
           variant="ghost"
           size="sm"
@@ -162,7 +162,7 @@ const Item = ({ form, index, items }: ItemProps) => {
       </div>
       <div className="space-y-5 grid grid-cols-1 mt-5">
         <div>
-          <h2>Overview</h2>
+          <h2 className="mb-2">Overview</h2>
           <Controller
             control={form.control}
             name={`items.${index}.overview`}
@@ -217,7 +217,7 @@ const Item = ({ form, index, items }: ItemProps) => {
           </div>
 
           <Button
-            className="mt-5"
+            className="mt-3"
             type="button"
             size={"sm"}
             variant={"outline"}
@@ -299,7 +299,7 @@ const Session = ({
   });
 
   return (
-    <div className="bg-white shadow-md border p-5 rounded-xl">
+    <div className="bg-accent/30 border p-5 rounded-xl">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">Session #{sessionIndex + 1}</h3>
 
@@ -445,7 +445,7 @@ const Session = ({
             }
             size={"sm"}
             variant={"outline"}
-            className="mt-3"
+            className="mt-2"
           >
             <Plus className="size-4" />
             Add Objective

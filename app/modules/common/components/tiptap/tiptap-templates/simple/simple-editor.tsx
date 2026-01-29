@@ -288,7 +288,7 @@ export function SimpleEditor({
         <EditorContent
           editor={editor}
           role="presentation"
-          className="simple-editor-content [&>div]:p-5! max-w-none!"
+          className="simple-editor-content [&>div]:p-5! max-w-none! bg-white"
         />
       </EditorContext.Provider>
     </div>

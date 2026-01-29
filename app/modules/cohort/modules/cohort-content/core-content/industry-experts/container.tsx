@@ -77,6 +77,7 @@ export function Container({ data }: ContainerProps) {
                   variant="outline"
                   onClick={() => {
                     setSaveForm(false);
+                    setIsUpdating(false);
                   }}
                   size={"sm"}
                 >
@@ -85,6 +86,7 @@ export function Container({ data }: ContainerProps) {
                 <Button
                   onClick={() => {
                     setSaveForm(true);
+                    setIsUpdating(false);
                   }}
                   size={"sm"}
                 >
