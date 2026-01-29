@@ -36,7 +36,7 @@ export async function deleteCohortAction(cohortId: string) {
           user.name || user.email || "Unknown User",
           "Cohort",
           cohort.id,
-          cohortToDelete.cohort_name,
+          cohortToDelete?.name || "Untitled Cohort",
           "postgresql",
           cohortToDelete,
         );

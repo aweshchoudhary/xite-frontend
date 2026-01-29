@@ -68,7 +68,7 @@ export async function toggleActiveAction(
   } catch (error) {
     console.error(error);
     return {
-      error: `Failed to ${isActive ? "activate" : "deactivate"} ${MODULE_NAME}`,
+      error: `Failed to toggle active status for ${MODULE_NAME}`,
     };
   }
 }

@@ -88,7 +88,7 @@ export async function createCohortAction(
           user.name || user.email || "Unknown User",
           "Cohort",
           cohort.id,
-          cohort.cohort_name,
+          cohort?.name || "Untitled Cohort",
           "postgresql",
           cohort,
           { programId: program_id },

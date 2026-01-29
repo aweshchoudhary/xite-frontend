@@ -36,6 +36,11 @@ export async function getOneAction(recordId: string) {
             name: true,
           },
         },
+        enterprise: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     return { data: program };

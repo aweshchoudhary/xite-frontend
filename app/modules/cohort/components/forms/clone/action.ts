@@ -645,7 +645,7 @@ export async function cloneCohortAction(
           user.name || user.email || "Unknown User",
           "Cohort",
           clonedCohort.id,
-          clonedCohort.name,
+          clonedCohortName,
           "postgresql",
           clonedCohort,
           { action: "clone", sourceCohortId: cohortId },

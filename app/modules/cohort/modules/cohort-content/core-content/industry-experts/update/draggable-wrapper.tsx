@@ -26,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@ui/table";
-import { PrimaryDB } from "@/modules/common/database/prisma/types";
+import { AcademicPartner } from "@/modules/common/database/prisma/generated/prisma";
 
 interface Item {
   id: number;
@@ -38,7 +38,7 @@ interface Item {
   itemId: string;
   sectionId: string;
   facultyId: string;
-  academic_partner: PrimaryDB.AcademicPartner | null;
+  academic_partner: AcademicPartner | null;
 }
 
 /**

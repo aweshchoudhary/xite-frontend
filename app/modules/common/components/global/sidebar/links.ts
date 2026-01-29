@@ -86,7 +86,7 @@ export const links: Link[] = [
   {
     title: "Audit Logs",
     url: "/audit-logs",
-    resource: "all",
+    resource: "AuditLog",
     exact: false,
     icon: SecurityLockIcon,
   },

@@ -58,7 +58,7 @@ export async function updateBrochureOnlyAction(
           user.name || user.email || "Unknown User",
           "Cohort",
           cohortId,
-          cohort.cohort_name,
+          cohort.name || "Untitled Cohort",
           "postgresql",
           cohort,
           updatedCohort,

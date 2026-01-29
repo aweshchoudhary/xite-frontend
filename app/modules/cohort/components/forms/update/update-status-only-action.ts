@@ -44,7 +44,7 @@ export async function updateStatusOnlyAction(
           user.name || user.email || "Unknown User",
           "Cohort",
           cohort.id,
-          cohort.cohort_name,
+          cohort.name || "Untitled Cohort",
           "postgresql",
           initialCohort,
           cohort,

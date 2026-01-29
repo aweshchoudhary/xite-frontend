@@ -12,5 +12,5 @@ export * from "./actions/template/schema";
 export * from "./connection";
 export * from "./models/microsite";
 export { default as MicrositeModel } from "./models/microsite";
-export { default as TemplateModel } from "./models/template";
+export * from "./models/template";
 export { default as AuditLogModel } from "./models/audit-log";
