@@ -27,6 +27,8 @@ import ViewCard from "@/modules/program/components/view/view-card";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import RecordActivityList from "@/modules/common/components/activity/record-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -75,80 +77,101 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader data={data} />
-      <section>
-        <div className="flex xl:gap-15 items-start gap-10">
-          <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">
-              Academic Partner Details
-            </p>
-            <div className="space-y-5">
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <MapPin className="size-4" strokeWidth={1.5} /> Address
-                </div>
-                <div>{data.address}</div>
-              </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left sidebar: academic partner details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <MapPin className="size-3.5" /> Address
+              </p>
+              <span className="text-sm">{data.address || "—"}</span>
             </div>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="h3">Programs</h2>
-            </div>
-            <div className="space-y-3">
-              {data.programs.map((program) => (
-                <div key={program.id}>
-                  <ViewCard
-                    program={{
-                      ...program,
-                      academic_partner: { name: data.name },
-                    }}
-                  />
+        </aside>
+
+        {/* Middle: programs and faculty */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="space-y-8">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-foreground">Programs</h2>
+              </div>
+              {data.programs.length > 0 ? (
+                <div className="space-y-3">
+                  {data.programs.map((program) => (
+                    <div key={program.id}>
+                      <ViewCard
+                        program={{
+                          ...program,
+                          academic_partner: { name: data.name },
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-              {data.programs.length === 0 && (
-                <div className="w-full rounded-lg flex items-center justify-center h-50 bg-background border-2 border-spacing-3 border-dashed">
+              ) : (
+                <div className="rounded-lg border border-dashed bg-muted/30 py-12 text-center text-sm text-muted-foreground">
                   No programs found
                 </div>
               )}
             </div>
-            <br />
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="h3">Faculty</h2>
-            </div>
-            <div className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-              {data.faculties.map((faculty) => (
-                <Link
-                  key={faculty.id}
-                  href={`/faculty/${faculty.id}`}
-                  className="p-5 flex items-center gap-3 border rounded-lg bg-background"
-                >
-                  <Avatar className="size-12">
-                    {faculty.profile_image && (
-                      <AvatarImage src={getImageUrl(faculty.profile_image)} />
-                    )}
-                    <AvatarFallback className="text-sm">
-                      {faculty.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h2 className="font-medium mb-0">{faculty.name}</h2>
-                    <p className="text-sm text-muted-foreground">
-                      {faculty.title}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-              {data.faculties.length === 0 && (
-                <div className="w-full rounded-lg flex items-center justify-center h-50 bg-background border-2 border-spacing-3 border-dashed">
+
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-foreground">Faculty</h2>
+              </div>
+              {data.faculties.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {data.faculties.map((faculty) => (
+                    <Link
+                      key={faculty.id}
+                      href={`/faculty/${faculty.id}`}
+                      className="p-5 flex items-center gap-3 border rounded-lg bg-background hover:bg-muted/50 transition-colors"
+                    >
+                      <Avatar className="size-12">
+                        {faculty.profile_image && (
+                          <AvatarImage src={getImageUrl(faculty.profile_image)} />
+                        )}
+                        <AvatarFallback className="text-sm">
+                          {faculty.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h2 className="font-medium mb-0">{faculty.name}</h2>
+                        <p className="text-sm text-muted-foreground">
+                          {faculty.title}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-lg border border-dashed bg-muted/30 py-12 text-center text-sm text-muted-foreground">
                   No faculties found
                 </div>
               )}
             </div>
           </div>
-        </div>
-      </section>
+        </main>
+
+        {/* Right: activity history */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <RecordActivityList recordId={id} recordType="AcademicPartner" />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }

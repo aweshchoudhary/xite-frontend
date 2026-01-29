@@ -31,6 +31,8 @@ import { Badge } from "@ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import RecordActivityList from "@/modules/common/components/activity/record-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -78,85 +80,84 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader data={data} />
-      <section>
-        <div className="flex items-start xl:gap-15 gap-10">
-          <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">
-              User Details
-            </p>
-            <div className="space-y-5">
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <Mail className="size-4" strokeWidth={1.5} /> Email
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{data.email}</p>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <UserIcon className="size-4" strokeWidth={1.5} /> Username
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{data.username || "—"}</p>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  Status
-                </div>
-                <div className="flex items-center gap-2">
-                  {data.isActive ? (
-                    <>
-                      <CheckCircle2 className="size-4 text-green-600" />
-                      <span className="text-green-600 font-medium">Active</span>
-                    </>
-                  ) : (
-                    <>
-                      <XCircle className="size-4 text-red-600" />
-                      <span className="text-red-600 font-medium">Inactive</span>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  Created At
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">
-                    {new Date(data.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left sidebar: user details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Mail className="size-3.5" /> Email
+              </p>
+              <p className="text-sm font-medium">{data.email}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <UserIcon className="size-3.5" /> Username
+              </p>
+              <p className="text-sm font-medium">{data.username || "—"}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Status</p>
+              <div className="flex items-center gap-2">
+                {data.isActive ? (
+                  <>
+                    <CheckCircle2 className="size-4 text-green-600" />
+                    <span className="text-sm text-green-600 font-medium">Active</span>
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="size-4 text-red-600" />
+                    <span className="text-sm text-red-600 font-medium">Inactive</span>
+                  </>
+                )}
               </div>
             </div>
-          </div>
-          
-          <div className="flex-1 space-y-6">
-            <div className="bg-background p-5 border rounded-md">
-              <h2 className="text-lg font-medium mb-4">Roles & Permissions</h2>
-              {data.roles && data.roles.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {data.roles.map((role) => (
-                    <Badge key={role.id} variant="secondary" className="text-base px-4 py-2">
-                      {role.role}
-                    </Badge>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No roles assigned yet.
-                </p>
-              )}
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Created At</p>
+              <p className="text-sm font-medium">
+                {new Date(data.createdAt).toLocaleDateString()}
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </aside>
+
+        {/* Middle: roles and permissions */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="bg-background p-5 border rounded-md">
+            <h2 className="text-lg font-medium mb-4">Roles & Permissions</h2>
+            {data.roles && data.roles.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {data.roles.map((role) => (
+                  <Badge key={role.id} variant="secondary" className="text-base px-4 py-2">
+                    {role.role}
+                  </Badge>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                No roles assigned yet.
+              </p>
+            )}
+          </div>
+        </main>
+
+        {/* Right: activity history */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <RecordActivityList recordId={id} recordType="User" />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }

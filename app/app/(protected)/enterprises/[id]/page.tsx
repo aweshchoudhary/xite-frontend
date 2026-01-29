@@ -25,6 +25,8 @@ import {
 import ViewCard from "@/modules/program/components/view/view-card";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import RecordActivityList from "@/modules/common/components/activity/record-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -72,52 +74,66 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader data={data} />
-      <section>
-        <div className="flex xl:gap-15 items-start gap-10">
-          <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">
-              Enterprise Details
-            </p>
-            <div className="space-y-5">
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">Address</div>
-                <div
-                  className="prose prose-sm"
-                  dangerouslySetInnerHTML={{
-                    __html: data.address || "Not Set",
-                  }}
-                ></div>
-              </div>
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">Note</div>
-                <div
-                  className="prose prose-sm"
-                  dangerouslySetInnerHTML={{ __html: data.note || "Not Set" }}
-                ></div>
-              </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left sidebar: enterprise details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Address</p>
+              <div
+                className="text-sm prose prose-sm"
+                dangerouslySetInnerHTML={{
+                  __html: data.address || "Not Set",
+                }}
+              ></div>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Note</p>
+              <div
+                className="text-sm prose prose-sm"
+                dangerouslySetInnerHTML={{ __html: data.note || "Not Set" }}
+              ></div>
             </div>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="h3">Programs</h2>
-            </div>
+        </aside>
+
+        {/* Middle: programs list */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-foreground">Programs</h2>
+          </div>
+          {data.programs.length > 0 ? (
             <div className="space-y-3">
               {data.programs.map((program) => (
                 <div key={program.id}>
                   <ViewCard program={program} />
                 </div>
               ))}
-              {data.programs.length === 0 && (
-                <div className="w-full flex items-center justify-center min-h-50 rounded-lg bg-background border-2 border-spacing-3 border-dashed">
-                  No programs found
-                </div>
-              )}
             </div>
-          </div>
-        </div>
-      </section>
+          ) : (
+            <div className="rounded-lg border border-dashed bg-muted/30 py-12 text-center text-sm text-muted-foreground">
+              No programs found
+            </div>
+          )}
+        </main>
+
+        {/* Right: activity history */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <RecordActivityList recordId={id} recordType="Enterprise" />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }

@@ -36,6 +36,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@ui/avatar";
 import { getImageUrl } from "@/modules/common/lib/utils";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import RecordActivityList from "@/modules/common/components/activity/record-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -87,68 +89,60 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader data={data} />
-      <section>
-        <div className="flex items-start xl:gap-15 gap-10">
-          <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">
-              Faculty Details
-            </p>
-            <div className="space-y-5">
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <School className="size-4" strokeWidth={1.5} /> Academic
-                  Partner
-                </div>
-                <Link
-                  href={`/academic-partners/${data.academic_partner?.id}`}
-                  className="flex items-center gap-2"
-                >
-                  <Avatar className="size-7">
-                    {data.academic_partner?.logo_url && (
-                      <AvatarImage
-                        src={getImageUrl(data.academic_partner?.logo_url)}
-                      />
-                    )}
-                    <AvatarFallback className="text-sm">
-                      {data.academic_partner?.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <p className="font-medium">{data.academic_partner?.name}</p>
-                </Link>
-              </div>
 
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <Layers className="size-4" strokeWidth={1.5} /> Type
-                </div>
-                <div>
-                  <Badge className="capitalize">
-                    {enumDisplay(data.faculty_type ?? "")}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <Mail className="size-4" strokeWidth={1.5} /> Email
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{data.email}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 text-left gap-2">
-                <div className="flex items-center gap-2">
-                  <Phone className="size-4" strokeWidth={1.5} /> Phone
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{data.phone}</p>
-                </div>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left sidebar: faculty details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <School className="size-3.5" /> Academic Partner
+              </p>
+              <Link
+                href={`/academic-partners/${data.academic_partner?.id}`}
+                className="flex items-center gap-2"
+              >
+                <Avatar className="size-7">
+                  {data.academic_partner?.logo_url && (
+                    <AvatarImage
+                      src={getImageUrl(data.academic_partner?.logo_url)}
+                    />
+                  )}
+                  <AvatarFallback className="text-sm">
+                    {data.academic_partner?.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <p className="text-sm font-medium">{data.academic_partner?.name}</p>
+              </Link>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Layers className="size-3.5" /> Type
+              </p>
+              <Badge className="capitalize text-xs">
+                {enumDisplay(data.faculty_type ?? "")}
+              </Badge>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Mail className="size-3.5" /> Email
+              </p>
+              <p className="text-sm font-medium">{data.email}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Phone className="size-3.5" /> Phone
+              </p>
+              <p className="text-sm font-medium">{data.phone}</p>
             </div>
           </div>
-          <div className="flex-1 space-y-6">
+        </aside>
+
+        {/* Middle: content */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="space-y-6">
             <div className="bg-background p-5 border rounded-md">
               <h2 className="text-lg font-medium mb-4">Topics & Subtopics</h2>
               {data.subtopics && data.subtopics.length > 0 ? (
@@ -179,30 +173,29 @@ export default async function Page({
               )}
             </div>
             <div className="bg-background p-5 border rounded-md">
-              <h2 className="text-lg font-medium">Title: {data.title}</h2>
+              <h2 className="text-lg font-medium mb-2">Title: {data.title}</h2>
               <div
+                className="prose prose-sm"
                 dangerouslySetInnerHTML={{ __html: data?.description || "" }}
               ></div>
             </div>
-
-            {/* <div className="flex items-center justify-between mb-3">
-              <h2 className="h3">Cohorts</h2>
-            </div>
-            <div className="space-y-3">
-              {data.cohorts.map((cohort) => (
-                <div key={cohort.id}>
-                  <ViewCohortCard cohort={cohort} />
-                </div>
-              ))}
-              {data.cohorts.length === 0 && (
-                <div className="w-full flex items-center justify-center min-h-50 rounded-lg bg-background border-2 border-spacing-3 border-dashed">
-                  No cohorts found
-                </div>
-              )}
-            </div> */}
           </div>
-        </div>
-      </section>
+        </main>
+
+        {/* Right: activity history */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <RecordActivityList recordId={id} recordType="Faculty" />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }

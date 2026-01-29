@@ -20,6 +20,8 @@ import SubTopicsList from "./components/subtopics-list";
 import HeaderActions from "./components/header-actions";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import RecordActivityList from "@/modules/common/components/activity/record-activity-list";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -73,46 +75,57 @@ export default async function TopicPage({
   }
 
   return (
-    <div className="spacing space-y-10">
+    <div className="spacing space-y-6">
       <PageHeader data={data} />
-      <section>
-        <div className="flex xl:gap-15 items-start gap-10">
-          <div className="p-5 bg-background rounded-md border w-[35%]">
-            <p className="text-sm text-muted-foreground mb-5">Topic Details</p>
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 gap-2">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Title</p>
-                  <p className="font-medium">{data.title}</p>
-                </div>
-                {data.description && (
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">
-                      Description
-                    </p>
-                    <p className="text-sm">{data.description}</p>
-                  </div>
-                )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left sidebar: topic details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Title</p>
+              <p className="text-sm font-medium">{data.title}</p>
+            </div>
+            {data.description && (
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground">Description</p>
+                <p className="text-sm">{data.description}</p>
               </div>
-            </div>
+            )}
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="h3">Sub Topics</h2>
-              <Link
-                href={`/topics/${id}/subtopics/new`}
-                className="inline-flex items-center gap-2"
-              >
-                <Button size="sm">
-                  <Plus className="size-4" />
-                  Sub Topic
-                </Button>
-              </Link>
-            </div>
-            <SubTopicsList topicId={id} subtopics={data.sub_topics} />
+        </aside>
+
+        {/* Middle: subtopics list */}
+        <main className="lg:col-span-6 min-w-0">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-foreground">Sub Topics</h2>
+            <Link
+              href={`/topics/${id}/subtopics/new`}
+              className="inline-flex items-center gap-2"
+            >
+              <Button size="sm">
+                <Plus className="size-4" />
+                Sub Topic
+              </Button>
+            </Link>
           </div>
-        </div>
-      </section>
+          <SubTopicsList topicId={id} subtopics={data.sub_topics} />
+        </main>
+
+        {/* Right: activity history */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <RecordActivityList recordId={id} recordType="Topic" />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }
