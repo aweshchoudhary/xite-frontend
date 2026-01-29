@@ -3,6 +3,8 @@
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CohortSectionType } from "@/modules/common/database/prisma/generated/prisma";
 import { revalidatePath } from "next/cache";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 /**
  * Update cohort faculty list by creating/deleting faculty section items
@@ -31,9 +33,10 @@ export async function updateCohortFacultyList({
     const existingItems = cohort.faculty_section.items;
 
     // Get max position for new items
-    const maxPosition = existingItems.length > 0
-      ? Math.max(...existingItems.map((item) => item.position))
-      : 0;
+    const maxPosition =
+      existingItems.length > 0
+        ? Math.max(...existingItems.map((item) => item.position))
+        : 0;
 
     // Delete items to remove
     if (facultyToRemove.length > 0) {
@@ -55,6 +58,29 @@ export async function updateCohortFacultyList({
         })),
         skipDuplicates: true,
       });
+    }
+
+    try {
+      const user = await getAuthUser();
+      if (user && cohort) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohortId,
+          cohort.cohort_name,
+          "postgresql",
+          undefined,
+          undefined,
+          {
+            action: "faculty_list",
+            facultyToAdd,
+            facultyToRemove,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath(`/cohorts/${cohortId}`);
@@ -91,9 +117,10 @@ export async function updateCohortIndustryExpertsList({
     const existingItems = cohort.industry_experts_section.items;
 
     // Get max position for new items
-    const maxPosition = existingItems.length > 0
-      ? Math.max(...existingItems.map((item) => item.position))
-      : 0;
+    const maxPosition =
+      existingItems.length > 0
+        ? Math.max(...existingItems.map((item) => item.position))
+        : 0;
 
     // Delete items to remove
     if (dataToRemove.length > 0) {
@@ -115,6 +142,29 @@ export async function updateCohortIndustryExpertsList({
         })),
         skipDuplicates: true,
       });
+    }
+
+    try {
+      const user = await getAuthUser();
+      if (user && cohort) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohortId,
+          cohort.cohort_name,
+          "postgresql",
+          undefined,
+          undefined,
+          {
+            action: "industry_experts_list",
+            dataToAdd,
+            dataToRemove,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath(`/cohorts/${cohortId}`);
@@ -139,6 +189,10 @@ export async function upsertSectionPosition({
   position: number;
 }) {
   try {
+    const cohort = await primaryDB.cohort.findUnique({
+      where: { id: cohort_id },
+    });
+
     await primaryDB.cohortSectionOrder.upsert({
       where: {
         cohort_id_section_type_section_id: {
@@ -157,8 +211,31 @@ export async function upsertSectionPosition({
         section_position: position,
       },
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user && cohort) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort_id,
+          cohort.cohort_name,
+          "postgresql",
+          undefined,
+          undefined,
+          {
+            action: "section_position",
+            section_type,
+            section_id,
+            position,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
   } catch (error) {
     throw error;
   }
 }
-

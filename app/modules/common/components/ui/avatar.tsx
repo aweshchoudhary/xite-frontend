@@ -36,6 +36,8 @@ function AvatarImage({
         "rounded-full aspect-square size-full object-cover",
         className
       )}
+      width={150}
+      height={150}
       {...props}
     />
   )

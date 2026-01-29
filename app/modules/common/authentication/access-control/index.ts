@@ -7,7 +7,9 @@ export type Resource =
   | "Enterprise"
   | "Microsite"
   | "Topic"
-  | "Template";
+  | "Template"
+  | "AuditLog"
+  | "User";
 
 export type Role = "Admin" | "User";
 
@@ -23,6 +25,8 @@ export const permissions: Permissions = {
     Microsite: ["read", "write", "update", "delete"],
     Topic: ["read", "write", "update", "delete"],
     Template: ["read", "write", "update", "delete"],
+    AuditLog: ["read", "write", "update", "delete"],
+    User: ["read", "write", "update", "delete"],
   },
   User: {
     Program: ["read", "write", "update"],

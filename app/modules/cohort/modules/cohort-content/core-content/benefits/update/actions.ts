@@ -5,6 +5,8 @@ import { UpdateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortBenefitsSectionGetPayload<{
@@ -32,8 +34,8 @@ export const updateAction = async ({
             return { ...item, icon_image_url: image_url };
           }
           return { ...item, icon_image_url: item.icon_image_url };
-        }
-      )
+        },
+      ),
     );
 
     const upsertedData = await primaryDB.cohortBenefitsSection.create({
@@ -59,6 +61,25 @@ export const updateAction = async ({
         benefits_items: true,
       },
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "CohortBenefitsSection",
+          upsertedData.id,
+          upsertedData.title ?? cohort_id,
+          "postgresql",
+          undefined,
+          upsertedData,
+          { cohort_id },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath("/cohorts");
 

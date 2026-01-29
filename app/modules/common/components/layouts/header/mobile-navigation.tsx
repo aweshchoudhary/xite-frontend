@@ -22,7 +22,7 @@ export default function MobileNavigation() {
 
       // For audit logs, only admins (who have "manage all" permission) can see it
       if (link.url === "/audit-logs") {
-        return hasPermission(roles, "all", "manage");
+        return hasPermission(roles, "AuditLog", "read");
       }
   
       return hasPermission(roles, link.resource, "read");

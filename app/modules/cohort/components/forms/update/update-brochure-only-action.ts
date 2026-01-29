@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 /**
  * Update only the brochure of a cohort
@@ -16,7 +18,7 @@ export type UpdateBrochureOnlyOutput = {
 
 export async function updateBrochureOnlyAction(
   cohortId: string,
-  brochure: File
+  brochure: File,
 ): Promise<UpdateBrochureOnlyOutput> {
   try {
     const permission = await checkPermission("Cohort", "update");
@@ -26,6 +28,11 @@ export async function updateBrochureOnlyAction(
     }
 
     const { fileUrl: brochure_url } = await uploadFile(brochure);
+
+    const cohort = await primaryDB.cohort.findUnique({
+      where: { id: cohortId },
+      include: { media_section: true },
+    });
 
     await primaryDB.cohort.update({
       where: { id: cohortId },
@@ -37,6 +44,30 @@ export async function updateBrochureOnlyAction(
         },
       },
     });
+
+    const updatedCohort = await primaryDB.cohort.findUnique({
+      where: { id: cohortId },
+      include: { media_section: true },
+    });
+
+    try {
+      const user = await getAuthUser();
+      if (user && cohort && updatedCohort) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohortId,
+          cohort.cohort_name,
+          "postgresql",
+          cohort,
+          updatedCohort,
+          { action: "brochure_only", brochure_url },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath(`/cohorts/${cohortId}`);
     revalidatePath(`/cohorts/${cohortId}/edit`);
@@ -50,4 +81,3 @@ export async function updateBrochureOnlyAction(
     };
   }
 }
-

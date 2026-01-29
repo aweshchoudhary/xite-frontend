@@ -4,6 +4,8 @@ import { UpdateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/modules/user/utils";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGetPayload<object>;
@@ -22,6 +24,11 @@ export const updateAction = async ({
 
     await updateSectionOrder({ sections, cohort_id });
 
+    const initialCohort = await primaryDB.cohort.findUnique({
+      where: { id: cohort_id },
+      include: { microsite_section: true },
+    });
+
     const upsertedData = await primaryDB.cohort.update({
       where: { id: cohort_id },
       data: {
@@ -39,6 +46,25 @@ export const updateAction = async ({
         },
       },
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort_id,
+          upsertedData.name ?? cohort_id,
+          "postgresql",
+          initialCohort,
+          upsertedData,
+          { action: "microsite_section", ...rest },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath("/cohorts");
 
@@ -67,7 +93,7 @@ const updateSectionOrder = async ({
           where: { id: section.id },
           data: { section_position: section.section_position },
         });
-      })
+      }),
     );
   } catch (error) {
     throw error;

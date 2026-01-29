@@ -225,7 +225,6 @@ export const SectionFormField = ({
     };
   }, [sectionId, cohortSections]);
 
-  console.log({ afterSectionId });
 
   return (
     <div className="space-y-4 p-5 border rounded-lg">

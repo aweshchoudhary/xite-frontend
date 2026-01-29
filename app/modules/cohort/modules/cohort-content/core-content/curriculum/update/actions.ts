@@ -4,6 +4,8 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser } from "@/modules/user/utils";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.DesignCohortCurriculumSectionGetPayload<{
@@ -59,7 +61,7 @@ export const updateAction = async ({
       // Create objectives for this item
       if (item.objectives && item.objectives.length > 0) {
         const validObjectives = item.objectives.filter(
-          (objective) => objective.description
+          (objective) => objective.description,
         );
         if (validObjectives.length > 0) {
           await primaryDB.designCohortCurriculumObjective.createMany({
@@ -89,7 +91,7 @@ export const updateAction = async ({
         // Create objectives for this session
         if (session.objectives && session.objectives.length > 0) {
           const validObjectives = session.objectives.filter(
-            (objective) => objective.description
+            (objective) => objective.description,
           );
           if (validObjectives.length > 0) {
             await primaryDB.designCohortCurriculumObjective.createMany({
@@ -103,6 +105,25 @@ export const updateAction = async ({
           }
         }
       }
+    }
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "DesignCohortCurriculumSection",
+          upsertedData.id,
+          upsertedData.title ?? cohort_id,
+          "postgresql",
+          undefined,
+          upsertedData,
+          { cohort_id },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath("/cohorts");

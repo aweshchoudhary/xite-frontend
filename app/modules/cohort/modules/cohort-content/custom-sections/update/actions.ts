@@ -8,6 +8,8 @@ import { getLoggedInUser } from "@/modules/user/utils";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import type { GetCohortForDetailPage as GetCohort } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { upsertSectionPosition } from "@/modules/cohort/components/forms/update/cohort-update-actions";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type UpdateActionResponse = {
   data: PrimaryDB.CohortGenericSectionGetPayload<object>[];
@@ -37,7 +39,7 @@ export const updateAction = async ({
           return { ...section, banner_image_url: fileUrl };
         }
         return section;
-      })
+      }),
     );
 
     // Disconnect and delete old sections (keep as is)
@@ -50,7 +52,7 @@ export const updateAction = async ({
         await primaryDB.cohortSectionOrder.deleteMany({
           where: { section_id: section.id },
         });
-      })
+      }),
     );
 
     // Sequentially create & upsert positions to avoid race conditions
@@ -107,6 +109,25 @@ export const updateAction = async ({
       });
 
       upsertedData.push(createdSection);
+    }
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "CohortGenericSection",
+          cohort_id,
+          cohort_id,
+          "postgresql",
+          undefined,
+          upsertedData,
+          { cohort_id, sectionCount: upsertedData.length },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     // Revalidate cache for cohorts page

@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 /**
  * Update checklist file and status together
@@ -17,7 +19,7 @@ export type UpdateChecklistAndStatusOutput = {
 
 export async function updateChecklistAndStatusAction(
   cohortId: string,
-  checklistFile: File
+  checklistFile: File,
 ): Promise<UpdateChecklistAndStatusOutput> {
   try {
     const permission = await checkPermission("Cohort", "update");
@@ -28,13 +30,36 @@ export async function updateChecklistAndStatusAction(
 
     const { fileUrl: checklist_file_url } = await uploadFile(checklistFile);
 
-    await primaryDB.cohort.update({
+    const initialCohort = await primaryDB.cohort.findUnique({
+      where: { id: cohortId },
+    });
+
+    const cohort = await primaryDB.cohort.update({
       where: { id: cohortId },
       data: {
         checklist_file_url,
         status: WorkStatus.ACTIVE,
       },
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort.id,
+          cohort.cohort_name,
+          "postgresql",
+          initialCohort,
+          cohort,
+          { action: "checklist_and_status", checklist_file_url },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath(`/cohorts/${cohortId}`);
     revalidatePath(`/cohorts/${cohortId}/edit`);
@@ -48,4 +73,3 @@ export async function updateChecklistAndStatusAction(
     };
   }
 }
-

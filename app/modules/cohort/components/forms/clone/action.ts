@@ -7,6 +7,8 @@ import { getLastCohortForCreateAction } from "../create/get-last-cohort-for-crea
 import { revalidatePath } from "next/cache";
 import { getOneForDetailPageAction } from "../read/get-one-for-detail-page-action";
 import { getSectionOrderByCohortIdAction } from "../read/get-sections-action";
+import { logCreate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type CloneCohortOutput = {
   data?: { id: string; cohort_key: string } | null;
@@ -17,7 +19,7 @@ export type CloneCohortOutput = {
  * Clone a cohort with all its relational data
  */
 export async function cloneCohortAction(
-  cohortId: string
+  cohortId: string,
 ): Promise<CloneCohortOutput> {
   try {
     const permission = await checkPermission("Cohort", "write");
@@ -34,13 +36,12 @@ export async function cloneCohortAction(
     }
 
     // Get section orders
-    const { data: sectionOrders } = await getSectionOrderByCohortIdAction(
-      cohortId
-    );
+    const { data: sectionOrders } =
+      await getSectionOrderByCohortIdAction(cohortId);
 
     // Get the last cohort number for the program
     const { data: lastCohortData } = await getLastCohortForCreateAction(
-      sourceCohort.program_id
+      sourceCohort.program_id,
     );
 
     if (!lastCohortData) {
@@ -114,7 +115,7 @@ export async function cloneCohortAction(
                     top_description: item.top_description,
                     bottom_description: item.bottom_description,
                     icon_image_url: item.icon_image_url,
-                  })
+                  }),
                 ),
               },
             },
@@ -191,7 +192,7 @@ export async function cloneCohortAction(
                                 (item) => ({
                                   title: item.title,
                                   description: item.description,
-                                })
+                                }),
                               ) || [],
                           },
                         },
@@ -221,7 +222,7 @@ export async function cloneCohortAction(
                                 (item) => ({
                                   title: item.title,
                                   description: item.description,
-                                })
+                                }),
                               ) || [],
                           },
                         },
@@ -449,7 +450,7 @@ export async function cloneCohortAction(
                           },
                         })),
                       },
-                    })
+                    }),
                   ),
                 },
               },
@@ -482,8 +483,8 @@ export async function cloneCohortAction(
                         }
                       : undefined,
                   },
-                })
-              )
+                }),
+              ),
             )
           : [];
 
@@ -635,6 +636,24 @@ export async function cloneCohortAction(
 
       return newCohort;
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logCreate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          clonedCohort.id,
+          clonedCohort.name,
+          "postgresql",
+          clonedCohort,
+          { action: "clone", sourceCohortId: cohortId },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath("/cohorts");
 

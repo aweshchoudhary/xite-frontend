@@ -5,6 +5,8 @@ import { WorkStatus } from "@/modules/common/database/prisma/generated/prisma";
 import { revalidatePath } from "next/cache";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 /**
  * Update only the status of a cohort
@@ -16,7 +18,7 @@ export type UpdateStatusOnlyOutput = {
 
 export async function updateStatusOnlyAction(
   cohortId: string,
-  status: WorkStatus
+  status: WorkStatus,
 ): Promise<UpdateStatusOnlyOutput> {
   try {
     const permission = await checkPermission("Cohort", "update");
@@ -25,10 +27,33 @@ export async function updateStatusOnlyAction(
       throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
     }
 
-    await primaryDB.cohort.update({
+    const initialCohort = await primaryDB.cohort.findUnique({
+      where: { id: cohortId },
+    });
+
+    const cohort = await primaryDB.cohort.update({
       where: { id: cohortId },
       data: { status },
     });
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort.id,
+          cohort.cohort_name,
+          "postgresql",
+          initialCohort,
+          cohort,
+          { action: "status_only", status },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath(`/cohorts/${cohortId}`);
     revalidatePath(`/cohorts/${cohortId}/edit`);
@@ -56,7 +81,7 @@ export async function sendEventToAutomations(cohortId: string) {
           Authorization: `Bearer ${process.env.AUTOMATIONS_API_KEY}`,
         },
         body: JSON.stringify({ cohortId }),
-      }
+      },
     );
 
     return { resp };

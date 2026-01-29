@@ -8,6 +8,5 @@ export async function checkPermission(
   action: Action,
 ): Promise<boolean> {
   const userRoles = await getUserRole();
-  console.log("userRoles", userRoles);
   return hasPermission(userRoles, resource, action);
 }

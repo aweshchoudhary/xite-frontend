@@ -11,6 +11,7 @@ export type Subject =
   | "Microsite"
   | "Topic"
   | "Template"
+  | "User"
   | "all";
 
 export type AppAbility = PureAbility<[Action, Subject]>;
@@ -23,6 +24,8 @@ export function defineAbilityFor(roles: UserRole[], userId?: string) {
   if (roleNames.includes("Admin")) {
     // Admin can do everything
     can("manage", "all");
+    // Explicitly grant User management permissions to Admin
+    can(["read", "create", "update", "delete"], "User");
   } else if (roleNames.includes("User")) {
     // User permissions
     can(["read", "create", "update"], "Program");
@@ -32,6 +35,7 @@ export function defineAbilityFor(roles: UserRole[], userId?: string) {
     can("read", "AcademicPartner");
     can("read", "Enterprise");
     can("read", "Topic");
+    // Regular users cannot manage other users
   }
 
   return build();

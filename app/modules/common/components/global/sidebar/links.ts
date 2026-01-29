@@ -6,6 +6,7 @@ import {
   Building01Icon,
   Globe02Icon,
   SecurityLockIcon,
+  UserMultiple02Icon,
 } from "@hugeicons/core-free-icons";
 import { Resource } from "@/modules/common/authentication/access-control";
 import { IconSvgElement } from "@hugeicons/react";
@@ -74,6 +75,13 @@ export const links: Link[] = [
     resource: "Microsite",
     exact: false,
     icon: Globe02Icon,
+  },
+  {
+    title: "Users",
+    url: "/users",
+    resource: "User",
+    exact: false,
+    icon: UserMultiple02Icon,
   },
   {
     title: "Audit Logs",

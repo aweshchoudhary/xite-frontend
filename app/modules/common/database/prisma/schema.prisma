@@ -821,6 +821,7 @@ model User {
   username        String?         @unique
   emailVerified   DateTime?
   image           String?
+  isActive        Boolean         @default(true)
   accounts        Account[]
   sessions        Session[]
   roles           UserRole[]

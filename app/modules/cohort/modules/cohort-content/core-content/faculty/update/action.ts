@@ -4,6 +4,12 @@ import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLoggedInUser } from "@/modules/user/utils";
 import { revalidatePath } from "next/cache";
+import {
+  logUpdate,
+  logCreate,
+  logDelete,
+} from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export type UpdateOneOutput =
   PrimaryDB.CohortFacultySectionItemGetPayload<object>;
@@ -58,6 +64,24 @@ export async function addFacultyItemToSection({
       return createdItem;
     });
 
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logCreate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "CohortFacultySectionItem",
+          newFacultyItem.id,
+          sectionId,
+          "postgresql",
+          newFacultyItem,
+          { sectionId, facultyId, position: finalPosition },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
+
     revalidatePath("/cohorts");
 
     return { success: true, data: newFacultyItem };
@@ -71,11 +95,33 @@ export async function removeFacultyItemFromSection({
 }: {
   itemId: string;
 }) {
+  const initialItem = await primaryDB.cohortFacultySectionItem.findUnique({
+    where: { id: itemId },
+  });
+
   const data = await primaryDB.cohortFacultySectionItem.delete({
     where: {
       id: itemId,
     },
   });
+
+  try {
+    const user = await getAuthUser();
+    if (user && initialItem) {
+      await logDelete(
+        user.uid,
+        user.name || user.email || "Unknown User",
+        "CohortFacultySectionItem",
+        itemId,
+        itemId,
+        "postgresql",
+        initialItem,
+        { sectionId: initialItem.parent_section_id },
+      );
+    }
+  } catch (auditError) {
+    console.error("Failed to create audit log:", auditError);
+  }
 
   revalidatePath("/cohorts");
   return data;
@@ -107,8 +153,27 @@ export async function updateCardOrder(items: Item[]) {
             },
           },
         });
-      })
+      }),
     );
+
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "CohortFacultySectionItem",
+          "order",
+          "Faculty card order",
+          "postgresql",
+          undefined,
+          items,
+          { action: "update_card_order", itemCount: items.length },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
+    }
 
     revalidatePath("/cohorts");
 
