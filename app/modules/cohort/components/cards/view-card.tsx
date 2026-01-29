@@ -3,7 +3,6 @@ import { Badge } from "@ui/badge";
 import { Button } from "@ui/button";
 import { buttonVariants } from "@ui/button";
 import {
-  Cohort,
   WorkStatus,
 } from "@/modules/common/database/prisma/generated/prisma";
 import { CalendarIcon, Loader, TrashIcon } from "lucide-react";
@@ -14,9 +13,7 @@ import Link from "next/link";
 import DeleteCohortModal from "../forms/delete/modal";
 import { enumDisplay } from "@/modules/common/lib/enum-display";
 import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
-import { useHasPermission } from "@/modules/common/authentication/access-control/lib";
 import { useState } from "react";
-import { useCheckUserOwnsCohort } from "../../auth/access";
 
 type ViewCohortCardProps = {
   cohort: {
