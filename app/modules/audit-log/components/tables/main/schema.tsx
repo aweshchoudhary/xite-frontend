@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/modules/common/components/ui/dialog";
-import { ScrollArea } from "@/@ui/scroll-area";
+import { ScrollArea } from "@/modules/common/components/ui/scroll-area";
 
 export interface AuditLog {
   id: string;
