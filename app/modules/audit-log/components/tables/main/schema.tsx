@@ -68,7 +68,7 @@ function DataViewDialog({ title, data }: { title: string; data: any }) {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[500px] w-full">
-          <pre className="text-xs bg-muted p-4 rounded-md overflow-auto">
+          <pre className="text-xs bg-muted p-4 rounded-md overflow-auto whitespace-pre-wrap break-all max-w-full min-w-0">
             {JSON.stringify(data, null, 2)}
           </pre>
         </ScrollArea>

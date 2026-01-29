@@ -6,7 +6,8 @@ This component provides a comprehensive faculty management interface for the B2B
 
 - **Add Faculty**: Select and add faculty members from a searchable dialog
 - **Remove Faculty**: Remove individual faculty members from the list
-- **Sort Faculty**: Drag and drop to reorder faculty members
+- **Sort Faculty**: Drag and drop to reorder faculty members in the table
+- **Table Layout**: Clean table format showing faculty name, academic partner, and actions
 - **Visual Feedback**: Loading states, animations, and drag indicators
 
 ## File Structure
@@ -14,8 +15,8 @@ This component provides a comprehensive faculty management interface for the B2B
 ```
 faculty-list/
 ├── index.tsx                    # Main component with add/remove/sort logic
-├── draggable-wrapper.tsx        # DnD context wrapper for drag-and-drop functionality
-├── sortable-item.tsx           # Individual faculty card with drag handle and remove button
+├── draggable-wrapper.tsx        # DnD context wrapper with table structure
+├── sortable-item.tsx           # Individual faculty table row with drag handle and remove button
 ├── faculty-select-popover.tsx  # Dialog for searching and selecting faculty
 ├── actions.ts                  # Server action for fetching faculty data
 └── README.md                   # This file
@@ -49,15 +50,17 @@ Main component that manages the faculty list state and handles:
 - Displaying empty state when no faculty are added
 
 ### SortableGrid (draggable-wrapper.tsx)
-Wraps the faculty items in a DnD context using `@dnd-kit/core` and `@dnd-kit/sortable`:
-- Enables drag-and-drop sorting
+Wraps the faculty items in a table with DnD context using `@dnd-kit/core` and `@dnd-kit/sortable`:
+- Renders a table with columns: drag handle, name, academic partner, and actions
+- Enables drag-and-drop sorting with vertical list strategy
 - Handles reordering logic
 - Updates the form state when items are reordered
 
 ### SortableItem (sortable-item.tsx)
-Individual faculty card that:
-- Fetches faculty data by ID
-- Displays faculty information using the shared `FacultyCard` component
+Individual faculty table row that:
+- Fetches faculty data by ID including academic partner information
+- Displays faculty information in a table row format
+- Shows faculty avatar, name, title, and academic partner
 - Provides drag handle for reordering
 - Includes remove button
 - Shows loading state while fetching data

@@ -105,43 +105,41 @@ export default function ViewCohortCard({ cohort }: ViewCohortCardProps) {
               <PermissionGate resource="Cohort" action="update">
                 <Link
                   href={`/cohorts/${cohort.id}/edit`}
-                  className="text-foreground hover:underline ml-0.5 inline-flex items-center gap-1"
+                  className="text-muted-foreground hover:text-foreground ml-0.5 inline-flex items-center gap-1 hover:underline"
                   title="Edit cohort"
                 >
                   <PencilIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
                   <span>Edit</span>
                 </Link>
               </PermissionGate>
+              {cohort.status !== WorkStatus.ACTIVE && (
+                <PermissionGate resource="Cohort" action="delete">
+                  <DeleteCohortModal
+                    recordId={cohort.id}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="text-muted-foreground hover:text-destructive ml-0.5 inline-flex h-auto items-center gap-1 p-0 font-normal hover:underline"
+                        title="Delete cohort"
+                      >
+                        <TrashIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
+                        <span>Delete</span>
+                      </Button>
+                    }
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    onSuccess={() => {
+                      setIsOpen(false);
+                    }}
+                    onCancel={() => {
+                      setIsOpen(false);
+                    }}
+                  />
+                </PermissionGate>
+              )}
             </div>
           )}
         </div>
-        {cohort.status !== WorkStatus.ACTIVE && (
-            <PermissionGate resource="Cohort" action="delete">
-          <div className="flex justify-end pt-2">
-              <DeleteCohortModal
-                recordId={cohort.id}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="size-8 text-destructive hover:text-destructive"
-                    size="icon"
-                    title="Delete cohort"
-                  >
-                    <TrashIcon className="size-3.5" />
-                  </Button>
-                }
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                onSuccess={() => {
-                  setIsOpen(false);
-                }}
-                onCancel={() => {
-                  setIsOpen(false);
-                }}
-              />
-          </div>
-            </PermissionGate>
-        )}
       </CardContent>
     </Card>
   );

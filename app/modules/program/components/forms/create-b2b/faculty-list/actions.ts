@@ -11,6 +11,14 @@ export async function getFacultyByIdAction(id: string) {
         name: true,
         profile_image: true,
         description: true,
+        title: true,
+        academic_partner: {
+          select: {
+            id: true,
+            name: true,
+            logo_url: true,
+          },
+        },
       },
     });
 

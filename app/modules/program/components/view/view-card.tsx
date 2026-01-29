@@ -115,45 +115,43 @@ export default function ViewCard({ program }: ProgramCardProps) {
               <PermissionGate resource="Program" action="update">
                 <Link
                   href={`/programs/${program.id}/edit`}
-                  className=" hover:underline text-foreground ml-0.5 inline-flex items-center gap-1"
+                  className="text-muted-foreground hover:text-foreground ml-0.5 inline-flex items-center gap-1 hover:underline"
                   title="Edit program"
                 >
                   <PencilIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
                   <span>Edit</span>
                 </Link>
               </PermissionGate>
+              {program.status !== ProgramStatus.ACTIVE && (
+                <PermissionGate resource="Program" action="delete">
+                  <DeleteProgramModal
+                    recordId={program.id}
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    onSuccess={() => {
+                      router.push("/programs");
+                      setIsOpen(false);
+                    }}
+                    onCancel={() => {
+                      router.push("/programs");
+                      setIsOpen(false);
+                    }}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="text-muted-foreground hover:text-destructive ml-0.5 inline-flex h-auto items-center gap-1 p-0 font-normal hover:underline"
+                        title="Delete program"
+                      >
+                        <TrashIcon className="size-3.5 shrink-0" strokeWidth={1.5} />
+                        <span>Delete</span>
+                      </Button>
+                    }
+                  />
+                </PermissionGate>
+              )}
             </div>
           )}
         </div>
-        {program.status !== ProgramStatus.ACTIVE && (
-            <PermissionGate resource="Program" action="delete">
-          <div className="flex justify-end pt-2">
-              <DeleteProgramModal
-                recordId={program.id}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                onSuccess={() => {
-                  router.push("/programs");
-                  setIsOpen(false);
-                }}
-                onCancel={() => {
-                  router.push("/programs");
-                  setIsOpen(false);
-                }}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="size-8 text-destructive hover:text-destructive"
-                    size="icon"
-                    title="Delete program"
-                  >
-                    <TrashIcon className="size-3.5" />
-                  </Button>
-                }
-              />
-          </div>
-            </PermissionGate>
-        )}
       </CardContent>
     </Card>
   );

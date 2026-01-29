@@ -14,10 +14,17 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  rectSortingStrategy,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
 import { SortableItem } from "./sortable-item";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@ui/table";
 
 type FacultyItem = {
   facultyId: string;
@@ -31,7 +38,7 @@ type Props = {
 };
 
 /**
- * A grid that allows sorting faculty items via drag-and-drop.
+ * A table that allows sorting faculty items via drag-and-drop.
  */
 export function SortableGrid({ faculties, onRemove, onReorder }: Props) {
   const [items, setItems] = useState(faculties);
@@ -71,26 +78,38 @@ export function SortableGrid({ faculties, onRemove, onReorder }: Props) {
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext 
-        items={items.map((item) => item.facultyId)} 
-        strategy={rectSortingStrategy}
+    <div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <SortableItem
-              key={item.facultyId}
-              facultyId={item.facultyId}
-              position={item.position}
-              onRemove={onRemove}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+        <SortableContext 
+          items={items.map((item) => item.facultyId)} 
+          strategy={verticalListSortingStrategy}
+        >
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[60px]"></TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead className="w-40 truncate">Academic Partner</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item) => (
+                <SortableItem
+                  key={item.facultyId}
+                  facultyId={item.facultyId}
+                  position={item.position}
+                  onRemove={onRemove}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </SortableContext>
+      </DndContext>
+    </div>
   );
 }
