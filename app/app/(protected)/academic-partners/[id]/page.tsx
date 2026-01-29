@@ -125,7 +125,7 @@ export default async function Page({
                 <h2 className="text-lg font-semibold text-foreground">Faculty</h2>
               </div>
               {data.faculties.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
                   {data.faculties.map((faculty) => (
                     <Link
                       key={faculty.id}
