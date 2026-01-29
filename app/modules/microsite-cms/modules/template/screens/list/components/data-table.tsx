@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@ui/table";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import Link from "next/link";
 import DataTableActions from "./data-table-actions";
 

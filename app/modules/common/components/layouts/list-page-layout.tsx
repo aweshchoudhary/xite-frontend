@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { CARD_PADDING } from "@/modules/common/lib/spacing-config";
 
 interface ListPageLayoutProps {
   title: string;
@@ -12,18 +13,14 @@ export default function ListPageLayout({
   headerActions,
 }: ListPageLayoutProps) {
   return (
-    <article className="p-8 h-full flex flex-col w-full">
-      <div className="2xl:p-10 shadow xl:p-8 lg:p-6 p-5 bg-background flex-1 rounded-xl overflow-hidden">
-        <section>
-          <div className="flex items-center justify-between">
-            <h1 className="h1 flex items-center gap-2">{title}</h1>
-            {headerActions && <div>{headerActions}</div>}
-          </div>
-        </section>
-        <section>
-          <div>{children}</div>
-        </section>
+    <div className="w-full h-full">
+      <div className={`bg-card shadow-sm rounded-lg ${CARD_PADDING}`}>
+        <header className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">{title}</h1>
+          {headerActions}
+        </header>
+        <div>{children}</div>
       </div>
-    </article>
+    </div>
   );
 }

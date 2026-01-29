@@ -1,5 +1,5 @@
 import { Card as CardComponent, CardContent, CardTitle } from "@ui/card";
-import { IMicrosite } from "@microsite-cms/common/services/db/types/interfaces";
+import { IMicrosite } from "@/modules/common/database/mongodb/types/interfaces";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
 import { DateTime } from "luxon";

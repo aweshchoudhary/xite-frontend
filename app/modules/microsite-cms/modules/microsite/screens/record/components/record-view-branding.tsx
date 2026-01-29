@@ -6,7 +6,7 @@ import {
   InputGroupAddon,
   InputGroupText,
 } from "@ui/input-group";
-import { IMicrositeBranding } from "@microsite-cms/common/services/db/types/interfaces";
+import { IMicrositeBranding } from "@/modules/common/database/mongodb/types/interfaces";
 import { Palette, Image as ImageIcon, Type, Globe } from "lucide-react";
 import Image from "next/image";
 

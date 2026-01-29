@@ -1,7 +1,7 @@
 "use server";
 
-import { getTemplates } from "@microsite-cms/common/services/db/actions/template/read";
-import { TemplateType } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import { getTemplates } from "@/modules/common/database/mongodb/actions/template/read";
+import { TemplateType } from "@/modules/common/database/mongodb/types/interfaces";
 
 export async function getTemplateListAction(type?: TemplateType) {
   try {

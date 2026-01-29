@@ -2,7 +2,7 @@
 import type { GetOne } from "@/modules/program/components/forms/read/action";
 import { MODULE_PATH } from "@/modules/program/contants";
 import DeleteModal from "../../forms/delete/modal";
-import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
+import { Can } from "@/modules/common/authentication/access-control/abilities/can";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { Button } from "@ui/button";
 import { Row } from "@tanstack/react-table";
@@ -26,7 +26,7 @@ export default function TableActions({ row }: { row: Row<GetOne> }) {
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-fit">
-            <PermissionGate resource="Program" action="update">
+            <Can I="update" a="Program">
               <div>
                 <Link
                   href={`${MODULE_PATH}/${row.original.id}/edit`}
@@ -36,8 +36,8 @@ export default function TableActions({ row }: { row: Row<GetOne> }) {
                   Edit
                 </Link>
               </div>
-            </PermissionGate>
-            <PermissionGate resource="Program" action="delete">
+            </Can>
+            <Can I="delete" a="Program">
               <button
                 onClick={() => setIsDeleteModalOpen(true)}
                 className="text-destructive flex items-center w-full gap-2 py-2 px-4 hover:bg-accent rounded-md cursor-pointer"
@@ -45,7 +45,7 @@ export default function TableActions({ row }: { row: Row<GetOne> }) {
                 <Trash className="size-4 text-destructive" strokeWidth={1.5} />
                 Delete
               </button>
-            </PermissionGate>
+            </Can>
           </PopoverContent>
         </Popover>
       ) : null}

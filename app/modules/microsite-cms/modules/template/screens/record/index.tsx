@@ -1,4 +1,4 @@
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
 import Link from "next/link";

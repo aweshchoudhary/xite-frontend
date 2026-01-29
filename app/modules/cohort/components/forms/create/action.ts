@@ -5,18 +5,15 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { getLastCohortForCreateAction } from "./get-last-cohort-for-create-action";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
-import { checkPermission } from "@/modules/common/authentication/access-control/lib";
-import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logCreate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export async function createCohortAction(
-  data: CreateSchema
+  data: CreateSchema,
 ): Promise<PrimaryDB.CohortGetPayload<object>> {
   try {
-    const permission = await checkPermission("Cohort", "write");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
+    await requireAccess("create", "Cohort");
 
     const { fees, program_id, ...rest } = data;
     const currencyToCreate: { code: string; name: string; symbol: string }[] =
@@ -60,7 +57,7 @@ export async function createCohortAction(
                   code: currency_code,
                 },
                 create: currencyToCreate.find(
-                  (currency) => currency.code === currency_code
+                  (currency) => currency.code === currency_code,
                 ) ?? {
                   code: currency_code,
                   name: currency_code,
@@ -82,6 +79,26 @@ export async function createCohortAction(
       throw new Error("Failed to create cohort");
     }
 
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logCreate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort.id,
+          cohort.cohort_name,
+          "postgresql",
+          cohort,
+          { programId: program_id },
+        );
+      }
+    } catch (auditError) {
+      // Don't fail the main operation if audit logging fails
+      console.error("Failed to create audit log:", auditError);
+    }
+
     revalidatePath("/cohorts");
 
     return cohort;
@@ -92,11 +109,7 @@ export async function createCohortAction(
 
 export async function getProgramsAction() {
   try {
-    const permission = await checkPermission("Program", "read");
-
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
+    await requireAccess("read", "Program");
 
     const programs = await primaryDB.program.findMany({});
     return { data: programs };

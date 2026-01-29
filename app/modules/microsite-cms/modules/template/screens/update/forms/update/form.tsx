@@ -5,14 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TemplateFormInput,
   TemplateFormSchema,
-} from "@microsite-cms/common/services/db/actions/template/schema";
+} from "@/modules/common/database/mongodb/actions/template/schema";
 import { Input } from "@ui/input";
 import FormPage from "@microsite-cms/template/screens/components/form/form-page";
 import { Button } from "@ui/button";
 import { AlertCircle } from "lucide-react";
 import FormSection from "@microsite-cms/template/screens/components/form/form-section";
 import { toast } from "sonner";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import {
   Select,

@@ -1,5 +1,5 @@
 import { primaryDB } from "@/modules/common/database/prisma/connection";
-import { getMicrositeByCohortId } from "@/modules/microsite-cms/modules/common/services/db";
+import { getMicrositeByCohortId } from "@/modules/common/database/mongodb";
 
 export const getCohortByCohortOrProgramId = async (key: string) => {
   try {
@@ -23,26 +23,26 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
       include: {
         fees: {
           include: {
-            currency: true
-          }
+            currency: true,
+          },
         },
         faculty_section: {
           include: {
             items: {
               include: {
-                faculty: true
-              }
-            }
-          }
+                faculty: true,
+              },
+            },
+          },
         },
         industry_experts_section: {
           include: {
             items: {
               include: {
-                faculty: true
-              }
-            }
-          }
+                faculty: true,
+              },
+            },
+          },
         },
         program: {
           include: {
@@ -85,11 +85,13 @@ export const getCohortByCohortOrProgramId = async (key: string) => {
 
     let microsite = null;
 
-    if(cohort?.cohort_key) {
-      microsite = await getMicrositeByCohortId({cohortId: cohort?.cohort_key});
+    if (cohort?.cohort_key) {
+      microsite = await getMicrositeByCohortId({
+        cohortId: cohort?.cohort_key,
+      });
     }
 
-    return {...cohort, microsite};
+    return { ...cohort, microsite };
   } catch (error) {
     throw error;
   }

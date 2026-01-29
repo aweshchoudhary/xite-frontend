@@ -1,6 +1,6 @@
 "use server";
-import { getMicrositeById } from "@microsite-cms/common/services/db/actions/microsite/read";
-import { getTemplateById } from "@microsite-cms/common/services/db/actions/template/read";
+import { getMicrositeById } from "@/modules/common/database/mongodb/actions/microsite/read";
+import { getTemplateById } from "@/modules/common/database/mongodb/actions/template/read";
 import UpdateForm from "./form";
 import { notFound } from "next/navigation";
 

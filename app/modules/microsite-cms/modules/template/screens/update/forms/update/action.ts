@@ -1,11 +1,11 @@
 "use server";
-import { updateTemplate } from "@microsite-cms/common/services/db";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { updateTemplate } from "@/modules/common/database/mongodb";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import { revalidatePath } from "next/cache";
 
 export async function updateTemplateAction(
   id: string,
-  data: Partial<ITemplate>
+  data: Partial<ITemplate>,
 ): Promise<ITemplate> {
   try {
     const updated = await updateTemplate(id, data);

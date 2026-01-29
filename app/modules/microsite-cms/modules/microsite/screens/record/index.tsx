@@ -2,7 +2,7 @@
 import {
   IMicrosite,
   ITemplate,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import RecordViewPage from "./components/record-view-page";
 import RecordViewSection from "./components/record-view-section";
 import RecordViewBranding from "./components/record-view-branding";

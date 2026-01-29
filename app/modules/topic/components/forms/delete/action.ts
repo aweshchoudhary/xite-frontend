@@ -3,6 +3,7 @@ import { MODULE_NAME } from "@/modules/topic/contants";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type DeleteActionOutput = {
   error?: string;
@@ -11,6 +12,8 @@ type DeleteActionOutput = {
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
+    await requireAccess("delete", "Topic");
+
     await primaryDB.subTopic.deleteMany({
       where: { topic_id: id },
     });

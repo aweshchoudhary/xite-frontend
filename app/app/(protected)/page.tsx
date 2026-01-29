@@ -8,6 +8,8 @@ import ViewCohortCard from "@/modules/cohort/components/cards/view-card";
 import { Separator } from "@ui/separator";
 import ViewCard from "@/modules/program/components/view/view-card";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
+import RecentActivity from "@/modules/dashboard/components/recent-activity";
+import { Suspense } from "react";
 
 // Force dynamic rendering since we use auth
 export const dynamic = "force-dynamic";
@@ -41,12 +43,29 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-10 xl:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
             <div>
               <AllPrograms />
             </div>
             <div>
               <AllCohorts />
+            </div>
+            <div>
+              <Suspense
+                fallback={
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
+                    <Separator className="mb-3" />
+                    <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8">
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-muted-foreground text-sm">Loading activity...</p>
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <RecentActivity />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -72,10 +91,24 @@ const AllPrograms = async () => {
   if (!programs || programs.length === 0)
     return (
       <div>
-        <h1 className="text-lg mb-5">All Programs</h1>
-        <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8">
-          <div className="flex items-center justify-center h-full">
-            <p className="text-muted-foreground">No programs found</p>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg">All Programs</h1>
+          <Link
+            href="/programs"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            View All <ArrowRight className="size-4" strokeWidth={1.5} />
+          </Link>
+        </div>
+        <Separator className="my-3" />
+        <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8 rounded-lg">
+          <div className="flex flex-col items-center justify-center gap-2 text-center">
+            <p className="text-sm font-medium text-muted-foreground">
+              No Programs Found
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              Create your first program to get started
+            </p>
           </div>
         </div>
       </div>
@@ -117,10 +150,24 @@ const AllCohorts = async () => {
   if (!cohorts || cohorts.length === 0)
     return (
       <div>
-        <h1 className="text-lg mb-5">All Cohorts</h1>
-        <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8">
-          <div className="flex items-center justify-center h-full">
-            <p className="text-muted-foreground">No cohorts found</p>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg">All Cohorts</h1>
+          <Link
+            href="/cohorts"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            View All <ArrowRight className="size-4" strokeWidth={1.5} />
+          </Link>
+        </div>
+        <Separator className="my-3" />
+        <div className="border-2 border-spacing-3 border-dashed bg-background px-5 py-8 rounded-lg">
+          <div className="flex flex-col items-center justify-center gap-2 text-center">
+            <p className="text-sm font-medium text-muted-foreground">
+              No Cohorts Found
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              Create your first cohort to get started
+            </p>
           </div>
         </div>
       </div>

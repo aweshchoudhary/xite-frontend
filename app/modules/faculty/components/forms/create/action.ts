@@ -5,6 +5,7 @@ import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type CreateActionOutput = {
   error?: string;
@@ -12,9 +13,11 @@ type CreateActionOutput = {
 };
 
 export async function createAction(
-  data: CreateSchema
+  data: CreateSchema,
 ): Promise<CreateActionOutput> {
   try {
+    await requireAccess("create", "Faculty");
+
     const {
       profile_image_file,
       academic_partner_id,

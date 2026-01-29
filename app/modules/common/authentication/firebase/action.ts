@@ -1,11 +1,9 @@
 "use server";
 
-import { cache } from "react";
 import { cookies } from "next/headers";
 import { adminAuth } from "./auth";
 import { primaryDB } from "../../database/prisma/connection";
 import { UserRole } from "../../database/prisma/generated/prisma";
-import { getCache, setCache } from "../../services/redis/controllers";
 import { User as DbUser } from "../../database/prisma/generated/prisma";
 import { UserRecord } from "firebase-admin/auth";
 
@@ -70,74 +68,81 @@ export async function logoutAction() {
   cookieStore.delete("session");
 }
 
-// Memoize getUser within a single request to avoid duplicate calls
-const getUserCached = cache(
-  async (): Promise<
-    | {
-        dbUser: DbUser;
-        user: UserRecord;
-        roles: UserRole[];
-      }
-    | null
-    | undefined
-  > => {
-    try {
-      const cookieStore = await cookies();
-      const session = cookieStore.get("session");
-
-      if (!session) return null;
-
-      // 1️⃣ Verify session
-      const decodedToken = await adminAuth().verifySessionCookie(session.value);
-      const uid = decodedToken.uid;
-
-      // 2️⃣ Session-aware cache key
-      const cacheKey = `auth:user:${uid}`;
-
-      // 3️⃣ Check Redis
-      const cached = await getCache<{
-        user: UserRecord;
-        roles: UserRole[];
-        dbUser: DbUser;
-      }>(cacheKey);
-
-      if (cached) {
-        return cached;
-      }
-
-      // 4️⃣ Fetch from Firebase
-      const user = await adminAuth().getUser(uid);
-
-      // 5️⃣ Fetch roles from DB
-      const dbUser = await primaryDB.user.findUnique({
-        where: { email: user.email },
-        include: { roles: true },
-      });
-
-      if (!dbUser || !dbUser.roles) return null;
-
-      const payload = {
-        user: user.toJSON() as UserRecord,
-        roles: dbUser.roles,
-        dbUser: dbUser,
-      };
-
-      // 6️⃣ Cache with longer TTL for better performance (10 minutes)
-      await setCache(cacheKey, payload, 600); // 10 minutes
-
-      return payload;
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      return null;
+export async function getUser(): Promise<
+  | {
+      dbUser: DbUser;
+      user: UserRecord;
+      roles: UserRole[];
     }
-  }
-);
+  | null
+  | undefined
+> {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("session");
 
-export async function getUser() {
-  return getUserCached();
+    if (!session) return null;
+
+    // Verify session
+    const decodedToken = await adminAuth().verifySessionCookie(session.value);
+    const uid = decodedToken.uid;
+
+    // Fetch from Firebase
+    const user = await adminAuth().getUser(uid);
+
+    // Fetch roles from DB
+    const dbUser = await primaryDB.user.findUnique({
+      where: { email: user.email },
+      include: { roles: true },
+    });
+
+    if (!dbUser || !dbUser.roles) return null;
+
+    return {
+      user: user.toJSON() as UserRecord,
+      roles: dbUser.roles,
+      dbUser: dbUser,
+    };
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
 }
 
 export async function getUserRoles(): Promise<UserRole[]> {
   const data = await getUser();
   return data?.roles ?? [];
+}
+
+/**
+ * Get authenticated user information for audit logging
+ * Returns basic user info without roles
+ */
+export async function getAuthUser(): Promise<{
+  uid: string;
+  email: string | null;
+  name: string | null;
+} | null> {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("session");
+
+    if (!session) return null;
+
+    // Verify session
+    const decodedToken = await adminAuth().verifySessionCookie(session.value);
+    const uid = decodedToken.uid;
+
+    // Fetch from Firebase
+    const user = await adminAuth().getUser(uid);
+
+    return {
+      uid: user.uid,
+      email: user.email ?? null,
+      name: user.displayName ?? null,
+    };
+  } catch (error) {
+    console.error("Error fetching auth user:", error);
+    return null;
+  }
 }

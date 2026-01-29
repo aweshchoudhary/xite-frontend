@@ -1,12 +1,11 @@
 import { primaryDB } from "@/modules/common/database/prisma/connection";
-import { getMicrositeByDomain } from "@/modules/microsite-cms/modules/common/services/db";
+import { getMicrositeByDomain } from "@/modules/common/database/mongodb";
 
 export const getCohortByDomain = async (domain: string) => {
   try {
-
     const microsite = await getMicrositeByDomain(domain);
 
-    if(!microsite) {
+    if (!microsite) {
       return null;
     }
 
@@ -17,26 +16,26 @@ export const getCohortByDomain = async (domain: string) => {
       include: {
         fees: {
           include: {
-            currency: true
-          }
+            currency: true,
+          },
         },
         faculty_section: {
           include: {
             items: {
               include: {
-                faculty: true
-              }
-            }
-          }
+                faculty: true,
+              },
+            },
+          },
         },
         industry_experts_section: {
           include: {
             items: {
               include: {
-                faculty: true
-              }
-            }
-          }
+                faculty: true,
+              },
+            },
+          },
         },
         program: {
           include: {
@@ -77,8 +76,7 @@ export const getCohortByDomain = async (domain: string) => {
       },
     });
 
-
-    return {...cohort, microsite};
+    return { ...cohort, microsite };
   } catch (error) {
     throw error;
   }

@@ -1,12 +1,12 @@
 "use server";
-import { TemplateType } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
-import { duplicateTemplate } from "@microsite-cms/common/services/db";
+import { TemplateType } from "@/modules/common/database/mongodb/types/interfaces";
+import { duplicateTemplate } from "@/modules/common/database/mongodb";
 import { revalidatePath } from "next/cache";
 
 export async function duplicateTemplateAction(
   id: string,
   cohortId?: string,
-  type?: TemplateType
+  type?: TemplateType,
 ) {
   try {
     const duplicated = await duplicateTemplate(id, cohortId);

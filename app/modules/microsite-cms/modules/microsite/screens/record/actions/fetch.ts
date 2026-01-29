@@ -1,7 +1,7 @@
 "use server";
 
-import { getMicrositeById } from "@microsite-cms/common/services/db/actions/microsite/read";
-import { getTemplateById } from "@microsite-cms/common/services/db/actions/template/read";
+import { getMicrositeById } from "@/modules/common/database/mongodb/actions/microsite/read";
+import { getTemplateById } from "@/modules/common/database/mongodb/actions/template/read";
 
 export async function fetchMicrosite(id: string) {
   const microsite = await getMicrositeById(id);

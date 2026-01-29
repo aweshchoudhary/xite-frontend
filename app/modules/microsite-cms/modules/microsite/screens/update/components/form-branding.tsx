@@ -8,7 +8,7 @@ import {
   InputGroupText,
 } from "@ui/input-group";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
+import { MicrositeFormInput } from "@/modules/common/database/mongodb/actions/microsite/schema";
 import { Palette, Image as ImageIcon, Type, Upload, Globe } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@ui/button";

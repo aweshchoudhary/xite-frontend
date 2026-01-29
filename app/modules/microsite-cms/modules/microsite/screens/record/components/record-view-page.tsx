@@ -4,7 +4,7 @@ import { Textarea } from "@ui/textarea";
 import {
   IPageValue,
   ITemplatePage,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import RecordViewSection from "./record-view-section";
 import { FileText } from "lucide-react";
 

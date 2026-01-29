@@ -3,7 +3,7 @@ import { Input } from "@ui/input";
 import {
   ISectionValue,
   ITemplateSection,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import RecordViewBlock from "./record-view-block";
 import {
   Accordion,

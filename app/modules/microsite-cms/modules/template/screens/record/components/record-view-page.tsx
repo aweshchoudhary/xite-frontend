@@ -1,6 +1,6 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
-import { ITemplatePage } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplatePage } from "@/modules/common/database/mongodb/types/interfaces";
 import RecordViewSection from "./record-view-section";
 
 interface RecordViewPageProps {

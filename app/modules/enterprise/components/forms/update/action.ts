@@ -4,6 +4,7 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type UpdateActionOutput = {
   error?: string;
@@ -12,9 +13,11 @@ type UpdateActionOutput = {
 
 export async function updateAction(
   data: UpdateSchema,
-  id: string
+  id: string,
 ): Promise<UpdateActionOutput> {
   try {
+    await requireAccess("update", "Enterprise");
+
     const updatedData = await primaryDB.enterprise.update({
       where: { id: id },
       data: data as PrimaryDB.EnterpriseUpdateInput,

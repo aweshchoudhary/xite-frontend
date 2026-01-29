@@ -2,13 +2,13 @@
 import {
   IMicrosite,
   ITemplate,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   MicrositeFormInput,
   MicrositeSchema,
-} from "@microsite-cms/common/services/db/actions/microsite/schema";
+} from "@/modules/common/database/mongodb/actions/microsite/schema";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
 import { Button } from "@ui/button";
@@ -17,7 +17,7 @@ import FormPage from "./components/form-page";
 import FormSection from "./components/form-section";
 import FormBranding from "./components/form-branding";
 import { toast } from "sonner";
-import { updateMicrosite } from "@microsite-cms/common/services/db/actions/microsite/update";
+import { updateMicrosite } from "@/modules/common/database/mongodb/actions/microsite/update";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getRequiredFields } from "@/modules/common/lib/zod-required-field-checker";

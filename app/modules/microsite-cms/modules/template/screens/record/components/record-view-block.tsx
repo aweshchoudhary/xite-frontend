@@ -1,6 +1,6 @@
 import { Field, FieldGroup, FieldLabel } from "@ui/field";
 import { Input } from "@ui/input";
-import { ITemplateBlock } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplateBlock } from "@/modules/common/database/mongodb/types/interfaces";
 import { Checkbox } from "@ui/checkbox";
 import RecordViewElementGroup from "./record-view-element-group";
 import RecordViewElementSingle from "./record-view-element-single";

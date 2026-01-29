@@ -4,7 +4,7 @@ import { Textarea } from "@ui/textarea";
 import {
   IBlockValue,
   ITemplateBlock,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import { Checkbox } from "@ui/checkbox";
 import RecordViewValue from "./record-view-value";
 import { Separator } from "@ui/separator";

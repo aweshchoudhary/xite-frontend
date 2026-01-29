@@ -1,5 +1,5 @@
 import { Input } from "@ui/input";
-import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplateElement } from "@/modules/common/database/mongodb/types/interfaces";
 
 interface TextElementProps {
   index: number;

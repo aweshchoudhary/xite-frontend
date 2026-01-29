@@ -1,5 +1,5 @@
 import { SimpleEditor } from "@tiptap-templates/simple/simple-editor";
-import { ITemplateElement } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplateElement } from "@/modules/common/database/mongodb/types/interfaces";
 
 interface RichTextElementProps {
   index: number;

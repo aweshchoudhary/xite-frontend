@@ -5,6 +5,7 @@ import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type UpdateActionOutput = {
   error?: string;
@@ -13,9 +14,11 @@ type UpdateActionOutput = {
 
 export async function updateAction(
   data: UpdateSchema,
-  id: string
+  id: string,
 ): Promise<UpdateActionOutput> {
   try {
+    await requireAccess("update", "Faculty");
+
     const {
       profile_image_file,
       profile_image: old_profile_image,
@@ -36,7 +39,7 @@ export async function updateAction(
 
     const faculty = await primaryDB.faculty.findUnique({
       where: { id: id },
-      include: { subtopics: true }
+      include: { subtopics: true },
     });
     if (!faculty) {
       throw new Error(`Faculty not found`);
@@ -44,13 +47,12 @@ export async function updateAction(
 
     // Extract valid subtopic IDs (filter out nulls)
     const validSubtopicIds =
-      subtopics
-        ?.filter((st) => st.sub_topic_id)
-        .map((st) => st.sub_topic_id) ?? [];
+      subtopics?.filter((st) => st.sub_topic_id).map((st) => st.sub_topic_id) ??
+      [];
 
     const subtopicsToAdd = validSubtopicIds;
     const subtopicsToRemove = faculty.subtopics.filter(
-      (subtopic) => !validSubtopicIds.includes(subtopic.id)
+      (subtopic) => !validSubtopicIds.includes(subtopic.id),
     );
 
     const updatedData = await primaryDB.faculty.update({

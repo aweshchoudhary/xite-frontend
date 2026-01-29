@@ -3,11 +3,14 @@ import { ProgramCreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 export async function createProgramAction(
-  data: ProgramCreateSchema
+  data: ProgramCreateSchema,
 ): Promise<PrimaryDB.ProgramGetPayload<object>> {
   try {
+    await requireAccess("create", "Program");
+
     const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
     const program_key = rest.short_name?.toLowerCase().replace(/\s+/g, "-");

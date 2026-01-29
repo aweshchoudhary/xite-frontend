@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import {
   IMicrosite,
   ITemplate,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import { getMicrositeByCohortKeyAction, getTemplateByIdAction } from "./action";
 import CreateForm from "@microsite-cms/microsite/screens/create/form";
 import RecordView from "@microsite-cms/microsite/screens/record";

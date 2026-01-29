@@ -13,7 +13,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import {
   ITemplate,
   TemplateType,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import { cn } from "@/modules/common/lib/utils";
 import { Button } from "@ui/button";
 import { useEffect, useState } from "react";

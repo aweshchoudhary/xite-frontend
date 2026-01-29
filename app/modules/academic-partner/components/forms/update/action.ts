@@ -5,6 +5,7 @@ import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type UpdateActionOutput = {
   error?: string;
@@ -13,9 +14,11 @@ type UpdateActionOutput = {
 
 export async function updateAction(
   data: UpdateSchema,
-  id: string
+  id: string,
 ): Promise<UpdateActionOutput> {
   try {
+    await requireAccess("update", "AcademicPartner");
+
     const {
       logo_file,
       logo_url: old_logo_url,

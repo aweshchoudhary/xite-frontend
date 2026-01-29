@@ -3,12 +3,15 @@ import { ProgramUpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 export async function updateProgramAction(
   data: ProgramUpdateSchema,
-  programId: string
+  programId: string,
 ) {
   try {
+    await requireAccess("update", "Program");
+
     const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
     const updateData: PrimaryDB.ProgramUpdateInput = {

@@ -1,7 +1,7 @@
 "use server";
 
-import { createTemplate } from "@microsite-cms/common/services/db";
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { createTemplate } from "@/modules/common/database/mongodb";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import { revalidatePath } from "next/cache";
 
 export async function createTemplateAction(data: ITemplate) {

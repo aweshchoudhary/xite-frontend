@@ -4,6 +4,7 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { CreateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/enterprise/contants";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type CreateActionOutput = {
   error?: string;
@@ -11,9 +12,11 @@ type CreateActionOutput = {
 };
 
 export async function createAction(
-  data: CreateSchema
+  data: CreateSchema,
 ): Promise<CreateActionOutput> {
   try {
+    await requireAccess("create", "Enterprise");
+
     const createdData = await primaryDB.enterprise.create({
       data: data as PrimaryDB.EnterpriseCreateInput,
     });

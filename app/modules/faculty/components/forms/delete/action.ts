@@ -3,6 +3,7 @@ import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { revalidatePath } from "next/cache";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
 
 type DeleteActionOutput = {
   error?: string;
@@ -11,6 +12,8 @@ type DeleteActionOutput = {
 
 export async function deleteAction(id: string): Promise<DeleteActionOutput> {
   try {
+    await requireAccess("delete", "Faculty");
+
     const deletedData = await primaryDB.faculty.delete({
       where: { id: id },
     });

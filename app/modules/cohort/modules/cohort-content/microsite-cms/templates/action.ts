@@ -4,11 +4,11 @@ import {
   getMicrositeByCohortId,
   getTemplatesByCohortId,
   getTemplateById,
-} from "@microsite-cms/common/services/db";
+} from "@/modules/common/database/mongodb";
 import {
   IMicrosite,
   ITemplate,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 
 export async function getTemplatesByCohortIdAction(cohortId: string) {
   try {
@@ -20,7 +20,7 @@ export async function getTemplatesByCohortIdAction(cohortId: string) {
 }
 
 export async function getMicrositesByCohortIdAction(
-  cohortId: string
+  cohortId: string,
 ): Promise<IMicrosite[]> {
   try {
     const microsites = await getMicrositesByCohortId(cohortId);
@@ -31,7 +31,7 @@ export async function getMicrositesByCohortIdAction(
 }
 
 export async function getMicrositeByCohortKeyAction(
-  cohortKey: string
+  cohortKey: string,
 ): Promise<IMicrosite | null> {
   try {
     const microsite = await getMicrositeByCohortId({ cohortId: cohortKey });
@@ -42,7 +42,7 @@ export async function getMicrositeByCohortKeyAction(
 }
 
 export async function getTemplateByIdAction(
-  id: string
+  id: string,
 ): Promise<ITemplate | null> {
   try {
     const template = await getTemplateById(id);

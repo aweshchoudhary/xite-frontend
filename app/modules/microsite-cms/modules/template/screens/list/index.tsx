@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   ITemplate,
   TemplateType,
-} from "../../../common/services/db/types/interfaces";
+} from "../../../../../common/database/mongodb/types/interfaces";
 import DataTable from "./components/data-table";
 import { Badge } from "@/modules/common/components/ui/badge";
 import { getTemplateListAction } from "../../components/template-select-list/action";

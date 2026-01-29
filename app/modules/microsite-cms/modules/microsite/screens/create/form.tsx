@@ -16,8 +16,8 @@ import {
 import {
   ITemplate,
   TemplateType,
-} from "@microsite-cms/common/services/db/types/interfaces";
-import { createMicrosite } from "@microsite-cms/common/services/db/actions/microsite/create";
+} from "@/modules/common/database/mongodb/types/interfaces";
+import { createMicrosite } from "@/modules/common/database/mongodb/actions/microsite/create";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle } from "lucide-react";

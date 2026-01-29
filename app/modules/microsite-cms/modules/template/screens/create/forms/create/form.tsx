@@ -5,14 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TemplateFormInput,
   TemplateFormSchema,
-} from "@microsite-cms/common/services/db/actions/template/schema";
+} from "@/modules/common/database/mongodb/actions/template/schema";
 import { Input } from "@ui/input";
 import FormPage from "@microsite-cms/template/screens/components/form/form-page";
 import { Button } from "@ui/button";
 import { AlertCircle } from "lucide-react";
 import FormSection from "@microsite-cms/template/screens/components/form/form-section";
 import { toast } from "sonner";
-import { createTemplate } from "@microsite-cms/common/services/db/actions/template/create";
+import { createTemplate } from "@/modules/common/database/mongodb/actions/template/create";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo } from "react";
@@ -27,7 +27,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ui/breadcrumb";
-import { TemplateType } from "@/modules/microsite-cms/modules/common/services/db/types/interfaces";
+import { TemplateType } from "@/modules/common/database/mongodb/types/interfaces";
 import slugify from "slugify";
 
 export default function CreateForm() {

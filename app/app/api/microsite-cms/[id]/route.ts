@@ -1,9 +1,9 @@
-import { getMicrositeById } from "@/modules/microsite-cms/modules/common/services/db";
+import { getMicrositeById } from "@/modules/common/database/mongodb";
 import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const apikey =
     request.headers.get("Authorization") ||

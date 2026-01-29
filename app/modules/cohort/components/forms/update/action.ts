@@ -4,16 +4,19 @@ import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import currencies from "@/modules/common/lib/currencies.json";
-import { checkPermission } from "@/modules/common/authentication/access-control/lib";
-import { ERROR_MESSAGES } from "@/modules/common/constant";
+import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export async function updateCohortAction(data: UpdateSchema, recordId: string) {
   try {
-    const permission = await checkPermission("Cohort", "update");
+    await requireAccess("update", "Cohort");
 
-    if (!permission) {
-      throw new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION_ERR);
-    }
+    // Get initial value for audit log
+    const initialCohort = await primaryDB.cohort.findUnique({
+      where: { id: recordId },
+      include: { fees: true },
+    });
 
     const { fees, program_id, ...rest } = data;
 
@@ -52,7 +55,7 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
                 code: currency_code,
               },
               create: currencyToCreate.find(
-                (currency) => currency.code === currency_code
+                (currency) => currency.code === currency_code,
               ) || {
                 code: currency_code || "",
                 name:
@@ -76,7 +79,7 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
                   code: currency_code,
                 },
                 create: currencyToCreate.find(
-                  (currency) => currency.code === currency_code
+                  (currency) => currency.code === currency_code,
                 ) || {
                   code: currency_code || "",
                   name:
@@ -99,10 +102,32 @@ export async function updateCohortAction(data: UpdateSchema, recordId: string) {
     const cohort = await primaryDB.cohort.update({
       where: { id: recordId },
       data: dataToUpdate,
+      include: { fees: true },
     });
 
     if (!cohort) {
       throw new Error("Failed to update cohort");
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Cohort",
+          cohort.id,
+          cohort.cohort_name,
+          "postgresql",
+          initialCohort,
+          cohort,
+          { programId: program_id },
+        );
+      }
+    } catch (auditError) {
+      // Don't fail the main operation if audit logging fails
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath("/cohorts");

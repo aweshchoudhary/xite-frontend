@@ -3,7 +3,7 @@ import type { GetCohortForTable } from "@/modules/cohort/components/forms/read/g
 import { MODULE_PATH } from "@/modules/cohort/contants";
 import DeleteModal from "../../forms/delete/modal";
 import CloneModal from "../../forms/clone/modal";
-import PermissionGate from "@/modules/common/authentication/access-control/components/permission-gate";
+import { Can } from "@/modules/common/authentication/access-control/abilities/can";
 import { MoreHorizontal, Pencil, Trash, Copy } from "lucide-react";
 import { Button } from "@ui/button";
 import { Row } from "@tanstack/react-table";
@@ -22,7 +22,7 @@ export default function TableActions({ row }: { row: Row<GetCohortForTable> }) {
   return (
     <>
       <div className="flex items-center gap-2">
-        <PermissionGate resource="Cohort" action="write">
+        <Can I="create" a="Cohort">
           <Button
             variant="ghost"
             size="icon"
@@ -33,7 +33,7 @@ export default function TableActions({ row }: { row: Row<GetCohortForTable> }) {
             <Copy className="size-4" strokeWidth={1.5} />
             <span className="sr-only">Clone cohort</span>
           </Button>
-        </PermissionGate>
+        </Can>
         {row.original.status !== "ACTIVE" && isUserOwnsCohort ? (
           <Popover>
             <PopoverTrigger asChild>
@@ -43,7 +43,7 @@ export default function TableActions({ row }: { row: Row<GetCohortForTable> }) {
               </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-fit">
-              <PermissionGate resource="Cohort" action="update">
+              <Can I="update" a="Cohort">
                 <div>
                   <Link
                     href={`${MODULE_PATH}/${row.original.id}/edit`}
@@ -53,8 +53,8 @@ export default function TableActions({ row }: { row: Row<GetCohortForTable> }) {
                     Edit
                   </Link>
                 </div>
-              </PermissionGate>
-              <PermissionGate resource="Cohort" action="delete">
+              </Can>
+              <Can I="delete" a="Cohort">
                 <button
                   onClick={() => setIsDeleteModalOpen(true)}
                   className="text-destructive flex items-center w-full gap-2 py-2 px-4 hover:bg-accent rounded-md cursor-pointer"
@@ -62,7 +62,7 @@ export default function TableActions({ row }: { row: Row<GetCohortForTable> }) {
                   <Trash className="size-4 text-destructive" strokeWidth={1.5} />
                   Delete
                 </button>
-              </PermissionGate>
+              </Can>
             </PopoverContent>
           </Popover>
         ) : null}

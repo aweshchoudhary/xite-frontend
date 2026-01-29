@@ -1,4 +1,4 @@
-import { ITemplate } from "@microsite-cms/common/services/db/types/interfaces";
+import { ITemplate } from "@/modules/common/database/mongodb/types/interfaces";
 import Card from "./card";
 
 type CardListProps = {

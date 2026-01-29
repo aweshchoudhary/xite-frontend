@@ -1,12 +1,12 @@
 "use client";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
-import { MicrositeFormInput } from "@microsite-cms/common/services/db/actions/microsite/schema";
+import { MicrositeFormInput } from "@/modules/common/database/mongodb/actions/microsite/schema";
 import { Button } from "@ui/button";
 import { Plus, Square, List } from "lucide-react";
 import {
   ITemplateBlock,
   ITemplateElement,
-} from "@microsite-cms/common/services/db/types/interfaces";
+} from "@/modules/common/database/mongodb/types/interfaces";
 import { Separator } from "@ui/separator";
 import ElementWrapper from "./elements/element-wrapper";
 import { Badge } from "@ui/badge";

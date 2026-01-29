@@ -1,7 +1,7 @@
 "use client";
 import { fetchMicrosites } from "./actions/fetch";
 import { useState, useEffect } from "react";
-import { IMicrosite } from "../../../common/services/db/types/interfaces";
+import { IMicrosite } from "../../../../../common/database/mongodb/types/interfaces";
 import DataTable from "./components/data-table";
 
 export default function Microsites() {

@@ -4,6 +4,7 @@ import "@/modules/common/database/prisma/seed/import-subjects-codes";
 import { getUser } from "@/modules/common/authentication/firebase/action";
 import { redirect } from "next/navigation";
 import { AuthProvider } from "@/modules/common/authentication/firebase/auth-context";
+import { PAGE_PADDING } from "@/modules/common/lib/spacing-config";
 
 export default async function ProtectedLayout({
   children,
@@ -17,10 +18,10 @@ export default async function ProtectedLayout({
   }
   return (
     <AuthProvider>
-      <article className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="flex-1 xl:p-10 lg:p-10 p-5">{children}</main>
-      </article>
+        <main className={`flex-1 ${PAGE_PADDING}`}>{children}</main>
+      </div>
     </AuthProvider>
   );
 }
