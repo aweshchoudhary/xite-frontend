@@ -10,28 +10,24 @@ export const PageHeader = async ({ data }: { data: GetCohort }) => {
 
   return (
     <section>
-      <div>
-        <div className="space-y-10">
-          <div className="flex items-center justify-between">
-            <div className="space-y-3">
-              <div>
-                <PageBreadcrumb title={data.name || ""} />
-              </div>
-              <h1 className="h1 font-medium text-primary">{data.name}</h1>
-            </div>
-            {isUserBelongsToCohort || isAdmin ? (
-              <div className="flex items-center gap-2">
-                <UserSelectPopover
-                  cohortId={data.id}
-                  selectedUserId={data.ownerId || undefined}
-                />
-                <HeaderActions data={data} id={data.id} />
-              </div>
-            ): null}
-          </div>
-          <hr className="border-gray-200" />
+      <PageBreadcrumb title={data.name || ""} />
+      <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
+        <div className="flex items-center gap-4 min-w-0">
+          <h1 className="text-2xl font-semibold text-primary truncate">
+            {data.name}
+          </h1>
         </div>
+        {(isUserBelongsToCohort || isAdmin) && (
+          <div className="flex items-center gap-2 shrink-0">
+            <UserSelectPopover
+              cohortId={data.id}
+              selectedUserId={data.ownerId || undefined}
+            />
+            <HeaderActions data={data} id={data.id} />
+          </div>
+        )}
       </div>
+      <div className="border-t mt-6" />
     </section>
   );
 };

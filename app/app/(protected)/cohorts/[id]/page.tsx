@@ -1,8 +1,19 @@
-"use server";
 import { getOneForDetailPageAction } from "@/modules/cohort/components/forms/read/get-one-for-detail-page-action";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
-import { Loader, Book, Key, Calendar, User } from "lucide-react";
+import {
+  Book,
+  Calendar,
+  Clock,
+  Hash,
+  Key,
+  Loader2,
+  MapPin,
+  User,
+  Users,
+  Banknote,
+  FileText,
+} from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@ui/badge";
@@ -10,9 +21,11 @@ import { enumDisplay } from "@/modules/common/lib/enum-display";
 import CopyText from "@/modules/common/components/global/copy-text";
 import { format } from "date-fns";
 import CohortContent from "@/modules/cohort/modules/cohort-content/cohort-content-container";
+import CohortActivityList from "@/modules/cohort/components/cohort-activity-list";
 import { PageHeader } from "./components/page-header";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export async function generateMetadata({
   params,
@@ -58,131 +71,145 @@ export default async function Page({
   }
 
   return (
-    <div className="spacing space-y-8 mx-auto">
+    <div className="spacing space-y-6 mx-auto">
       <PageHeader data={data} />
-      <section className="flex items-start lg:gap-10 gap-5">
-        <div className="py-5 mb-10 px-8 space-y-6 w-fit max-w-xs shrink-0 bg-background rounded-md border">
-          <div className="grid xl:grid-cols-1 lg:grid-cols-1 grid-cols-1 items-start gap-x-10 gap-y-5">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Loader className="size-4" strokeWidth={1.5} /> Status
-              </div>
-              <div>
-                <Badge
-                  variant={data?.status === "ACTIVE" ? "success" : "outline"}
-                  className="capitalize"
-                >
-                  {enumDisplay(data?.status)}
-                </Badge>
-              </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left sidebar: cohort details */}
+        <aside className="lg:col-span-3 shrink-0">
+          <div className="space-y-4 border rounded-lg p-4 bg-card">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Loader2 className="size-3.5" /> Status
+              </p>
+              <Badge
+                variant={data?.status === "ACTIVE" ? "success" : "outline"}
+                className="capitalize text-xs"
+              >
+                {enumDisplay(data?.status)}
+              </Badge>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Book className="size-4" strokeWidth={1.5} /> Program
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Link
-                  href={`/programs/${data.program.id}`}
-                  className="font-medium hover:underline"
-                >
-                  {data.program.name}
-                </Link>
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Book className="size-3.5" /> Program
+              </p>
+              <Link
+                href={`/programs/${data.program.id}`}
+                className="text-sm font-medium hover:underline block truncate"
+              >
+                {data.program.name}
+              </Link>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Key className="size-4" strokeWidth={1.5} /> Cohort Key
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Key className="size-3.5" /> Cohort Key
+              </p>
               <CopyText value={data.cohort_key || ""}>
-                {data.cohort_key}
+                <span className="text-sm font-mono truncate block">
+                  {data.cohort_key}
+                </span>
               </CopyText>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar className="size-4" strokeWidth={1.5} /> Marketing
-                Start-End Date
-              </div>
-              <div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Calendar className="size-3.5" /> Marketing dates
+              </p>
+              <span className="text-sm">
                 {data.mkt_start_date
                   ? format(data.mkt_start_date, "MMM d, yyyy")
-                  : "Not Set"}{" "}
-                -{" "}
+                  : "—"}{" "}
+                –{" "}
                 {data.mkt_end_date
                   ? format(data.mkt_end_date, "MMM d, yyyy")
-                  : "Not Set"}
-              </div>
+                  : "—"}
+              </span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Calendar className="size-4" strokeWidth={1.5} /> Cohort
-                Start-End Date
-              </div>
-              <div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Calendar className="size-3.5" /> Cohort dates
+              </p>
+              <span className="text-sm">
                 {data.start_date
                   ? format(data.start_date, "MMM d, yyyy")
-                  : "Not Set"}{" "}
-                -{" "}
+                  : "—"}{" "}
+                –{" "}
                 {data.end_date
                   ? format(data.end_date, "MMM d, yyyy")
-                  : "Not Set"}
-              </div>
+                  : "—"}
+              </span>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <User className="size-4" strokeWidth={1.5} />
-                Assigned To
-              </div>
-              <div className="capitalize">
-                {data.ownerId ? data.owner?.name : "Not Set"}
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <User className="size-3.5" /> Assigned to
+              </p>
+              <span className="text-sm capitalize">
+                {data.ownerId ? data.owner?.name : "—"}
+              </span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Format
-              </div>
-              <div>{data.format || "N/A"}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <FileText className="size-3.5" /> Format
+              </p>
+              <span className="text-sm">{data.format || "—"}</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Duration
-              </div>
-              <div>{data.duration || "N/A"}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Clock className="size-3.5" /> Duration
+              </p>
+              <span className="text-sm">{data.duration || "—"}</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Location
-              </div>
-              <div>{data.location || "N/A"}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <MapPin className="size-3.5" /> Location
+              </p>
+              <span className="text-sm">{data.location || "—"}</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Max Cohort Size
-              </div>
-              <div>{data.max_cohort_size || "N/A"}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Users className="size-3.5" /> Max cohort size
+              </p>
+              <span className="text-sm">{data.max_cohort_size ?? "—"}</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Cohort Fees
-              </div>
-              <div>
-                {data.fees
-                  .map((fee) => fee.amount + " " + fee.currency.code)
-                  .join(", ") || "N/A"}
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Banknote className="size-3.5" /> Cohort fees
+              </p>
+              <span className="text-sm">
+                {data.fees?.length
+                  ? data.fees
+                      .map((fee) => `${fee.amount} ${fee.currency.code}`)
+                      .join(", ")
+                  : "—"}
+              </span>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                Jira ID
-              </div>
-              <div>{data.jira_id || "N/A"}</div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Hash className="size-3.5" /> Jira ID
+              </p>
+              <span className="text-sm font-mono">{data.jira_id || "—"}</span>
             </div>
           </div>
-        </div>
-        <div className="flex-1 flex items-start lg:gap-10 gap-5">
+        </aside>
+
+        {/* Middle: cohort content (tabs) */}
+        <main className="lg:col-span-6 min-w-0">
           <CohortContent data={data} />
-        </div>
-      </section>
+        </main>
+
+        {/* Right: cohort activity */}
+        <aside className="lg:col-span-3 shrink-0">
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Activity</h3>
+                <p className="text-xs text-muted-foreground">Loading…</p>
+              </div>
+            }
+          >
+            <CohortActivityList cohortId={id} />
+          </Suspense>
+        </aside>
+      </div>
     </div>
   );
 }
