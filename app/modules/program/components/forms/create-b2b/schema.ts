@@ -44,7 +44,7 @@ export const createSchema = z.object({
   enterprise_id: z.uuid(),
   academic_partner_id: z.uuid(),
   proposal: z.string(),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.string()).min(1),
   //  assigned_to: z.uuid(),
   faculties: z
     .array(
