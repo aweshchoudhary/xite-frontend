@@ -4,6 +4,7 @@ import { getOneUser } from "@/modules/user/components/forms/read/action";
 import { notFound } from "next/navigation";
 import { generateSEOMetadata } from "@/modules/common/lib/seo";
 import type { Metadata } from "next";
+import slugify from "slugify";
 
 export async function generateMetadata({
   params,
@@ -51,7 +52,7 @@ export default async function EditPage({
               id: currentData.id,
               name: currentData.name || "",
               email: currentData.email || "",
-              username: currentData.username || "",
+              username: currentData.username || slugify(currentData?.name || "", {lower: true}),
               roles: currentData.roles.map((role) => role.role),
               isActive: currentData.isActive,
             }}

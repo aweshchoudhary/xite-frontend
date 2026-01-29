@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSchema, UpdateSchema } from "../schema";
 import { updateAction } from "./action";
@@ -67,7 +67,8 @@ export default function UpdateForm({
     fetchRoles();
   }, []);
 
-  const selectedRoles = form.watch("roles");
+  const selectedRoles = useWatch({ control: form.control, name: "roles" });
+  const isActive = useWatch({ control: form.control, name: "isActive" });
 
   return (
     <form
@@ -114,14 +115,14 @@ export default function UpdateForm({
             <div key={role.id} className="flex items-center space-x-2">
               <Checkbox
                 id={`role-${role.id}`}
-                checked={selectedRoles.includes(role.role)}
+                checked={selectedRoles?.includes(role.role)}
                 onCheckedChange={(checked) => {
                   if (checked) {
-                    form.setValue("roles", [...selectedRoles, role.role]);
+                    form.setValue("roles", [...(selectedRoles || []), role.role]);
                   } else {
                     form.setValue(
                       "roles",
-                      selectedRoles.filter((r) => r !== role.role)
+                      selectedRoles?.filter((r) => r !== role.role)
                     );
                   }
                 }}
@@ -139,7 +140,7 @@ export default function UpdateForm({
         <div className="flex items-center justify-between">
           <FieldLabel>Active Status</FieldLabel>
           <Switch
-            checked={form.watch("isActive")}
+            checked={isActive}
             onCheckedChange={(checked) => form.setValue("isActive", checked)}
           />
         </div>

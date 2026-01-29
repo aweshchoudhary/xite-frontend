@@ -30,9 +30,7 @@ export function Container({ data }: ContainerProps) {
           {isCompleted ? "Completed" : "Incomplete"}
         </Badge>
         <div className="flex items-center gap-2">
-          {!isUpdating &&
-          // data?.status !== "PLANNING" &&
-          isUserHasCohortAccess ? (
+          {!isUpdating && isUserHasCohortAccess ? (
             <Button
               onClick={(e) => {
                 e.preventDefault();
