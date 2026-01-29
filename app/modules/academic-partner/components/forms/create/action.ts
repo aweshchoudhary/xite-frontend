@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/academic-partner/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logCreate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 type CreateActionOutput = {
   error?: string;
@@ -34,6 +36,24 @@ export async function createAction(
 
     if (!createdData) {
       throw new Error(`Failed to create ${MODULE_NAME}`);
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logCreate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "AcademicPartner",
+          createdData.id,
+          createdData.name,
+          "postgresql",
+          createdData,
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath(MODULE_PATH);

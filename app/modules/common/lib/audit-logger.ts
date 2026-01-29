@@ -3,7 +3,7 @@ import {
   AuditLogModel,
   type AuditActionType,
   type DatabaseType,
-} from "../database/mongodb/models/audit-log";
+} from "@/modules/common/database/mongodb/models/audit-log";
 
 export interface AuditLogEntry {
   userId: string;

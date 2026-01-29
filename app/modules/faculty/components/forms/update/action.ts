@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { MODULE_NAME, MODULE_PATH } from "@/modules/faculty/contants";
 import { uploadFile } from "@/modules/common/services/file-upload";
 import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 type UpdateActionOutput = {
   error?: string;
@@ -37,13 +39,15 @@ export async function updateAction(
       profile_image = null;
     }
 
-    const faculty = await primaryDB.faculty.findUnique({
+    // Get initial value for audit log
+    const initialFaculty = await primaryDB.faculty.findUnique({
       where: { id: id },
       include: { subtopics: true },
     });
-    if (!faculty) {
+    if (!initialFaculty) {
       throw new Error(`Faculty not found`);
     }
+    const faculty = initialFaculty;
 
     // Extract valid subtopic IDs (filter out nulls)
     const validSubtopicIds =
@@ -79,10 +83,34 @@ export async function updateAction(
           })),
         },
       },
+      include: { subtopics: true },
     });
 
     if (!updatedData) {
       throw new Error(`Failed to update ${MODULE_NAME}`);
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Faculty",
+          updatedData.id,
+          updatedData.name,
+          "postgresql",
+          initialFaculty,
+          updatedData,
+          {
+            academicPartnerId: academic_partner_id,
+            facultyCodeId: faculty_code_id,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath(MODULE_PATH);

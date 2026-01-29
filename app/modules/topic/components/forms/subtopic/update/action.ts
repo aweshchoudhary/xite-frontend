@@ -5,6 +5,8 @@ import { UpdateSchema } from "../schema";
 import { revalidatePath } from "next/cache";
 import { MODULE_PATH } from "@/modules/topic/contants";
 import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 type UpdateActionOutput = {
   error?: string;
@@ -17,6 +19,11 @@ export async function updateAction(
 ): Promise<UpdateActionOutput> {
   try {
     await requireAccess("update", "Topic");
+
+    // Get initial value for audit log
+    const initialData = await primaryDB.subTopic.findUnique({
+      where: { id },
+    });
 
     const updatedData = await primaryDB.subTopic.update({
       where: { id },
@@ -35,6 +42,26 @@ export async function updateAction(
 
     if (!updatedData) {
       throw new Error(`Failed to update SubTopic`);
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "SubTopic",
+          updatedData.id,
+          updatedData.title,
+          "postgresql",
+          initialData,
+          updatedData,
+          { topicId: data.topic_id },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath(MODULE_PATH);

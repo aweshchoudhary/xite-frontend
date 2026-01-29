@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logCreate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export async function createProgramAction(
   data: ProgramCreateSchema,
@@ -38,6 +40,28 @@ export async function createProgramAction(
 
     if (!program) {
       throw new Error("Failed to create program");
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logCreate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Program",
+          program.id,
+          program.name,
+          "postgresql",
+          program,
+          {
+            academicPartnerId: academic_partner_id,
+            enterpriseId: enterprise_id,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath("/programs");

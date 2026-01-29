@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { primaryDB } from "@/modules/common/database/prisma/connection";
 import { requireAccess } from "@/modules/common/authentication/access-control/middleware/check-access";
+import { logUpdate } from "@/modules/common/lib/audit-logger";
+import { getAuthUser } from "@/modules/common/authentication/firebase/action";
 
 export async function updateProgramAction(
   data: ProgramUpdateSchema,
@@ -11,6 +13,12 @@ export async function updateProgramAction(
 ) {
   try {
     await requireAccess("update", "Program");
+
+    // Get initial value for audit log
+    const initialProgram = await primaryDB.program.findUnique({
+      where: { id: programId },
+      include: { tags: true },
+    });
 
     const { academic_partner_id, enterprise_id, tags, ...rest } = data;
 
@@ -41,10 +49,34 @@ export async function updateProgramAction(
     const program = await primaryDB.program.update({
       where: { id: programId },
       data: updateData,
+      include: { tags: true },
     });
 
     if (!program) {
       throw new Error("Failed to update program");
+    }
+
+    // Log the audit entry
+    try {
+      const user = await getAuthUser();
+      if (user) {
+        await logUpdate(
+          user.uid,
+          user.name || user.email || "Unknown User",
+          "Program",
+          program.id,
+          program.name,
+          "postgresql",
+          initialProgram,
+          program,
+          {
+            academicPartnerId: academic_partner_id,
+            enterpriseId: enterprise_id,
+          },
+        );
+      }
+    } catch (auditError) {
+      console.error("Failed to create audit log:", auditError);
     }
 
     revalidatePath("/programs");

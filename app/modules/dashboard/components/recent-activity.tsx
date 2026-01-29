@@ -3,24 +3,44 @@ import { Badge } from "@/modules/common/components/ui/badge";
 import { Separator } from "@/modules/common/components/ui/separator";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { ArrowRight, Activity } from "lucide-react";
+import { 
+  ArrowRight, 
+  Activity,
+  Plus,
+  Edit,
+  Trash2,
+  CheckCircle,
+  XCircle,
+  Archive,
+  RotateCcw,
+  Upload,
+  Download
+} from "lucide-react";
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
+import type { LucideIcon } from "lucide-react";
 
-const actionTypeColors: Record<string, string> = {
-  CREATE: "bg-green-500",
-  UPDATE: "bg-blue-500",
-  DELETE: "bg-red-500",
-  APPROVE: "bg-purple-500",
-  REJECT: "bg-orange-500",
-  ARCHIVED: "bg-gray-500",
-  RESTORE: "bg-cyan-500",
-  PUBLISH: "bg-indigo-500",
-  UNPUBLISH: "bg-yellow-500",
+const actionIcons: Record<string, LucideIcon> = {
+  CREATE: Plus,
+  UPDATE: Edit,
+  DELETE: Trash2,
+  APPROVE: CheckCircle,
+  REJECT: XCircle,
+  ARCHIVED: Archive,
+  RESTORE: RotateCcw,
+  PUBLISH: Upload,
+  UNPUBLISH: Download,
 };
 
-const databaseTypeColors: Record<string, string> = {
-  postgresql: "bg-blue-600",
-  mongodb: "bg-green-600",
+const actionColors: Record<string, string> = {
+  CREATE: "text-green-600",
+  UPDATE: "text-blue-600",
+  DELETE: "text-red-600",
+  APPROVE: "text-purple-600",
+  REJECT: "text-orange-600",
+  ARCHIVED: "text-gray-600",
+  RESTORE: "text-cyan-600",
+  PUBLISH: "text-indigo-600",
+  UNPUBLISH: "text-yellow-600",
 };
 
 export default async function RecentActivity() {
@@ -75,61 +95,50 @@ export default async function RecentActivity() {
 
       <Separator className="my-3" />
 
-      <div className="space-y-3">
-        {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
-          >
-            <div className="shrink-0 mt-1">
-              <Badge
-                className={`${
-                  actionTypeColors[activity.actionType]
-                } text-white hover:opacity-80`}
-              >
-                {activity.actionType}
-              </Badge>
-            </div>
+      <div className="space-y-2">
+        {activities.map((activity) => {
+          const Icon = actionIcons[activity.actionType] || Activity;
+          const iconColor = actionColors[activity.actionType] || "text-gray-600";
+          
+          return (
+            <div
+              key={activity.id}
+              className="flex items-start gap-3 py-2 hover:bg-muted/30 transition-colors rounded-md px-2 -mx-2"
+            >
+              <div className={`shrink-0 mt-0.5 ${iconColor}`}>
+                <Icon className="h-4 w-4" />
+              </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">
-                    {activity.userName}
-                  </p>
-                  {activity.userEmail && (
-                    <p className="text-xs text-muted-foreground truncate">
-                      {activity.userEmail}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {activity.userName}
                     </p>
-                  )}
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="text-xs text-muted-foreground">
+                        {activity.actionType.toLowerCase()}
+                      </span>
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <Badge variant="outline" className="text-xs font-mono h-5 px-1.5">
+                        {activity.recordType}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <span className="text-xs text-muted-foreground truncate">
+                        {activity.recordName}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-muted-foreground shrink-0">
+                    {formatDistanceToNow(new Date(activity.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
                 </div>
-                <span className="text-xs text-muted-foreground shrink-0">
-                  {formatDistanceToNow(new Date(activity.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              </div>
-
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="text-xs font-mono">
-                  {activity.recordType}
-                </Badge>
-                <span className="text-xs text-muted-foreground">•</span>
-                <span className="text-xs text-muted-foreground truncate">
-                  {activity.recordName}
-                </span>
-                <span className="text-xs text-muted-foreground">•</span>
-                <Badge
-                  className={`${
-                    databaseTypeColors[activity.databaseType]
-                  } text-white hover:opacity-80 text-xs uppercase`}
-                >
-                  {activity.databaseType}
-                </Badge>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -12,7 +12,9 @@ async function dbConnect() {
     return;
   }
 
-  const db = await mongoose.connect(process.env.MONGODB_URI!);
+  const db = await mongoose.connect(process.env.MONGODB_URI!, {
+    dbName: "xite-microsite",
+  });
 
   connection.isConnected = db.connections[0].readyState;
 }
