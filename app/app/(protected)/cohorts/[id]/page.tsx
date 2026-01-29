@@ -2,12 +2,10 @@ import { getOneForDetailPageAction } from "@/modules/cohort/components/forms/rea
 import { checkPermission } from "@/modules/common/authentication/access-control/lib";
 import UnauthorizedPageError from "@/modules/common/components/global/error/unauthorized-page-error";
 import {
-  Book,
   Calendar,
   Clock,
   Hash,
   Key,
-  Loader2,
   MapPin,
   User,
   Users,
@@ -78,28 +76,6 @@ export default async function Page({
         {/* Left sidebar: cohort details */}
         <aside className="lg:col-span-3 shrink-0">
           <div className="space-y-4 border rounded-lg p-4 bg-card">
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                <Loader2 className="size-3.5" /> Status
-              </p>
-              <Badge
-                variant={data?.status === "ACTIVE" ? "success" : "outline"}
-                className="capitalize text-xs"
-              >
-                {enumDisplay(data?.status)}
-              </Badge>
-            </div>
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                <Book className="size-3.5" /> Program
-              </p>
-              <Link
-                href={`/programs/${data.program.id}`}
-                className="text-sm font-medium hover:underline block truncate"
-              >
-                {data.program.name}
-              </Link>
-            </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                 <Key className="size-3.5" /> Cohort Key

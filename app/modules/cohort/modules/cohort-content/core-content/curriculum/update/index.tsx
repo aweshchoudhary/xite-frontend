@@ -160,7 +160,7 @@ const Item = ({ form, index, items }: ItemProps) => {
           )}
         />
       </div>
-      <div className="space-y-2 grid grid-cols-2 mt-5 gap-5">
+      <div className="space-y-5 grid grid-cols-1 mt-5">
         <div>
           <h2>Overview</h2>
           <Controller
@@ -385,7 +385,7 @@ const Session = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 space-y-5">
         <div>
           <h4 className="border-b my-5 pb-3">Session Overview</h4>
           <Controller

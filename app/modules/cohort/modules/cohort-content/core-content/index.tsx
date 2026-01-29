@@ -9,7 +9,7 @@ import { Container as FacultyContainer } from "./faculty/container";
 import { Container as IndustryExpertsContainer } from "./industry-experts/container";
 import CohortContentMedia from "./media";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ui/tabs";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   BookOpen,
   GraduationCap,
@@ -62,7 +62,7 @@ export default function CohortDetails({ data }: Props) {
             <TabsTrigger
               key={value}
               value={value}
-              className="gap-1.5 capitalize data-[state=active]:font-medium"
+              className="gap-1.5 text-base w-fit! capitalize data-[state=active]:font-medium"
             >
               <Icon className="size-4 shrink-0" />
               {label}
@@ -77,7 +77,7 @@ export default function CohortDetails({ data }: Props) {
             </div>
           </TabsContent>
           <TabsContent value="curriculum" className="mt-0">
-            <div className="p-6 border rounded-lg bg-background">
+            <div className="px-4 py-6 border rounded-lg bg-background min-w-0">
               <CurriculumContainer data={data} />
             </div>
           </TabsContent>

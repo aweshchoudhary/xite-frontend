@@ -1,9 +1,11 @@
+"use client";
+
 import { PrimaryDB } from "@/modules/common/database/prisma/types";
 import { GraduationCap } from "lucide-react";
 import Title from "../title";
 import { Button } from "@ui/button";
 import FacultySelectPopover from "./faculty-select-popover";
-import { SortableGrid } from "./draggable-wrapper";
+import { SortableTable } from "./draggable-wrapper";
 
 type Props = {
   cohortId: string;
@@ -44,25 +46,22 @@ export default function Update({ data }: Props) {
       </div>
 
       {data?.items && data.items.length > 0 ? (
-        <SortableGrid
+        <SortableTable
           initialItems={
             data?.items
               .sort((a, b) => a.position - b.position)
-              .map(
-                ({
-                  id,
-                  position,
-                  faculty: { description, profile_image, name },
-                }) => ({
-                  itemId: id,
-                  id: position,
-                  position: position,
-                  name: name,
-                  profile_image: profile_image || "",
-                  description: description || "",
-                  sectionId: data.id,
-                })
-              ) || []
+              .map(({ id, position, faculty }) => ({
+                itemId: id,
+                id: position,
+                position: position,
+                name: faculty.name,
+                profile_image: faculty.profile_image || "",
+                description: faculty.description || "",
+                title: faculty.title || "",
+                academic_partner: faculty.academic_partner,
+                sectionId: data.id,
+                facultyId: faculty.id,
+              })) || []
           }
           selectedFacultyIds={data?.items.map((item) => item.faculty.id) || []}
         />

@@ -24,7 +24,7 @@ export function Container({ data }: ContainerProps) {
 
   if (!data) return null;
   return (
-    <div className="group relative transition-all duration-200">
+    <div className="group relative transition-all duration-200 min-w-0 w-full">
       <div className="flex items-center justify-between mb-5">
         <Badge variant={isCompleted ? "success" : "destructive"}>
           {isCompleted ? "Completed" : "Incomplete"}
