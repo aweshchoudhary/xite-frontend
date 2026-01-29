@@ -25,9 +25,6 @@ export default function CohortContent({ data }: Props) {
 
   return (
     <section className="space-y-6 w-full">
-      <div className="flex items-center gap-2 justify-between">
-        <h2 className="text-lg font-semibold">Cohort Content</h2>
-      </div>
       <Tabs defaultValue={defaultValue} onValueChange={onTabChange} className="w-full">
         <div className="bg-background rounded-lg px-4 border py-3">
           <TabsList className="w-full grid grid-cols-2 gap-1 bg-transparent h-auto p-0">
